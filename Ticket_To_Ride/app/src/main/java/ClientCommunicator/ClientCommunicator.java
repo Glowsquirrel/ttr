@@ -2,11 +2,13 @@ package ClientCommunicator;
 
 import java.util.concurrent.ExecutionException;
 
-import ClientFacade.ClientFacade;
 import CommandResults.CommandResult;
 import Commands.Command;
 import Model.ClientModel;
 
+/**
+ *
+ */
 public class ClientCommunicator {
     private ClientModel clientModel = ClientModel.getMyClientModel();
 
