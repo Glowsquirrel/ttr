@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Ticket To Ride</string>
+    <string name="ip">IP Address:</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+</resources>
