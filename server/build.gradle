@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':common')
+    compile files('libs/gson-2.6.2.jar')
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
