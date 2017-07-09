@@ -18,7 +18,7 @@ public class User {
         return authToken;
     }
 
-    public void setUsername(String username) {
+    public void setMyUsername(String username) {
         this.username = username;
     }
 

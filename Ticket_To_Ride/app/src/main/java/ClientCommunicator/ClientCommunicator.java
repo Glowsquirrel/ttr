@@ -10,14 +10,7 @@ import Model.ClientModel;
 public class ClientCommunicator {
     private ClientModel clientModel = ClientModel.getMyClientModel();
 
-    public CommandResult doCommand(Command command){
-        CommandResult commandResult = null;
-        try {
-            commandResult = new CommandTask(command, clientModel.getIp(), clientModel.getPort()).execute().get();
-        }catch (ExecutionException | InterruptedException ex){
-            //error
-        }
-
-        return commandResult;
+    public void doCommand(Command command){
+        new CommandTask(clientModel.getIp(), clientModel.getPort()).execute(command);
     }
 }

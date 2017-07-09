@@ -6,6 +6,7 @@ public class CommandResult {
     private boolean success;
     private String errorMessage;
 
+
     public String getType() {
         return type;
     }
