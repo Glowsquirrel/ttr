@@ -1,28 +1,59 @@
 package model;
 
-public class User {
-    private String username;
-    private String password;
+/**
+ *  <h1>User Model</h1>
+ *  Mirror 'user' database table rows for passing data between the facade and data access objects.
+ *
+ *  @author     Nathan Finch
+ *  @since      7/10/2017
+ */
+public class User
+{
+    //Data Members
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    private String mUsername;
+    private String mPassword;
+
+    //Constructors
+
+    public User(String username, String password)
+    {
+
+        setUsername(username);
+        setPassword(password);
+
     }
 
-    public String getUsername() {
-        return username;
+    //Access Methods
+
+    public String getUsername()
+    {
+
+        return mUsername;
+
     }
 
-    public String getPassword() {
-        return password;
+    public String getPassword()
+    {
+
+        return mPassword;
+
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    //Mutator Methods
+
+    public void setUsername(String username)
+    {
+
+        mUsername = username;
+
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password)
+    {
+
+        mPassword = password;
+
     }
 
 }
