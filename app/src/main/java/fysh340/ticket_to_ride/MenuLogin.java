@@ -1,5 +1,11 @@
 package fysh340.ticket_to_ride;
+<<<<<<< HEAD
 //test1
+=======
+
+// test1
+
+>>>>>>> ac107c469392b413c0c0cfb9ca958068e7b6464b
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
