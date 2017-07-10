@@ -3,8 +3,8 @@ package fysh340.ticket_to_ride;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import Interfaces.Observer;
-import Model.ClientModel;
+import interfaces.Observer;
+import model.ClientModel;
 
 //TODO: implement this class
 
