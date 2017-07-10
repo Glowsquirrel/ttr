@@ -1,0 +1,29 @@
+
+CREATE TABLE user
+(
+    username varchar(255) NOT NULL PRIMARY KEY,
+    password varchar(255) NOT NULL
+);
+
+CREATE TABLE game
+(
+    ID varchar(255) NOT NULL PRIMARY KEY,
+    num_players integer,
+    started integer
+);
+
+CREATE TABLE players
+(
+    player varchar(255) NOT NULL,
+    ID varchar(255) NOT NULL,
+    FOREIGN KEY(player) REFERENCES user(username),
+    FOREIGN KEY(ID) REFERENCES game(ID)
+);
+
+CREATE TABLE auth
+(
+    auth_token varchar(32) NOT NULL PRIMARY KEY,
+    user varchar(255) NOT NULL,
+    issued timestamp NOT NULL,
+    FOREIGN KEY(user) REFERENCES user(username)
+);
