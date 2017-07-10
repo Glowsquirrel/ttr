@@ -15,6 +15,9 @@ import Interfaces.Observer;
 import Model.ClientModel;
 import ServerProxy.ServerProxy;
 
+/**
+ * Test2
+ */
 public class MenuLogin extends AppCompatActivity implements Observer {
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private ServerProxy serverProxy = new ServerProxy();
