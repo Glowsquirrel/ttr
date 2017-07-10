@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import interfaces.Observable;
@@ -13,7 +14,15 @@ public class ClientModel implements Observable{
     public static ClientModel getMyClientModel() {
         return myClientModel;
     }
+    List<GameToStart> GamestoStart;
 
+    public List<GameToStart> getGamestoStart() {
+        return GamestoStart;
+    }
+
+    public void setGamestoStart(List<GameToStart> gamestoStart) {
+        GamestoStart = gamestoStart;
+    }
 
     //begin User
     private User user = User.getMyUser();

@@ -29,7 +29,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/maptype"
+                android:id="@+id/playernum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Choose the Number of Players"
@@ -37,7 +37,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/player_spinner">
+                android:id="@+id/playernum_spinner">
 
             </Spinner>
 
