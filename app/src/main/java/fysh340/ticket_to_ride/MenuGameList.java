@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import clientcommunicator.PollerTask;
 import interfaces.Observer;
 import model.ClientModel;
 import model.GameToStart;
@@ -103,6 +104,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void afterTextChanged(Editable s) {}
         });
+        PollerTask pt= new PollerTask();
+        pt.execute();
 
     }
     private void updateUI()
