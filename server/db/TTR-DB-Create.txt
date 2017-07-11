@@ -19,11 +19,3 @@ CREATE TABLE players
     FOREIGN KEY(player) REFERENCES user(username),
     FOREIGN KEY(ID) REFERENCES game(ID)
 );
-
-CREATE TABLE auth
-(
-    auth_token varchar(32) NOT NULL PRIMARY KEY,
-    user varchar(255) NOT NULL,
-    issued timestamp NOT NULL,
-    FOREIGN KEY(user) REFERENCES user(username)
-);
