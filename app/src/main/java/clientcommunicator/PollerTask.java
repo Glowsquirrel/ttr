@@ -25,6 +25,7 @@ import commands.Command;
 public class PollerTask extends AsyncTask<Command, Void, CommandResult> {
     private String ip;
     private String port;
+    private Timer time;
 
     public PollerTask() {
         this.ip = ip;
@@ -34,9 +35,13 @@ public class PollerTask extends AsyncTask<Command, Void, CommandResult> {
     @Override
     protected CommandResult doInBackground(Command... command) {
 
-        Timer time= new Timer();
+        time= new Timer();
         time.schedule(new poll(),0, 1000);
         return new CommandResult();
+    }
+    public void endTimer()
+    {
+        time.cancel();
     }
     protected void onPostExecute(CommandResult result){
 
