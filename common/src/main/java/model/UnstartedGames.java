@@ -7,14 +7,36 @@ import java.util.List;
  */
 
 public class UnstartedGames {
+
     private String name;
+
     private List<String> usernames;
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    private boolean started=false;
+
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<String> getUsernames() {
+        return usernames;
+    }
+
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
     }
 
     public int getPlayersIn() {
@@ -34,6 +56,7 @@ public class UnstartedGames {
     }
 
     private int playersIn;
+
     private int playersNeeded;
 
 }
