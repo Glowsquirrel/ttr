@@ -26,13 +26,11 @@ public class ClientModel implements Observable{
     }
     List<UnstartedGames> gamesToStart;
 
-    public List<UnstartedGames> getGamestoStart() {
-        if(GamestoStart==null)
-        {
-            return new ArrayList<UnstartedGames> ();
-        }
-        return GamestoStart;
+
     public List<UnstartedGames> getGamesToStart() {
+        if (gamesToStart == null) {
+            return new ArrayList<UnstartedGames>();
+        }
         return gamesToStart;
 
     }
