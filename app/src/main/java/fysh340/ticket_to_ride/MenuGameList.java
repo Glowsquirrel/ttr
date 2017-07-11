@@ -101,8 +101,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        pt= new PollerTask();
-        pt.execute();
+
 
     }
     @Override
@@ -110,6 +109,14 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     {
         super.onStop();
         pt.endTimer();
+
+
+    }
+    @Override
+    public void onStart()
+    {
+        pt= new PollerTask();
+        pt.execute();
 
 
     }
