@@ -39,8 +39,6 @@ public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
-            connection.getResponseCode();
-
             //convert to JSON
             Gson gson = new Gson();
             String jsonIn = gson.toJson(command);

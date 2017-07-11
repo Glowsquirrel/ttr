@@ -1,6 +1,4 @@
 package fysh340.ticket_to_ride;
-//test1
-// test1
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,9 +20,6 @@ import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
 
-/**
- * Test2
- */
 public class MenuLogin extends AppCompatActivity implements Observer {
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private ServerProxy serverProxy = new ServerProxy();

@@ -22,8 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MenuGameList" />
+<<<<<<< HEAD
         <activity android:name=".MenuGameLobby" />
         <activity android:name=".GameStart"></activity>
+=======
+>>>>>>> a9eefacac4bd0d5d8634dbec40b02ef7b17d9a5d
     </application>
 
 </manifest>

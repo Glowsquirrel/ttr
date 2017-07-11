@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
 
 import commands.Command;
 import commands.LoginCommand;
@@ -14,6 +15,8 @@ import commands.RegisterCommand;
 
 
 class CommandDeserializer implements JsonDeserializer<Command> {
+
+    private static Logger logger = Logger.getLogger("serverlog");
 
     @Override
     public Command deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
