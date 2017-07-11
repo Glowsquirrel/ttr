@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *  <h1>Game Model</h1>
@@ -17,7 +16,6 @@ public class Game
 
     //Data Members
 
-    private static Logger logger = Logger.getLogger("serverlog");
     private static final int STARTING_VALUE = 1;
 
     private String mID;
