@@ -9,32 +9,40 @@ import interfaces.Observer;
 
 
 public class ClientModel implements Observable{
+    //For Login/Register:
+    private String ip;
+    private String port = "8080";
     private static final ClientModel myClientModel = new ClientModel();
     //begin User
     private User user = User.getMyUser();
     private boolean userLoggedIn = false;
-    //if a user logs out, userLoggedIn = false;
     //end User
     private boolean hasGame=false;
-    private String ip;
-    private String port = "8080";
+    //end Observer
+
+    private String errorMessage;
+    List<UnstartedGames> gamesToStart;
     //begin Observer
     private ArrayList<Observer> observers = new ArrayList<>();
-    private ClientModel(){}
+
+    ClientModel(){
+
+    }
+
+
     public static ClientModel getMyClientModel() {
         return myClientModel;
     }
-    List<UnstartedGames> gamesToStart;
+
 
     public List<UnstartedGames> getGamesToStart() {
         return gamesToStart;
 
     }
 
-    public void setGamestoStart(List<UnstartedGames> gamestoStart) {
+    public void setGamesToStart(List<UnstartedGames> gamestoStart) {
         gamesToStart = gamestoStart;
     }
-
 
     public String getMyUsername(){
         return user.getUsername();
@@ -74,9 +82,6 @@ public class ClientModel implements Observable{
         }
 
     }
-    //end Observer
-
-    private String errorMessage;
 
     public String getErrorMessage() {
         return errorMessage;

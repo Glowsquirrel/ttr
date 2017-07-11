@@ -121,6 +121,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
 
     }
+
     private void updateUI()
     {
         recyclerView.removeAllViewsInLayout();
@@ -149,7 +150,9 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             text.setOnClickListener(this);
 
         }
+
         private UnstartedGames game;
+
         public void bind( UnstartedGames tobind)
         {
             game = tobind;
@@ -185,6 +188,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         { return itemlist.size(); }
 
     }
+
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         switch (pos) {

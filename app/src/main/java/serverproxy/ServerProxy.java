@@ -30,7 +30,7 @@ public class ServerProxy implements IProxy{
     }
 
     @Override
-    public void createGame(String username,String gameName, int playerNum) {
+    public void createGame(String username, String gameName, int playerNum) {
 
     }
 

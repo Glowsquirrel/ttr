@@ -2,6 +2,8 @@ package clientfacade;
 
 import commandresults.CommandResult;
 import commandresults.LoginResultData;
+import commandresults.PollResultData;
+import commandresults.RegisterResultData;
 import model.ClientModel;
 
 /**
@@ -23,7 +25,21 @@ public class ClientFacade {
         }
     }
 
-    public void updateGameList(CommandResult result){
+
+    public void registerUser (CommandResult commandResult){
+        RegisterResultData loginResult = ((RegisterResultData) commandResult);
+        if (commandResult.getErrorMessage() == null)
+            clientModel.setMyUser(loginResult.getUsername(), loginResult.getAuthToken());
+        else{
+            this.postErrorMessage(loginResult.getErrorMessage());
+        }
+    }
+    public void updateGameList(CommandResult result) {
+        PollResultData pollData = (PollResultData)result;
+        clientModel.setGamesToStart(pollData.getGameList());
+    }
+
+    public void startGame(){
 
     }
     //TODO add more methods that will handle each type of CommandResult subclass
