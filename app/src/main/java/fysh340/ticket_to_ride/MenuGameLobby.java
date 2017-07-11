@@ -14,11 +14,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import interfaces.Observer;
-import model.GameToStart;
+import model.UnstartedGames;
 import model.ClientModel;
 import serverproxy.ServerProxy;
-
-import static fysh340.ticket_to_ride.R.id.recyclerView;
 
 //TODO implement this class
 public class MenuGameLobby extends AppCompatActivity implements Observer {
@@ -61,7 +59,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
         private void updateUI() {
             recyclerView.removeAllViewsInLayout();
-            List<GameToStart> games = clientModel.getGamestoStart();
+            List<UnstartedGames> games = clientModel.getGamestoStart();
             fAdapter = new SearchAdapter(games);
             recyclerView.setAdapter(fAdapter);
         }
@@ -88,9 +86,9 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
             }
 
-            private GameToStart game;
+            private UnstartedGames game;
 
-            public void bind(GameToStart tobind) {
+            public void bind(UnstartedGames tobind) {
                 game = tobind;
 
                 text.setText(game.getName());
@@ -105,9 +103,9 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         }
 
         private class SearchAdapter extends RecyclerView.Adapter<MenuGameLobby.FilterHolder> {
-            private List<GameToStart> itemlist = null;
+            private List<UnstartedGames> itemlist = null;
 
-            public SearchAdapter(List<GameToStart> items) {
+            public SearchAdapter(List<UnstartedGames> items) {
                 itemlist = items;
             }
 
@@ -119,7 +117,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
             @Override
             public void onBindViewHolder(FilterHolder holder, int position) {
-                GameToStart filter = itemlist.get(position);
+                UnstartedGames filter = itemlist.get(position);
                 holder.bind(filter);
                 holder.setIsRecyclable(false);
             }

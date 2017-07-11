@@ -29,22 +29,22 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void leaveGame(String username) {
-
-    }
-
-    @Override
-    public void startGame(String username) {
-
-    }
-
-    @Override
     public void createGame(String username, String gameName, int playerNum) {
 
     }
 
     @Override
     public void joinGame(String username, String gameName) {
+
+    }
+
+    @Override
+    public void leaveGame(String username) {
+
+    }
+
+    @Override
+    public void startGame(String username) {
 
     }
 }

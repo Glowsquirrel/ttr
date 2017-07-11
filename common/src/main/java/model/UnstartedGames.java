@@ -1,12 +1,14 @@
 package model;
 
+import java.util.List;
+
 /**
  * Created by Rachael on 7/10/2017.
  */
 
-public class GameToStart {
+public class UnstartedGames {
     private String name;
-
+    private List<String> usernames;
     public String getName() {
         return name;
     }

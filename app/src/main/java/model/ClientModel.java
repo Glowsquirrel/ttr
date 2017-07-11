@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import fysh340.ticket_to_ride.MenuGameList;
 import interfaces.Observable;
 import interfaces.Observer;
 
@@ -15,14 +14,14 @@ public class ClientModel implements Observable{
     public static ClientModel getMyClientModel() {
         return myClientModel;
     }
-    List<GameToStart> GamestoStart;
+    List<UnstartedGames> GamestoStart;
 
-    public List<GameToStart> getGamestoStart() {
+    public List<UnstartedGames> getGamestoStart() {
         return GamestoStart;
 
     }
 
-    public void setGamestoStart(List<GameToStart> gamestoStart) {
+    public void setGamestoStart(List<UnstartedGames> gamestoStart) {
         GamestoStart = gamestoStart;
     }
 

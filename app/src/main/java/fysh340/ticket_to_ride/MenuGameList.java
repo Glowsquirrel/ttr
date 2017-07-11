@@ -1,7 +1,6 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +14,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import clientcommunicator.PollerTask;
 import interfaces.Observer;
 import model.ClientModel;
-import model.GameToStart;
+import model.UnstartedGames;
 import serverproxy.ServerProxy;
 
 //TODO: implement this class
@@ -37,6 +34,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     private TextView text;
     private ServerProxy serverProxy = new ServerProxy();
     private String gameName;
+    private PollerTask pt;
 
     public Button getCreateGame() {
         return createGame;
@@ -104,11 +102,28 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             public void afterTextChanged(Editable s) {}
         });
 
+
+    }
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        pt.endTimer();
+
+
+    }
+    @Override
+    public void onStart()
+    {
+        pt= new PollerTask();
+        pt.execute();
+
+
     }
     private void updateUI()
     {
         recyclerView.removeAllViewsInLayout();
-        List<GameToStart>games=clientModel.getGamestoStart();
+        List<UnstartedGames>games=clientModel.getGamestoStart();
         fAdapter = new SearchAdapter( games);
         recyclerView.setAdapter( fAdapter);
     }
@@ -116,7 +131,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     @Override
     public void update() {
         if(clientModel.hasGame()) {
-            Intent intent = new Intent(this, MenuLogin.class);
+            Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);
         }
         else
@@ -133,8 +148,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             text.setOnClickListener(this);
 
         }
-        private GameToStart game;
-        public void bind( GameToStart tobind)
+        private UnstartedGames game;
+        public void bind( UnstartedGames tobind)
         {
             game = tobind;
 
@@ -152,8 +167,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     private class SearchAdapter extends RecyclerView.Adapter <MenuGameList.FilterHolder>
     {
-        private List<GameToStart> itemlist=null;
-        public SearchAdapter(List <GameToStart> items) { itemlist = items; }
+        private List<UnstartedGames> itemlist=null;
+        public SearchAdapter(List <UnstartedGames> items) { itemlist = items; }
         @Override
         public FilterHolder onCreateViewHolder(ViewGroup parent, int viewType)
         { LayoutInflater layoutInflater = LayoutInflater.from( MenuGameList.this);
@@ -161,7 +176,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         @Override
         public void onBindViewHolder(FilterHolder holder, int position)
         {
-            GameToStart filter=itemlist.get(position);
+            UnstartedGames filter=itemlist.get(position);
             holder.bind(filter);
             holder.setIsRecyclable(false);
         }
