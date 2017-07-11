@@ -34,7 +34,7 @@ public class ServerCommunicator {
 
     private static void initLog() throws IOException{
         Level logLevel = Level.ALL;
-        logger = Logger.getLogger("log");
+        logger = Logger.getLogger("serverlog");
         logger.setLevel(logLevel);
         logger.setUseParentHandlers(false);
 
@@ -47,9 +47,6 @@ public class ServerCommunicator {
             }
         });
         logger.addHandler(consoleHandler);
-
-        //TODO add the same logger to all critical server classes
-        //critical - not a facade or wrapper class. has meaningful/complex code.
     }
 
     private void run(String portNumber) {

@@ -6,4 +6,10 @@
     <string name="password">Password:</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string-array name="player_num_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>

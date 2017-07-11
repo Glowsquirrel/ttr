@@ -1,5 +1,7 @@
 package clientproxy;
 
+import java.util.logging.Logger;
+
 import interfaces.IProxy;
 
 //TODO implement methods here
@@ -9,6 +11,8 @@ import interfaces.IProxy;
  *
  */
 public class ClientProxy implements IProxy {
+
+    private static Logger logger = Logger.getLogger("serverlog");
 
     public void login(String username, String password){
 
@@ -25,12 +29,12 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void createGame(String username) {
+    public void createGame(String username, String gameName, int playerNum) {
 
     }
 
     @Override
-    public void joinGame(String username) {
+    public void joinGame(String username, String gameName) {
 
     }
 

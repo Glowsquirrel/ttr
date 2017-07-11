@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import clientfacade.ClientFacade;
 import commandresults.CommandResult;
@@ -17,21 +20,46 @@ import commandresults.LoginResultData;
 import commands.Command;
 
 /**
- * The Asynchronous task that all commands will pass through.
+ * Created by Rachael on 7/11/2017.
  */
-public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
+
+public class PollerTask extends AsyncTask<Command, Void, CommandResult> {
     private String ip;
     private String port;
+    private Timer time;
 
-    public CommandTask(String ip, String port) {
-        this.ip = ip;
-        this.port = port;
+    public PollerTask() {
+
     }
 
     @Override
     protected CommandResult doInBackground(Command... command) {
 
-        try {
+        time= new Timer();
+        time.schedule(new poll(command),0, 1000);
+        return new CommandResult();
+    }
+    public void endTimer()
+    {
+        time.cancel();
+    }
+    protected void onPostExecute(CommandResult result){
+
+
+
+
+    }
+    private class poll extends TimerTask
+    {
+        private Command[] command;
+        public void poll(Command... command)
+        {
+            this.command=command;
+        }
+        @Override
+        public void run()
+        {
+            try{
             //set up the URL to get to the command to the correct handler
             String trimString = "http://" + ip + ":" + port + "/command";
             URL trimURL = new URL(trimString);
@@ -65,35 +93,9 @@ public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
             return gson.fromJson(jsonOut, CommandResult.class);
 
         }catch (IOException ex){
-            ex.printStackTrace();
-            return null;
-        }
+        ex.printStackTrace();
+        return null;
     }
-    protected void onPostExecute(CommandResult result){
-
-        ClientFacade facade = new ClientFacade();
-
-        if (result == null){ //the command did not make it to the server.
-            CommandResult testResult = new LoginResultData();
-            testResult.setType("login");
-            ((LoginResultData)testResult).setUsername("me");
-            ((LoginResultData)testResult).setAuthToken("asdf");
-            facade.loginUser(testResult);
-            //facade.postErrorMessage("Could not connect to server");
-            return;
         }
-
-
-        //TODO add more into switch statement corresponding to each CommandResult subclass
-
-        //Switch statement for the client to somehow handle the CommandResult that has returned from
-        //the server.
-        switch (result.getType()) {
-            case "login":
-                facade.loginUser(result);
-                break;
-        }
-
-
     }
 }

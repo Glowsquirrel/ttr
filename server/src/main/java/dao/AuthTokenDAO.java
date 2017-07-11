@@ -2,9 +2,14 @@ package dao;
 
 import java.sql.*;
 import java.util.UUID;
+import java.util.logging.Logger;
+
 import model.AuthToken;
 
 public class AuthTokenDAO {
+
+    private static Logger logger = Logger.getLogger("serverlog");
+
     private Connection connection;
 
     /**
@@ -57,7 +62,7 @@ public class AuthTokenDAO {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) //if the query has something in its resultset...
-                token = new AuthToken(username, rs.getString(1));
+                token = new AuthToken(username);
 
         }catch (SQLException ex){
             System.out.println("Failed to get an authToken for: " + username);

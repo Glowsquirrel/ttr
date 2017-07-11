@@ -11,25 +11,20 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.logging.Logger;
 
-/**
- * Created by glowsquirrel on 7/8/17.
- */
-
 public class MyDefaultHandler implements HttpHandler{
-    private static Logger logger = Logger.getLogger("log");
+    private static Logger logger = Logger.getLogger("serverlog");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
-        logger.warning("Default Handler has been accessed on this server.");
+        logger.info("Default Handler has been accessed.");
 
         try{
-
 
             URI url = exchange.getRequestURI();
             String path = url.getRawPath();
 
-            StringBuilder sb = new StringBuilder("data/web");
+            StringBuilder sb = new StringBuilder("server/web");
             if (path.equals("/")) //if nothing is specified, give it the home (index) page
                 sb.append("/index.html");
             else
@@ -39,10 +34,10 @@ public class MyDefaultHandler implements HttpHandler{
             File file = new File(filePath);
 
             if (file.isFile()){
-                System.out.println("This is a file");
+                logger.info("Got the file at: " + filePath);
             }
             else{
-                System.out.println("This is NOT a file");
+                logger.info("Did not find this file: " + filePath);
                 file = new File("data/web/HTML/404.html");
             }
 
@@ -61,7 +56,6 @@ public class MyDefaultHandler implements HttpHandler{
             os.close();
 
             exchange.close();
-            System.out.println();
 
         }catch(IOException ex){
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);

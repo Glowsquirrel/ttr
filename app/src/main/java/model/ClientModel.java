@@ -14,19 +14,24 @@ public class ClientModel implements Observable{
     public static ClientModel getMyClientModel() {
         return myClientModel;
     }
-    List<GameToStart> GamestoStart;
+    List<UnstartedGames> GamestoStart;
 
-    public List<GameToStart> getGamestoStart() {
+    public List<UnstartedGames> getGamestoStart() {
         return GamestoStart;
+
     }
 
-    public void setGamestoStart(List<GameToStart> gamestoStart) {
+    public void setGamestoStart(List<UnstartedGames> gamestoStart) {
         GamestoStart = gamestoStart;
     }
 
     //begin User
     private User user = User.getMyUser();
     private boolean hasUser = false;
+
+
+
+    private boolean hasGame=false;
 
     public String getMyUsername(){
         return user.getUsername();
@@ -104,6 +109,9 @@ public class ClientModel implements Observable{
         this.port = port;
     }
 
+    public boolean hasGame() {return hasGame;}
+
+    public void setHasGame(boolean hasGame) {this.hasGame = hasGame;}
 
 
 }

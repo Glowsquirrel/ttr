@@ -1,8 +1,11 @@
 package dao;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 public class MasterDAO {
+
+    private static Logger logger = Logger.getLogger("serverlog");
 
     static{ //loads the database driver and database name at start
         try{

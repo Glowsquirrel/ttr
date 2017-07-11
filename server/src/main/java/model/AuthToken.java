@@ -19,9 +19,7 @@ public class AuthToken
 
     //Data Members
 
-    //TODO: Implement logging with the logger used on the server
-    //private static Logger logger;
-    //static{ logger = Logger.getLogger(""); }
+    private static Logger logger = Logger.getLogger("serverlog");
 
     private static final long HOUR = 60 * 60 * 1000;
 
@@ -77,8 +75,8 @@ public class AuthToken
         }
         catch (NoSuchAlgorithmException ex)
         {
-            //logger.log(Level.SEVERE, "New Authorization Failed");
-            //logger.log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.SEVERE, "New Authorization Failed");
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         return tokenBuffer.toString();

@@ -7,13 +7,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
 
 import commands.Command;
 import commands.LoginCommand;
+import commands.PollCommand;
 import commands.RegisterCommand;
 
 
 class CommandDeserializer implements JsonDeserializer<Command> {
+
+    private static Logger logger = Logger.getLogger("serverlog");
 
     @Override
     public Command deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
@@ -39,6 +43,12 @@ class CommandDeserializer implements JsonDeserializer<Command> {
                 String username = jsonObject.get("username").getAsString();
                 String password = jsonObject.get("password").getAsString();
                 typeModel = new RegisterCommand(username, password);
+                typeModel.setType(type);
+                break;
+            }
+            case "poll": {
+                String username = jsonObject.get("username").getAsString();
+                typeModel = new PollCommand(username);
                 typeModel.setType(type);
                 break;
             }
