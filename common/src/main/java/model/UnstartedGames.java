@@ -12,6 +12,17 @@ public class UnstartedGames {
 
     private List<String> usernames;
 
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    private boolean started=false;
+
+
     public String getName() {
         return name;
     }

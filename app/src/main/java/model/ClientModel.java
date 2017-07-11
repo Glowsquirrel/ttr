@@ -20,6 +20,11 @@ public class ClientModel implements Observable{
     private String gameName;
 
     public boolean isStartedGame() {
+        for(UnstartedGames i:gamesToStart) {
+            if(i.getName()==gameName) {
+                startedGame=i.isStarted();
+            }
+        }
         return startedGame;
     }
 
