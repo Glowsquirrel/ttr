@@ -38,6 +38,17 @@ public class Game
 
     }
 
+    public Game(String gameID, User creator, List<User> players, boolean started)
+    {
+
+        this(gameID, creator);
+
+        setPlayers(players);
+
+        setStarted(started);
+
+    }
+
     //Utility Methods
 
     /**
