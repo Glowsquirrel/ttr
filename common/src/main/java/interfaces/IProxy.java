@@ -17,8 +17,8 @@ public interface IProxy {
 
     boolean register(String username, String password);
     void pollGameList(String username);
-    void createGame(String username);
-    void joinGame(String username);
+    void createGame(String username,String gameName, int playerNum);
+    void joinGame(String username, String gameName);
     void leaveGame(String username);
     void startGame(String username);
 

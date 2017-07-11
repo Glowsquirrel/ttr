@@ -40,6 +40,12 @@
                 android:id="@+id/playernum_spinner">
 
             </Spinner>
+        <Button
+            android:id="@+id/createGameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Game"/>
+
 
     </LinearLayout>
         <android.support.v7.widget.RecyclerView

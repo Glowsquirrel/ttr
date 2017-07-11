@@ -113,7 +113,8 @@
                 android:text="@string/login"
                 android:gravity="center"
                 android:layout_weight="30"
-                android:onClick="login"/>
+                android:onClick="login"
+                android:id="@+id/login"/>
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -123,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/register"
                 android:layout_weight="30"
-                android:onClick="register"/>
+                android:onClick="register"
+                android:id="@+id/register"/>
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

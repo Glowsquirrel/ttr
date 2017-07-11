@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import fysh340.ticket_to_ride.MenuGameList;
 import interfaces.Observable;
 import interfaces.Observer;
 
@@ -18,6 +19,7 @@ public class ClientModel implements Observable{
 
     public List<GameToStart> getGamestoStart() {
         return GamestoStart;
+
     }
 
     public void setGamestoStart(List<GameToStart> gamestoStart) {
@@ -27,6 +29,10 @@ public class ClientModel implements Observable{
     //begin User
     private User user = User.getMyUser();
     private boolean hasUser = false;
+
+
+
+    private boolean hasGame=false;
 
     public String getMyUsername(){
         return user.getUsername();
@@ -104,6 +110,9 @@ public class ClientModel implements Observable{
         this.port = port;
     }
 
+    public boolean hasGame() {return hasGame;}
+
+    public void setHasGame(boolean hasGame) {this.hasGame = hasGame;}
 
 
 }
