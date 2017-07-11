@@ -16,8 +16,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import clientfacade.ClientFacade;
+import clientfacade.commands.PollCommand;
 import commandresults.CommandResult;
 import commandresults.LoginResultData;
+import commandresults.PollResultData;
 import commands.Command;
 import commands.PollCommandData;
 import model.ClientModel;
@@ -76,7 +78,7 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
                 reader.close();
                 String jsonOut = lowerString.toString();
 
-                CommandResult result = gson.fromJson(jsonOut, CommandResult.class);
+                PollCommand result = gson.fromJson(jsonOut, PollCommand.class);
 
                 clientFacade.updateGameList(result);
 

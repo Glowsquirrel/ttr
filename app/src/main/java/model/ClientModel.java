@@ -16,6 +16,17 @@ public class ClientModel implements Observable{
     //if a user logs out, userLoggedIn = false;
     //end User
     private boolean hasGame=false;
+    private boolean startedGame=false;
+    private String gameName;
+
+    public boolean isStartedGame() {
+        return startedGame;
+    }
+
+    public void setStartedGame(boolean startedGame) {
+        this.startedGame = startedGame;
+    }
+
     private String ip;
     private String port = "8080";
     //begin Observer
@@ -37,6 +48,26 @@ public class ClientModel implements Observable{
 
     public void setGamestoStart(List<UnstartedGames> gamestoStart) {
         gamesToStart = gamestoStart;
+    }
+    public List<String> getPlayersinGame()
+    {
+        List<String>toreturn=null;
+        int size=0;
+        for(UnstartedGames i:gamesToStart) {
+            if(i.getName()==gameName) {
+                size=i.getPlayersNeeded();
+                toreturn=i.getUsernames();
+            }
+        }
+        if(toreturn==null)
+        {
+            toreturn=new ArrayList();
+        }
+        for(int l=toreturn.size();l<=size;l++)
+        {
+            toreturn.add("Waiting for player "+l);
+        }
+        return toreturn;
     }
 
 

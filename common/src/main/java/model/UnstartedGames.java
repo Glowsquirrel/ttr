@@ -20,6 +20,14 @@ public class UnstartedGames {
         this.name = name;
     }
 
+    public List<String> getUsernames() {
+        return usernames;
+    }
+
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
+    }
+
     public int getPlayersIn() {
         return playersIn;
     }
