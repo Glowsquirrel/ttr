@@ -1,11 +1,14 @@
 package dao;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 /**
  * A class that manages the other DAO classes by using the same connection and retrieving information from multiple tables with multiple SQL statements.
  */
 public class DAOMaster {
+
+    private static Logger logger = Logger.getLogger("serverlog");
 
     static{ //loads the database driver and database name at start
         try{

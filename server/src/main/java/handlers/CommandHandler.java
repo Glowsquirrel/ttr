@@ -19,7 +19,7 @@ import commands.ICommand;
 
 public class CommandHandler implements HttpHandler{
 
-    private static Logger logger = Logger.getLogger("log");
+    private static Logger logger = Logger.getLogger("serverlog");
 
 
     @Override
