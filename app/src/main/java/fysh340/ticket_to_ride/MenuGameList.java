@@ -38,6 +38,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     private TextView text;
     private ServerProxy serverProxy = new ServerProxy();
     private String gameName;
+    private PollerTask pt;
 
     public Button getCreateGame() {
         return createGame;
@@ -104,8 +105,16 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        PollerTask pt= new PollerTask();
+        pt= new PollerTask();
         pt.execute();
+
+    }
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        pt.endTimer();
+
 
     }
     private void updateUI()
@@ -119,7 +128,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     @Override
     public void update() {
         if(clientModel.hasGame()) {
-            Intent intent = new Intent(this, MenuLogin.class);
+            Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);
         }
         else
