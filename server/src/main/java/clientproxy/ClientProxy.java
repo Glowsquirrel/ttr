@@ -29,12 +29,12 @@ public class ClientProxy implements IProxy {
     }
 
     @Override
-    public void createGame(String username) {
+    public void createGame(String username, String gameName, int playerNum) {
 
     }
 
     @Override
-    public void joinGame(String username) {
+    public void joinGame(String username, String gameName) {
 
     }
 
