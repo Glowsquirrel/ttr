@@ -7,8 +7,11 @@ import java.util.List;
  */
 
 public class UnstartedGames {
+
     private String name;
+
     private List<String> usernames;
+
     public String getName() {
         return name;
     }
@@ -34,6 +37,7 @@ public class UnstartedGames {
     }
 
     private int playersIn;
+
     private int playersNeeded;
 
 }

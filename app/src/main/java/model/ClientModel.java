@@ -10,11 +10,21 @@ import interfaces.Observer;
 
 public class ClientModel implements Observable{
     private static final ClientModel myClientModel = new ClientModel();
+    //begin User
+    private User user = User.getMyUser();
+    private boolean userLoggedIn = false;
+    //if a user logs out, userLoggedIn = false;
+    //end User
+    private boolean hasGame=false;
+    private String ip;
+    private String port = "8080";
+    //begin Observer
+    private ArrayList<Observer> observers = new ArrayList<>();
     private ClientModel(){}
     public static ClientModel getMyClientModel() {
         return myClientModel;
     }
-    List<UnstartedGames> GamestoStart;
+    List<UnstartedGames> gamesToStart;
 
     public List<UnstartedGames> getGamestoStart() {
         if(GamestoStart==null)
@@ -22,20 +32,15 @@ public class ClientModel implements Observable{
             return new ArrayList<UnstartedGames> ();
         }
         return GamestoStart;
+    public List<UnstartedGames> getGamesToStart() {
+        return gamesToStart;
 
     }
 
     public void setGamestoStart(List<UnstartedGames> gamestoStart) {
-        GamestoStart = gamestoStart;
+        gamesToStart = gamestoStart;
     }
 
-    //begin User
-    private User user = User.getMyUser();
-    private boolean hasUser = false;
-
-
-
-    private boolean hasGame=false;
 
     public String getMyUsername(){
         return user.getUsername();
@@ -47,20 +52,14 @@ public class ClientModel implements Observable{
     public void setMyUser(String username, String authToken){
         user.setMyUsername(username);
         user.setMyAuthToken(authToken);
-        hasUser = true;
+        userLoggedIn = true;
         notifyObserver();
     }
 
     public boolean hasUser(){
-        return hasUser;
+        return userLoggedIn;
     }
 
-    //if a user logs out, hasUser = false;
-    //end User
-
-
-    //begin Observer
-    private ArrayList<Observer> observers = new ArrayList<>();
 
     @Override
     public void register(Observer o) {
@@ -93,9 +92,6 @@ public class ClientModel implements Observable{
         this.errorMessage = errorMessage;
         notifyObserver();
     }
-
-    private String ip;
-    private String port = "8080";
 
     public String getIp() {
         return ip;

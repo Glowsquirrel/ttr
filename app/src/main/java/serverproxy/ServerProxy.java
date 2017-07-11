@@ -21,7 +21,6 @@ public class ServerProxy implements IProxy{
 
     }
     public boolean register(String username, String password){
-
         return true;
     }
 

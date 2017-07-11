@@ -59,7 +59,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
         private void updateUI() {
             recyclerView.removeAllViewsInLayout();
-            List<UnstartedGames> games = clientModel.getGamestoStart();
+            List<UnstartedGames> games = clientModel.getGamesToStart();
             fAdapter = new SearchAdapter(games);
             recyclerView.setAdapter(fAdapter);
         }
