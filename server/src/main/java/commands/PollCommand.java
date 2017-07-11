@@ -8,7 +8,7 @@ import commandresults.PollResultData;
  * Created by shunsambongi on 7/11/17.
  */
 
-public class PollCommand extends PollData implements ICommand {
+public class PollCommand extends PollCommandData implements ICommand {
     public PollCommand(String username) {
         super(username);
     }

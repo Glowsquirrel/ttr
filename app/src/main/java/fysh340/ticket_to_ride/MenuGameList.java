@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import clientcommunicator.PollerTask;
+import commands.PollCommandData;
 import interfaces.Observer;
 import model.ClientModel;
 import model.UnstartedGames;
@@ -67,6 +68,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_game_list);
+
+        /*
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
         recyclerView.setLayoutManager( new LinearLayoutManager( this));
@@ -101,6 +104,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void afterTextChanged(Editable s) {}
         });
+        */
 
 
     }
@@ -108,14 +112,17 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     public void onStop()
     {
         super.onStop();
-        pt.endTimer();
+        pt.cancel(true);
 
 
     }
     @Override
     public void onStart()
     {
-        pt= new PollerTask();
+        super.onStart();
+        PollCommandData pollCommandData= new PollCommandData(clientModel.getMyUsername());
+        pollCommandData.setType("poll");
+        pt= new PollerTask(pollCommandData);
         pt.execute();
 
 

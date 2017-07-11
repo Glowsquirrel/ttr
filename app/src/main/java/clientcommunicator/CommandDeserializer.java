@@ -1,4 +1,4 @@
-package handlers;
+package clientcommunicator;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -10,9 +10,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import commands.Command;
-import commands.LoginCommand;
-import commands.PollCommand;
-import commands.RegisterCommand;
+import commands.PollCommandData;
 
 
 class CommandDeserializer implements JsonDeserializer<Command> {
@@ -30,26 +28,11 @@ class CommandDeserializer implements JsonDeserializer<Command> {
 
         Command typeModel = null;
 
-        //TODO add a switch statement for each Command in server Commands package
+        //TODO add a switch statement for each Command in client Commands package
         switch (type){
-            case "login": {
-                String username = jsonObject.get("username").getAsString();
-                String password = jsonObject.get("password").getAsString();
-                typeModel = new LoginCommand(username, password);
-                typeModel.setType(type);
-                break;
-            }
-            case "register": {
-                String username = jsonObject.get("username").getAsString();
-                String password = jsonObject.get("password").getAsString();
-                typeModel = new RegisterCommand(username, password);
-                typeModel.setType(type);
-                break;
-            }
             case "poll": {
                 String username = jsonObject.get("username").getAsString();
-                typeModel = new PollCommand(username);
-                typeModel.setType(type);
+                typeModel = new PollCommandData(username);
                 break;
             }
         }

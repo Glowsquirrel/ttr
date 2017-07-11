@@ -37,77 +37,22 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
 
         //begin load previous input
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
-        String ipString = sharedPref.getString("ip", "");
-        String usernameString = sharedPref.getString("username", "");
-        String passwordString = sharedPref.getString("password", "");
+        //SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
+        //String ipString = sharedPref.getString("ip", "");
+        //String usernameString = sharedPref.getString("username", "");
+        //String passwordString = sharedPref.getString("password", "");
 
-        EditText ip = (EditText)findViewById(R.id.ip_address);
-        EditText username = (EditText)findViewById(R.id.username);
-        EditText password = (EditText)findViewById(R.id.password);
+        //EditText ip = (EditText)findViewById(R.id.ip_address);
+        //EditText username = (EditText)findViewById(R.id.username);
+        //EditText password = (EditText)findViewById(R.id.password);
 
-        ip.setText(ipString);
-        username.setText(usernameString);
-        password.setText(passwordString);
+        //ip.setText(ipString);
+        //username.setText(usernameString);
+        //password.setText(passwordString);
         //end load previous input
 
         Button register=(Button)findViewById(R.id.register);
         Button login=(Button) findViewById(R.id.login);
-
-        register.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                serverProxy.login(getUsername(),getPassword());
-
-            }
-
-        });
-        login.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                serverProxy.register(getUsername(),getPassword());
-
-            }
-
-        });
-        ip.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                setIpAddress(s.toString());
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        username.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                setUsername(s.toString());
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-        password.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                setPassword(s.toString());
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
 
 
     }

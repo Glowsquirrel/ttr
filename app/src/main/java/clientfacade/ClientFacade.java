@@ -23,5 +23,8 @@ public class ClientFacade {
         }
     }
 
+    public void updateGameList(CommandResult result){
+
+    }
     //TODO add more methods that will handle each type of CommandResult subclass
 }

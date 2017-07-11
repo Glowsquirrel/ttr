@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import commands.Command;
 import commands.LoginCommand;
 import commands.PollCommand;
+import commands.PollCommandData;
 import commands.RegisterCommand;
 
 
