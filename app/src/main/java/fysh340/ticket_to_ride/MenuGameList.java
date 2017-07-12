@@ -3,12 +3,18 @@ package fysh340.ticket_to_ride;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
@@ -63,7 +69,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_game_list);
 
-        /*
+
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
         recyclerView.setLayoutManager( new LinearLayoutManager( this));
@@ -98,7 +104,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        */
+
 
 
     }

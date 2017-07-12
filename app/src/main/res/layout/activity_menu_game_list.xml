@@ -6,21 +6,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fysh340.ticket_to_ride.MenuGameList">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/createGame">
+        android:id="@+id/createGame"
+        android:gravity="center">
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Start your own game:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp"
+            android:id="@+id/starter"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="318dp"
+            android:layout_height="wrap_content"
             android:text="Enter the name of the game you would like to create:"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            android:id="@+id/name"/>
+            android:textSize="16sp"
+            android:id="@+id/name"
+            android:gravity="center"/>
         <EditText
             android:id="@+id/gamename"
-            android:layout_width="match_parent"
+            android:layout_width="338dp"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:inputType="text"
@@ -30,21 +45,35 @@
 
             <TextView
                 android:id="@+id/playernum"
-                android:layout_width="match_parent"
+                android:layout_width="277dp"
                 android:layout_height="wrap_content"
                 android:text="Choose the Number of Players"
                 android:textSize="16dp" />
             <Spinner
-                android:layout_width="match_parent"
+                android:layout_width="292dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/playernum_spinner">
 
             </Spinner>
+
         <Button
             android:id="@+id/createGameButton"
+            android:layout_width="304dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Create Game" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Game"/>
+            android:text="Join an existing game:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp"
+            android:id="@+id/joiner"
+            android:gravity="center"/>
 
 
     </LinearLayout>
@@ -53,6 +82,7 @@
             android:layout_below="@+id/createGame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+            android:gravity="center"
         />
 
 </RelativeLayout>

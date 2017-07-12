@@ -10,6 +10,11 @@ import interfaces.Observer;
 
 public class ClientModel implements Observable{
     //For Login/Register:
+
+    ClientModel(){
+
+    }
+
     private String ip;
     private String port = "8080";
     private static final ClientModel myClientModel = new ClientModel();
@@ -18,16 +23,33 @@ public class ClientModel implements Observable{
     private boolean userLoggedIn = false;
     //end User
     private boolean hasGame=false;
-    //end Observer
 
+    //end Observer
     private String errorMessage;
     List<UnstartedGames> gamesToStart;
+
+    private boolean startedGame=false;
+    private String gameName;
+
+    public boolean isStartedGame() {
+        for(UnstartedGames i:gamesToStart) {
+            if(i.getName().equals(gameName)) {
+                startedGame=i.isStarted();
+            }
+        }
+        return startedGame;
+    }
+
+    public void setStartedGame(boolean startedGame) {
+        this.startedGame = startedGame;
+    }
+
+
+
     //begin Observer
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    ClientModel(){
 
-    }
 
 
     public static ClientModel getMyClientModel() {
@@ -35,13 +57,37 @@ public class ClientModel implements Observable{
     }
 
 
+
     public List<UnstartedGames> getGamesToStart() {
+        if (gamesToStart == null) {
+            return new ArrayList<UnstartedGames>();
+        }
         return gamesToStart;
 
     }
 
     public void setGamesToStart(List<UnstartedGames> gamestoStart) {
         gamesToStart = gamestoStart;
+    }
+    public List<String> getPlayersinGame()
+    {
+        List<String>toreturn=null;
+        int size=0;
+        for(UnstartedGames i:gamesToStart) {
+            if(i.getName().equals(gameName)) {
+                size=i.getPlayersNeeded();
+                toreturn=i.getUsernames();
+            }
+        }
+        if(toreturn==null)
+        {
+            toreturn=new ArrayList();
+        }
+        for(int l=toreturn.size();l<=size;l++)
+        {
+            toreturn.add("Waiting for player "+l);
+        }
+        return toreturn;
     }
 
     public String getMyUsername(){
