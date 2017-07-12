@@ -4,11 +4,12 @@ package commands;
  * Created by shunsambongi on 7/11/17.
  */
 
-public class PollCommandData extends Command {
+public class PollGamesCommandData extends Command {
 
-    private String username;
+    protected String username;
 
-    public PollCommandData(String username) {
+    public PollGamesCommandData(String username) {
+        super.setType("pollgames");
         this.username = username;
     }
 

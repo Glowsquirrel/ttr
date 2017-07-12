@@ -1,10 +1,11 @@
 package commands;
 
 public class RegisterCommandData extends Command {
-    private String username;
-    private String password;
+    protected String username;
+    protected String password;
 
     public RegisterCommandData(String username, String password) {
+        super.setType("register");
         this.username = username;
         this.password = password;
     }

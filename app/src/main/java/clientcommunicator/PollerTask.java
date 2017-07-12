@@ -18,10 +18,7 @@ import java.util.TimerTask;
 import clientfacade.ClientFacade;
 import clientfacade.commands.PollCommand;
 import commandresults.CommandResult;
-import commandresults.LoginResultData;
-import commandresults.PollResultData;
-import commands.Command;
-import commands.PollCommandData;
+import commands.PollGamesCommandData;
 import model.ClientModel;
 
 /**
@@ -33,9 +30,9 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private String ip = clientModel.getIp();
     private String port = clientModel.getPort();
-    private PollCommandData pollData;
+    private PollGamesCommandData pollData;
 
-    public PollerTask(PollCommandData pollData) {
+    public PollerTask(PollGamesCommandData pollData) {
         this.pollData = pollData;
     }
 

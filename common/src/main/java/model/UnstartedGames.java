@@ -9,8 +9,9 @@ import java.util.List;
 public class UnstartedGames {
 
     private String name;
-
     private List<String> usernames;
+    private int playersIn;
+    private int playersNeeded;
 
     public boolean isStarted() {
         return started;
@@ -55,8 +56,5 @@ public class UnstartedGames {
         this.playersNeeded = playersNeeded;
     }
 
-    private int playersIn;
-
-    private int playersNeeded;
 
 }

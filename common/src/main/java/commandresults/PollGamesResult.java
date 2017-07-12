@@ -8,7 +8,15 @@ import model.UnstartedGames;
  * Created by shunsambongi on 7/11/17.
  */
 
-public class PollResultData extends CommandResult {
+public class PollGamesResult extends CommandResult {
+
+
+    public PollGamesResult(boolean success, String message, List<UnstartedGames> gameList){
+        super.setType("pollgames");
+        super.setSuccess(success);
+        super.setErrorMessage(message);
+        this.gameList = gameList;
+    }
 
     private List<UnstartedGames> gameList;
 

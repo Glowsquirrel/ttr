@@ -3,6 +3,8 @@ package model;
 public class User {
     private static final User user = new User();
     private User(){}
+
+
     private String username;
     private String authToken;
 
@@ -25,4 +27,8 @@ public class User {
     public void setMyAuthToken(String authToken) {
         this.authToken = authToken;
     }
+
+
+
+
 }

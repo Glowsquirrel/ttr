@@ -1,6 +1,13 @@
 package commandresults;
 
-public class LoginResultData extends CommandResult{
+public class RegisterResult extends CommandResult {
+
+    public RegisterResult(boolean success, String message){
+        super.setType("register");
+        super.setSuccess(success);
+        super.setErrorMessage(message);
+    }
+
     private String username;
     private String authToken;
 
@@ -16,7 +23,6 @@ public class LoginResultData extends CommandResult{
     public void setAuthToken(String authToken){
         this.authToken = authToken;
     }
-
     public String getType(){
         return super.getType();
     }

@@ -1,10 +1,11 @@
 package commands;
 
 public class LoginCommandData extends Command {
-    private String username;
-    private String password;
+    protected String username;
+    protected String password;
 
     public LoginCommandData(String username, String password) {
+        super.setType("login");
         this.username = username;
         this.password = password;
     }

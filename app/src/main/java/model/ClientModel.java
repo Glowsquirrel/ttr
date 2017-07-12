@@ -9,19 +9,31 @@ import interfaces.Observer;
 
 
 public class ClientModel implements Observable{
+    //For Login/Register:
+
+    ClientModel(){
+
+    }
+
+    private String ip;
+    private String port = "8080";
     private static final ClientModel myClientModel = new ClientModel();
     //begin User
     private User user = User.getMyUser();
     private boolean userLoggedIn = false;
-    //if a user logs out, userLoggedIn = false;
     //end User
     private boolean hasGame=false;
+
+    //end Observer
+    private String errorMessage;
+    List<UnstartedGames> gamesToStart;
+
     private boolean startedGame=false;
     private String gameName;
 
     public boolean isStartedGame() {
         for(UnstartedGames i:gamesToStart) {
-            if(i.getName()==gameName) {
+            if(i.getName().equals(gameName)) {
                 startedGame=i.isStarted();
             }
         }
@@ -32,15 +44,18 @@ public class ClientModel implements Observable{
         this.startedGame = startedGame;
     }
 
-    private String ip;
-    private String port = "8080";
+
+
     //begin Observer
     private ArrayList<Observer> observers = new ArrayList<>();
-    private ClientModel(){}
+
+
+
+
     public static ClientModel getMyClientModel() {
         return myClientModel;
     }
-    List<UnstartedGames> gamesToStart;
+
 
 
     public List<UnstartedGames> getGamesToStart() {
@@ -51,7 +66,7 @@ public class ClientModel implements Observable{
 
     }
 
-    public void setGamestoStart(List<UnstartedGames> gamestoStart) {
+    public void setGamesToStart(List<UnstartedGames> gamestoStart) {
         gamesToStart = gamestoStart;
     }
     public List<String> getPlayersinGame()
@@ -59,7 +74,7 @@ public class ClientModel implements Observable{
         List<String>toreturn=null;
         int size=0;
         for(UnstartedGames i:gamesToStart) {
-            if(i.getName()==gameName) {
+            if(i.getName().equals(gameName)) {
                 size=i.getPlayersNeeded();
                 toreturn=i.getUsernames();
             }
@@ -75,7 +90,6 @@ public class ClientModel implements Observable{
         return toreturn;
     }
 
-
     public String getMyUsername(){
         return user.getUsername();
     }
@@ -83,9 +97,8 @@ public class ClientModel implements Observable{
         return user.getAuthToken();
     }
 
-    public void setMyUser(String username, String authToken){
+    public void setMyUser(String username) {
         user.setMyUsername(username);
-        user.setMyAuthToken(authToken);
         userLoggedIn = true;
         notifyObserver();
     }
@@ -114,9 +127,6 @@ public class ClientModel implements Observable{
         }
 
     }
-    //end Observer
-
-    private String errorMessage;
 
     public String getErrorMessage() {
         return errorMessage;
