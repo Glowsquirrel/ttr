@@ -1,29 +1,17 @@
 package clientcommunicator;
 
 import android.os.AsyncTask;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import clientfacade.ClientFacade;
 import clientfacade.commands.PollCommand;
-import commandresults.CommandResult;
-import commands.PollGamesCommandData;
+import serverfacade.commands.PollGamesCommandData;
 import model.ClientModel;
-
-/**
- * Created by Rachael on 7/11/2017.
- */
 
 public class PollerTask extends AsyncTask<Void, Void, Void> {
     private ClientFacade clientFacade = new ClientFacade();
@@ -41,7 +29,6 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
 
         while(true) {
             try {
-                Thread.sleep(2000); //wait for 2s
 
                 String trimString = "http://" + ip + ":" + port + "/command";
                 URL trimURL = new URL(trimString);
@@ -79,6 +66,7 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
 
                 clientFacade.updateGameList(result);
 
+                Thread.sleep(3000); //wait for 3s after updating
 
             } catch (InterruptedException | IOException ex) {
                 ex.printStackTrace();

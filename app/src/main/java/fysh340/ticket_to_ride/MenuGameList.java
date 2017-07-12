@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,14 +17,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import clientcommunicator.PollerTask;
-import commands.PollGamesCommandData;
+import model.UnstartedGame;
+import serverfacade.commands.PollGamesCommandData;
 import interfaces.Observer;
 import model.ClientModel;
-import model.UnstartedGames;
 import serverproxy.ServerProxy;
 
 //TODO: implement this class
@@ -73,13 +75,16 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
         recyclerView.setLayoutManager( new LinearLayoutManager( this));
-        updateUI();
+
+        //updateUI();
+
         EditText gameName=(EditText) findViewById(R.id.gamename);
         Spinner spinner = (Spinner) findViewById(R.id.playernum_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.player_num_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
         createGame=(Button) findViewById(R.id.createGameButton);
         createGame.setEnabled(false);
         createGame.setOnClickListener(new View.OnClickListener()
@@ -106,6 +111,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         });
 
 
+        //List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
+        fAdapter = new SearchAdapter(null); //create the search adapter once, update its data later
 
     }
     @Override
@@ -130,10 +137,11 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     private void updateUI()
     {
-        recyclerView.removeAllViewsInLayout();
-        List<UnstartedGames>games=clientModel.getGamesToStart();
-        fAdapter = new SearchAdapter( games);
-        recyclerView.setAdapter( fAdapter);
+        //recyclerView.removeAllViewsInLayout();
+        List<UnstartedGame> games = clientModel.getGamesToStart();
+        //fAdapter = new SearchAdapter(games);
+        //recyclerView.setAdapter(fAdapter);
+        fAdapter.swapData(games);
     }
 
     @Override
@@ -142,10 +150,12 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);
         }
-        else
-        {
-            updateUI();
+        else if (clientModel.hasMessage()){
+            Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
+            clientModel.receivedMessage();
         }
+        else
+            updateUI();
 
     }
     private class FilterHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -157,9 +167,9 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
         }
 
-        private UnstartedGames game;
+        private UnstartedGame game;
 
-        public void bind( UnstartedGames tobind)
+        public void bind( UnstartedGame tobind)
         {
             game = tobind;
 
@@ -177,21 +187,32 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     private class SearchAdapter extends RecyclerView.Adapter <MenuGameList.FilterHolder>
     {
-        private List<UnstartedGames> itemlist=null;
-        public SearchAdapter(List <UnstartedGames> items) { itemlist = items; }
+        private List<UnstartedGame> itemlist = null;
+        public SearchAdapter(List <UnstartedGame> items) { itemlist = items; }
+
         @Override
         public FilterHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        { LayoutInflater layoutInflater = LayoutInflater.from( MenuGameList.this);
-            return new FilterHolder( layoutInflater, parent); }
+        {
+            LayoutInflater layoutInflater = LayoutInflater.from( MenuGameList.this);
+            return new FilterHolder(layoutInflater, parent);
+        }
+
         @Override
         public void onBindViewHolder(FilterHolder holder, int position)
         {
-            UnstartedGames filter=itemlist.get(position);
+            UnstartedGame filter=itemlist.get(position);
             holder.bind(filter);
             holder.setIsRecyclable(false);
         }
-        @Override public int getItemCount()
-        { return itemlist.size(); }
+
+        @Override public int getItemCount() { return itemlist.size(); }
+
+        public void swapData(List<UnstartedGame> newList){
+            if (itemlist != null)
+                itemlist.clear(); //clear old items
+            itemlist = newList; //points to the given new list. old is garbage collected
+            notifyDataSetChanged(); //recyclerview method to update itself in the view
+        }
 
     }
 

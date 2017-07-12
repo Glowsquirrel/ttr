@@ -13,8 +13,8 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 import commandresults.CommandResult;
-import commands.Command;
-import commands.ICommand;
+import serverfacade.commands.Command;
+import serverfacade.commands.ICommand;
 
 
 public class CommandHandler implements HttpHandler{

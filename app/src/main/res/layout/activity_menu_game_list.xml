@@ -78,11 +78,12 @@
 
     </LinearLayout>
         <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+            android:id="@+id/recyclerView"
             android:layout_below="@+id/createGame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="5dp"
         />
 
 </RelativeLayout>

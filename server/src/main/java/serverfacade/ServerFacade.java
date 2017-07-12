@@ -1,33 +1,66 @@
 package serverfacade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import commandresults.CommandResult;
 import commandresults.LoginResult;
 import commandresults.PollGamesResult;
-import commandresults.RegisterResult;
 import interfaces.IServer;
-
-/**
- * Created by glowsquirrel on 7/9/17.
- */
+import model.UnstartedGame;
 
 public class ServerFacade implements IServer{
 
     @Override
     public LoginResult login(String username, String password) {
         //TODO implement me
-        return new LoginResult(true, "fake data");
+        return new LoginResult(true, "fake data", "myusername");
     }
 
     @Override
-    public RegisterResult register(String username, String password) {
+    public CommandResult register(String username, String password) {
         //TODO implement me
-        return new RegisterResult(true, "fake data");
+        return new CommandResult("register", true, "this was fake");
     }
 
     @Override
     public PollGamesResult pollGameList(String username) {
         //TODO implement me
-        return new PollGamesResult(true, "fake data", null);
+        List<UnstartedGame> gamesList = new ArrayList<>();
+
+        UnstartedGame game1 = new UnstartedGame();
+        game1.setName("MY GAME 1");
+        game1.setPlayersIn(2);
+        game1.setPlayersNeeded(4);
+        List<String> myPlayers1 = new ArrayList<>();
+        myPlayers1.add("The Terminator");
+        myPlayers1.add("Harry Potter");
+        game1.setUsernames(myPlayers1);
+
+        UnstartedGame game2 = new UnstartedGame();
+        game2.setName("I have the high ground and a long game name");
+        game2.setPlayersIn(3);
+        game2.setPlayersNeeded(5);
+        List<String> myPlayers2 = new ArrayList<>();
+        myPlayers2.add("Obi-wan Kenobi");
+        myPlayers2.add("DefinitelyNotAVelociraptorButIWouldntTrustMe");
+        myPlayers2.add("PenguinMaster2.0");
+        game2.setUsernames(myPlayers2);
+
+        UnstartedGame game3 = new UnstartedGame();
+        game3.setName("TTR is life");
+        game3.setPlayersIn(3);
+        game3.setPlayersNeeded(3);
+        List<String> myPlayers3 = new ArrayList<>();
+        myPlayers3.add("Never gonna give you");
+        myPlayers3.add("up. Never gonna");
+        myPlayers3.add("let you down.");
+        game3.setUsernames(myPlayers3);
+
+        gamesList.add(game1);
+        gamesList.add(game2);
+        gamesList.add(game3);
+        return new PollGamesResult(true, "fake data", gamesList);
     }
 
     @Override

@@ -7,20 +7,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
 import java.util.logging.Logger;
 
-import commands.Command;
-import commands.CreateGameCommand;
-import commands.JoinGameCommand;
-import commands.JoinGameCommandData;
-import commands.LeaveGameCommand;
-import commands.LeaveGameCommandData;
-import commands.LoginCommand;
-import commands.PollGamesCommand;
-import commands.RegisterCommand;
-import commands.StartGameCommand;
-import commands.StartGameCommandData;
+import serverfacade.commands.Command;
+import serverfacade.commands.CreateGameCommand;
+import serverfacade.commands.JoinGameCommand;
+import serverfacade.commands.LeaveGameCommand;
+import serverfacade.commands.LoginCommand;
+import serverfacade.commands.PollGamesCommand;
+import serverfacade.commands.RegisterCommand;
+import serverfacade.commands.StartGameCommand;
 
 /**
  * Server Side. Gets a command as a JSON string and makes it a real command.

@@ -9,8 +9,8 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import commands.Command;
-import commands.PollGamesCommandData;
+import serverfacade.commands.Command;
+import serverfacade.commands.PollGamesCommandData;
 
 
 class CommandDeserializer implements JsonDeserializer<Command> {

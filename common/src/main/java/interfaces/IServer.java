@@ -3,7 +3,6 @@ package interfaces;
 import commandresults.CommandResult;
 import commandresults.LoginResult;
 import commandresults.PollGamesResult;
-import commandresults.RegisterResult;
 
 /**
  * The IServer defines methods that the client will call, but will actually be executed on the server.
@@ -16,7 +15,7 @@ public interface IServer {
 
     //MENU LOGIN
     LoginResult login(String username, String password);
-    RegisterResult register(String username, String password);
+    CommandResult register(String username, String password);
 
     //MENU GAMELIST && MENU LOBBY
     PollGamesResult pollGameList(String username);

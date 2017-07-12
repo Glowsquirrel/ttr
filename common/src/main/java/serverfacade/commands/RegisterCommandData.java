@@ -1,11 +1,11 @@
-package commands;
+package serverfacade.commands;
 
-public class LoginCommandData extends Command {
+public class RegisterCommandData extends Command {
     protected String username;
     protected String password;
 
-    public LoginCommandData(String username, String password) {
-        super.setType("login");
+    public RegisterCommandData(String username, String password) {
+        super.setType("register");
         this.username = username;
         this.password = password;
     }

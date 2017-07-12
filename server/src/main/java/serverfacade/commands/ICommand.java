@@ -1,4 +1,4 @@
-package commands;
+package serverfacade.commands;
 
 import commandresults.CommandResult;
 

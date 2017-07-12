@@ -3,6 +3,7 @@ package clientcommunicator;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,28 +15,30 @@ import java.net.URL;
 import clientfacade.ClientFacade;
 import commandresults.CommandResult;
 import commandresults.LoginResult;
-import commands.Command;
+import serverfacade.commands.Command;
 
 /**
- * The Asynchronous task that all commands will pass through.
+ * The Asynchronous task that all serverfacade.commands will pass through.
  */
-public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
+public class CommandTask extends AsyncTask<Void, Void, CommandResult> {
     private String ip;
     private String port;
+    private Command command;
 
-    public CommandTask(String ip, String port) {
+    public CommandTask(String ip, String port, Command command) {
         this.ip = ip;
         this.port = port;
+        this.command = command;
     }
 
     @Override
-    protected CommandResult doInBackground(Command... command) {
+    protected CommandResult doInBackground(Void... args) {
 
         try {
             //set up the URL to get to the command to the correct handler
-            String trimString = "http://" + ip + ":" + port + "/command";
-            URL trimURL = new URL(trimString);
-            HttpURLConnection connection = (HttpURLConnection) trimURL.openConnection();
+            String handlerString = "http://" + ip + ":" + port + "/command";
+            URL handlerURL = new URL(handlerString);
+            HttpURLConnection connection = (HttpURLConnection) handlerURL.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
 
@@ -61,8 +64,11 @@ public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
             reader.close();
             String jsonOut = lowerString.toString();
 
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(CommandResult.class, new CommandResultSerializer());
+            Gson customGson = gsonBuilder.create();
             //give CommandResult to onPostExecute to handle
-            return gson.fromJson(jsonOut, CommandResult.class);
+            return customGson.fromJson(jsonOut, CommandResult.class);
 
         }catch (IOException ex){
             ex.printStackTrace();
@@ -74,7 +80,7 @@ public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
         ClientFacade facade = new ClientFacade();
 
         if (result == null){ //the command did not make it to the server.
-            CommandResult testResult = new LoginResult(true, "fake login worked");
+            CommandResult testResult = new LoginResult(true, "fakeuser", "failed to connect to server");
             facade.loginUser(testResult);
             //facade.postErrorMessage("Could not connect to server");
             return;
@@ -88,6 +94,9 @@ public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
         switch (result.getType()) {
             case "login":
                 facade.loginUser(result);
+                break;
+            case "creategame":
+                facade.createGame(result);
                 break;
         }
 

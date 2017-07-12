@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import interfaces.Observer;
-import model.UnstartedGames;
 import model.ClientModel;
 import serverproxy.ServerProxy;
 
@@ -49,7 +48,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 @Override
                 public void onClick(View view) {
 
-                    serverProxy.leaveGame(clientModel.getMyUsername());
+                    serverProxy.leaveGame(clientModel.getMyUsername(), "");
                 }
 
             });

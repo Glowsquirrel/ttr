@@ -26,13 +26,13 @@ public class ClientModel implements Observable{
 
     //end Observer
     private String errorMessage;
-    List<UnstartedGames> gamesToStart;
+    List<UnstartedGame> gamesToStart;
 
     private boolean startedGame=false;
     private String gameName;
 
     public boolean isStartedGame() {
-        for(UnstartedGames i:gamesToStart) {
+        for(UnstartedGame i:gamesToStart) {
             if(i.getName().equals(gameName)) {
                 startedGame=i.isStarted();
             }
@@ -49,8 +49,14 @@ public class ClientModel implements Observable{
     //begin Observer
     private ArrayList<Observer> observers = new ArrayList<>();
 
+    private boolean hasMessage = false;
 
-
+    public boolean hasMessage() {
+        return hasMessage;
+    }
+    public void receivedMessage(){
+        hasMessage = false;
+    }
 
     public static ClientModel getMyClientModel() {
         return myClientModel;
@@ -58,22 +64,22 @@ public class ClientModel implements Observable{
 
 
 
-    public List<UnstartedGames> getGamesToStart() {
+    public List<UnstartedGame> getGamesToStart() {
         if (gamesToStart == null) {
-            return new ArrayList<UnstartedGames>();
+            return new ArrayList<UnstartedGame>();
         }
         return gamesToStart;
 
     }
 
-    public void setGamesToStart(List<UnstartedGames> gamestoStart) {
+    public void setGamesToStart(List<UnstartedGame> gamestoStart) {
         gamesToStart = gamestoStart;
     }
     public List<String> getPlayersinGame()
     {
         List<String>toreturn=null;
         int size=0;
-        for(UnstartedGames i:gamesToStart) {
+        for(UnstartedGame i:gamesToStart) {
             if(i.getName().equals(gameName)) {
                 size=i.getPlayersNeeded();
                 toreturn=i.getUsernames();
@@ -132,8 +138,9 @@ public class ClientModel implements Observable{
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage(String errorMessage) { //need to rename this to postMessage
         this.errorMessage = errorMessage;
+        this.hasMessage = true;
         notifyObserver();
     }
 

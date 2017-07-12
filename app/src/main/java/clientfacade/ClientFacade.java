@@ -15,22 +15,18 @@ public class ClientFacade {
     public void postErrorMessage(String errorMessage){
         clientModel.setErrorMessage(errorMessage);
     }
+
     public void loginUser(CommandResult commandResult){
         LoginResult loginResult = ((LoginResult)commandResult);
-        if (commandResult.getErrorMessage() == null)
+
+        if (loginResult.isSuccess())
             clientModel.setMyUser(loginResult.getUsername());
-        else{
+        else
             this.postErrorMessage(loginResult.getErrorMessage());
-        }
     }
 
     public void registerUser (CommandResult commandResult){
-        RegisterResult loginResult = ((RegisterResult) commandResult);
-        if (commandResult.getErrorMessage() == null)
-            clientModel.setMyUser(loginResult.getUsername());
-        else{
-            this.postErrorMessage(loginResult.getErrorMessage());
-        }
+            this.postErrorMessage(commandResult.getErrorMessage()); //registering should only ever do a toast
     }
 
 
@@ -40,6 +36,17 @@ public class ClientFacade {
 
     public void updateGameList(PollCommand result){
         result.execute();
+
+    }
+
+    public void createGame(CommandResult result){
+        if (result.isSuccess()){
+            //send a join game command
+            this.postErrorMessage(result.getErrorMessage());
+        }
+        else
+            this.postErrorMessage(result.getErrorMessage());
+
 
     }
     //TODO add more methods that will handle each type of CommandResult subclass

@@ -5,8 +5,8 @@ import clientfacade.ClientFacade;
 import commandresults.CommandResult;
 import commandresults.LoginResult;
 import commandresults.PollGamesResult;
-import commandresults.RegisterResult;
-import commands.LoginCommandData;
+import serverfacade.commands.CreateGameCommandData;
+import serverfacade.commands.LoginCommandData;
 import interfaces.IServer;
 
 //TODO implement methods here...
@@ -27,7 +27,7 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public RegisterResult register(String username, String password) {
+    public CommandResult register(String username, String password) {
         return null;
     }
 
@@ -38,6 +38,8 @@ public class ServerProxy implements IServer{
 
     @Override
     public CommandResult createGame(String username, String gameName, int playerNum) {
+        CreateGameCommandData commandData = new CreateGameCommandData(username, gameName, playerNum);
+        clientCommunicator.doCommand(commandData);
         return null;
     }
 

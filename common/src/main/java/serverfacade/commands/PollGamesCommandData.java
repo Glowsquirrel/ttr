@@ -1,4 +1,4 @@
-package commands;
+package serverfacade.commands;
 
 /**
  * Created by shunsambongi on 7/11/17.

@@ -14,7 +14,7 @@ add a game interface for client/server to implement?
 Server Side:
 add DB w/tables (user and authToken tables)!
 clean up DAO classes!
-implement common commands!
+implement common serverfacade.commands!
 finalize Model classes!
 implement clientproxy functions
     EX: a login command could go from: CC -> SC -> CommandHandler -> ClientProxy -> DAO -> Database and then create and send a result to the CC from that order
@@ -25,6 +25,6 @@ add times to authToken(?)
 Client Side:
 build UI (while following MVC pattern)!
 expand on ClientModel class (including game, player models) (the further we get into UI implementation, the clearer the requirements for the ClientModel will become)
-create commands and send them where/when needed
-implement common commands
+create serverfacade.commands and send them where/when needed
+implement common serverfacade.commands
 add a sort of timeout for AsyncTasks when they take too long to get a response? (stackoverflow makes it seem difficult, most solutions end up making the call on the UI thread and waiting)

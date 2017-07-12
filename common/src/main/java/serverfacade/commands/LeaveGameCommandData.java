@@ -1,12 +1,13 @@
-package commands;
+package serverfacade.commands;
 
-public class JoinGameCommandData extends Command{
+public class LeaveGameCommandData extends Command{
     protected String username;
     protected String gameName;
 
-    public JoinGameCommandData(String username, String gameName){
-        super.setType("joingame");
+    public LeaveGameCommandData(String username, String gameName){
+        super.setType("leavegame");
         this.username = username;
+        this.gameName = gameName;
     }
     public String getUsername() {
         return username;

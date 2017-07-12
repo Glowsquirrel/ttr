@@ -3,7 +3,7 @@ package clientfacade.commands;
 import java.util.List;
 
 import model.ClientModel;
-import model.UnstartedGames;
+import model.UnstartedGame;
 
 /**
  * Created by Rachael on 7/11/2017.
@@ -11,13 +11,13 @@ import model.UnstartedGames;
 
 public class PollCommand {
     ClientModel clientModel=ClientModel.getMyClientModel();
-    private List<UnstartedGames> gameList;
+    private List<UnstartedGame> gameList;
 
-    public List<UnstartedGames> getGameList() {
+    public List<UnstartedGame> getGameList() {
         return gameList;
     }
 
-    public void setGameList(List<UnstartedGames> gameList) {
+    public void setGameList(List<UnstartedGame> gameList) {
         this.gameList = gameList;
     }
     public void execute()

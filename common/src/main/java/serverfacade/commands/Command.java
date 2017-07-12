@@ -1,4 +1,4 @@
-package commands;
+package serverfacade.commands;
 
 public class Command {
     protected String type;

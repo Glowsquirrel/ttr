@@ -6,12 +6,14 @@ import java.util.List;
  * Created by Rachael on 7/10/2017.
  */
 
-public class UnstartedGames {
+public class UnstartedGame {
 
     private String name;
     private List<String> usernames;
     private int playersIn;
     private int playersNeeded;
+
+    //TODO I need a constructor!
 
     public boolean isStarted() {
         return started;

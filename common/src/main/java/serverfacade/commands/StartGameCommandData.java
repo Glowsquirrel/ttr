@@ -1,4 +1,4 @@
-package commands;
+package serverfacade.commands;
 
 public class StartGameCommandData extends Command{
     protected String gameName;

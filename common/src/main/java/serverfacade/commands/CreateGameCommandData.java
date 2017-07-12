@@ -1,13 +1,15 @@
-package commands;
+package serverfacade.commands;
 
-public class LeaveGameCommandData extends Command{
+public class CreateGameCommandData extends Command{
     protected String username;
     protected String gameName;
+    protected int numPlayers;
 
-    public LeaveGameCommandData(String username, String gameName){
-        super.setType("leavegame");
+    public CreateGameCommandData(String username, String gameName, int numPlayers){
+        super.setType("creategame");
         this.username = username;
         this.gameName = gameName;
+        this.numPlayers = numPlayers;
     }
     public String getUsername() {
         return username;
