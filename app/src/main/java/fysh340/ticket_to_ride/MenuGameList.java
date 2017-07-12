@@ -150,6 +150,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         pt = new PollerTask(pollGamesCommandData);
         pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if(clientModel.hasGame()) {
+            System.out.println("here");
+            clientModel.unregister(this);
             Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);
         }
@@ -157,8 +159,10 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
             clientModel.receivedMessage();
         }
-        else
+        else {
+
             updateUI();
+        }
 
     }
     private class FilterHolder extends RecyclerView.ViewHolder implements View.OnClickListener
