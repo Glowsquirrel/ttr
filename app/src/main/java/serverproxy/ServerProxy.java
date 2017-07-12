@@ -2,15 +2,16 @@ package serverproxy;
 
 import clientcommunicator.ClientCommunicator;
 import clientfacade.ClientFacade;
+import commandresults.PollGamesResult;
 import commands.LoginCommandData;
-import interfaces.IProxy;
+import interfaces.IServer;
 
 //TODO implement methods here...
 
 /**
  * The ServerProxy is the proxy on the client side that lets the server do the actual execution.
  */
-public class ServerProxy implements IProxy{
+public class ServerProxy implements IServer{
     private ClientCommunicator clientCommunicator = new ClientCommunicator();
     private ClientFacade clientFacade = new ClientFacade();
 
@@ -25,8 +26,8 @@ public class ServerProxy implements IProxy{
     }
 
     @Override
-    public void pollGameList(String username) {
-
+    public PollGamesResult pollGameList(String username) {
+return null;
     }
 
     @Override

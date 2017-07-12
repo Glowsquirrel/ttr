@@ -13,7 +13,7 @@ import java.net.URL;
 
 import clientfacade.ClientFacade;
 import clientfacade.commands.PollCommand;
-import commands.PollCommandData;
+
 import model.ClientModel;
 
 /**
@@ -25,9 +25,9 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private String ip = clientModel.getIp();
     private String port = clientModel.getPort();
-    private PollCommandData pollData;
+    private PollCommand pollData;
 
-    public PollerTask(PollCommandData pollData) {
+    public PollerTask(PollCommand pollData) {
         this.pollData = pollData;
     }
 

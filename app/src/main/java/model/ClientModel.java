@@ -97,9 +97,8 @@ public class ClientModel implements Observable{
         return user.getAuthToken();
     }
 
-    public void setMyUser(String username, String authToken){
+    public void setMyUser(String username) {
         user.setMyUsername(username);
-        user.setMyAuthToken(authToken);
         userLoggedIn = true;
         notifyObserver();
     }
