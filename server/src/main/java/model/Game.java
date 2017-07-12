@@ -16,8 +16,6 @@ public class Game
 
     //Data Members
 
-    private static final int STARTING_VALUE = 1;
-
     private String mID;
     private int mNumberOfPlayers;
     private List<User> mPlayers;
@@ -25,23 +23,12 @@ public class Game
 
     //Constructors
 
-    public Game(String gameID, User creator)
+    public Game(String gameID, int numberOfPlayers, List<User> players, boolean started)
     {
 
         setID(gameID);
 
-        setNumberofPlayers(STARTING_VALUE);
-
-        setPlayers(createList(creator));
-
-        setStarted(false);
-
-    }
-
-    public Game(String gameID, User creator, List<User> players, boolean started)
-    {
-
-        this(gameID, creator);
+        setNumberofPlayers(numberOfPlayers);
 
         setPlayers(players);
 

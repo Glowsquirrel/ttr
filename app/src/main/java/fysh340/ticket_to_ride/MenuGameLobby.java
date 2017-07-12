@@ -59,8 +59,8 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
         private void updateUI() {
             recyclerView.removeAllViewsInLayout();
-            List<UnstartedGames> games = clientModel.getGamestoStart();
-            fAdapter = new SearchAdapter(games);
+            List<String> players = clientModel.getPlayersinGame();
+            fAdapter = new SearchAdapter(players);
             recyclerView.setAdapter(fAdapter);
         }
 
@@ -68,6 +68,11 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         public void update() {
             if(clientModel.hasGame()) {
                 updateUI();
+            }
+            else if(clientModel.isStartedGame())
+            {
+                Intent intent = new Intent(this, GameStart.class);
+                startActivity(intent);
             }
             else
             {
@@ -86,12 +91,12 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
             }
 
-            private UnstartedGames game;
+            private String username;
 
-            public void bind(UnstartedGames tobind) {
-                game = tobind;
+            public void bind(String tobind) {
+                username = tobind;
 
-                text.setText(game.getName());
+                text.setText(username);
 
 
             }
@@ -103,9 +108,9 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         }
 
         private class SearchAdapter extends RecyclerView.Adapter<MenuGameLobby.FilterHolder> {
-            private List<UnstartedGames> itemlist = null;
+            private List<String> itemlist = null;
 
-            public SearchAdapter(List<UnstartedGames> items) {
+            public SearchAdapter(List<String> items) {
                 itemlist = items;
             }
 
@@ -117,8 +122,8 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
             @Override
             public void onBindViewHolder(FilterHolder holder, int position) {
-                UnstartedGames filter = itemlist.get(position);
-                holder.bind(filter);
+                String p = itemlist.get(position);
+                holder.bind(p);
                 holder.setIsRecyclable(false);
             }
 

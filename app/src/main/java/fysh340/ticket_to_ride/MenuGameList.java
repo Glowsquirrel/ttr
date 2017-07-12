@@ -63,7 +63,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_game_list);
 
-        /*
+
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
         recyclerView.setLayoutManager( new LinearLayoutManager( this));
@@ -98,7 +98,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        */
+
 
 
     }
@@ -124,7 +124,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     private void updateUI()
     {
         recyclerView.removeAllViewsInLayout();
-        List<UnstartedGames>games=clientModel.getGamestoStart();
+        List<UnstartedGames>games=clientModel.getGamesToStart();
         fAdapter = new SearchAdapter( games);
         recyclerView.setAdapter( fAdapter);
     }

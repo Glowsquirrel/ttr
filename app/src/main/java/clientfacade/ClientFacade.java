@@ -1,5 +1,6 @@
 package clientfacade;
 
+import clientfacade.commands.PollCommand;
 import commandresults.CommandResult;
 import commandresults.LoginResult;
 import model.ClientModel;
@@ -23,7 +24,9 @@ public class ClientFacade {
         }
     }
 
-    public void updateGameList(CommandResult result){
+    public void updateGameList(PollCommand result){
+        result.execute();
+
 
     }
     //TODO add more methods that will handle each type of CommandResult subclass
