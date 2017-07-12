@@ -3,13 +3,14 @@ package clientfacade;
 import clientfacade.commands.PollCommand;
 import commandresults.CommandResult;
 import commandresults.LoginResult;
+import interfaces.IClient;
 import model.ClientModel;
 
 /**
  * This is the only class who may change information in the ClientModel. Other classes may retrieve
  * data, but not modify from the ClientModel.
  */
-public class ClientFacade {
+public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
 
     public void postErrorMessage(String errorMessage){
@@ -18,7 +19,7 @@ public class ClientFacade {
     public void loginUser(CommandResult commandResult){
         LoginResult loginResult = ((LoginResult)commandResult);
         if (commandResult.getErrorMessage() == null)
-            clientModel.setMyUser(loginResult.getUsername(), loginResult.getAuthToken());
+            clientModel.setMyUser(loginResult.getUsername());
         else{
             this.postErrorMessage(loginResult.getErrorMessage());
         }
