@@ -2,11 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import interfaces.Observable;
 import interfaces.Observer;
-
 
 public class ClientModel implements Observable{
     //For Login/Register:

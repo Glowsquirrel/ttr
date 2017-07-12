@@ -2,10 +2,6 @@ package model;
 
 import java.util.List;
 
-/**
- * Created by Rachael on 7/10/2017.
- */
-
 public class UnstartedGame {
 
     private String name;

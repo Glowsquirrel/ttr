@@ -1,7 +1,6 @@
 package clientcommunicator;
 
 import android.os.AsyncTask;
-
 import serverfacade.commands.Command;
 import model.ClientModel;
 

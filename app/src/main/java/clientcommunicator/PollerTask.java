@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import clientfacade.ClientFacade;
-import clientfacade.commands.PollCommand;
+import clientfacade.commands.PollCommandResult;
 import serverfacade.commands.PollGamesCommandData;
 import model.ClientModel;
 
@@ -62,7 +62,7 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
                 reader.close();
                 String jsonOut = lowerString.toString();
 
-                PollCommand result = gson.fromJson(jsonOut, PollCommand.class);
+                PollCommandResult result = gson.fromJson(jsonOut, PollCommandResult.class);
 
                 clientFacade.updateGameList(result);
 

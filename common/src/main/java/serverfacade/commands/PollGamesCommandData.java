@@ -1,9 +1,5 @@
 package serverfacade.commands;
 
-/**
- * Created by shunsambongi on 7/11/17.
- */
-
 public class PollGamesCommandData extends Command {
 
     protected String username;

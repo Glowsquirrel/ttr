@@ -1,12 +1,7 @@
 package commandresults;
 
 import java.util.List;
-
 import model.UnstartedGame;
-
-/**
- * Created by shunsambongi on 7/11/17.
- */
 
 public class PollGamesResult extends CommandResult {
 

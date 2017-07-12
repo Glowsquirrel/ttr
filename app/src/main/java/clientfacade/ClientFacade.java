@@ -1,7 +1,7 @@
 package clientfacade;
-import commandresults.*;
 
-import clientfacade.commands.PollCommand;
+import commandresults.*;
+import clientfacade.commands.PollCommandResult;
 import commandresults.CommandResult;
 import model.ClientModel;
 
@@ -34,7 +34,7 @@ public class ClientFacade {
 
     }
 
-    public void updateGameList(PollCommand result){
+    public void updateGameList(PollCommandResult result){
         result.execute();
 
     }

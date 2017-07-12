@@ -2,9 +2,6 @@ package model;
 
 import java.util.List;
 
-/**
- * Created by sjrme on 7/11/17.
- */
 
 public class Player {
 

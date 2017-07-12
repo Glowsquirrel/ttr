@@ -1,6 +1,5 @@
 package commandresults;
 
-
 public class CommandResult {
     private String type;
     private boolean success;

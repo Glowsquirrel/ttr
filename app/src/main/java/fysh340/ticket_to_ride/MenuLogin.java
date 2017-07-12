@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
