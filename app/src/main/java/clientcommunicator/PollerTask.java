@@ -10,10 +10,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import clientfacade.ClientFacade;
 import clientfacade.commands.PollCommandResult;
+import commandresults.PollGamesResult;
 import serverfacade.commands.PollGamesCommandData;
 import model.ClientModel;
 
-public class PollerTask extends AsyncTask<Void, Void, Void> {
+public class PollerTask extends AsyncTask<Void, Void, PollCommandResult> {
     private ClientFacade clientFacade = new ClientFacade();
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private String ip = clientModel.getIp();
@@ -25,9 +26,8 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... args) {
+    protected PollCommandResult doInBackground(Void... args) {
 
-        while(true) {
             try {
 
                 String trimString = "http://" + ip + ":" + port + "/command";
@@ -64,15 +64,21 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
 
                 PollCommandResult result = gson.fromJson(jsonOut, PollCommandResult.class);
 
-                clientFacade.updateGameList(result);
-
+                //clientFacade.updateGameList(result);
                 Thread.sleep(3000); //wait for 3s after updating
+                return result;
 
             } catch (InterruptedException | IOException ex) {
                 ex.printStackTrace();
+                return null;
             }
-        }
 
+    }
+
+    protected void onPostExecute(PollCommandResult result){
+
+        clientFacade.updateGameList(result);
+        //this.execute();
     }
 
 }

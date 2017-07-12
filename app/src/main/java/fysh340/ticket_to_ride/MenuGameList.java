@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.List;
 import clientcommunicator.PollerTask;
 import model.UnstartedGame;
@@ -107,9 +110,9 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             public void afterTextChanged(Editable s) {}
         });
 
-
         //List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
-        fAdapter = new SearchAdapter(null); //create the search adapter once, update its data later
+        fAdapter = new SearchAdapter(new ArrayList<UnstartedGame>()); //create the search adapter once, update its data later
+        recyclerView.setAdapter(fAdapter);
 
     }
     @Override
@@ -117,8 +120,6 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     {
         super.onStop();
         pt.cancel(true);
-
-
     }
     @Override
     public void onStart()
@@ -127,9 +128,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
         pollGamesCommandData.setType("poll");
         pt= new PollerTask(pollGamesCommandData);
-        pt.execute();
-
-
+        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void updateUI()
@@ -143,6 +142,10 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     @Override
     public void update() {
+        PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
+        pollGamesCommandData.setType("poll");
+        pt = new PollerTask(pollGamesCommandData);
+        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if(clientModel.hasGame()) {
             Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);

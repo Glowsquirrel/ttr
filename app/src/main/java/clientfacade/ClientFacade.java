@@ -35,7 +35,8 @@ public class ClientFacade {
     }
 
     public void updateGameList(PollCommandResult result){
-        result.execute();
+        if (result != null)
+            result.execute();
 
     }
 
