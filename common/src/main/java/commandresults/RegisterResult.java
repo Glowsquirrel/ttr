@@ -1,6 +1,12 @@
 package commandresults;
 
-public class RegisterResultData extends CommandResult {
+public class RegisterResult extends CommandResult {
+
+    public RegisterResult(boolean success, String message){
+        super.setType("register");
+        super.setSuccess(success);
+        super.setErrorMessage(message);
+    }
 
     private String username;
     private String authToken;

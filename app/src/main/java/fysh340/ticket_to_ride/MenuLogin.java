@@ -7,15 +7,11 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import commands.LoginCommandData;
-import commands.RegisterCommandData;
 import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;

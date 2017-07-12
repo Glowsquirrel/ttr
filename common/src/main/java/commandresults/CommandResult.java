@@ -6,7 +6,12 @@ public class CommandResult {
     private boolean success;
     private String errorMessage;
 
-
+    public CommandResult(){} //default constructor... to be deleted
+    public CommandResult(String type, boolean success, String errorMessage){
+        this.type = type;
+        this.success = success;
+        this.errorMessage = errorMessage;
+    }
     public String getType() {
         return type;
     }

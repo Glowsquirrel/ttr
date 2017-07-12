@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title> Family Map app server </title>
+        <title> Ticket to Ride app server </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -124,6 +124,30 @@
               document.getElementById("handleBox").value = "/command";
               document.getElementById("requestBox").value = formatJson("{\"type\":\"poll\",\"username\":\"username\"}");
             }
+            function creategame()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("handleBox").value = "/command";
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"creategame\",\"username\":\"username\",\"gameName\":\"gameName\",\"numPlayers\":\"0\"}");
+            }
+            function joingame()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("handleBox").value = "/command";
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"joingame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+            }
+            function leavegame()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("handleBox").value = "/command";
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"leavegame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+            }
+            function startgame()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("handleBox").value = "/command";
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"gameName\":\"gameName\"}");
+            }
         </script>
     </head>
     <body>
@@ -148,7 +172,19 @@
                     <a href="javascript:register()" >Register</a> Register user with given data.
                   </li>
                   <li>
-                    <a href="javascript:poll()" >Poll</a> Do a poll.
+                    <a href="javascript:poll()" >Poll</a> Test polling.
+                  </li>
+                  <li>
+                    <a href="javascript:creategame()" >Create Game</a> Create a new Game.
+                  </li>
+                  <li>
+                    <a href="javascript:joingame()" >Join Game</a> Join a currently existing game.
+                  </li>
+                  <li>
+                    <a href="javascript:leavegame()" >Leave Game</a> Remove the user from game.
+                  </li>
+                  <li>
+                    <a href="javascript:startgame()" >Start Game</a> Start the game.
                   </li>
               </ul>
             </div>

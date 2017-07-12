@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,25 +18,27 @@ import model.*;
 public class MasterDAO
 {
 
-    //Data
+    //Data Members
 
     private static final String USER_TABLE_NAME = "user";
     private static final String GAME_TABLE_NAME = "game";
-    private static final String AUTH_TABLE_NAME = "auth";
+    private static final String PLAYERS_TABLE_NAME = "players";
 
     private static Logger mLogger;
 
     static
     {
-        //TODO: Initialize logging with the logger running on the server
-        //logger = Logger.getLogger("");
+
+        mLogger = Logger.getLogger("serverlog");
 
     }
 
     private Connection mDatabaseAccess;
     private UserDAO mUsersAccess;
     private GameDAO mGameAccess;
-    private AuthDAO mAuthAccess;
+    private PlayerDAO mPlayersAccess;
+
+    //Constructors
 
     public MasterDAO()
     {
@@ -53,14 +56,96 @@ public class MasterDAO
         catch(ClassNotFoundException ex)
         {
 
-            //logger.log(Level.SEVERE, ex.getMessage(), ex);
+            mLogger.log(Level.SEVERE, ex.getMessage(), ex);
             return;
 
         }
 
         mUsersAccess = new UserDAO();
         mGameAccess = new GameDAO();
-        mAuthAccess = new AuthDAO();
+        mPlayersAccess = new PlayerDAO();
+
+    }
+
+    //Master Access Methods
+
+    public boolean login(String username, String password) throws SQLException
+    {
+
+        User currentUser = mUsersAccess.get(mDatabaseAccess, username);
+
+        return !currentUser.getUsername().equals("") && currentUser.getPassword().equals(password);
+
+    }
+
+    public List<Game> getOpenGames() throws SQLException
+    {
+
+        return mGameAccess.getGames(mDatabaseAccess);
+
+    }
+
+    //Master Mutator Methods
+
+    public boolean register(String username, String password) throws SQLException
+    {
+
+        //Check if the user is already registered
+        if(!mUsersAccess.get(mDatabaseAccess, username).getUsername().equals(""))
+        {
+
+            mUsersAccess.add(mDatabaseAccess, new User(username, password));
+            return true;
+
+        }
+        else
+        {
+
+            return false;
+
+        }
+
+    }
+
+    public void createGame(String creator, String gameID, int numberOfPlayers) throws SQLException
+    {
+
+        Game newGame = new Game(gameID, numberOfPlayers, null, false);
+
+        mGameAccess.add(mDatabaseAccess, newGame);
+
+        mPlayersAccess.add(mDatabaseAccess, creator, gameID);
+
+    }
+
+    public void joinGame(String username, String gameID) throws SQLException
+    {
+
+        Game prospectiveGame = mGameAccess.get(mDatabaseAccess, gameID);
+        List<User> players = mPlayersAccess.getPlayers(mDatabaseAccess, gameID);
+
+        //Check to ensure game exists and there are spots open
+        if(!prospectiveGame.getID().equals("") && players.size() <
+                prospectiveGame.getNumberOfPlayers())
+        {
+
+            mPlayersAccess.add(mDatabaseAccess, username, gameID);
+
+        }
+
+    }
+
+    public void leaveGame(String username, String gameID)
+    {
+
+        //TODO:  Implement leaving a game for 2 < players < 2
+
+    }
+
+    public void startGame(String gameID)
+    {
+
+        //TODO:  Add a GameDAO method to modify the started field in the database or just remove/add
 
     }
 
@@ -170,8 +255,50 @@ public class MasterDAO
     private List<Object> parseResults(ResultSet found, String tableName) throws SQLException
     {
 
-        //TODO:  Convert code to accommodate table name instead of table fields
-        return null;
+        List<Object> foundEntries = new ArrayList<>();
+
+        while(found.next())
+        {
+
+            //Container for table field data
+            String[] objectAttributes = new String[3];
+
+            //Avoid null values
+            Arrays.fill(objectAttributes, "");
+
+            //Get the fields for each object that was found
+            for(int i = 1; i <= objectAttributes.length; ++i)
+            {
+
+                objectAttributes[i - 1] = found.getString(i);
+
+            }
+
+            if(tableName.equals(USER_TABLE_NAME))
+            {
+
+                foundEntries.add(new User(objectAttributes[0], objectAttributes[1]));
+
+            }
+            else if(tableName.equals(GAME_TABLE_NAME))
+            {
+
+                int numberOfPlayers = Integer.parseInt(objectAttributes[1]);
+                boolean started = objectAttributes[2].equals("1");
+
+                foundEntries.add(new Game(objectAttributes[0], numberOfPlayers, null, started));
+
+            }
+            else
+            {
+
+                foundEntries.add(mUsersAccess.get(mDatabaseAccess, objectAttributes[0]));
+
+            }
+
+        }
+
+        return foundEntries;
 
     }
 
@@ -225,23 +352,6 @@ public class MasterDAO
 
     }
 
-    //Master Access Methods
-
-    public UserDAO getUserDAO()
-    {
-        return mUsersAccess;
-    }
-
-    public GameDAO getGameDAO()
-    {
-        return mGameAccess;
-    }
-
-    public AuthDAO getAuthDAO()
-    {
-        return mAuthAccess;
-    }
-
     //Master Mutator Methods
 
     /**
@@ -270,10 +380,6 @@ public class MasterDAO
             stmt = mDatabaseAccess.prepareStatement(sql);
             stmt.executeUpdate();
 
-            sql = "DELETE FROM auth";
-            stmt = mDatabaseAccess.prepareStatement(sql);
-            stmt.executeUpdate();
-
         }
         finally
         {
@@ -293,7 +399,7 @@ public class MasterDAO
 
     /**
      *  <h1>User Data Access Class</h1>
-     *  Provides methods to modify or exchange User data between the database and server.
+     *  Provides methods to modify or exchange User data between the database and server facade.
      */
     class UserDAO
     {
@@ -308,19 +414,19 @@ public class MasterDAO
          *  <h1>Get</h1>
          *  Provides a way for the server facade to retrieve a User from the database.
          *
-         *  @param      username            User to be retrieved from the database
          *  @param      currentConnection   Connection for accessing the database
+         *  @param      username            User to be retrieved from the database
          *
          *  @return                 U       ser object based on user table entry
          *
          *  @throws     SQLException
          */
-        User get(String username, Connection currentConnection) throws SQLException
+        User get(Connection currentConnection, String username) throws SQLException
         {
 
             String sql = "SELECT * FROM user WHERE username= \'" + username + "\';";
 
-            ArrayList<User> found = new ArrayList<>();
+            List<User> found = new ArrayList<>();
 
             for(Object o : getResults(currentConnection, sql, USER_TABLE_NAME))
             {
@@ -350,39 +456,18 @@ public class MasterDAO
 
         }
 
-        /**
-         *  <h1>Exists</h1>
-         *  Provides a way for the server facade to check if a User exists already in the database.
-         *
-         *  @param      username    The ID of the User being checked for
-         *  @param      currentConnection   Connection for accessing the database
-         *
-         *  @return                 True if the ID exists or False otherwise
-         *
-         *  @throws     SQLException
-         */
-        boolean exists(String username, Connection currentConnection) throws SQLException
-        {
-
-            User temp = this.get(username, currentConnection);
-
-            //Check for empty
-            return !temp.getUsername().equals("");
-
-        }
-
         //Mutator Methods
 
         /**
          *  <h1>Add</h1>
          *  Provides a way for the server facade to insert a new User into the database.
          *
-         *  @param      newUser             User object to be added to the database
          *  @param      currentConnection   Connection for accessing the database
+         *  @param      newUser             User object to be added to the database
          *
          *  @throws     SQLException
          */
-        void add(User newUser, Connection currentConnection) throws SQLException
+        void add(Connection currentConnection, User newUser) throws SQLException
         {
 
             String sql = "INSERT INTO user VALUES (\'" + newUser.getUsername() + "\', \'" +
@@ -396,12 +481,12 @@ public class MasterDAO
          *  <h1>Remove</h1>
          *  Provides a way for the server facade to remove a specific User in the database.
          *
-         *  @param      username            The ID of the User to be removed from the database
          *  @param      currentConnection   Connection for accessing the database
+         *  @param      username            The ID of the User to be removed from the database
          *
          *  @throws     SQLException
          */
-        void remove(String username, Connection currentConnection) throws SQLException
+        void remove(Connection currentConnection, String username) throws SQLException
         {
 
             String sql = "DELETE FROM user WHERE username= \'" + username + "\';";
@@ -411,71 +496,130 @@ public class MasterDAO
         }
     }
 
+    /**
+     *  <h1>Game Data Access Class</h1>
+     *  Provides methods to modify or exchange Game data between the database and server facade.
+     */
     class GameDAO
     {
-
-        //TODO:  Add game table DAO, including removal of all players for a game that's removed
 
         //Constructors
 
         GameDAO(){}
 
-    }
-
-    /**
-     *  <h1>Authentication Data Access Class</h1>
-     *  Provides methods to modify or exchange authentication data between the database and server
-     *  facade.
-     */
-    class AuthDAO
-    {
-        //Constructors
-
-        AuthDAO(){}
-
         //Access Methods
 
         /**
          *  <h1>Get</h1>
-         *  Provides a way for the server to get an authorization entry from the database.
+         *  Provides a way for the server facade to retrieve a Game from the database.
          *
-         *  @param      currentConnection    The current connection being used for database access
-         *  @param      currentToken         The authorization token being looked for
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      ID                  Game to be retrieved from the database
          *
-         *  @return                          AuthToken object created from the database entry; empty
-         *                                   if nothing was found
+         *  @return                         Game object based on game table entry
+         *
          *  @throws     SQLException
          */
-        AuthToken get(Connection currentConnection, String currentToken) throws SQLException
+        Game get(Connection currentConnection, String ID) throws SQLException
         {
 
-            String sql = "SELECT * FROM auth WHERE auth_token= \'" + currentToken + "\';";
+            String gameSQL = "SELECT * FROM game WHERE ID= \'" + ID + "\';";
 
-            ArrayList<AuthToken> found = new ArrayList<>();
+            String playerSQL = "SELECT * FROM players WHERE ID= \'" + ID + "\';";
 
-            for(Object o : getResults(currentConnection, sql, AUTH_TABLE_NAME))
+            List<Game> foundGames = new ArrayList<>();
+
+            List<User> foundPlayers = new ArrayList<>();
+
+            for(Object foundGame : getResults(currentConnection, gameSQL, GAME_TABLE_NAME))
             {
-                if(o instanceof AuthToken)
+                //Verify Game
+                if(foundGame instanceof Game)
                 {
 
-                    //Verify Auth
-                    found.add((AuthToken) o);
+                    //Cast to game type to be able to set players list
+                    Game currentGame = (Game)foundGame;
+
+                    //Get players
+                    for(Object foundPlayer : getResults(currentConnection, playerSQL,
+                            PLAYERS_TABLE_NAME))
+                    {
+
+                        //Verify User
+                        if(foundPlayer instanceof User)
+                        {
+
+                            foundPlayers.add((User)foundPlayer);
+
+                        }
+
+                    }
+
+                    currentGame.setPlayers(foundPlayers);
+
+                    foundGames.add(currentGame);
 
                 }
+
             }
-            if(found.size() == 0)
+
+            if(foundGames.size() == 0)
             {
 
                 //Avoid null pointer
-                return new AuthToken("");
+                return new Game("", 0, null, false);
 
             }
             else
             {
 
-                return found.get(0);
+                return foundGames.get(0);
 
             }
+
+        }
+
+        List<Game> getGames(Connection currentConnection) throws SQLException
+        {
+
+            String sql = "SELECT * FROM game WHERE started= 0;";
+
+            List<Game> foundGames = new ArrayList<>();
+
+            for(Object foundGame : getResults(currentConnection, sql, GAME_TABLE_NAME))
+            {
+                //Verify Game
+                if(foundGame instanceof Game)
+                {
+
+                    foundGames.add((Game)foundGame);
+
+                }
+
+            }
+
+            return foundGames;
+
+        }
+
+        /**
+         *  <h1>Exists</h1>
+         *  Provides a way for the server facade to check if a Game exists already in the database.
+         *
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      username            The ID of the Game being checked for
+         *
+         *  @return                         True if the ID exists or False otherwise
+         *
+         *  @throws     SQLException
+         */
+        boolean exists(Connection currentConnection, String username) throws SQLException
+        {
+
+            Game temp = this.get(currentConnection, username);
+
+            //Check for empty
+            return !temp.getID().equals("");
 
         }
 
@@ -483,20 +627,35 @@ public class MasterDAO
 
         /**
          *  <h1>Add</h1>
-         *  Provides a way for the server facade to track authentication for a user.
+         *  Provides a way for the server facade to insert a new Game into the database.
          *
-         *  @param      currentConnection       The current connection being used for database access
-         *  @param      newAuth                 The details for a user to be used for verifying
-         *                                      credentials/ID
-         *
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      newGame             Game object to be added to the database
          *
          *  @throws     SQLException
          */
-        void add(Connection currentConnection, AuthToken newAuth) throws SQLException
+        void add(Connection currentConnection, Game newGame) throws SQLException
         {
 
-            String sql = "INSERT INTO auth VALUES (\'" + newAuth.getAuthToken() + "\', \'" +
-                    newAuth.getUsername() + "\', \'" + newAuth.getExpires() + "\');";
+            //Don't try to create a game that's already in the database
+            if(this.get(currentConnection, newGame.getID()).getID().equals(""))
+            {
+
+                return;
+
+            }
+
+            int started = 0;
+
+            if(newGame.hasStarted())
+            {
+
+                started = 1;
+
+            }
+
+            String sql = "INSERT INTO game VALUES (\'" + newGame.getID() + "\', \'" +
+                    newGame.getNumberOfPlayers() + "\', \'" + started + "\');";
 
             modifyEntry(currentConnection, sql);
 
@@ -504,22 +663,149 @@ public class MasterDAO
 
         /**
          *  <h1>Remove</h1>
-         *  Provides a way for the server facade to remove an authentication entry from the
-         *  database.
+         *  Provides a way for the server facade to remove a specific Game in the database.
          *
-         *  @param      currentConnection  The current connection being used for database access
-         *  @param      currentToken       The token to be removed from the database
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      ID                  The ID of the Game to be removed from the database
          *
          *  @throws     SQLException
          */
-        void remove(Connection currentConnection, AuthToken currentToken) throws SQLException
+        void remove(Connection currentConnection, String ID) throws SQLException
         {
 
-            String sql = "DELETE FROM auth WHERE auth_token= \'" + currentToken + "\';";
+            String sql = "DELETE FROM game WHERE ID= \'" + ID + "\';";
 
             modifyEntry(currentConnection, sql);
 
         }
+
+    }
+
+    /**
+     *  <h1>Player Data Access Class</h1>
+     *  Provides methods to modify or exchange player data between the database and server
+     */
+    class PlayerDAO
+    {
+
+        //Constructors
+
+        PlayerDAO(){}
+
+        //Access Methods
+
+        /**
+         *  <h1>Get Players</h1>
+         *  Provides a way for the server facade to retrieve playersfrom the database
+         *
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      gameID              User to be retrieved from the database
+         *
+         *  @return                         User objects based on players table entry
+         *
+         *  @throws     SQLException
+         */
+        List<User> getPlayers(Connection currentConnection, String gameID) throws SQLException
+        {
+
+            String sql = "SELECT * FROM players WHERE ID= \'" + gameID + "\';";
+
+            List<User> found = new ArrayList<>();
+
+            for(Object o : getResults(currentConnection, sql, PLAYERS_TABLE_NAME))
+            {
+                //Verify User
+                if(o instanceof User)
+                {
+
+                    found.add((User)o);
+
+                }
+
+            }
+
+            return found;
+
+        }
+
+        /**
+         *  <h1>Exists</h1>
+         *  Provides a way for the server facade to check if a player is part of a game
+         *
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      username            The ID of the User being checked for
+         *  @param      gameID              The game the player may be a part of
+         *
+         *  @return                 True if the ID exists or False otherwise
+         *  @throws     SQLException
+         */
+        boolean exists(Connection currentConnection, String username, String gameID)
+                throws SQLException
+        {
+
+            String sql = "SELECT * FROM players WHERE ID= \'" + gameID + "\' AND player= \'" +
+                            username + "\';";
+
+            List<User> found = new ArrayList<>();
+
+            for(Object o : getResults(currentConnection, sql, PLAYERS_TABLE_NAME))
+            {
+                //Verify User
+                if(o instanceof User)
+                {
+
+                    found.add((User)o);
+
+                }
+
+            }
+
+            return found.size() == 1;
+
+        }
+
+        //Mutator Methods
+
+        /**
+         *  <h1>Add</h1>
+         *  Provides a way for the server facade to insert a new player into the database.
+         *
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      player              The username of the player in the game
+         *  @param      gameID              The game the player is a part of
+         *
+         *  @throws     SQLException
+         */
+        void add(Connection currentConnection, String player, String gameID) throws SQLException
+        {
+
+            String sql = "INSERT INTO players VALUES (\'" + player + "\', \'" + gameID + "\');";
+
+            modifyEntry(currentConnection, sql);
+
+        }
+
+        /**
+         *  <h1>Remove</h1>
+         *  Provides a way for the server facade to remove a specific player from a given game
+         *  in the database.
+         *
+         *  @param      currentConnection   Connection for accessing the database
+         *  @param      player              The username of the player in the game
+         *  @param      gameID              The game the player is a part of
+         *
+         *  @throws     SQLException
+         */
+        void remove(Connection currentConnection, String player, String gameID) throws SQLException
+        {
+
+            String sql = "DELETE FROM players WHERE player= \'" + player + "\' AND ID= \'" +
+                            gameID + "\';";
+
+            modifyEntry(currentConnection, sql);
+
+        }
+
     }
 
 }

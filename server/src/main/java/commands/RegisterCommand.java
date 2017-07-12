@@ -1,6 +1,8 @@
 package commands;
 
+import clientproxy.ClientProxy;
 import commandresults.CommandResult;
+import serverfacade.ServerFacade;
 
 public class RegisterCommand extends RegisterCommandData implements ICommand{
     public RegisterCommand(String username, String password) {
@@ -8,8 +10,7 @@ public class RegisterCommand extends RegisterCommandData implements ICommand{
     }
 
     public CommandResult execute(){
-        //TODO link to a real database
-
-        return null;
+        ServerFacade serverFacade = new ServerFacade();
+        return serverFacade.register(username, password);
     }
 }

@@ -1,20 +1,19 @@
 package commandresults;
 
-public class LoginResultData extends CommandResult{
+public class LoginResult extends CommandResult{
     private String username;
-    private String authToken;
+
+    public LoginResult(boolean success, String message){
+        super.setType("login");
+        super.setSuccess(success);
+        super.setErrorMessage(message);
+    }
 
     public String getUsername() {
         return username;
     }
-    public String getAuthToken() {
-        return authToken;
-    }
     public void setUsername(String username){
         this.username = username;
-    }
-    public void setAuthToken(String authToken){
-        this.authToken = authToken;
     }
 
     public String getType(){
