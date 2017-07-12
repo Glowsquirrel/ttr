@@ -2,49 +2,20 @@ package clientproxy;
 
 import java.util.logging.Logger;
 
-import interfaces.IProxy;
-
-//TODO implement methods here
+import commandresults.CommandResult;
+import commandresults.LoginResult;
+import commandresults.PollGamesResult;
+import commandresults.RegisterResult;
+import interfaces.IClient;
+import interfaces.IServer;
 
 /**
  * The ClientProxy is the proxy on the server side that does execution for the client.
  *
  */
-public class ClientProxy implements IProxy {
+public class ClientProxy implements IClient {
 
     private static Logger logger = Logger.getLogger("serverlog");
 
-    public void login(String username, String password){
 
-
-    }
-    public boolean register(String username, String password){
-
-        return true;
-    }
-
-    @Override
-    public void pollGameList(String username) {
-
-    }
-
-    @Override
-    public void createGame(String username, String gameName, int playerNum) {
-
-    }
-
-    @Override
-    public void joinGame(String username, String gameName) {
-
-    }
-
-    @Override
-    public void leaveGame(String username) {
-
-    }
-
-    @Override
-    public void startGame(String username) {
-
-    }
 }

@@ -1,7 +1,7 @@
 package clientfacade;
 
 import commandresults.CommandResult;
-import commandresults.LoginResultData;
+import commandresults.LoginResult;
 import model.ClientModel;
 
 /**
@@ -15,7 +15,7 @@ public class ClientFacade {
         clientModel.setErrorMessage(errorMessage);
     }
     public void loginUser(CommandResult commandResult){
-        LoginResultData loginResult = ((LoginResultData)commandResult);
+        LoginResult loginResult = ((LoginResult)commandResult);
         if (commandResult.getErrorMessage() == null)
             clientModel.setMyUser(loginResult.getUsername(), loginResult.getAuthToken());
         else{

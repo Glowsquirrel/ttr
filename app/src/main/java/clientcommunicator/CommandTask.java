@@ -13,7 +13,7 @@ import java.net.URL;
 
 import clientfacade.ClientFacade;
 import commandresults.CommandResult;
-import commandresults.LoginResultData;
+import commandresults.LoginResult;
 import commands.Command;
 
 /**
@@ -74,10 +74,9 @@ public class CommandTask extends AsyncTask<Command, Void, CommandResult> {
         ClientFacade facade = new ClientFacade();
 
         if (result == null){ //the command did not make it to the server.
-            CommandResult testResult = new LoginResultData();
+            CommandResult testResult = new LoginResult();
             testResult.setType("login");
-            ((LoginResultData)testResult).setUsername("me");
-            ((LoginResultData)testResult).setAuthToken("asdf");
+            ((LoginResult)testResult).setUsername("me");
             facade.loginUser(testResult);
             //facade.postErrorMessage("Could not connect to server");
             return;

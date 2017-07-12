@@ -3,23 +3,17 @@ package clientcommunicator;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import clientfacade.ClientFacade;
 import commandresults.CommandResult;
-import commandresults.LoginResultData;
-import commands.Command;
-import commands.PollCommandData;
+import commands.PollGamesCommandData;
 import model.ClientModel;
 
 /**
@@ -31,9 +25,9 @@ public class PollerTask extends AsyncTask<Void, Void, Void> {
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private String ip = clientModel.getIp();
     private String port = clientModel.getPort();
-    private PollCommandData pollData;
+    private PollGamesCommandData pollData;
 
-    public PollerTask(PollCommandData pollData) {
+    public PollerTask(PollGamesCommandData pollData) {
         this.pollData = pollData;
     }
 

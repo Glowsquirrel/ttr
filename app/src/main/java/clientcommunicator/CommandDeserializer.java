@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import commands.Command;
-import commands.PollCommandData;
+import commands.PollGamesCommandData;
 
 
 class CommandDeserializer implements JsonDeserializer<Command> {
@@ -32,7 +32,7 @@ class CommandDeserializer implements JsonDeserializer<Command> {
         switch (type){
             case "poll": {
                 String username = jsonObject.get("username").getAsString();
-                typeModel = new PollCommandData(username);
+                typeModel = new PollGamesCommandData(username);
                 break;
             }
         }

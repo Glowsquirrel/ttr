@@ -1,7 +1,8 @@
 package commands;
 
+import clientproxy.ClientProxy;
 import commandresults.CommandResult;
-import commandresults.LoginResultData;
+import serverfacade.ServerFacade;
 
 public class LoginCommand extends LoginCommandData implements ICommand {
 
@@ -10,12 +11,7 @@ public class LoginCommand extends LoginCommandData implements ICommand {
     }
 
     public CommandResult execute(){
-        //TODO link to a real database by calling ClientProxy methods
-
-        CommandResult commandResult = new LoginResultData();
-        commandResult.setType("login");
-        commandResult.setSuccess(true);
-        commandResult.setErrorMessage(null);
-        return commandResult;
+        ServerFacade serverFacade = new ServerFacade();
+        return serverFacade.login(username, password);
     }
 }

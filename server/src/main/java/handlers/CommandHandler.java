@@ -37,10 +37,17 @@ public class CommandHandler implements HttpHandler{
         logger.info("Server receieved : " + jsonStringIn);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Command.class, new CommandDeserializer());
+        gsonBuilder.registerTypeAdapter(Command.class, new CommandSerializer());
         Gson gson = gsonBuilder.create();
 
         Command command = gson.fromJson(jsonStringIn, Command.class);
+
+        if (command == null){
+            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+            exchange.close();
+            return;
+        }
+
         logger.finest("Command is of type: " + command.getClass().toString());
 
 
