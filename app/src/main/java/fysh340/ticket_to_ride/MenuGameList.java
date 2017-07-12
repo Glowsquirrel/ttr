@@ -74,9 +74,12 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
-        recyclerView.setLayoutManager( new LinearLayoutManager( this));
+        LinearLayoutManager llm=new LinearLayoutManager( this);
+        llm.setAutoMeasureEnabled(true);
+        recyclerView.setLayoutManager( llm);
 
-        //updateUI();
+
+        updateUI();
 
         EditText gameName=(EditText) findViewById(R.id.gamename);
         Spinner spinner = (Spinner) findViewById(R.id.playernum_spinner);
@@ -110,9 +113,9 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             public void afterTextChanged(Editable s) {}
         });
 
-        //List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
-        fAdapter = new SearchAdapter(new ArrayList<UnstartedGame>()); //create the search adapter once, update its data later
-        recyclerView.setAdapter(fAdapter);
+        List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
+    //    fAdapter = new SearchAdapter(new ArrayList<UnstartedGame>()); //create the search adapter once, update its data later
+     //   recyclerView.setAdapter(fAdapter);
 
     }
     @Override
@@ -133,11 +136,11 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     private void updateUI()
     {
-        //recyclerView.removeAllViewsInLayout();
+        recyclerView.removeAllViewsInLayout();
         List<UnstartedGame> games = clientModel.getGamesToStart();
-        //fAdapter = new SearchAdapter(games);
-        //recyclerView.setAdapter(fAdapter);
-        fAdapter.swapData(games);
+        fAdapter = new SearchAdapter(games);
+        recyclerView.setAdapter(fAdapter);
+      //  fAdapter.swapData(games);
     }
 
     @Override
