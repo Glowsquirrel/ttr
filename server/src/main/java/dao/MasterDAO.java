@@ -20,6 +20,8 @@ public class MasterDAO
 
     //Data Members
 
+    private static final String DB_TO_USE = "server/db/ttrdb.sqlite";
+
     private static final String USER_TABLE_NAME = "user";
     private static final String GAME_TABLE_NAME = "game";
     private static final String PLAYERS_TABLE_NAME = "players";
@@ -72,7 +74,26 @@ public class MasterDAO
     public boolean login(String username, String password) throws SQLException
     {
 
-        User currentUser = mUsersAccess.get(mDatabaseAccess, username);
+        User currentUser;
+
+        boolean success = false;
+
+        try
+        {
+
+            this.openConnection(DB_TO_USE);
+
+            currentUser = mUsersAccess.get(mDatabaseAccess, username);
+
+            success = true;
+
+        }
+        finally
+        {
+
+            this.closeConnection(success);
+
+        }
 
         return !currentUser.getUsername().equals("") && currentUser.getPassword().equals(password);
 
@@ -81,7 +102,28 @@ public class MasterDAO
     public List<Game> getOpenGames() throws SQLException
     {
 
-        return mGameAccess.getGames(mDatabaseAccess);
+        List<Game> openGames;
+
+        boolean success = false;
+
+        try
+        {
+
+            this.openConnection(DB_TO_USE);
+
+            openGames = mGameAccess.getGames(mDatabaseAccess);
+
+            success = true;
+
+        }
+        finally
+        {
+
+            this.closeConnection(success);
+
+        }
+
+        return openGames;
 
     }
 
@@ -90,20 +132,41 @@ public class MasterDAO
     public boolean register(String username, String password) throws SQLException
     {
 
-        //Check if the user is already registered
-        if(!mUsersAccess.get(mDatabaseAccess, username).getUsername().equals(""))
+        boolean success = false;
+
+        try
         {
 
-            mUsersAccess.add(mDatabaseAccess, new User(username, password));
-            return true;
+            this.openConnection(DB_TO_USE);
+
+            User prospectiveUser = mUsersAccess.get(mDatabaseAccess, username);
+
+            //Check if the user is already registered
+            if(!prospectiveUser.getUsername().equals(""))
+            {
+
+                mUsersAccess.add(mDatabaseAccess, new User(username, password));
+
+                success = true;
+
+                return true;
+
+            }
+            else
+            {
+
+                return false;
+
+            }
 
         }
-        else
+        finally
         {
 
-            return false;
+            this.closeConnection(success);
 
         }
+
 
     }
 
@@ -112,40 +175,117 @@ public class MasterDAO
 
         Game newGame = new Game(gameID, numberOfPlayers, null, false);
 
-        mGameAccess.add(mDatabaseAccess, newGame);
+        boolean success = false;
 
-        mPlayersAccess.add(mDatabaseAccess, creator, gameID);
+        try
+        {
+
+            this.openConnection(DB_TO_USE);
+
+            mGameAccess.add(mDatabaseAccess, newGame);
+
+            mPlayersAccess.add(mDatabaseAccess, creator, gameID);
+
+            success = true;
+
+        }
+        finally
+        {
+
+            this.closeConnection(success);
+
+        }
 
     }
 
     public void joinGame(String username, String gameID) throws SQLException
     {
 
-        Game prospectiveGame = mGameAccess.get(mDatabaseAccess, gameID);
-        List<User> players = mPlayersAccess.getPlayers(mDatabaseAccess, gameID);
+        boolean success = false;
 
-        //Check to ensure game exists and there are spots open
-        if(!prospectiveGame.getID().equals("") && players.size() <
-                prospectiveGame.getNumberOfPlayers())
+        try
         {
 
-            mPlayersAccess.add(mDatabaseAccess, username, gameID);
+            this.openConnection(DB_TO_USE);
+
+            Game prospectiveGame = mGameAccess.get(mDatabaseAccess, gameID);
+            List<User> players = mPlayersAccess.getPlayers(mDatabaseAccess, gameID);
+
+            //Check to ensure game exists and there are spots open
+            if(!prospectiveGame.getID().equals("") && players.size() <
+                    prospectiveGame.getNumberOfPlayers())
+            {
+
+                mPlayersAccess.add(mDatabaseAccess, username, gameID);
+
+            }
+
+            success = true;
+
+        }
+        finally
+        {
+
+            this.closeConnection(success);
 
         }
 
     }
 
-    public void leaveGame(String username, String gameID)
+    public void leaveGame(String username, String gameID) throws SQLException
     {
 
-        //TODO:  Implement leaving a game for 2 < players < 2
+        boolean success = false;
+
+        try
+        {
+
+            this.openConnection(DB_TO_USE);
+
+            mPlayersAccess.remove(mDatabaseAccess, username, gameID);
+
+            List<User> players = mPlayersAccess.getPlayers(mDatabaseAccess, gameID);
+
+            if(players.size() < 1)
+            {
+
+                mGameAccess.remove(mDatabaseAccess, gameID);
+
+            }
+
+            success = true;
+
+        }
+        finally
+        {
+
+            this.closeConnection(success);
+
+        }
 
     }
 
-    public void startGame(String gameID)
+    public void startGame(String gameID) throws SQLException
     {
 
-        //TODO:  Add a GameDAO method to modify the started field in the database or just remove/add
+        boolean success = true;
+
+        try
+        {
+
+            this.openConnection(DB_TO_USE);
+
+            mGameAccess.updateStatus(mDatabaseAccess, gameID);
+
+            success = true;
+
+        }
+        finally
+        {
+
+            this.closeConnection(success);
+
+        }
 
     }
 
@@ -248,9 +388,16 @@ public class MasterDAO
 
     }
 
-    /*
+    /**
+     *  Parse Results
      *  Takes a SQL result set and parses each entry into a model object, which is added to an
-     *  ArrayList to be returned.
+     *  List to be returned.
+     *
+     *  @param          found           The result set of found entries from the database
+     *  @param          tableName       The type of object in the set
+     *
+     *  @return                         The list of parsed objects
+     *  @throws         SQLException
      */
     private List<Object> parseResults(ResultSet found, String tableName) throws SQLException
     {
@@ -303,7 +450,7 @@ public class MasterDAO
     }
 
     /**
-     *  GetResults
+     *  Get Results
      *  Shared method for DAO to query the database by passing in a SQL String and the number of
      *  fields unique to the table being queried, along with the connection to use.
      *
@@ -602,27 +749,6 @@ public class MasterDAO
 
         }
 
-        /**
-         *  <h1>Exists</h1>
-         *  Provides a way for the server facade to check if a Game exists already in the database.
-         *
-         *  @param      currentConnection   Connection for accessing the database
-         *  @param      username            The ID of the Game being checked for
-         *
-         *  @return                         True if the ID exists or False otherwise
-         *
-         *  @throws     SQLException
-         */
-        boolean exists(Connection currentConnection, String username) throws SQLException
-        {
-
-            Game temp = this.get(currentConnection, username);
-
-            //Check for empty
-            return !temp.getID().equals("");
-
-        }
-
         //Mutator Methods
 
         /**
@@ -674,6 +800,15 @@ public class MasterDAO
         {
 
             String sql = "DELETE FROM game WHERE ID= \'" + ID + "\';";
+
+            modifyEntry(currentConnection, sql);
+
+        }
+
+        void updateStatus(Connection currentConnection, String ID) throws SQLException
+        {
+
+            String sql = "UPDATE game SET started= 1 WHERE ID= (\'" + ID + "\');";
 
             modifyEntry(currentConnection, sql);
 
