@@ -2,7 +2,10 @@ package serverproxy;
 
 import clientcommunicator.ClientCommunicator;
 import clientfacade.ClientFacade;
+import commandresults.CommandResult;
+import commandresults.LoginResult;
 import commandresults.PollGamesResult;
+import commandresults.RegisterResult;
 import commands.LoginCommandData;
 import interfaces.IServer;
 
@@ -15,38 +18,41 @@ public class ServerProxy implements IServer{
     private ClientCommunicator clientCommunicator = new ClientCommunicator();
     private ClientFacade clientFacade = new ClientFacade();
 
-    public void login(String username, String password){
+    @Override
+    public LoginResult login(String username, String password){
 
         LoginCommandData commandData = new LoginCommandData(username, password);
         clientCommunicator.doCommand(commandData);
-
+        return null;
     }
-    public boolean register(String username, String password){
-        return true;
+
+    @Override
+    public RegisterResult register(String username, String password) {
+        return null;
     }
 
     @Override
     public PollGamesResult pollGameList(String username) {
-return null;
+        return null;
     }
 
     @Override
-    public void createGame(String username, String gameName, int playerNum) {
-
+    public CommandResult createGame(String username, String gameName, int playerNum) {
+        return null;
     }
 
     @Override
-    public void joinGame(String username, String gameName) {
-
+    public CommandResult joinGame(String username, String gameName) {
+        return null;
     }
 
     @Override
-    public void leaveGame(String username) {
-
+    public CommandResult leaveGame(String username, String gameName) {
+        return null;
     }
 
     @Override
-    public void startGame(String username) {
-
+    public CommandResult startGame(String gameName) {
+        return null;
     }
 }
