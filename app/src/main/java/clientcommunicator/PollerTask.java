@@ -3,24 +3,16 @@ package clientcommunicator;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import clientfacade.ClientFacade;
 import clientfacade.commands.PollCommand;
-import commandresults.CommandResult;
-import commandresults.LoginResultData;
-import commandresults.PollResultData;
-import commands.Command;
 import commands.PollCommandData;
 import model.ClientModel;
 

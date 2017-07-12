@@ -3,7 +3,6 @@ package clientfacade;
 import clientfacade.commands.PollCommand;
 import commandresults.CommandResult;
 import commandresults.LoginResultData;
-import commandresults.PollResultData;
 import commandresults.RegisterResultData;
 import model.ClientModel;
 

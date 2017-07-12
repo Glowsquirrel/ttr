@@ -22,7 +22,7 @@ public class PollCommand {
     }
     public void execute()
     {
-        clientModel.setGamestoStart(gameList);
+        clientModel.setGamesToStart(gameList);
         clientModel.notifyObserver();
     }
 }
