@@ -1,7 +1,6 @@
 package clientfacade;
 
 import commandresults.*;
-import clientfacade.commands.PollCommandResult;
 import commandresults.CommandResult;
 import model.ClientModel;
 
@@ -34,10 +33,8 @@ public class ClientFacade {
 
     }
 
-    public void updateGameList(PollCommandResult result){
-        if (result != null)
-            result.execute();
-
+    public void updateGameList(PollGamesResult result){
+        clientModel.setGamesToStart(result.getGameList());
     }
 
     public void createGame(CommandResult result){

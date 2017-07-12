@@ -1,7 +1,6 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import clientcommunicator.PollerTask;
 import model.UnstartedGame;
 import serverfacade.commands.PollGamesCommandData;
@@ -37,7 +37,9 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     private TextView text;
     private ServerProxy serverProxy = new ServerProxy();
     private String gameName;
-    private PollerTask pt;
+    //private PollGameListTask pt;
+    private PollerTask poller;
+    private int updates = 0;
 
     public Button getCreateGame() {
         return createGame;
@@ -70,7 +72,6 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_game_list);
-
 
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
@@ -119,16 +120,18 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     public void onStop()
     {
         super.onStop();
-        pt.cancel(true);
+        //pt.cancel(true);
+        poller.stopPoller();
+        clientModel.unregister(this); //registers this controller as an observer to the ClientModel
+
     }
     @Override
     public void onStart()
     {
         super.onStart();
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        pollGamesCommandData.setType("poll");
-        pt= new PollerTask(pollGamesCommandData);
-        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        poller = new PollerTask(pollGamesCommandData, 7000);
+        poller.pollGamesList();
     }
 
     private void updateUI()
@@ -142,10 +145,12 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     @Override
     public void update() {
+        Toast.makeText(getApplicationContext(), String.valueOf(updates),Toast.LENGTH_SHORT).show();
+        updates++;
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
         pollGamesCommandData.setType("poll");
-        pt = new PollerTask(pollGamesCommandData);
-        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //pt = new PollGameListTask(pollGamesCommandData);
+        //pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if(clientModel.hasGame()) {
             Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);

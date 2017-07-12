@@ -50,7 +50,7 @@ class CommandSerializer implements JsonDeserializer<Command> {
                 typeModel = new RegisterCommand(username, password);
                 break;
             }
-            case "poll": {
+            case "pollgames": {
                 String username = jsonObject.get("username").getAsString();
                 typeModel = new PollGamesCommand(username);
                 break;

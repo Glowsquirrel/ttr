@@ -57,11 +57,6 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         super.onStart();
         clientModel.register(this); //adds this controller to the list of observers
     }
-    @Override
-    protected void onStop(){
-        super.onStop();
-        clientModel.unregister(this); //removes this controller from the list of observers
-    }
 
     public void login(View view){
         EditText ipEdit = (EditText)findViewById(R.id.ip_address);
@@ -97,6 +92,7 @@ public class MenuLogin extends AppCompatActivity implements Observer {
     public void update() {
         if (clientModel.hasUser()){
             //proceed to game list screen
+            clientModel.unregister(this); //removes this controller from the list of observers
             Intent intent = new Intent(this, MenuGameList.class);
             startActivity(intent);
         }

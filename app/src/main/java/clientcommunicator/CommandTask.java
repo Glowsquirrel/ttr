@@ -77,8 +77,8 @@ public class CommandTask extends AsyncTask<Void, Void, CommandResult> {
         ClientFacade facade = new ClientFacade();
 
         if (result == null){ //the command did not make it to the server.
-            CommandResult testResult = new LoginResult(true, "fakeuser", "failed to connect to server");
-            facade.loginUser(testResult);
+            //CommandResult testResult = new LoginResult(true, "fakeuser", "failed to connect to server");
+            //facade.loginUser(testResult);
             //facade.postErrorMessage("Could not connect to server");
             return;
         }
