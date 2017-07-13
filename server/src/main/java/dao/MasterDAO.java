@@ -347,9 +347,20 @@ public class MasterDAO
 
             this.openConnection(DB_TO_USE);
 
-            mGameAccess.updateStatus(mDatabaseAccess, gameID);
-
-            success = true;
+            if(!mGameAccess.get(mDatabaseAccess, gameID).equals(""))
+            {
+    
+                mGameAccess.updateStatus(mDatabaseAccess, gameID);
+    
+                success = true;
+                
+            }
+            else
+            {
+                
+                throw new SQLException("Game does not exist.");
+                
+            }
 
         }
         finally
