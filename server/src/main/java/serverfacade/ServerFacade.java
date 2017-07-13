@@ -193,7 +193,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Game created.";
         
         try
         {
@@ -218,7 +218,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Game joined.";
         
         try
         {
@@ -243,7 +243,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Left game.";
         
         try
         {
@@ -268,7 +268,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Game started.";
         
         try
         {
