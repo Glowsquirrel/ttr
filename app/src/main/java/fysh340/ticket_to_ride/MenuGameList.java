@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import clientcommunicator.PollerTask;
@@ -37,9 +36,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     private TextView text;
     private ServerProxy serverProxy = new ServerProxy();
     private String gameName;
-    //private PollGameListTask pt;
     private PollerTask poller;
-    private int updates = 0;
 
     public Button getCreateGame() {
         return createGame;
@@ -82,7 +79,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
         updateUI();
 
-        EditText gameName=(EditText) findViewById(R.id.gamename);
+        final EditText gameName=(EditText) findViewById(R.id.gamename);
         Spinner spinner = (Spinner) findViewById(R.id.playernum_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.player_num_array, android.R.layout.simple_spinner_item);
@@ -105,13 +102,16 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                setGameName(s.toString());
-                getCreateGame().setEnabled(true);
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                String inputGameName = s.toString().trim();
+                if (inputGameName.length() > 0){ //a game name must be at least 1 char long
+                    getCreateGame().setEnabled(true);
+                }
+                else
+                    getCreateGame().setEnabled(false);
+            }
         });
 
         List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
@@ -123,9 +123,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     public void onStop()
     {
         super.onStop();
-        //pt.cancel(true);
         poller.stopPoller();
-        clientModel.unregister(this); //registers this controller as an observer to the ClientModel
+        //clientModel.unregister(this); //registers this controller as an observer to the ClientModel
 
     }
     @Override
@@ -133,8 +132,8 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     {
         super.onStart();
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        poller = new PollerTask(pollGamesCommandData, 7000);
-        poller.pollGamesList();
+        poller = new PollerTask(pollGamesCommandData, 3000); //poll ever 3s
+        poller.startPoller();
     }
 
     private void updateUI()
@@ -148,12 +147,6 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
 
     @Override
     public void update() {
-        Toast.makeText(getApplicationContext(), String.valueOf(updates),Toast.LENGTH_SHORT).show();
-        updates++;
-        PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        pollGamesCommandData.setType("poll");
-        //pt = new PollGameListTask(pollGamesCommandData);
-        //pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if(clientModel.hasGame()) {
             System.out.println("here");
             clientModel.unregister(this);

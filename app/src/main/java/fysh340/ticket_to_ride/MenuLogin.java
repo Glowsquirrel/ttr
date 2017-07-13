@@ -32,18 +32,18 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
 
         //begin load previous input
-        //SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
-        //String ipString = sharedPref.getString("ip", "");
-        //String usernameString = sharedPref.getString("username", "");
-        //String passwordString = sharedPref.getString("password", "");
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
+        String ipString = sharedPref.getString("ip", "");
+        String usernameString = sharedPref.getString("username", "");
+        String passwordString = sharedPref.getString("password", "");
 
-        //EditText ip = (EditText)findViewById(R.id.ip_address);
-        //EditText username = (EditText)findViewById(R.id.username);
-        //EditText password = (EditText)findViewById(R.id.password);
+        EditText ip = (EditText)findViewById(R.id.ip_address);
+        EditText username = (EditText)findViewById(R.id.username);
+        EditText password = (EditText)findViewById(R.id.password);
 
-        //ip.setText(ipString);
-        //username.setText(usernameString);
-        //password.setText(passwordString);
+        ip.setText(ipString);
+        username.setText(usernameString);
+        password.setText(passwordString);
         //end load previous input
 
         Button register=(Button)findViewById(R.id.register);
@@ -92,7 +92,8 @@ public class MenuLogin extends AppCompatActivity implements Observer {
     public void update() {
         if (clientModel.hasUser()){
             //proceed to game list screen
-            clientModel.unregister(this); //removes this controller from the list of observers
+            //clientModel.unregister(this); //removes this controller from the list of observers
+            clientModel.unregister(this);
             Intent intent = new Intent(this, MenuGameList.class);
             startActivity(intent);
         }
@@ -109,19 +110,4 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
 }

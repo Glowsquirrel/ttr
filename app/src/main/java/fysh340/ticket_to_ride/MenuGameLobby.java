@@ -1,7 +1,6 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,8 +24,8 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         private SearchAdapter fAdapter;
         private RecyclerView recyclerView;
         private TextView text;
-    private ServerProxy serverProxy = new ServerProxy();
-    private PollerTask pt;
+        private ServerProxy serverProxy = new ServerProxy();
+        private PollerTask poller;
 
 
         @Override
@@ -72,16 +71,12 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         super.onStart();
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
         pollGamesCommandData.setType("poll");
-        pt= new PollerTask(pollGamesCommandData);
-        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        poller = new PollerTask(pollGamesCommandData, 3000); //poll every 3s
+        poller.startPoller();
     }
 
         @Override
         public void update() {
-            PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-            pollGamesCommandData.setType("poll");
-            pt = new PollerTask(pollGamesCommandData);
-            pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             if(clientModel.hasGame()) {
                 System.out.println("update rv");
                 updateUI();

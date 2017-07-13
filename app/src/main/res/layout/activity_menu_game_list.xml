@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:inputType="text"
+            android:maxLines="1"
             android:padding="0dp"
             android:layout_alignParentLeft="true"
             android:textAppearance="?android:attr/textAppearanceSmall" />

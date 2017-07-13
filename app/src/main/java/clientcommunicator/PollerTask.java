@@ -33,7 +33,7 @@ public class PollerTask {
 
 
 
-    public void pollGamesList() {
+    public void startPoller() {
         timer = new Timer();
         timer.scheduleAtFixedRate( new TimerTask() {
             @Override
