@@ -227,12 +227,12 @@ public class MasterDAO
 
             Game prospectiveGame = mGameAccess.get(mDatabaseAccess, gameID);
 
-            if(prospectiveGame.getID().equals(""))
+            User currentUser = mUsersAccess.get(mDatabaseAccess, creator);
+
+            if(prospectiveGame.getID().equals("") && !currentUser.getUsername().equals(""))
             {
 
                 mGameAccess.add(mDatabaseAccess, newGame);
-
-                mPlayersAccess.add(mDatabaseAccess, creator, gameID);
 
                 success = true;
 
