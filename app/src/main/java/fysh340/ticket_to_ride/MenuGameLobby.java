@@ -75,7 +75,11 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         poller = new PollerTask(3000); //poll every 3s
         //poller.pollGameList();
     }
+    @Override
+    public void onBackPressed() {
+        serverProxy.leaveGame(clientModel.getMyUsername(), "");
 
+    }
     @Override
     public void onStop(){
         super.onStop();
