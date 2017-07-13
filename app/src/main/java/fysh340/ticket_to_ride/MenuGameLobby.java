@@ -94,13 +94,13 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                     start.setEnabled(true);
                 }
             }
-            else if(clientModel.isStartedGame())
+            if(clientModel.isStartedGame())
             {
                 clientModel.unregister(this);
                 Intent intent = new Intent(this, GameStart.class);
                 startActivity(intent);
             }
-            else
+            if(!clientModel.hasGame())
             {
                 clientModel.unregister(this);
                 Intent intent = new Intent(this, MenuGameList.class);
