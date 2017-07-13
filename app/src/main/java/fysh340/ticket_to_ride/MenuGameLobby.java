@@ -86,6 +86,11 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         //poller.stopPoller();
         clientModel.unregister(this);
     }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        clientModel.setHasGame(false);
+    }
 
         @Override
         public void update() {
