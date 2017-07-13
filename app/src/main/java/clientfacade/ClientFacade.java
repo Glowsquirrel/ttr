@@ -45,7 +45,7 @@ public class ClientFacade {
 
     public void createGame(CommandResult result){
         if (result.isSuccess()){
-            clientModel.setMyGame(result.getMessage());
+            //clientModel.setMyGame(result.getMessage());
             clientModel.setHasGame(true);
             this.postErrorMessage(result.getMessage());
         }
@@ -55,7 +55,7 @@ public class ClientFacade {
 
     public void joinGame(CommandResult result){
         if (result.isSuccess()){
-            clientModel.setMyGame(result.getMessage());
+//            clientModel.setMyGame(result.getMessage());
             clientModel.setHasGame(true);
             this.postErrorMessage(result.getMessage());
         }

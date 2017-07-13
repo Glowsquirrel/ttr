@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 
 import clientcommunicator.PollerTask;
@@ -27,9 +29,11 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         private ServerProxy serverProxy = new ServerProxy();
         private PollerTask poller;
         private Button start;
+    private int pollCounter = 0; //counts # of polls. for testing
 
 
-        @Override
+
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_menu_game_lobby);
@@ -72,11 +76,20 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     {
         super.onStart();
         poller = new PollerTask(clientModel.getMyUsername(), 3000); //poll every 3s
-        //poller.pollGameList();
+        poller.pollGameList();
+    }
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        poller.stopPoller();
+        clientModel.unregister(this); //registers this controller as an observer to the ClientModel
     }
 
         @Override
         public void update() {
+            String pollerUpdateCount = "Poll # " + String.valueOf(++pollCounter);
+            Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
             if(clientModel.hasGame()) {
                 updateUI();
                 if(clientModel.isGameFull())

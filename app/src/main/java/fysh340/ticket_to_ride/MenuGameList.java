@@ -144,6 +144,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     public void createGame(View view){
         EditText gameNameEdit = (EditText)findViewById(R.id.gamename);
         String gameName = gameNameEdit.getText().toString();
+        clientModel.setMyGame(gameName);
         serverProxy.createGame(clientModel.getMyUsername(), gameName, playerNum);
     }
 
@@ -197,6 +198,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
                 @Override
                 public void onClick(View v) {
                     holder.myView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_item));
+                    clientModel.setMyGame(gameName);
                     serverProxy.joinGame(clientModel.getMyUsername(), gameName);
                 }
             });
