@@ -70,6 +70,27 @@ public class MasterDAO
     }
 
     //Master Access Methods
+    
+    UserDAO getUserDAO()
+    {
+        
+        return mUsersAccess;
+        
+    }
+    
+    GameDAO getGameDAO()
+    {
+        
+        return mGameAccess;
+        
+    }
+    
+    PlayerDAO getPlayerDAO()
+    {
+        
+        return mPlayersAccess;
+        
+    }
 
     public boolean login(String username, String password) throws SQLException
     {
@@ -142,7 +163,7 @@ public class MasterDAO
             User prospectiveUser = mUsersAccess.get(mDatabaseAccess, username);
 
             //Check if the user is already registered
-            if(!prospectiveUser.getUsername().equals(""))
+            if(prospectiveUser.getUsername().equals(""))
             {
 
                 mUsersAccess.add(mDatabaseAccess, new User(username, password));
@@ -268,7 +289,7 @@ public class MasterDAO
     public void startGame(String gameID) throws SQLException
     {
 
-        boolean success = true;
+        boolean success = false;
 
         try
         {
@@ -302,9 +323,9 @@ public class MasterDAO
     public void openConnection(String databaseName) throws SQLException
     {
 
-        final String connection_URL = "jdbc:sqlite:" + databaseName;
+        final String connectionURL = "jdbc:sqlite:" + databaseName;
 
-        mDatabaseAccess = DriverManager.getConnection(connection_URL);
+        mDatabaseAccess = DriverManager.getConnection(connectionURL);
 
         mDatabaseAccess.setAutoCommit(false);
 
@@ -366,7 +387,7 @@ public class MasterDAO
             stmt = currentConnection.prepareStatement(sqlStatement);
 
             //Verify single entry
-            if(stmt.executeUpdate() != 1)
+            if(stmt.executeUpdate() > 1)
             {
 
                 throw new SQLException();
@@ -406,9 +427,17 @@ public class MasterDAO
 
         while(found.next())
         {
+            
+            int fields = 2;
+            if(tableName.equals(GAME_TABLE_NAME))
+            {
+                
+                fields = 3;
+                
+            }
 
             //Container for table field data
-            String[] objectAttributes = new String[3];
+            String[] objectAttributes = new String[fields];
 
             //Avoid null values
             Arrays.fill(objectAttributes, "");
@@ -617,10 +646,15 @@ public class MasterDAO
         void add(Connection currentConnection, User newUser) throws SQLException
         {
 
-            String sql = "INSERT INTO user VALUES (\'" + newUser.getUsername() + "\', \'" +
-                    newUser.getPassword() + "\');";
+            if(newUser != null)
+            {
 
-            modifyEntry(currentConnection, sql);
+                String sql = "INSERT INTO user VALUES (\'" + newUser.getUsername() + "\', \'" +
+                                     newUser.getPassword() + "\');";
+
+                modifyEntry(currentConnection, sql);
+                
+            }
 
         }
 
@@ -641,6 +675,7 @@ public class MasterDAO
             modifyEntry(currentConnection, sql);
 
         }
+        
     }
 
     /**
@@ -763,8 +798,8 @@ public class MasterDAO
         void add(Connection currentConnection, Game newGame) throws SQLException
         {
 
-            //Don't try to create a game that's already in the database
-            if(this.get(currentConnection, newGame.getID()).getID().equals(""))
+            //Don't try to create a game that's null or already in the database
+            if(newGame == null || !this.get(currentConnection, newGame.getID()).getID().equals(""))
             {
 
                 return;
