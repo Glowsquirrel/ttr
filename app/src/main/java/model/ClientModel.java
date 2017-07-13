@@ -45,6 +45,15 @@ public class ClientModel implements Observable{
         this.myGameName = gameName;
     }
 
+    private boolean hasCreatedGame = false;
+
+    public boolean hasCreatedGame() {
+        return hasCreatedGame;
+    }
+
+    public void setHasCreatedGame(boolean hasCreatedGame) {
+        this.hasCreatedGame = hasCreatedGame;
+    }
 
     public boolean isStartedGame() {
         for(UnstartedGame i:gamesToStart) {
