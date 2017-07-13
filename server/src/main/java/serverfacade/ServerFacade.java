@@ -72,8 +72,7 @@ public class ServerFacade implements IServer
     
         for(User player : fromDatabase.getPlayers())
         {
-        
-            //TODO:  Fix the way games are stored if there are no players.
+
             names.add(player.getUsername());
         
         }
@@ -82,7 +81,7 @@ public class ServerFacade implements IServer
     
         convertedGame.setPlayersIn(names.size());
     
-        convertedGame.setPlayersNeeded(fromDatabase.getNumberOfPlayers() - names.size());
+        convertedGame.setPlayersNeeded(fromDatabase.getNumberOfPlayers());
     
         return convertedGame;
         

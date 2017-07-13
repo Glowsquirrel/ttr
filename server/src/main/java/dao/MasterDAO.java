@@ -297,7 +297,7 @@ public class MasterDAO
 
             List<User> players = mPlayersAccess.getPlayers(mDatabaseAccess, gameID);
 
-            if(players.size() < 1)
+            if(players.size() == 1)
             {
 
                 mGameAccess.remove(mDatabaseAccess, gameID);
