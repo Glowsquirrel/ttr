@@ -54,7 +54,6 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 @Override
                 public void onClick(View view) {
                     serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
-                    onStop();
                     finish();
                 }
 
