@@ -120,6 +120,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     protected void onDestroy(){
         super.onDestroy();
         myPoller.stopPoller();
+        clientModel.removeMyUser();
     }
 
     @Override
