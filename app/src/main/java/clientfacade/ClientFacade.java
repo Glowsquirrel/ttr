@@ -46,6 +46,7 @@ public class ClientFacade {
     public void createGame(CommandResult result){
         if (result.isSuccess()){
             clientModel.setMyGame(result.getMessage());
+            clientModel.setHasGame(true);
             this.postErrorMessage(result.getMessage());
         }
         else
