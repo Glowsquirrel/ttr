@@ -56,6 +56,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setAutoMeasureEnabled(true);
         mRecyclerView.setLayoutManager(llm);
+        clientModel.setHasGame(false);
 
         //text watcher for create game button
         EditText gameName = (EditText) findViewById(R.id.gamename);
@@ -121,6 +122,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         super.onDestroy();
         myPoller.stopPoller();
         clientModel.removeMyUser();
+        clientModel.unregister(this);
     }
 
     @Override
