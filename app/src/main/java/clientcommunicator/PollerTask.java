@@ -42,6 +42,7 @@ public class PollerTask {
                 pollGameListTask = new PollGameListTask(pollGamesData);
                 ServerProxy serverProxy = new ServerProxy();
                 pollGameListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                
             }
         }, 0, msDelay);
     }
