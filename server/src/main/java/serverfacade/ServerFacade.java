@@ -72,8 +72,7 @@ public class ServerFacade implements IServer
     
         for(User player : fromDatabase.getPlayers())
         {
-        
-            //TODO:  Fix the way games are stored if there are no players.
+
             names.add(player.getUsername());
         
         }
@@ -82,7 +81,7 @@ public class ServerFacade implements IServer
     
         convertedGame.setPlayersIn(names.size());
     
-        convertedGame.setPlayersNeeded(fromDatabase.getNumberOfPlayers() - names.size());
+        convertedGame.setPlayersNeeded(fromDatabase.getNumberOfPlayers());
     
         return convertedGame;
         
@@ -95,7 +94,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Success.";
         
         try
         {
@@ -163,12 +162,19 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Success.";
         
         try
         {
             
             success = mDatabaseAccess.register(username, password);
+
+            if(!success)
+            {
+
+                message = "Invalid password.";
+
+            }
             
         }
         catch(SQLException ex)
@@ -186,7 +192,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Game created.";
         
         try
         {
@@ -211,7 +217,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Game joined.";
         
         try
         {
@@ -236,7 +242,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Left game.";
         
         try
         {
@@ -261,7 +267,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Game started.";
         
         try
         {
