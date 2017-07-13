@@ -12,10 +12,19 @@ public class ClientModel implements Observable{
     ClientModel(){
 
     }
-
+    private boolean leftGame;
     private String ip;
     private String port = "8080";
     private static final ClientModel myClientModel = new ClientModel();
+
+    public boolean isLeftGame() {
+        return leftGame;
+    }
+
+    public void setLeftGame(boolean leftGame) {
+        this.leftGame = leftGame;
+    }
+
     //begin User
     private User user = User.getMyUser();
     private boolean userLoggedIn = false;
