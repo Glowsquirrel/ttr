@@ -115,7 +115,7 @@ public class ClientModel implements Observable{
             toreturn=new ArrayList();
         }
         gameFull=true;
-        for(int l=toreturn.size();l<=size;l++)
+        for(int l=toreturn.size();l<size;l++)
         {
             gameFull=false;
             toreturn.add("Waiting for player "+l);
