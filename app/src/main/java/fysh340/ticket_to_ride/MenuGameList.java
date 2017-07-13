@@ -120,6 +120,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             clientModel.setHasGame(false);
             Intent intent = new Intent(this, MenuGameLobby.class);
             //intent.putExtra("poller", (Serializable)myPoller);
+            clientModel.unregister(this);
             myPoller.stopPoller();
             startActivity(intent);
         }
