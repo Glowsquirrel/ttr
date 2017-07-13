@@ -17,6 +17,7 @@ public class ServerFacade implements IServer
     
     //Data Members
     
+    private static final String CLEAR_TYPE = "cleardb";
     private static final String REGISTER_TYPE = "register";
     private static final String CREATE_TYPE = "creategame";
     private static final String JOIN_TYPE = "joingame";
@@ -27,16 +28,67 @@ public class ServerFacade implements IServer
     
     //Constructors
 
-    public CommandResult clearDatabase(){
-        return new CommandResult("cleardb", true, "fake clear");
-    }
-
     public ServerFacade()
     {
         
         mDatabaseAccess = new MasterDAO();
         
     }
+    
+    //Utility Methods
+    
+    public CommandResult clearDatabase()
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+    
+            mDatabaseAccess.clear();
+            success = true;
+            
+        }
+        catch(SQLException ex)
+        {
+    
+            message = ex.getMessage();
+            
+        }
+        
+        return new CommandResult(CLEAR_TYPE, success, message);
+        
+    }
+    
+    private UnstartedGame convertGame(Game fromDatabase)
+    {
+    
+        UnstartedGame convertedGame = new UnstartedGame();
+    
+        convertedGame.setName(fromDatabase.getID());
+    
+        List<String> names = new ArrayList<>();
+    
+        for(User player : fromDatabase.getPlayers())
+        {
+        
+            //TODO:  Fix the way games are stored if there are no players.
+            names.add(player.getUsername());
+        
+        }
+    
+        convertedGame.setUsernames(names);
+    
+        convertedGame.setPlayersIn(names.size());
+    
+        convertedGame.setPlayersNeeded(fromDatabase.getNumberOfPlayers() - names.size());
+    
+        return convertedGame;
+        
+    }
+    
+    //Access Methods
 
     @Override
     public LoginResult login(String username, String password)
@@ -61,29 +113,7 @@ public class ServerFacade implements IServer
         return new LoginResult(success, username, message);
         
     }
-
-    @Override
-    public CommandResult register(String username, String password)
-    {
     
-        boolean success = false;
-        String message = "";
-    
-        try
-        {
-        
-            success = mDatabaseAccess.register(username, password);
-        
-        }
-        catch(SQLException ex)
-        {
-        
-            message = ex.getMessage();
-        
-        }
-    
-        return new CommandResult(REGISTER_TYPE, success, message);
-    }
 
     @Override
     public PollGamesResult pollGameList(String username)
@@ -113,30 +143,36 @@ public class ServerFacade implements IServer
         for(Game openGame : openGames)
         {
             
-            UnstartedGame convertedGame = new UnstartedGame();
-            
-            convertedGame.setName(openGame.getID());
-            
-            List<String> names = new ArrayList<>();
-            
-            for(User player : openGame.getPlayers())
-            {
-                
-                names.add(player.getUsername());
-                
-            }
-            
-            convertedGame.setUsernames(names);
-            
-            convertedGame.setPlayersIn(names.size());
-            
-            convertedGame.setPlayersNeeded(openGame.getNumberOfPlayers() - names.size());
-            
-            unstartedGames.add(convertedGame);
+            unstartedGames.add(convertGame(openGame));
             
         }
         
         return new PollGamesResult(success, message, unstartedGames);
+    }
+    
+    //Mutator Methods
+    
+    @Override
+    public CommandResult register(String username, String password)
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+            
+            success = mDatabaseAccess.register(username, password);
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            
+        }
+        
+        return new CommandResult(REGISTER_TYPE, success, message);
     }
 
     @Override

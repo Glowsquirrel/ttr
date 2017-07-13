@@ -133,6 +133,13 @@ public class MasterDAO
             this.openConnection(DB_TO_USE);
 
             openGames = mGameAccess.getGames(mDatabaseAccess);
+            
+            for(Game openGame : openGames)
+            {
+                
+                openGame.setPlayers(mPlayersAccess.getPlayers(mDatabaseAccess, openGame.getID()));
+                
+            }
 
             success = true;
 
@@ -234,7 +241,9 @@ public class MasterDAO
 
             //Check to ensure game exists and there are spots open
             if(!prospectiveGame.getID().equals("") && players.size() <
-                    prospectiveGame.getNumberOfPlayers())
+                    prospectiveGame.getNumberOfPlayers() && !mPlayersAccess.exists(mDatabaseAccess,
+                                                                                    username,
+                                                                                    gameID))
             {
 
                 mPlayersAccess.add(mDatabaseAccess, username, gameID);
