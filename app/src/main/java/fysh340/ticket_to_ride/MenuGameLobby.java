@@ -1,8 +1,8 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import java.util.List;
-import android.widget.Toast;
 
-import clientcommunicator.PollerTask;
+import java.util.List;
+
 import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
@@ -44,8 +43,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             {
                 @Override
                 public void onClick(View view) {
-                    serverProxy.startGame(clientModel.getMyGameName());
-
+                    serverProxy.startGame(clientModel.getMyUsername());
                 }
 
             });
@@ -55,7 +53,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 public void onClick(View view) {
                     serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
                     clientModel.setLeftGame(true);
-     //               clientModel.setHasGame(false);
+                    clientModel.setHasGame(false);
                     finish();
                 }
 
