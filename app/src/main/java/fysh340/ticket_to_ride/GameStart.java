@@ -10,4 +10,8 @@ public class GameStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
     }
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 }

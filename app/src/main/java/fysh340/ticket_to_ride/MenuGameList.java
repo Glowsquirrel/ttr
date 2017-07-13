@@ -87,7 +87,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
                 this, R.array.player_num_array, R.layout.support_simple_spinner_dropdown_item);
         numPlayerSpinner.setAdapter(numPlayerAdapter);
 
-        myPoller = new PollerTask(6000); //poll every 10s. currently slow for debug purposes
+        myPoller = new PollerTask(2000); //poll every 10s. currently slow for debug purposes
         myPoller.pollGameList();
         //getApplicationContext().startService(new Intent(this, PollerTask.class));
     }

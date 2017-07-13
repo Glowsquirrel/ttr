@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import interfaces.Observable;
 import interfaces.Observer;
@@ -163,10 +164,10 @@ public class ClientModel implements Observable{
     }
 
     @Override
-    public void notifyObserver() {
+    public synchronized void notifyObserver() {
 
-        for (Observer observer : observers){
-            observer.update();
+        for (int i = 0; i < observers.size(); i++){
+            observers.get(i).update();
         }
 
     }
