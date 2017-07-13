@@ -26,7 +26,11 @@ public class ServerFacade implements IServer
     private MasterDAO mDatabaseAccess;
     
     //Constructors
-    
+
+    public CommandResult clearDatabase(){
+        return new CommandResult("cleardb", true, "fake clear");
+    }
+
     public ServerFacade()
     {
         
@@ -84,7 +88,7 @@ public class ServerFacade implements IServer
     @Override
     public PollGamesResult pollGameList(String username)
     {
-        
+
         boolean success = false;
         List<Game> openGames = null;
         String message = "";

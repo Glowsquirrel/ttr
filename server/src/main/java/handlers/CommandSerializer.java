@@ -9,6 +9,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import serverfacade.commands.ClearDatabaseCommand;
 import serverfacade.commands.Command;
 import serverfacade.commands.CreateGameCommand;
 import serverfacade.commands.JoinGameCommand;
@@ -84,6 +85,10 @@ class CommandSerializer implements JsonDeserializer<Command> {
                 String username = jsonObject.get("username").getAsString();
                 String gameName = jsonObject.get("gameName").getAsString();
                 typeModel = new JoinGameCommand(username, gameName);
+                break;
+            }
+            case "cleardb": {
+                typeModel = new ClearDatabaseCommand();
                 break;
             }
         }
