@@ -65,7 +65,8 @@ public class CommandTask extends AsyncTask<Void, Void, CommandResult> {
             gsonBuilder.registerTypeAdapter(CommandResult.class, new CommandResultSerializer());
             Gson customGson = gsonBuilder.create();
             //give CommandResult to onPostExecute to handle
-            return customGson.fromJson(jsonOut, CommandResult.class);
+            CommandResult result = customGson.fromJson(jsonOut, CommandResult.class);
+            return result;
 
         }catch (IOException ex){
             ex.printStackTrace();
