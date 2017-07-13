@@ -223,13 +223,24 @@ public class MasterDAO
         try
         {
 
-            this.openConnection(DB_TO_USE);
+            if(mGameAccess.get(mDatabaseAccess, gameID).getID().equals(""))
+            {
 
-            mGameAccess.add(mDatabaseAccess, newGame);
+                this.openConnection(DB_TO_USE);
 
-            mPlayersAccess.add(mDatabaseAccess, creator, gameID);
+                mGameAccess.add(mDatabaseAccess, newGame);
 
-            success = true;
+                mPlayersAccess.add(mDatabaseAccess, creator, gameID);
+
+                success = true;
+
+            }
+            else
+            {
+
+                throw new SQLException("Game already exists.");
+
+            }
 
         }
         finally
