@@ -64,7 +64,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         this.playerNum = playerNum;
     }
 
-    private int playerNum;
+    private int playerNum = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

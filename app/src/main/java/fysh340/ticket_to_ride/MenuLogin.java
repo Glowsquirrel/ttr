@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import interfaces.Observer;
@@ -18,9 +17,6 @@ import serverproxy.ServerProxy;
 public class MenuLogin extends AppCompatActivity implements Observer {
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private ServerProxy serverProxy = new ServerProxy();
-    private String username;
-    private String password;
-    private String ipAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +27,7 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        //begin load previous input
+        //load the previous login attempt data
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
         String ipString = sharedPref.getString("ip", "");
         String usernameString = sharedPref.getString("username", "");
@@ -44,12 +40,6 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         ip.setText(ipString);
         username.setText(usernameString);
         password.setText(passwordString);
-        //end load previous input
-
-        Button register=(Button)findViewById(R.id.register);
-        Button login=(Button) findViewById(R.id.login);
-
-
     }
 
     @Override
@@ -67,8 +57,6 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         String username = usernameEdit.getText().toString();
         String password = passwordEdit.getText().toString();
 
-        clientModel.setIp(ipEdit.getText().toString());
-
         //begin save current input to load later
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -78,36 +66,32 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         editor.apply();
         //end save current input to load later
 
+        clientModel.setIp(ip);
         serverProxy.login(username, password);
     }
 
-
-
     public void register(View view){
+        EditText ipEdit = (EditText)findViewById(R.id.ip_address);
+        EditText usernameEdit = (EditText)findViewById(R.id.username);
+        EditText passwordEdit = (EditText)findViewById(R.id.password);
 
-        //TODO implement register
+        String ip = ipEdit.getText().toString();
+        String username = usernameEdit.getText().toString();
+        String password = passwordEdit.getText().toString();
+
+        clientModel.setIp(ip);
+        serverProxy.register(username, password);
     }
 
     @Override
     public void update() {
         if (clientModel.hasUser()){
-            //proceed to game list screen
-            //clientModel.unregister(this); //removes this controller from the list of observers
-            clientModel.unregister(this);
+            clientModel.unregister(this); //removes this controller from list of observers
             Intent intent = new Intent(this, MenuGameList.class);
-            startActivity(intent);
+            startActivity(intent); //proceed to game list screen
         }
         else{ //get stored error message and display it
             Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
         }
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
 }

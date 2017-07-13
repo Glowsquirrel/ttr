@@ -107,6 +107,5 @@ public class PollerTask {
         protected void onPostExecute(PollGamesResult result){
             clientFacade.updateGameList(result);
         }
-
     }
 }
