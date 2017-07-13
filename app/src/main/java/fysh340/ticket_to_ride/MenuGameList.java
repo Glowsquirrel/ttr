@@ -1,7 +1,6 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,8 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import clientcommunicator.PollerTask;
 import model.UnstartedGame;
 import serverfacade.commands.PollGamesCommandData;
@@ -37,7 +36,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     private TextView text;
     private ServerProxy serverProxy = new ServerProxy();
     private String gameName;
-    private PollerTask pt;
+    private PollerTask poller;
 
     public Button getCreateGame() {
         return createGame;
@@ -71,14 +70,16 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_game_list);
 
-
         clientModel.register(this); //registers this controller as an observer to the ClientModel
         recyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
-        recyclerView.setLayoutManager( new LinearLayoutManager( this));
+        LinearLayoutManager llm=new LinearLayoutManager( this);
+        llm.setAutoMeasureEnabled(true);
+        recyclerView.setLayoutManager( llm);
 
-        //updateUI();
 
-        EditText gameName=(EditText) findViewById(R.id.gamename);
+        updateUI();
+
+        final EditText gameName=(EditText) findViewById(R.id.gamename);
         Spinner spinner = (Spinner) findViewById(R.id.playernum_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.player_num_array, android.R.layout.simple_spinner_item);
@@ -101,52 +102,54 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                setGameName(s.toString());
-                getCreateGame().setEnabled(true);
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                String inputGameName = s.toString().trim();
+                if (inputGameName.length() > 0){ //a game name must be at least 1 char long
+                    getCreateGame().setEnabled(true);
+                }
+                else
+                    getCreateGame().setEnabled(false);
+            }
         });
 
-        //List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
-        fAdapter = new SearchAdapter(new ArrayList<UnstartedGame>()); //create the search adapter once, update its data later
-        recyclerView.setAdapter(fAdapter);
+        List<UnstartedGame> games = clientModel.getGamesToStart(); //clientModel will not have anything yet
+    //    fAdapter = new SearchAdapter(new ArrayList<UnstartedGame>()); //create the search adapter once, update its data later
+     //   recyclerView.setAdapter(fAdapter);
 
     }
     @Override
     public void onStop()
     {
         super.onStop();
-        pt.cancel(true);
+        poller.stopPoller();
+        //clientModel.unregister(this); //registers this controller as an observer to the ClientModel
+
     }
     @Override
     public void onStart()
     {
         super.onStart();
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        pollGamesCommandData.setType("poll");
-        pt= new PollerTask(pollGamesCommandData);
-        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        poller = new PollerTask(pollGamesCommandData, 3000); //poll ever 3s
+        poller.startPoller();
     }
 
     private void updateUI()
     {
-        //recyclerView.removeAllViewsInLayout();
+        recyclerView.removeAllViewsInLayout();
         List<UnstartedGame> games = clientModel.getGamesToStart();
-        //fAdapter = new SearchAdapter(games);
-        //recyclerView.setAdapter(fAdapter);
-        fAdapter.swapData(games);
+        fAdapter = new SearchAdapter(games);
+        recyclerView.setAdapter(fAdapter);
+      //  fAdapter.swapData(games);
     }
 
     @Override
     public void update() {
-        PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        pollGamesCommandData.setType("poll");
-        pt = new PollerTask(pollGamesCommandData);
-        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if(clientModel.hasGame()) {
+            System.out.println("here");
+            clientModel.unregister(this);
             Intent intent = new Intent(this, MenuGameLobby.class);
             startActivity(intent);
         }
@@ -154,8 +157,10 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
             Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
             clientModel.receivedMessage();
         }
-        else
+        else {
+
             updateUI();
+        }
 
     }
     private class FilterHolder extends RecyclerView.ViewHolder implements View.OnClickListener

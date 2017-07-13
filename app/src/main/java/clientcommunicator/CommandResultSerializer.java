@@ -45,7 +45,7 @@ class CommandResultSerializer implements JsonDeserializer<CommandResult> {
                 typeModel = new CommandResult("register", success, errorMessage);
                 break;
             }
-            case "poll": {
+            case "pollgames": {
                 boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
                 String gameListString = jsonObject.get("gameList").getAsString();

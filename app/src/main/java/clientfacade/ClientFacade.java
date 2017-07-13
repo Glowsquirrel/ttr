@@ -1,7 +1,6 @@
 package clientfacade;
 
 import commandresults.*;
-import clientfacade.commands.PollCommandResult;
 import commandresults.CommandResult;
 import model.ClientModel;
 
@@ -31,17 +30,23 @@ public class ClientFacade {
 
 
     public void startGame(CommandResult result) {
+        if (result.isSuccess()){
+            clientModel.setStartedGame(true);
+            //send a join game command
+            this.postErrorMessage(result.getErrorMessage());
+        }
+        else
+            this.postErrorMessage(result.getErrorMessage());
 
     }
 
-    public void updateGameList(PollCommandResult result){
-        if (result != null)
-            result.execute();
-
+    public void updateGameList(PollGamesResult result){
+        clientModel.setGamesToStart(result.getGameList());
     }
 
     public void createGame(CommandResult result){
         if (result.isSuccess()){
+            clientModel.setHasGame(true);
             //send a join game command
             this.postErrorMessage(result.getErrorMessage());
         }

@@ -71,6 +71,7 @@ public class ClientModel implements Observable{
 
     public void setGamesToStart(List<UnstartedGame> gamestoStart) {
         gamesToStart = gamestoStart;
+        notifyObserver();
     }
     public List<String> getPlayersinGame()
     {

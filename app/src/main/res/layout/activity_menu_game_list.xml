@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="fysh340.ticket_to_ride.MenuGameList">
-
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:inputType="text"
+            android:maxLines="1"
             android:padding="0dp"
             android:layout_alignParentLeft="true"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -74,9 +80,6 @@
             android:textSize="25sp"
             android:id="@+id/joiner"
             android:gravity="center"/>
-
-
-    </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_below="@+id/createGame"
@@ -84,6 +87,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-        />
+            android:nestedScrollingEnabled="false"
 
+            />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
 </RelativeLayout>
+
