@@ -28,6 +28,15 @@ public class ClientModel implements Observable{
     private boolean startedGame=false;
 
     public boolean isGameFull() {
+        gameFull=false;
+        for(UnstartedGame i:gamesToStart) {
+            if(i.getName().equals(myGameName)) {
+                if(i.getPlayersNeeded()==i.getPlayersIn())
+                {
+                    gameFull=true;
+                }
+            }
+        }
         return gameFull;
     }
 
@@ -114,10 +123,8 @@ public class ClientModel implements Observable{
         {
             toreturn=new ArrayList();
         }
-        gameFull=true;
         for(int l=toreturn.size();l<size;l++)
         {
-            gameFull=false;
             toreturn.add("Waiting for player "+l);
         }
         return toreturn;
