@@ -132,10 +132,10 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             serverProxy.joinGame(clientModel.getMyUsername(), clientModel.getMyGameName());
         }
         else if(clientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
-            clientModel.setHasGame(false);
+            //clientModel.setHasGame(false);
+            clientModel.unregister(this);
             Intent intent = new Intent(this, MenuGameLobby.class);
             //intent.putExtra("poller", (Serializable)myPoller);
-            clientModel.unregister(this);
             //myPoller.stopPoller();
             startActivity(intent);
         }
