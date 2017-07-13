@@ -132,7 +132,7 @@ public class MenuGameList extends AppCompatActivity implements Observer, Adapter
     {
         super.onStart();
         PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        poller = new PollerTask(pollGamesCommandData, 3000); //poll ever 3s
+        poller = new PollerTask(pollGamesCommandData, 10000); //poll every 3s
         poller.startPoller();
     }
 

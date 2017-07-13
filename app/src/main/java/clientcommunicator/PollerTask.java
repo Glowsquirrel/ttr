@@ -17,6 +17,7 @@ import clientfacade.ClientFacade;
 import commandresults.PollGamesResult;
 import model.ClientModel;
 import serverfacade.commands.PollGamesCommandData;
+import serverproxy.ServerProxy;
 
 
 public class PollerTask {
@@ -39,6 +40,7 @@ public class PollerTask {
             @Override
             public void run() {
                 pollGameListTask = new PollGameListTask(pollGamesData);
+                ServerProxy serverProxy = new ServerProxy();
                 pollGameListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }, 0, msDelay);
@@ -105,7 +107,8 @@ public class PollerTask {
         }
 
         protected void onPostExecute(PollGamesResult result){
-            clientFacade.updateGameList(result);
+            if (result != null)
+                clientFacade.updateGameList(result);
         }
     }
 }
