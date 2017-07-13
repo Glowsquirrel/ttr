@@ -77,9 +77,8 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         //poller.stopPoller();
-        //serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+        serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
 
     }
     @Override
