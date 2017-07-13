@@ -1,98 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="fysh340.ticket_to_ride.MenuGameList">
-    <android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/createGame"
         android:gravity="center">
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start your own game:"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25sp"
-            android:id="@+id/starter"
-            android:gravity="center"/>
-        <TextView
-            android:layout_width="318dp"
-            android:layout_height="wrap_content"
-            android:text="Enter the name of the game you would like to create:"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp"
-            android:id="@+id/name"
-            android:gravity="center"/>
-        <EditText
-            android:id="@+id/gamename"
-            android:layout_width="338dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:inputType="text"
-            android:maxLines="1"
-            android:padding="0dp"
-            android:layout_alignParentLeft="true"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/playernum"
-                android:layout_width="277dp"
-                android:layout_height="wrap_content"
-                android:text="Choose the Number of Players"
-                android:textSize="16dp" />
-            <Spinner
-                android:layout_width="292dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/playernum_spinner">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
 
-            </Spinner>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/join_game"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="25sp"
+                    android:id="@+id/joiner"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"/>
 
-        <Button
-            android:id="@+id/createGameButton"
-            android:layout_width="304dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Create Game" />
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Join an existing game:"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25sp"
-            android:id="@+id/joiner"
-            android:gravity="center"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_below="@+id/createGame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="5dp"
-            android:nestedScrollingEnabled="false"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-            />
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp" />
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_own_game"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="25sp"
+                        android:id="@+id/starter"
+                        android:gravity="center"/>
 
-</android.support.v4.widget.NestedScrollView>
-</RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/enter_game_name"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:id="@+id/name"
+                        android:gravity="center"/>
+
+                    <EditText
+                        android:id="@+id/gamename"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="0dp"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:onClick="showSpinner">
+
+                            <TextView
+                                android:id="@+id/playernum"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/number_players"
+                                android:textSize="16sp"
+                                android:gravity="center"/>
+                            <Spinner
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/playernum_spinner"
+                                android:gravity="center">
+
+                            </Spinner>
+
+                        <Button
+                            android:id="@+id/createGameButton"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/create_game"
+                            android:onClick="createGame"
+                            android:layout_gravity="center"/>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
 

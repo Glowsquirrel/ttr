@@ -19,18 +19,24 @@ public class ClientModel implements Observable{
     private User user = User.getMyUser();
     private boolean userLoggedIn = false;
     //end User
-    private boolean hasGame=false;
+    private boolean hasGame = false;
 
     //end Observer
     private String errorMessage;
     List<UnstartedGame> gamesToStart;
 
     private boolean startedGame=false;
-    private String gameName;
+    private String myGameName;
+
+    public void setMyGame(String gameName){
+        this.myGameName = gameName;
+        this.hasGame = true;
+    }
+
 
     public boolean isStartedGame() {
         for(UnstartedGame i:gamesToStart) {
-            if(i.getName().equals(gameName)) {
+            if(i.getName().equals(myGameName)) {
                 startedGame=i.isStarted();
             }
         }
@@ -78,7 +84,7 @@ public class ClientModel implements Observable{
         List<String>toreturn=null;
         int size=0;
         for(UnstartedGame i:gamesToStart) {
-            if(i.getName().equals(gameName)) {
+            if(i.getName().equals(myGameName)) {
                 size=i.getPlayersNeeded();
                 toreturn=i.getUsernames();
             }

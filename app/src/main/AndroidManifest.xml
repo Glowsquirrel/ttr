@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuGameList" />
+        <activity android:name=".MenuGameList"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".MenuGameLobby" />
         <activity android:name=".GameStart"></activity>
     </application>

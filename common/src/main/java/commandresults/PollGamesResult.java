@@ -9,7 +9,7 @@ public class PollGamesResult extends CommandResult {
     public PollGamesResult(boolean success, String message, List<UnstartedGame> gameList){
         super.setType("pollgames");
         super.setSuccess(success);
-        super.setErrorMessage(message);
+        super.setMessage(message);
         this.gameList = gameList;
     }
 

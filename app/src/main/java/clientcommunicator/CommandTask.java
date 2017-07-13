@@ -80,6 +80,7 @@ public class CommandTask extends AsyncTask<Void, Void, CommandResult> {
             //CommandResult testResult = new LoginResult(true, "fakeuser", "failed to connect to server");
             //facade.loginUser(testResult);
             //facade.postErrorMessage("Could not connect to server");
+            String asdf = "asdf";
             return;
         }
 
@@ -92,8 +93,23 @@ public class CommandTask extends AsyncTask<Void, Void, CommandResult> {
             case "login":
                 facade.loginUser(result);
                 break;
+            case "register":
+                facade.registerUser(result);
+                break;
+            case "pollgames":
+                facade.updateGameList(result);
+                break;
             case "creategame":
                 facade.createGame(result);
+                break;
+            case "joingame":
+                facade.joinGame(result);
+                break;
+            case "leavegame":
+                facade.leaveGame(result);
+                break;
+            case "startgame":
+                facade.startGame(result);
                 break;
         }
 

@@ -6,7 +6,7 @@ public class LoginResult extends CommandResult{
     public LoginResult(boolean success, String username, String message){
         super.setType("login");
         super.setSuccess(success);
-        super.setErrorMessage(message);
+        super.setMessage(message);
         this.username = username;
     }
 
@@ -23,7 +23,7 @@ public class LoginResult extends CommandResult{
     public boolean isSuccess(){
         return super.isSuccess();
     }
-    public String getErrorMessage(){
-        return super.getErrorMessage();
+    public String getMessage(){
+        return super.getMessage();
     }
 }

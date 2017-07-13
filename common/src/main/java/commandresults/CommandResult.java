@@ -3,13 +3,13 @@ package commandresults;
 public class CommandResult {
     private String type;
     private boolean success;
-    private String errorMessage;
+    private String message;
 
     public CommandResult(){} //default constructor... to be deleted
-    public CommandResult(String type, boolean success, String errorMessage){
+    public CommandResult(String type, boolean success, String message){
         this.type = type;
         this.success = success;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
     public String getType() {
         return type;
@@ -19,8 +19,8 @@ public class CommandResult {
         return success;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
     public void setType(String type) {
@@ -31,7 +31,7 @@ public class CommandResult {
         this.success = success;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

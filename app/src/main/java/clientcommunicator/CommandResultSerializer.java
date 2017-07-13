@@ -1,6 +1,7 @@
 package clientcommunicator;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -48,7 +49,7 @@ class CommandResultSerializer implements JsonDeserializer<CommandResult> {
             case "pollgames": {
                 boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
-                String gameListString = jsonObject.get("gameList").getAsString();
+                JsonArray gameListString = jsonObject.get("gameList").getAsJsonArray();
                 Type listType = new TypeToken<List<UnstartedGame>>() {}.getType();
                 List<UnstartedGame> gameList = new Gson().fromJson(gameListString, listType);
                 typeModel = new PollGamesResult(success, errorMessage, gameList);

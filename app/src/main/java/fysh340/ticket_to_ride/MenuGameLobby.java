@@ -69,10 +69,8 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     public void onStart()
     {
         super.onStart();
-        PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
-        pollGamesCommandData.setType("poll");
-        poller = new PollerTask(pollGamesCommandData, 3000); //poll every 3s
-        poller.startPoller();
+        poller = new PollerTask(clientModel.getMyUsername(), 3000); //poll every 3s
+        //poller.startPoller();
     }
 
         @Override
