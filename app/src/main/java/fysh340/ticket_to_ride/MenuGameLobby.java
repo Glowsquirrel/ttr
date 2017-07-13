@@ -25,7 +25,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         private RecyclerView recyclerView;
         private TextView text;
         private ServerProxy serverProxy = new ServerProxy();
-        private PollerTask poller;
+        //private PollerTask poller;
         private Button start;
 
 
@@ -54,6 +54,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 @Override
                 public void onClick(View view) {
                     serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+                    onStop();
                     finish();
                 }
 
@@ -72,26 +73,27 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     public void onStart()
     {
         super.onStart();
-        poller = new PollerTask(6000); //poll every 3s
-        poller.pollGameList();
+        //poller = new PollerTask(6000); //poll every 3s
+        //poller.pollGameList();
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+        //poller.stopPoller();
+        //serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
 
     }
     @Override
     public void onStop(){
         super.onStop();
-        poller.stopPoller();
+        //poller.stopPoller();
         clientModel.unregister(this);
     }
 
         @Override
         public void update() {
-            String pollerUpdateCount = "Poll # " + String.valueOf(poller.getPollCount() + " @" + String.valueOf(poller.getMsDelay() + "ms"));
-            Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
+            //String pollerUpdateCount = "Poll # " + String.valueOf(poller.getPollCount() + " @" + String.valueOf(poller.getMsDelay() + "ms"));
+            //Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
             if(clientModel.hasGame()) {
                 updateUI();
                 if(clientModel.isGameFull())
