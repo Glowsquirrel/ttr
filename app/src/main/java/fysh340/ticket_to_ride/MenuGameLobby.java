@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
+import android.widget.Toast;
 
 import clientcommunicator.PollerTask;
 import interfaces.Observer;
@@ -31,6 +32,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            //poller = getIntent().getExtras().getSerializable("poller");
             setContentView(R.layout.activity_menu_game_lobby);
             clientModel.register(this); //registers this controller as an observer to the ClientModel
             recyclerView = (RecyclerView) findViewById(R.id.playerList);
@@ -74,8 +76,17 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         //poller.pollGameList();
     }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        //poller.stopPoller();
+        clientModel.unregister(this);
+    }
+
         @Override
         public void update() {
+            String pollerUpdateCount = "Poll # " + String.valueOf(poller.getPollCount() + " @" + String.valueOf(poller.getMsDelay() + "ms"));
+            Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
             if(clientModel.hasGame()) {
                 updateUI();
                 if(clientModel.isGameFull())

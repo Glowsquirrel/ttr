@@ -114,7 +114,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
         if(clientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
             Intent intent = new Intent(this, MenuGameLobby.class);
-            intent.putExtra("poller", myPoller);
+            //intent.putExtra("poller", myPoller);
             startActivity(intent);
         }
         else if (clientModel.hasMessage()){ //If the model has a message, Toast the message
