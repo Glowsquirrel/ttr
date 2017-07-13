@@ -104,6 +104,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             {
                 clientModel.unregister(this);
                 Intent intent = new Intent(this, MenuGameList.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 
             }
