@@ -131,10 +131,11 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         String gameName = gameNameEdit.getText().toString();
         Spinner numPlayerSpinner = (Spinner) findViewById(R.id.playernum_spinner);
         int playerNum = Integer.parseInt(numPlayerSpinner.getSelectedItem().toString()); //spinner is hard coded into xml, so is safe
+        clientModel.setMyGame(gameName);
         serverProxy.createGame(clientModel.getMyUsername(), gameName, playerNum);
     }
 
-    public void showSpinner(View view){ //allows the layout consisting of text and spinner to open up the spinner item selection dropdown
+    public void showSpinner(View view){ //allows the layout consisting of text and spinner to open up the spinner item selection dropdown menu
         findViewById(R.id.playernum_spinner).performClick();
     }
 
@@ -185,6 +186,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
                 @Override
                 public void onClick(View v) {
                     holder.myView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_item));
+                    clientModel.setMyGame(gameName);
                     serverProxy.joinGame(clientModel.getMyUsername(), gameName);
                 }
             });

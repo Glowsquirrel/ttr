@@ -11,8 +11,8 @@ import model.ClientModel;
 public class ClientFacade {
     private ClientModel clientModel = ClientModel.getMyClientModel();
 
-    public void postErrorMessage(String errorMessage){
-        clientModel.setErrorMessage(errorMessage);
+    private void postMessage(String message){
+        clientModel.setErrorMessage(message);
     }
 
     public void loginUser(CommandResult commandResult){
@@ -21,21 +21,21 @@ public class ClientFacade {
         if (loginResult.isSuccess())
             clientModel.setMyUser(loginResult.getUsername());
         else
-            this.postErrorMessage(loginResult.getMessage());
+            this.postMessage(loginResult.getMessage());
     }
 
     public void registerUser (CommandResult commandResult){
-            this.postErrorMessage(commandResult.getMessage()); //registering should only ever do a toast
+            this.postMessage(commandResult.getMessage()); //registering should only ever do a toast
     }
 
 
     public void startGame(CommandResult result) {
         if (result.isSuccess()){
             clientModel.setStartedGame(true);
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
         }
         else
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
 
     }
 
@@ -45,31 +45,31 @@ public class ClientFacade {
 
     public void createGame(CommandResult result){
         if (result.isSuccess()){
-            clientModel.setMyGame(result.getMessage());
+            //clientModel.setMyGame(result.getMessage());
             clientModel.setHasGame(true);
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
         }
         else
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
     }
 
     public void joinGame(CommandResult result){
         if (result.isSuccess()){
-            clientModel.setMyGame(result.getMessage());
+            //clientModel.setMyGame(result.getMessage());
             clientModel.setHasGame(true);
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
         }
         else
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
     }
 
     public void leaveGame(CommandResult result){
         if (result.isSuccess()){
             clientModel.setHasGame(false);
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
         }
         else
-            this.postErrorMessage(result.getMessage());
+            this.postMessage(result.getMessage());
     }
     //TODO add more methods that will handle each type of CommandResult subclass
 }

@@ -43,7 +43,6 @@ public class ClientModel implements Observable{
 
     public void setMyGame(String gameName){
         this.myGameName = gameName;
-
     }
 
 
