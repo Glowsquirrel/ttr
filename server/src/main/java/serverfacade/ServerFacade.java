@@ -101,6 +101,12 @@ public class ServerFacade implements IServer
         {
     
             success = mDatabaseAccess.login(username, password);
+            if(!success)
+            {
+
+                message = "Invalid password.";
+
+            }
             
         }
         catch(SQLException ex)

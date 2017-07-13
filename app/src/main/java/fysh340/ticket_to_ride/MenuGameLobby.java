@@ -75,7 +75,11 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         poller = new PollerTask(3000); //poll every 3s
         //poller.pollGameList();
     }
+    @Override
+    public void onBackPressed() {
+        serverProxy.leaveGame(clientModel.getMyUsername(), "");
 
+    }
     @Override
     public void onStop(){
         super.onStop();
@@ -94,16 +98,17 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                     start.setEnabled(true);
                 }
             }
-            else if(clientModel.isStartedGame())
+            if(clientModel.isStartedGame())
             {
                 clientModel.unregister(this);
                 Intent intent = new Intent(this, GameStart.class);
                 startActivity(intent);
             }
-            else
+            if(!clientModel.hasGame())
             {
                 clientModel.unregister(this);
                 Intent intent = new Intent(this, MenuGameList.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 
             }
