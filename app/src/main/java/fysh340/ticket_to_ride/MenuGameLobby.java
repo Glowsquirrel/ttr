@@ -15,7 +15,6 @@ import java.util.List;
 import clientcommunicator.PollerTask;
 import interfaces.Observer;
 import model.ClientModel;
-import serverfacade.commands.PollGamesCommandData;
 import serverproxy.ServerProxy;
 
 //TODO implement this class
@@ -71,7 +70,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     public void onStart()
     {
         super.onStart();
-        poller = new PollerTask(clientModel.getMyUsername(), 3000); //poll every 3s
+        poller = new PollerTask(3000); //poll every 3s
         //poller.pollGameList();
     }
 

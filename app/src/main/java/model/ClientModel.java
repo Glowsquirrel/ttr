@@ -37,6 +37,10 @@ public class ClientModel implements Observable{
 
     private String myGameName;
 
+    public String getMyGameName() {
+        return myGameName;
+    }
+
     public void setMyGame(String gameName){
         this.myGameName = gameName;
 

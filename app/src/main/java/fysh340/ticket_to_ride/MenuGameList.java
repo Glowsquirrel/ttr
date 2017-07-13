@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,10 +36,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private ServerProxy serverProxy = new ServerProxy();
-    private PollerTask poller;
+    private PollerTask myPoller;
     private MyGameListAdapter mAdapter;
-    private int pollCounter = 0; //counts # of polls. for testing
-    private int playerNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,53 +80,41 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         });
 
         //recyclerview adapter
-        mAdapter = new MyGameListAdapter(); //create the search adapter once, update its data later
+        mAdapter = new MyGameListAdapter(clientModel.getGamesToStart()); //create the search adapter once, update its data later
         mRecyclerView.setAdapter(mAdapter);
 
-        //spinner
+        //set up spinner
         Spinner numPlayerSpinner = (Spinner)findViewById(R.id.playernum_spinner);
         ArrayAdapter<CharSequence> numPlayerAdapter = ArrayAdapter.createFromResource(
                 this, R.array.player_num_array, R.layout.support_simple_spinner_dropdown_item);
         numPlayerSpinner.setAdapter(numPlayerAdapter);
-        playerNum = Integer.parseInt(numPlayerSpinner.getSelectedItem().toString()); //spinner is hard coded into xml, so is safe
-        numPlayerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                playerNum = position;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent){}
-        });
 
-        mAdapter = new MyGameListAdapter();
-        mRecyclerView.setAdapter(mAdapter);
-
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        poller = new PollerTask(clientModel.getMyUsername(), 10000); //poll every 10s. currently slow for debug purposes
-        poller.pollGameList();
+        //create poller and start
+        myPoller = new PollerTask(10000); //poll every 10s. currently slow for debug purposes
+        myPoller.pollGameList();
     }
 
     @Override
     public void onStop()
     {
         super.onStop();
-        poller.stopPoller();
         clientModel.unregister(this); //registers this controller as an observer to the ClientModel
     }
 
     @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        myPoller.stopPoller();
+    }
+
+    @Override
     public void update() {
-        String pollerUpdateCount = "Poll # " + String.valueOf(++pollCounter);
+        String pollerUpdateCount = "Poll # " + String.valueOf(myPoller.getPollCount() + " @" + String.valueOf(myPoller.getMsDelay() + "ms"));
         Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
 
-        if(clientModel.hasGame()) { //If the model has a game, switch to Lobby view.
-            clientModel.unregister(this);
+        if(clientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
             Intent intent = new Intent(this, MenuGameLobby.class);
+            intent.putExtra("poller", myPoller);
             startActivity(intent);
         }
         else if (clientModel.hasMessage()){ //If the model has a message, Toast the message
@@ -144,6 +129,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     public void createGame(View view){
         EditText gameNameEdit = (EditText)findViewById(R.id.gamename);
         String gameName = gameNameEdit.getText().toString();
+        Spinner numPlayerSpinner = (Spinner) findViewById(R.id.playernum_spinner);
+        int playerNum = Integer.parseInt(numPlayerSpinner.getSelectedItem().toString()); //spinner is hard coded into xml, so is safe
         serverProxy.createGame(clientModel.getMyUsername(), gameName, playerNum);
     }
 
@@ -154,6 +141,9 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     private class MyGameListAdapter extends RecyclerView.Adapter<MyGameListAdapter.ViewHolder> {
         private List<UnstartedGame> allGames = new ArrayList<>();
 
+        private MyGameListAdapter(List<UnstartedGame> newList){
+            allGames = newList;
+        }
 
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView itemGameName;
