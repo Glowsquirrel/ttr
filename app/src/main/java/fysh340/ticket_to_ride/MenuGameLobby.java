@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
+
+import clientcommunicator.PollerTask;
 import interfaces.Observer;
 import model.ClientModel;
+import serverfacade.commands.PollGamesCommandData;
 import serverproxy.ServerProxy;
 
 //TODO implement this class
@@ -22,6 +26,8 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         private RecyclerView recyclerView;
         private TextView text;
     private ServerProxy serverProxy = new ServerProxy();
+    private PollerTask pt;
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +66,35 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             fAdapter = new SearchAdapter(players);
             recyclerView.setAdapter(fAdapter);
         }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
+        pollGamesCommandData.setType("poll");
+        pt= new PollerTask(pollGamesCommandData);
+        pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
         @Override
         public void update() {
+            PollGamesCommandData pollGamesCommandData = new PollGamesCommandData(clientModel.getMyUsername());
+            pollGamesCommandData.setType("poll");
+            pt = new PollerTask(pollGamesCommandData);
+            pt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             if(clientModel.hasGame()) {
+                System.out.println("update rv");
                 updateUI();
             }
             else if(clientModel.isStartedGame())
             {
+                clientModel.unregister(this);
                 Intent intent = new Intent(this, GameStart.class);
                 startActivity(intent);
             }
             else
             {
+                clientModel.unregister(this);
                 Intent intent = new Intent(this, MenuGameList.class);
                 startActivity(intent);
 

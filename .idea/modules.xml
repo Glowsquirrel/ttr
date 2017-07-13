@@ -4,8 +4,12 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Ticket_To_Ride.iml" filepath="$PROJECT_DIR$/Ticket_To_Ride.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttr.iml" filepath="$PROJECT_DIR$/ttr.iml" />
       <module fileurl="file://$PROJECT_DIR$/ttr.iml" filepath="$PROJECT_DIR$/ttr.iml" />
       <module fileurl="file://$PROJECT_DIR$/ttr.iml" filepath="$PROJECT_DIR$/ttr.iml" />
       <module fileurl="file://$PROJECT_DIR$/ttr4.iml" filepath="$PROJECT_DIR$/ttr4.iml" />
