@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,9 +113,14 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         String pollerUpdateCount = "Poll # " + String.valueOf(myPoller.getPollCount() + " @" + String.valueOf(myPoller.getMsDelay() + "ms"));
         Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
 
-        if(clientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
+        if(clientModel.hasCreatedGame()){
+            clientModel.setHasCreatedGame(false);
+            serverProxy.joinGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+        }
+        else if(clientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
             Intent intent = new Intent(this, MenuGameLobby.class);
-            //intent.putExtra("poller", myPoller);
+            //intent.putExtra("poller", (Serializable)myPoller);
+            myPoller.stopPoller();
             startActivity(intent);
         }
         else if (clientModel.hasMessage()){ //If the model has a message, Toast the message
