@@ -55,7 +55,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 public void onClick(View view) {
                     serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
                     clientModel.setLeftGame(true);
-     //               clientModel.setHasGame(false);
+                    clientModel.setHasGame(false);
                     finish();
                 }
 
