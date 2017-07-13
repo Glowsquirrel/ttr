@@ -106,9 +106,22 @@ public class MasterDAO
 
             this.openConnection(DB_TO_USE);
 
-            currentUser = mUsersAccess.get(mDatabaseAccess, username);
+            User prospectiveLogin = mUsersAccess.get(mDatabaseAccess, username);
 
-            success = true;
+            if(!prospectiveLogin.getUsername().equals(""))
+            {
+
+                currentUser = mUsersAccess.get(mDatabaseAccess, username);
+
+                success = true;
+
+            }
+            else
+            {
+
+                throw new SQLException("Invalid username.");
+
+            }
 
         }
         finally
@@ -185,7 +198,7 @@ public class MasterDAO
             else
             {
 
-                return false;
+                throw new SQLException("User already exists.");
 
             }
 
@@ -249,10 +262,16 @@ public class MasterDAO
             {
 
                 mPlayersAccess.add(mDatabaseAccess, username, gameID);
+                success = true;
+
+            }
+            else
+            {
+
+                throw new SQLException("Cannot join game.");
 
             }
 
-            success = true;
 
         }
         finally
