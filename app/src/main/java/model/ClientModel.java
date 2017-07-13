@@ -154,11 +154,10 @@ public class ClientModel implements Observable{
         notifyObserver();
     }
     public void removeMyUser(){
-        user.setMyUsername("");
         userLoggedIn = false;
     }
 
-    public boolean hasUser(){
+    public boolean hasLoginUser(){
         return userLoggedIn;
     }
 

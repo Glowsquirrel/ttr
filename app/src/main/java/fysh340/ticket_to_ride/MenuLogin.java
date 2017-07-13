@@ -85,8 +85,9 @@ public class MenuLogin extends AppCompatActivity implements Observer {
 
     @Override
     public void update() {
-        if (clientModel.hasUser()){
+        if (clientModel.hasLoginUser()){
             clientModel.unregister(this); //removes this controller from list of observers
+            clientModel.removeMyUser();
             Intent intent = new Intent(this, MenuGameList.class);
             startActivity(intent); //proceed to game list screen
         }
