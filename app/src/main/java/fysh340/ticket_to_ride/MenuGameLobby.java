@@ -54,10 +54,12 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 @Override
                 public void onClick(View view) {
                     serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+                    clientModel.setLeftGame(true);
                     finish();
                 }
 
             });
+            clientModel.setLeftGame(false);
             updateUI();
 
         }
@@ -105,7 +107,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                     start.setEnabled(true);
                 }
             }
-            if(clientModel.isStartedGame())
+            if(clientModel.isStartedGame()&&!clientModel.isLeftGame())
             {
                 clientModel.unregister(this);
                 Intent intent = new Intent(this, GameStart.class);
