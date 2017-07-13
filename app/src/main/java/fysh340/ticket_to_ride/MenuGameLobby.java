@@ -53,7 +53,6 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             {
                 @Override
                 public void onClick(View view) {
-
                     serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
                 }
 
@@ -73,7 +72,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     {
         super.onStart();
         poller = new PollerTask(3000); //poll every 3s
-        //poller.pollGameList();
+        poller.pollGameList();
     }
     @Override
     public void onBackPressed() {
@@ -83,7 +82,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     @Override
     public void onStop(){
         super.onStop();
-        //poller.stopPoller();
+        poller.stopPoller();
         clientModel.unregister(this);
     }
 
