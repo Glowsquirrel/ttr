@@ -137,7 +137,9 @@ public class ClientModel implements Observable{
     @Override
     public void unregister(Observer deleteObserver) {
         int observerIndex = observers.indexOf(deleteObserver);
-        observers.remove(observerIndex);
+        if(observerIndex>=0) {
+            observers.remove(observerIndex);
+        }
     }
 
     @Override
