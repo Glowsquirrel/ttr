@@ -30,53 +30,62 @@ class CommandResultSerializer implements JsonDeserializer<CommandResult> {
         String type = jsonType.getAsString();
 
         CommandResult typeModel = null;
+        Gson gson=new Gson();
 
         //TODO add a switch statement for each Command in server Commands package
         switch (type){
             case "login": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+   /*             boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
-                String username = jsonObject.get("username").getAsString();
-                typeModel = new LoginResult(success, username, errorMessage);
+                String username = jsonObject.get("username").getAsString();*/
+                typeModel = gson.fromJson(jsonObject,LoginResult.class);
                 break;
             }
             case "register": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+  /*              boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
                 typeModel = new CommandResult("register", success, errorMessage);
+                typeModel = gson.fromJson(jsonObject,LoginResult.class);*/
+                typeModel = gson.fromJson(jsonObject,CommandResult.class);
                 break;
             }
             case "pollgames": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+              /*  boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
                 JsonArray gameListString = jsonObject.get("gameList").getAsJsonArray();
                 Type listType = new TypeToken<List<UnstartedGame>>() {}.getType();
                 List<UnstartedGame> gameList = new Gson().fromJson(gameListString, listType);
-                typeModel = new PollGamesResult(success, errorMessage, gameList);
+                typeModel = new PollGamesResult(success, errorMessage, gameList);*/
+                typeModel = gson.fromJson(jsonObject,PollGamesResult.class);
                 break;
             }
             case "creategame": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+              /*  boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
                 typeModel = new CommandResult("creategame", success, errorMessage);
+                typeModel = gson.fromJson(jsonObject,PollGamesResult.class);*/
                 break;
             }
             case "startgame": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+              /*  boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
-                typeModel = new CommandResult("startgame", success, errorMessage);
+                typeModel = new CommandResult("startgame", success, errorMessage);*/
+                typeModel = gson.fromJson(jsonObject,CommandResult.class);
                 break;
             }
             case "leavegame": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+                /*boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
                 typeModel = new CommandResult("leavegame", success, errorMessage);
+                typeModel = gson.fromJson(jsonObject,PollGamesResult.class);*/
+                typeModel = gson.fromJson(jsonObject,CommandResult.class);
                 break;
             }
             case "joingame": {
-                boolean success = jsonObject.get("success").getAsBoolean();
+               /* boolean success = jsonObject.get("success").getAsBoolean();
                 String errorMessage = jsonObject.get("errorMessage").getAsString();
-                typeModel = new CommandResult("joingame", success, errorMessage);
+                typeModel = new CommandResult("joingame", success, errorMessage);*/
+                typeModel = gson.fromJson(jsonObject,CommandResult.class);
                 break;
             }
         }

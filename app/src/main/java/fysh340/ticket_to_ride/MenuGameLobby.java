@@ -26,6 +26,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         private TextView text;
         private ServerProxy serverProxy = new ServerProxy();
         private PollerTask poller;
+        private Button start;
 
 
         @Override
@@ -35,8 +36,9 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             clientModel.register(this); //registers this controller as an observer to the ClientModel
             recyclerView = (RecyclerView) findViewById(R.id.playerList);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            Button start=(Button) findViewById(R.id.StartButton);
+            start=(Button) findViewById(R.id.StartButton);
             Button leave=(Button) findViewById(R.id.LeaveButton);
+            start.setEnabled(false);
             start.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -76,8 +78,11 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         @Override
         public void update() {
             if(clientModel.hasGame()) {
-                System.out.println("update rv");
                 updateUI();
+                if(clientModel.isGameFull())
+                {
+                    start.setEnabled(true);
+                }
             }
             else if(clientModel.isStartedGame())
             {
