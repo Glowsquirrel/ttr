@@ -54,7 +54,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
                 @Override
                 public void onClick(View view) {
 
-                    serverProxy.leaveGame(clientModel.getMyUsername(), "");
+                    serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
                 }
 
             });
@@ -77,7 +77,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
     }
     @Override
     public void onBackPressed() {
-        serverProxy.leaveGame(clientModel.getMyUsername(), "");
+        serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
 
     }
     @Override
