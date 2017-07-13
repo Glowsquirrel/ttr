@@ -1,89 +1,238 @@
 package serverfacade;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import commandresults.CommandResult;
 import commandresults.LoginResult;
 import commandresults.PollGamesResult;
+import dao.MasterDAO;
 import interfaces.IServer;
+import model.Game;
 import model.UnstartedGame;
+import model.User;
 
-public class ServerFacade implements IServer{
-
-    @Override
-    public LoginResult login(String username, String password) {
-        //TODO implement me
-        return new LoginResult(true, "fake data", "myusername");
+public class ServerFacade implements IServer
+{
+    
+    //Data Members
+    
+    private static final String REGISTER_TYPE = "register";
+    private static final String CREATE_TYPE = "creategame";
+    private static final String JOIN_TYPE = "joingame";
+    private static final String LEAVE_TYPE = "leavegame";
+    private static final String START_TYPE = "startgame";
+    
+    private MasterDAO mDatabaseAccess;
+    
+    //Constructors
+    
+    public ServerFacade()
+    {
+        
+        mDatabaseAccess = new MasterDAO();
+        
     }
 
     @Override
-    public CommandResult register(String username, String password) {
-        //TODO implement me
-        return new CommandResult("register", true, "this was fake");
+    public LoginResult login(String username, String password)
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+    
+            success = mDatabaseAccess.login(username, password);
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            
+        }
+        
+        return new LoginResult(success, username, message);
+        
     }
 
     @Override
-    public PollGamesResult pollGameList(String username) {
-        //TODO implement me
-        List<UnstartedGame> gamesList = new ArrayList<>();
-
-        UnstartedGame game1 = new UnstartedGame();
-        game1.setName("MY GAME 1");
-        game1.setPlayersIn(2);
-        game1.setPlayersNeeded(4);
-        List<String> myPlayers1 = new ArrayList<>();
-        myPlayers1.add("The Terminator");
-        myPlayers1.add("Harry Potter");
-        game1.setUsernames(myPlayers1);
-
-        UnstartedGame game2 = new UnstartedGame();
-        game2.setName("I have the high ground and a long game name");
-        game2.setPlayersIn(3);
-        game2.setPlayersNeeded(5);
-        List<String> myPlayers2 = new ArrayList<>();
-        myPlayers2.add("Obi-wan Kenobi");
-        myPlayers2.add("DefinitelyNotAVelociraptorButIWouldntTrustMe");
-        myPlayers2.add("PenguinMaster2.0");
-        game2.setUsernames(myPlayers2);
-
-        UnstartedGame game3 = new UnstartedGame();
-        game3.setName("TTR is life");
-        game3.setPlayersIn(3);
-        game3.setPlayersNeeded(3);
-        List<String> myPlayers3 = new ArrayList<>();
-        myPlayers3.add("Never gonna give you");
-        myPlayers3.add("up. Never gonna");
-        myPlayers3.add("let you down.");
-        game3.setUsernames(myPlayers3);
-
-        gamesList.add(game1);
-        gamesList.add(game2);
-        gamesList.add(game3);
-        return new PollGamesResult(true, "fake data", gamesList);
+    public CommandResult register(String username, String password)
+    {
+    
+        boolean success = false;
+        String message = "";
+    
+        try
+        {
+        
+            success = mDatabaseAccess.register(username, password);
+        
+        }
+        catch(SQLException ex)
+        {
+        
+            message = ex.getMessage();
+        
+        }
+    
+        return new CommandResult(REGISTER_TYPE, success, message);
     }
 
     @Override
-    public CommandResult createGame(String username, String gameName, int playerNum) {
-        //TODO implement me
-        return new CommandResult("creategame", true, "fake create");
+    public PollGamesResult pollGameList(String username)
+    {
+        
+        boolean success = false;
+        List<Game> openGames = null;
+        String message = "";
+        
+        try
+        {
+    
+            openGames = mDatabaseAccess.getOpenGames();
+            success = true;
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            openGames = new ArrayList<>();
+            
+        }
+        
+        List<UnstartedGame> unstartedGames = new ArrayList<>();
+        
+        for(Game openGame : openGames)
+        {
+            
+            UnstartedGame convertedGame = new UnstartedGame();
+            
+            convertedGame.setName(openGame.getID());
+            
+            List<String> names = new ArrayList<>();
+            
+            for(User player : openGame.getPlayers())
+            {
+                
+                names.add(player.getUsername());
+                
+            }
+            
+            convertedGame.setUsernames(names);
+            
+            convertedGame.setPlayersIn(names.size());
+            
+            convertedGame.setPlayersNeeded(openGame.getNumberOfPlayers() - names.size());
+            
+            unstartedGames.add(convertedGame);
+            
+        }
+        
+        return new PollGamesResult(success, message, unstartedGames);
     }
 
     @Override
-    public CommandResult joinGame(String username, String gameName) {
-        //TODO implement me
-        return new CommandResult("joingame", true, "fake join");
+    public CommandResult createGame(String username, String gameName, int playerNum)
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+            
+            mDatabaseAccess.createGame(username, gameName, playerNum);
+            success = true;
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            
+        }
+        
+        return new CommandResult(CREATE_TYPE, success, message);
+        
     }
 
     @Override
-    public CommandResult leaveGame(String username, String gameName) {
-        //TODO implement me
-        return new CommandResult("leavegame", true, "fake leave");
+    public CommandResult joinGame(String username, String gameName)
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+            
+            mDatabaseAccess.joinGame(username, gameName);
+            success = true;
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            
+        }
+        
+        return new CommandResult(JOIN_TYPE, success, message);
+        
     }
 
     @Override
-    public CommandResult startGame(String gameName) {
-        //TODO implement me
-        return new CommandResult("startgame", true, "fake start");
+    public CommandResult leaveGame(String username, String gameName)
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+            
+            mDatabaseAccess.leaveGame(username, gameName);
+            success = true;
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            
+        }
+        
+        return new CommandResult(LEAVE_TYPE, success, message);
+        
     }
+
+    @Override
+    public CommandResult startGame(String gameName)
+    {
+        
+        boolean success = false;
+        String message = "";
+        
+        try
+        {
+            
+            mDatabaseAccess.startGame(gameName);
+            success = true;
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            message = ex.getMessage();
+            
+        }
+        
+        return new CommandResult(START_TYPE, success, message);
+        
+    }
+    
 }
