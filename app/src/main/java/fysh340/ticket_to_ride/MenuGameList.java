@@ -110,7 +110,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     {
         super.onStart();
         poller = new PollerTask(clientModel.getMyUsername(), 10000); //poll every 10s. currently slow for debug purposes
-        poller.startPoller();
+        poller.pollGameList();
     }
 
     @Override
