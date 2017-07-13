@@ -95,7 +95,7 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Success.";
         
         try
         {
@@ -163,12 +163,19 @@ public class ServerFacade implements IServer
     {
         
         boolean success = false;
-        String message = "";
+        String message = "Success.";
         
         try
         {
             
             success = mDatabaseAccess.register(username, password);
+
+            if(!success)
+            {
+
+                message = "Invalid password.";
+
+            }
             
         }
         catch(SQLException ex)
