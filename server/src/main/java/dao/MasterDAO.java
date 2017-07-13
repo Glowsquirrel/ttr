@@ -1,5 +1,7 @@
 package dao;
 
+import org.sqlite.core.DB;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -550,8 +552,12 @@ public class MasterDAO
 
         PreparedStatement stmt = null;
 
+        boolean success = false;
+
         try
         {
+
+            this.openConnection(DB_TO_USE);
 
             String sql = "DELETE FROM user";
             stmt = mDatabaseAccess.prepareStatement(sql);
@@ -561,9 +567,11 @@ public class MasterDAO
             stmt = mDatabaseAccess.prepareStatement(sql);
             stmt.executeUpdate();
 
-            sql = "DELETE FROM players";
+            sql = "DELETE FROM players;";
             stmt = mDatabaseAccess.prepareStatement(sql);
             stmt.executeUpdate();
+
+            success = true;
 
         }
         finally
@@ -573,6 +581,12 @@ public class MasterDAO
             {
 
                 stmt.close();
+
+            }
+            if(!mDatabaseAccess.isClosed())
+            {
+
+                this.closeConnection(success);
 
             }
 
