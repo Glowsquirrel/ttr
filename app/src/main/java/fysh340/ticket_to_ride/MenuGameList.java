@@ -52,8 +52,6 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
         setupUI(findViewById(android.R.id.content));
 
-        clientModel.register(this); //registers this controller as an observer to the ClientModel
-
         RecyclerView mRecyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setAutoMeasureEnabled(true);
@@ -89,18 +87,35 @@ public class MenuGameList extends AppCompatActivity implements Observer{
                 this, R.array.player_num_array, R.layout.support_simple_spinner_dropdown_item);
         numPlayerSpinner.setAdapter(numPlayerAdapter);
 
-        //create poller and start
-        myPoller = new PollerTask(10000); //poll every 10s. currently slow for debug purposes
+        myPoller = new PollerTask(6000); //poll every 10s. currently slow for debug purposes
         myPoller.pollGameList();
+        //getApplicationContext().startService(new Intent(this, PollerTask.class));
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        //create poller and start
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        clientModel.register(this); //registers this controller as an observer to the ClientModel
+        //clientModel.register(this);
+
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        //myPoller.stopPoller();
+    }
     @Override
     public void onStop()
     {
         super.onStop();
-        clientModel.unregister(this); //registers this controller as an observer to the ClientModel
+        //clientModel.unregister(this); //registers this controller as an observer to the ClientModel
+        //myPoller.stopPoller();
     }
-
     @Override
     protected void onDestroy(){
         super.onDestroy();
@@ -109,8 +124,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
     @Override
     public void update() {
-        String pollerUpdateCount = "Poll # " + String.valueOf(myPoller.getPollCount() + " @" + String.valueOf(myPoller.getMsDelay() + "ms"));
-        Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
+        //String pollerUpdateCount = "Poll # " + String.valueOf(myPoller.getPollCount() + " @" + String.valueOf(myPoller.getMsDelay() + "ms"));
+        //Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
 
         if(clientModel.hasCreatedGame()){
             clientModel.setHasCreatedGame(false);
@@ -121,7 +136,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             Intent intent = new Intent(this, MenuGameLobby.class);
             //intent.putExtra("poller", (Serializable)myPoller);
             clientModel.unregister(this);
-            myPoller.stopPoller();
+            //myPoller.stopPoller();
             startActivity(intent);
         }
         else if (clientModel.hasMessage()){ //If the model has a message, Toast the message
