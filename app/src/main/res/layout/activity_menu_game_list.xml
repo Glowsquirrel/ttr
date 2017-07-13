@@ -88,7 +88,8 @@
                         android:maxLines="1"
                         android:paddingLeft="30dp"
                         android:paddingRight="30dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:imeOptions="actionDone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -118,7 +119,8 @@
                             android:gravity="center"
                             android:text="@string/create_game"
                             android:onClick="createGame"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:enabled="false"/>
 
                         <Space
                             android:layout_width="match_parent"

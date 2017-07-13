@@ -24,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +82,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             }
         });
 
+        //recyclerview adapter
         mAdapter = new MyGameListAdapter(); //create the search adapter once, update its data later
         mRecyclerView.setAdapter(mAdapter);
 
@@ -191,8 +191,6 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
             holder.itemGameName.setText(gameName);
             holder.itemPlayers.setText(playerString);
-           // holder.myView.setBackgroundColor(getRainbowColor(position, getItemCount()));
-
             holder.myView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -205,18 +203,6 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         @Override
         public int getItemCount() {
             return allGames.size();
-        }
-
-        public int getRainbowColor(int position, int size){
-            if (position == 0)
-                return Color.parseColor("#50000000");
-            int RGBMax = 255;
-            int colorValue = (255 * position) % size;
-            DecimalFormat twoDigits = new DecimalFormat("00");
-            int hexColor = Integer.valueOf(String.valueOf(colorValue), 16);
-            String myColor = twoDigits.format(hexColor);
-            String ARGBColor = "#dd" + myColor + myColor + myColor;
-            return Color.parseColor(ARGBColor);
         }
 
     }
