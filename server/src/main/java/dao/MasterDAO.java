@@ -268,7 +268,15 @@ public class MasterDAO
             List<User> players = mPlayersAccess.getPlayers(mDatabaseAccess, gameID);
 
             //Check to ensure game exists and there are spots open
-            if(!prospectiveGame.getID().equals("") && players.size() <
+            if(!mPlayersAccess.exists(mDatabaseAccess,
+                    username,
+                    gameID))
+            {
+
+                success = true;
+
+            }
+            else if(!prospectiveGame.getID().equals("") && players.size() <
                     prospectiveGame.getNumberOfPlayers() && !mPlayersAccess.exists(mDatabaseAccess,
                                                                                     username,
                                                                                     gameID))
