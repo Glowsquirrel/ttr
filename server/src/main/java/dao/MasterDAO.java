@@ -223,10 +223,12 @@ public class MasterDAO
         try
         {
 
-            if(mGameAccess.get(mDatabaseAccess, gameID).getID().equals(""))
-            {
+            this.openConnection(DB_TO_USE);
 
-                this.openConnection(DB_TO_USE);
+            Game prospectiveGame = mGameAccess.get(mDatabaseAccess, gameID);
+
+            if(prospectiveGame.getID().equals(""))
+            {
 
                 mGameAccess.add(mDatabaseAccess, newGame);
 
