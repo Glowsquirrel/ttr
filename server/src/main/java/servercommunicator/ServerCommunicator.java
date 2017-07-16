@@ -24,6 +24,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.websocket.server.WebSocketHandler;
@@ -75,15 +76,32 @@ public class ServerCommunicator{
 
         //ServletContextHandler context0 = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        Server server = new Server(port);
 
         WebSocketHandler wsHandler = new WebSocketHandler() {
             @Override
             public void configure(WebSocketServletFactory factory) {
                 factory.register(MyWebSocket.class);
-
             }
         };
+
+        Server server = new Server();
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(port);
+        server.addConnector(connector);
+
+        //ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        //context.setContextPath("/");
+        //server.setHandler(context);
+
+        ResourceHandler rh = new ResourceHandler();
+        rh.setDirectoriesListed(true);
+        rh.setResourceBase("./server/web");
+
+        wsHandler.setHandler(rh);
+
+        //ServletHolder holder = new ServletHolder("ws-events", EventServlet.class);
+        //context.addServlet(holder, "/ws");
+
 
         server.setHandler(wsHandler);
         server.start();
