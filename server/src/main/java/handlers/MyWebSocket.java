@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 
+
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -16,6 +17,7 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import commandresults.CommandResult;
 import commandresults.LoginResult;
+import interfaces.Observer;
 import okio.ByteString;
 import serverfacade.commands.Command;
 import serverfacade.commands.ICommand;
@@ -23,9 +25,10 @@ import serverfacade.commands.JoinGameCommand;
 import serverfacade.commands.LeaveGameCommand;
 
 @WebSocket
-public class MyWebSocket extends WebSocketAdapter{
+public class MyWebSocket extends WebSocketAdapter implements Observer {
     private static HashMap<String, Session> allSessions = new HashMap<>();
     private static HashMap<String, Session> loggedInSessions = new HashMap<>();
+    private static HashMap<String, HashMap<String, Session>> gameSessions = new HashMap<>();
 
     public static HashMap<String, Session> getLoggedInSessions() {
         return loggedInSessions;
@@ -122,5 +125,10 @@ public class MyWebSocket extends WebSocketAdapter{
                 ioex.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 }

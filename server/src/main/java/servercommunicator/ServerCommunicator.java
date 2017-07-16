@@ -21,6 +21,7 @@ import com.sun.jndi.cosnaming.IiopUrl;
 import com.sun.net.httpserver.*;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -68,7 +69,6 @@ public class ServerCommunicator{
     public static void main(String[] args) throws Exception{
         String portNumber = "8080";
         int port = 8080;
-        Server server = new Server(port);
         //HandlerCollection handlerCollection = new HandlerCollection();
         //handlerCollection.setHandlers(new org.eclipse.jetty.server.Handler[] {new CommandHandler(), new MyDefaultHandler()});
         //server.setHandler(handlerCollection);
@@ -84,13 +84,17 @@ public class ServerCommunicator{
 
             }
         };
+        Server server = new Server();
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(port);
+        server.addConnector(connector);
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+        server.setHandler(context);
 
-        ServletHolder holder = new ServletHolder("ws-events", )
-        ContextHandler context = new ContextHandler();
-        context.setContextPath("/");
-        context.setHandler(wsHandler);
+        ServletHolder holder = new ServletHolder("ws-events", EventServlet.class);
+        context.addServlet(holder, "/ws");
 
         server.setHandler(context);
         server.start();
