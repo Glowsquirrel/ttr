@@ -6,9 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 
-
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
@@ -17,7 +15,6 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import commandresults.CommandResult;
 import commandresults.LoginResult;
-import interfaces.Observer;
 import okio.ByteString;
 import serverfacade.commands.Command;
 import serverfacade.commands.ICommand;
@@ -25,10 +22,9 @@ import serverfacade.commands.JoinGameCommand;
 import serverfacade.commands.LeaveGameCommand;
 
 @WebSocket
-public class MyWebSocket extends WebSocketAdapter implements Observer {
+public class MyWebSocket {
     private static HashMap<String, Session> allSessions = new HashMap<>();
     private static HashMap<String, Session> loggedInSessions = new HashMap<>();
-    private static HashMap<String, HashMap<String, Session>> gameSessions = new HashMap<>();
 
     public static HashMap<String, Session> getLoggedInSessions() {
         return loggedInSessions;
@@ -44,10 +40,8 @@ public class MyWebSocket extends WebSocketAdapter implements Observer {
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
         System.out.println("Close: statusCode=" + statusCode + ", reason=" + reason);
-        if (this.gameName != null) {
-            LeaveGameCommand kickDC = new LeaveGameCommand(this.username, this.gameName);
-            kickDC.execute();
-        }
+        LeaveGameCommand kickDC = new LeaveGameCommand(this.username, this.gameName);
+        kickDC.execute();
         if (MyWebSocket.allSessions.containsKey(this.sessionID)) { //removes socket from map
             allSessions.remove(this.sessionID);
         }
@@ -92,15 +86,15 @@ public class MyWebSocket extends WebSocketAdapter implements Observer {
     }
 
     @OnWebSocketMessage
-    public void onMessage(String commandJson) {
+    public void onMessage(String message) {
 
-        System.out.println("Message: " + commandJson);
+        System.out.println("Message: " + message);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Command.class, new CommandSerializer());
         Gson gson = gsonBuilder.create();
 
         try {
-            Command command = gson.fromJson(commandJson, Command.class);
+            Command command = gson.fromJson(message, Command.class);
             CommandResult results = ((ICommand) command).execute();
 
             if (results.getType().equals("login") && results.isSuccess()){
@@ -108,6 +102,7 @@ public class MyWebSocket extends WebSocketAdapter implements Observer {
                 loggedInSessions.put(this.username, this.session);
                 String loginWorked = gson.toJson(results);
                 session.getRemote().sendString(loginWorked);
+
             }
             else if (command.getType().equals("joingame") && results.isSuccess()){
                 this.gameName = ((JoinGameCommand)command).getGameName();
@@ -116,6 +111,7 @@ public class MyWebSocket extends WebSocketAdapter implements Observer {
                 String failedResult = gson.toJson(results);
                 session.getRemote().sendString(failedResult);
             }
+
         }catch (Exception ex){
             ex.printStackTrace();
             try {
@@ -125,10 +121,5 @@ public class MyWebSocket extends WebSocketAdapter implements Observer {
                 ioex.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void update() {
-
     }
 }

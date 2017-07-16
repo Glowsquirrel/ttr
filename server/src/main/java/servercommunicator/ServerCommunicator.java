@@ -75,28 +75,17 @@ public class ServerCommunicator{
 
         //ServletContextHandler context0 = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
+        Server server = new Server(port);
 
         WebSocketHandler wsHandler = new WebSocketHandler() {
             @Override
             public void configure(WebSocketServletFactory factory) {
                 factory.register(MyWebSocket.class);
-                ServerFacade serverFacade = new ServerFacade();
 
             }
         };
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(port);
-        server.addConnector(connector);
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
-        server.setHandler(context);
-
-        ServletHolder holder = new ServletHolder("ws-events", EventServlet.class);
-        context.addServlet(holder, "/ws");
-
-        server.setHandler(context);
+        server.setHandler(wsHandler);
         server.start();
         server.join();
 

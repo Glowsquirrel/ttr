@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import org.eclipse.jetty.annotations.AnnotationParser;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import serverfacade.ServerFacade;
 
-public class MyDefaultHandler extends AbstractHandler {
+public class MyDefaultHandler extends ResourceHandler {
     private static Logger logger = Logger.getLogger("serverlog");
 
     @Override

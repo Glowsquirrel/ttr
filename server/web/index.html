@@ -19,6 +19,23 @@
 
         <script type="text/javascript">
 
+          var ws = new WebSocket("ws://localhost:8080/ws");
+
+          ws.onopen = function() {
+              alert("WebSocket is Connected!");
+          };
+
+          ws.onmessage = function (evt) {
+              alert("Message: " + evt.data);
+          };
+
+          ws.onclose = function() {
+              alert("Closed!");
+          };
+
+          ws.onerror = function(err) {
+              alert("Error: " + err);
+          };
             function submit()
             {
                 var handle = document.getElementById("handleBox").value;
@@ -26,13 +43,16 @@
                 var token = document.getElementById("authToken").value;
 
                 var method = "post";
+                /*
                 if(handle.includes("person") || handle.includes("event"))
                 {
                   method = "get";
                 }
-
-                send(handle,requestBody, method, token);
+                */
+                ws.send(requestBody);
                 return false;
+
+
             }
 
             function send(path, params, method, token)
