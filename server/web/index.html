@@ -22,19 +22,23 @@
           var ws = new WebSocket("ws://localhost:8080/ws");
 
           ws.onopen = function() {
-              alert("WebSocket is Connected!");
+              alert("Connected as WebSocket!");
           };
 
           ws.onmessage = function (evt) {
-              alert("Message: " + evt.data);
+              //alert("Message: " + evt.data);
+              document.getElementById("response").textContent = formatJson(evt.data)
+              //var x = document.createElement("span");
+              //document.getElementById("span").innerHTML = formatJson(evt)
+              //document.getElementById("response").textContent = formatJson(evt)
           };
 
           ws.onclose = function() {
-              alert("Closed!");
+              alert("Disconnected from server");
           };
 
           ws.onerror = function(err) {
-              alert("Error: " + err);
+              alert("Fatal Error: " + err);
           };
             function submit()
             {

@@ -1,12 +1,9 @@
 package commandresults;
 
 public class LoginResult extends CommandResult{
-    private String username;
 
     public LoginResult(boolean success, String username, String message){
         super.setType("login");
-        super.setSuccess(success);
-        super.setMessage(message);
         this.username = username;
     }
 
@@ -19,11 +16,5 @@ public class LoginResult extends CommandResult{
 
     public String getType(){
         return super.getType();
-    }
-    public boolean isSuccess(){
-        return super.isSuccess();
-    }
-    public String getMessage(){
-        return super.getMessage();
     }
 }

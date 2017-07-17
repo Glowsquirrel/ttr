@@ -1,7 +1,6 @@
 package serverfacade.commands;
 
 public class CreateGameCommandData extends Command{
-    protected String username;
     protected String gameName;
     protected int numPlayers;
 

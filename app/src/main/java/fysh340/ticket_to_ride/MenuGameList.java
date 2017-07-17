@@ -91,13 +91,9 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         //myPoller = new PollerTask(2000); //poll every 10s. currently slow for debug purposes
         //myPoller.pollGameList();
         //getApplicationContext().startService(new Intent(this, PollerTask.class));
+        mServerProxy.pollGameList(mClientModel.getMyUsername());
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        //create poller and start
-    }
     @Override
     public void onResume(){
         super.onResume();
@@ -116,6 +112,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         super.onStop();
         //mClientModel.unregister(this); //registers this controller as an observer to the ClientModel
         //myPoller.stopPoller();
+        //mClientModel.unregister(this);
     }
     @Override
     protected void onDestroy(){
@@ -155,7 +152,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         EditText gameNameEdit = (EditText)findViewById(R.id.gamename);
         String gameName = gameNameEdit.getText().toString();
         Spinner numPlayerSpinner = (Spinner) findViewById(R.id.playernum_spinner);
-        int playerNum = Integer.parseInt(numPlayerSpinner.getSelectedItem().toString()); //spinner is hard coded into xml, so is safe
+        int playerNum = Integer.parseInt(numPlayerSpinner.getSelectedItem().toString()); //spinner is hard coded into xml, so is safe to parseInt
         mClientModel.setMyGame(gameName);
         mServerProxy.createGame(mClientModel.getMyUsername(), gameName, playerNum);
     }

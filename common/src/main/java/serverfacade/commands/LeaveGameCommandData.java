@@ -1,7 +1,6 @@
 package serverfacade.commands;
 
 public class LeaveGameCommandData extends Command{
-    protected String username;
     protected String gameName;
 
     public LeaveGameCommandData(String username, String gameName){

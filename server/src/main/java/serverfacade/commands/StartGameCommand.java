@@ -10,8 +10,8 @@ public class StartGameCommand extends StartGameCommandData implements ICommand{
     }
 
     @Override
-    public CommandResult execute() {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.startGame(gameName);
+        serverFacade.startGame(gameName, username);
     }
 }

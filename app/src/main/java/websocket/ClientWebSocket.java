@@ -2,7 +2,6 @@ package websocket;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,38 +12,41 @@ import java.util.concurrent.TimeUnit;
 import clientcommunicator.CommandResultSerializer;
 import clientfacade.ClientFacade;
 import commandresults.CommandResult;
-import model.ClientModel;
+import commandresults.PollGamesResult;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
+import serverproxy.ServerProxy;
 
-import static fysh340.ticket_to_ride.R.id.output;
-
-public class MyWebSocket extends WebSocketListener {
-    private static final MyWebSocket myWebSocket = new MyWebSocket();
-    private MyWebSocket(){}
-    public static MyWebSocket getMyWebSocket() {
-        return myWebSocket;
+public class ClientWebSocket extends WebSocketListener {
+    private static final ClientWebSocket clientWebSocket = new ClientWebSocket();
+    private ClientWebSocket(){}
+    public static ClientWebSocket getClientWebSocket() {
+        return clientWebSocket;
     }
+
+
     private WebSocket ws;
     private String ip;
     private String port;
     private int RECONNECT_CODE = 1;
-
-
-    private ClientFacade clientFacade = new ClientFacade();
     private boolean listening = false;
-
-
-    OkHttpClient client;
+    private ClientFacade clientFacade = new ClientFacade();
+    private OkHttpClient client;
+    private String username;
+    private String password;
+    private boolean isDisconnected = false;
+    ServerProxy serverProxy = new ServerProxy();
 
     public void sendJson(String myString){
         ws.send(myString);
     }
-    public boolean initialize(String ip, String port){
+    public boolean initialize(String ip, String port, String username, String password){
+        this.username = username;
+        this.password = password;
         if (!listening){
             if (ip.trim().equals(""))
                 return false;
@@ -59,12 +61,16 @@ public class MyWebSocket extends WebSocketListener {
                     .build();
             ws = client.newWebSocket(request, this);
             listening = true;
+            if (isDisconnected){
+                serverProxy.login(username, password);
+            }
         }
         return true;
     }
 
     @Override
     public void onOpen(WebSocket webSocket, Response respone){
+
         //webSocket.send("Its me, Mario!");
         //webSocket.close(NORMAL_CLOSURE_STATUS, "GOODBYE");
     }
@@ -79,16 +85,23 @@ public class MyWebSocket extends WebSocketListener {
 
         switch (commandResult.getType()){
             case "register":
-                clientFacade.registerUser(commandResult);
+                //At this point, the server has already accepted the register request as true because
+                //it did not send a FailedResult. First parameter is for outputting a message (if one
+                //exists, second is to match the proxy.
+                clientFacade.registerUser(commandResult.getMessage(), null);
                 break;
             case "login":
-                clientFacade.loginUser(commandResult);
+                //See registerUser note.
+                clientFacade.loginUser(commandResult.getMessage(), null);
                 break;
             case "pollgames":
-                clientFacade.updateGameList(commandResult);
+                //Has extra information to get. Username unused here.
+                PollGamesResult pollGamesResult = (PollGamesResult)commandResult;
+                clientFacade.updateSingleUserGameList(pollGamesResult.getUsername(), pollGamesResult.getGameList());
                 break;
             case "creategame":
-                clientFacade.createGame(commandResult);
+                //
+                clientFacade.createGame(commandResult.getUsername(), commandResult.getGameName());
                 break;
             case "startgame":
                 clientFacade.startGame(commandResult);
@@ -114,9 +127,10 @@ public class MyWebSocket extends WebSocketListener {
     public void onClosing(WebSocket webSocket, int code, String reason){
         //output("Closing : " + code + " / " + reason);
         listening = false;
+        isDisconnected = true;
         try {
             Thread.sleep(5000);
-            initialize(this.ip, this.port);
+            initialize(this.ip, this.port, this.username, this.password);
         }catch (InterruptedException ex){
             //Thread.currentThread().interrupt();
         }

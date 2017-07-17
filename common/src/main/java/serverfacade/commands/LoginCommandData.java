@@ -1,7 +1,6 @@
 package serverfacade.commands;
 
 public class LoginCommandData extends Command {
-    protected String username;
     protected String password;
 
     public LoginCommandData(String username, String password) {

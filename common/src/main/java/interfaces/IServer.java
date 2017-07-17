@@ -14,15 +14,15 @@ import commandresults.PollGamesResult;
 public interface IServer {
 
     //MENU LOGIN
-    LoginResult login(String username, String password);
-    CommandResult register(String username, String password);
+    void login(String username, String password);
+    void register(String username, String password);
 
     //MENU GAMELIST && MENU LOBBY
-    PollGamesResult pollGameList(String username);
-    CommandResult createGame(String username, String gameName, int playerNum);
-    CommandResult joinGame(String username, String gameName);
-    CommandResult leaveGame(String username, String gameName);
-    CommandResult startGame(String gameName);
+    void pollGameList(String username);
+    void createGame(String username, String gameName, int playerNum);
+    void joinGame(String username, String gameName);
+    void leaveGame(String username, String gameName);
+    void startGame(String gameName, String username);
 
 }
 

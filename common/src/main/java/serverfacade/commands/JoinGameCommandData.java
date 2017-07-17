@@ -1,7 +1,6 @@
 package serverfacade.commands;
 
 public class JoinGameCommandData extends Command{
-    protected String username;
     protected String gameName;
 
     public JoinGameCommandData(String username, String gameName){

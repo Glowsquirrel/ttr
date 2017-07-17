@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import clientfacade.ClientFacade;
 import commandresults.CommandResult;
-import commandresults.LoginResult;
 import serverfacade.commands.Command;
 
 /**
@@ -98,7 +97,7 @@ public class CommandTask extends AsyncTask<Void, Void, CommandResult> {
                 facade.registerUser(result);
                 break;
             case "pollgames":
-                facade.updateGameList(result);
+                facade.updateSingleUserGameList(result);
                 break;
             case "creategame":
                 facade.createGame(result);

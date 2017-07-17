@@ -25,9 +25,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".MenuGameLobby" />
         <activity android:name=".GameStart" />
-        <activity android:name=".SocketTest">
-
-        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package clientcommunicator;
 
-import android.os.AsyncTask;
-
 import com.google.gson.Gson;
 
 import serverfacade.commands.Command;
@@ -13,14 +11,14 @@ import serverfacade.commands.LoginCommandData;
 import serverfacade.commands.PollGamesCommandData;
 import serverfacade.commands.RegisterCommandData;
 import serverfacade.commands.StartGameCommandData;
-import websocket.MyWebSocket;
+import websocket.ClientWebSocket;
 
 /**
  *
  */
 public class ClientCommunicator {
     private ClientModel clientModel = ClientModel.getMyClientModel();
-    private MyWebSocket webSocket = MyWebSocket.getMyWebSocket();
+    private ClientWebSocket webSocket = ClientWebSocket.getClientWebSocket();
     private Gson gson = new Gson();
 
     public void doCommand(Command command){

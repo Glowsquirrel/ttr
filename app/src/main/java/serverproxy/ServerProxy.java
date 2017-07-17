@@ -12,14 +12,14 @@ import interfaces.IServer;
 import serverfacade.commands.PollGamesCommandData;
 import serverfacade.commands.RegisterCommandData;
 import serverfacade.commands.StartGameCommandData;
-import websocket.MyWebSocket;
+import websocket.ClientWebSocket;
 
 /**
  * The ServerProxy is the proxy on the client side that lets the server do the actual execution.
  */
 public class ServerProxy implements IServer{
     private ClientCommunicator clientCommunicator = new ClientCommunicator();
-    private MyWebSocket webSocket = MyWebSocket.getMyWebSocket();
+    private ClientWebSocket webSocket = ClientWebSocket.getClientWebSocket();
 
     @Override
     public LoginResult login(String username, String password){
@@ -64,7 +64,7 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public CommandResult startGame(String gameName) {
+    public CommandResult startGame(String gameName, String username) {
         StartGameCommandData commandData = new StartGameCommandData(gameName);
         clientCommunicator.doCommand(commandData);
         return null;

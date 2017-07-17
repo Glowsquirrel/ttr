@@ -1,11 +1,6 @@
 package handlers;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-
-import org.eclipse.jetty.annotations.AnnotationParser;
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
@@ -14,15 +9,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import serverfacade.ServerFacade;
 
 public class MyDefaultHandler extends ResourceHandler {
     private static Logger logger = Logger.getLogger("serverlog");
@@ -42,7 +33,7 @@ public class MyDefaultHandler extends ResourceHandler {
                 WebSocketHandler wsHandler = new WebSocketHandler() {
                     @Override
                     public void configure(WebSocketServletFactory factory) {
-                        factory.register(MyWebSocket.class);
+                        factory.register(ServerWebSocket.class);
                     }
                 };
 

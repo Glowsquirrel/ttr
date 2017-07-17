@@ -9,8 +9,8 @@ public class ClearDatabaseCommand extends Command implements ICommand {
         super.setType("cleardb");
     }
     @Override
-    public CommandResult execute() {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.clearDatabase();
+        serverFacade.clearDatabase(username);
     }
 }

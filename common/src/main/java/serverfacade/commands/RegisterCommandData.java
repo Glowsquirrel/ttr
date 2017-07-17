@@ -1,7 +1,6 @@
 package serverfacade.commands;
 
 public class RegisterCommandData extends Command {
-    protected String username;
     protected String password;
 
     public RegisterCommandData(String username, String password) {
