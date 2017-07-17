@@ -26,7 +26,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import clientcommunicator.PollerTask;
 import model.UnstartedGame;
 import interfaces.Observer;
 import model.ClientModel;

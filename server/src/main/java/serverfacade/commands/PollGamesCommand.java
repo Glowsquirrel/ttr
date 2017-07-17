@@ -1,6 +1,6 @@
 package serverfacade.commands;
 
-import commandresults.CommandResult;
+import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
 public class PollGamesCommand extends PollGamesCommandData implements ICommand {
@@ -9,8 +9,8 @@ public class PollGamesCommand extends PollGamesCommandData implements ICommand {
     }
 
     @Override
-    public CommandResult execute() {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.pollGameList(username);
+        serverFacade.pollGameList(username);
     }
 }

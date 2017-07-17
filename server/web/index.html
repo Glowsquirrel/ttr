@@ -22,7 +22,7 @@
           var ws = new WebSocket("ws://localhost:8080/ws");
 
           ws.onopen = function() {
-              alert("Connected as WebSocket!");
+              document.getElementById("response").textContent = ("WebSocket is connected!")
           };
 
           ws.onmessage = function (evt) {
@@ -127,50 +127,42 @@
             function clear()
             {
                 window.scrollTo(0,document.body.scrollHeight);
-                document.getElementById("handleBox").value = "/command";
-                document.getElementById("requestBox").value = formatJson("{\"type\":\"cleardb\"}");
+                document.getElementById("requestBox").value = formatJson("{\"type\":\"cleardb\",\"username\":\"username\"}");
             }
             function login()
             {
                 window.scrollTo(0,document.body.scrollHeight);
-                document.getElementById("handleBox").value = "/command";
                 document.getElementById("requestBox").value = formatJson("{\"type\":\"login\",\"username\":\"username\",\"password\":\"password\"}");
             }
             function register()
             {
                 window.scrollTo(0,document.body.scrollHeight);
-                document.getElementById("handleBox").value = "/command";
                 document.getElementById("requestBox").value = formatJson("{\"type\":\"register\",\"username\":\"username\",\"password\":\"password\"}");
             }
             function poll()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("handleBox").value = "/command";
               document.getElementById("requestBox").value = formatJson("{\"type\":\"pollgames\",\"username\":\"username\"}");
             }
             function creategame()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("handleBox").value = "/command";
               document.getElementById("requestBox").value = formatJson("{\"type\":\"creategame\",\"username\":\"username\",\"gameName\":\"gameName\",\"numPlayers\":\"0\"}");
             }
             function joingame()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("handleBox").value = "/command";
               document.getElementById("requestBox").value = formatJson("{\"type\":\"joingame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function leavegame()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("handleBox").value = "/command";
               document.getElementById("requestBox").value = formatJson("{\"type\":\"leavegame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function startgame()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("handleBox").value = "/command";
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"gameName\":\"gameName\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
         </script>
     </head>

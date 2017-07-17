@@ -1,6 +1,6 @@
 package serverfacade.commands;
 
-import commandresults.CommandResult;
+import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
 public class CreateGameCommand extends CreateGameCommandData implements ICommand {
@@ -10,8 +10,8 @@ public class CreateGameCommand extends CreateGameCommandData implements ICommand
     }
 
     @Override
-    public CommandResult execute() {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.createGame(username, gameName, numPlayers);
+        serverFacade.createGame(username, gameName, numPlayers);
     }
 }

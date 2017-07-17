@@ -11,9 +11,9 @@ public class Utils {
     public static final String JOIN_TYPE = "joingame";
     public static final String LEAVE_TYPE = "leavegame";
     public static final String START_TYPE = "startgame";
-    public static final String POLL_TYPE = "startgame";
-    public static final String LOGIN_TYPE = "startgame";
-    public static final String FAILED_TYPE = "failed";
+    public static final String POLL_TYPE = "pollgames";
+    public static final String LOGIN_TYPE = "login";
+    public static final String MESSAGE_TYPE = "message";
 
     public static final String SERVER_LOG = "serverlog";
 }

@@ -43,7 +43,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             {
                 @Override
                 public void onClick(View view) {
-                    serverProxy.startGame(clientModel.getMyGameName(), clientModel.getMyUsername());
+                    serverProxy.startGame(clientModel.getMyUsername(), clientModel.getMyGameName());
                 }
 
             });

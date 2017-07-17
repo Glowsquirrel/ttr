@@ -13,9 +13,8 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
-import commandresults.CommandResult;
 import serverfacade.commands.Command;
-import serverfacade.commands.ICommand;
+import interfaces.ICommand;
 import serverfacade.commands.LeaveGameCommand;
 
 @WebSocket
@@ -32,6 +31,11 @@ public class ServerWebSocket
 
     //for referencing the ServerWebSocket by using a session
     private static ConcurrentHashMap<Session, ServerWebSocket> myServerWebSockets = new ConcurrentHashMap<>();
+
+    public static Session getMySessionID(String sessionID)
+    {
+        return allSessions.get(sessionID);
+    }
 
     public static ConcurrentHashMap<String, Session> getLoggedInSessions()
     {
@@ -72,7 +76,7 @@ public class ServerWebSocket
         {
             ConcurrentHashMap<String, Session> myGameSession = new ConcurrentHashMap<>();
             myGameSession.put(this.username, this.session);
-
+            gameSessions.put(gameName, myGameSession);
         }
     }
 
@@ -82,8 +86,8 @@ public class ServerWebSocket
 
     }
 
-    private Session session;
     private String sessionID;
+    private Session session;
     private String username;
     private String gameName;
 
@@ -99,10 +103,21 @@ public class ServerWebSocket
             allSessions.remove(this.sessionID);
             myServerWebSockets.remove(this.session);
         }
-        //removes session from logged in list
-        if (loggedInSessions.containsKey(this.username))
+        //removes session from logged in list & game if in one
+        if (this.username != null)
         {
-            loggedInSessions.remove(this.username);
+            if (loggedInSessions.containsKey(this.username))
+            {
+                loggedInSessions.remove(this.username);
+            }
+            if (this.gameName != null)
+            {
+                ConcurrentHashMap<String, Session> myGameSession = gameSessions.get(gameName);
+                if (myGameSession.containsKey(this.username))
+                {
+                    myGameSession.remove(this.username);
+                }
+            }
         }
     }
 
@@ -134,7 +149,8 @@ public class ServerWebSocket
     }
 
     @OnWebSocketMessage
-    public void onMessage(String message) {
+    public void onMessage(String message)
+    {
 
         System.out.println("Message: " + message);
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -143,58 +159,20 @@ public class ServerWebSocket
 
         try {
             Command command = gson.fromJson(message, Command.class);
+            command.setSessionID(this.sessionID);
             ((ICommand) command).execute();
 
-
-
-
-            /*
-            The following code is only here temporary:
-
-            CommandResult results = ((ICommand) command).execute();
-            // A null result means the command failed
-            if (results == null)
-                return;
-
-            //REQUIRED!! Adds the user's session into logged in user list.
-            if (results.getType().equals(Utils.LOGIN_TYPE)){
-                this.username = ((LoginResult)results).getUsername();
-                loggedInSessions.put(this.username, this.session);
-                String loginWorked = gson.toJson(results);
-                session.getRemote().sendString(loginWorked);
-            }
-            //REQUIRED!! Adds the user's session to a specific game.
-            else if (command.getType().equals(Utils.JOIN_TYPE)){
-                this.gameName = ((JoinGameCommand)command).getGameName();
-            }
-            //REQUIRED!! Removes the user's session from a specific game
-            else if (command.getType().equals(Utils.LEAVE_TYPE)){
-
-            }
-            //Unsure if required. Might have a started game Session list?
-            else if (command.getType().equals(Utils.START_TYPE)){
-
-            }
-
-            //send the single client that asked its PollGamesResult
-            else if (command.getType().equals("pollgames") && results.isSuccess()){
-                String pollGameList = gson.toJson(results);
-                session.getRemote().sendString(pollGameList);
-            }
-
-            //handle failed commands
-            else if (!results.isSuccess()){ //if command goes to model but is false, only the client that sent the bad command needs to know
-                String failedResult = gson.toJson(results);
-                session.getRemote().sendString(failedResult);
-            }
-            */
-
-        }catch (Exception ex){
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
-            try {
-                session.getRemote().sendString("Illegal request or bad gateway! Disconnecting from server.");
+            try
+            {
+                session.getRemote().sendString("Illegal request! The server has kicked you.");
                 session.disconnect();
-            }catch (IOException ioex){
+            }
+            catch (IOException ioex)
+            {
                 ioex.printStackTrace();
             }
         }

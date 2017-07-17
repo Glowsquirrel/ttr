@@ -14,8 +14,8 @@ import commandresults.PollGamesResult;
 public interface IServer {
 
     //MENU LOGIN
-    void login(String username, String password);
-    void register(String username, String password);
+    void login(String username, String password, String sessionID);
+    void register(String username, String password, String sessionID);
 
     //MENU GAMELIST && MENU LOBBY
     void pollGameList(String username);

@@ -1,5 +1,6 @@
 package handlers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -34,61 +35,41 @@ class CommandSerializer implements JsonDeserializer<Command> {
 
         JsonElement jsonType = jsonObject.get("type");
         String type = jsonType.getAsString();
-
+        Gson gson = new Gson();
         Command typeModel = null;
 
         //TODO add a switch statement for each Command in server Commands package
         switch (type){
             case "login": {
-                String username = jsonObject.get("username").getAsString();
-                String password = jsonObject.get("password").getAsString();
-                typeModel = new LoginCommand(username, password);
+                typeModel = gson.fromJson(jsonObject, LoginCommand.class);
                 break;
             }
             case "register": {
-                String username = jsonObject.get("username").getAsString();
-                String password = jsonObject.get("password").getAsString();
-                typeModel = new RegisterCommand(username, password);
+                typeModel = gson.fromJson(jsonObject, RegisterCommand.class);
                 break;
             }
             case "pollgames": {
-                String username = jsonObject.get("username").getAsString();
-                typeModel = new PollGamesCommand(username);
+                typeModel = gson.fromJson(jsonObject, PollGamesCommand.class);
                 break;
             }
             case "creategame": {
-                String username = jsonObject.get("username").getAsString();
-                String gameName = jsonObject.get("gameName").getAsString();
-                String numberPlayers = jsonObject.get("numPlayers").getAsString();
-                int numPlayers;
-                try {
-                    numPlayers = Integer.parseInt(numberPlayers);
-                }catch(NumberFormatException ex){
-                    logger.warning(numberPlayers + " is not an integer");
-                    return null;
-                }
-                typeModel = new CreateGameCommand(username, gameName, numPlayers);
+                typeModel = gson.fromJson(jsonObject, CreateGameCommand.class);
                 break;
             }
             case "startgame": {
-                String gameName = jsonObject.get("gameName").getAsString();
-                typeModel = new StartGameCommand(gameName);
+                typeModel = gson.fromJson(jsonObject, StartGameCommand.class);
                 break;
             }
             case "leavegame": {
-                String username = jsonObject.get("username").getAsString();
-                String gameName = jsonObject.get("gameName").getAsString();
-                typeModel = new LeaveGameCommand(username, gameName);
+                typeModel = gson.fromJson(jsonObject, LeaveGameCommand.class);
                 break;
             }
             case "joingame": {
-                String username = jsonObject.get("username").getAsString();
-                String gameName = jsonObject.get("gameName").getAsString();
-                typeModel = new JoinGameCommand(username, gameName);
+                typeModel = gson.fromJson(jsonObject, JoinGameCommand.class);
                 break;
             }
             case "cleardb": {
-                typeModel = new ClearDatabaseCommand();
+                typeModel = gson.fromJson(jsonObject, ClearDatabaseCommand.class);
                 break;
             }
         }

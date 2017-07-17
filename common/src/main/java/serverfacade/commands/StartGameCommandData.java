@@ -1,11 +1,15 @@
 package serverfacade.commands;
 
+import utils.Utils;
+
 public class StartGameCommandData extends Command{
     protected String gameName;
 
-    public StartGameCommandData(String gameName){
+    protected StartGameCommandData(){}
+    public StartGameCommandData(String username, String gameName){
+        super.setType(Utils.START_TYPE);
+        super.username = username;
         this.gameName = gameName;
-        super.setType("startgame");
     }
     public String getGameName() {
         return gameName;

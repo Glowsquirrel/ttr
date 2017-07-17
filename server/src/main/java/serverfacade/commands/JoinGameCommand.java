@@ -1,6 +1,6 @@
 package serverfacade.commands;
 
-import commandresults.CommandResult;
+import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
 public class JoinGameCommand extends JoinGameCommandData implements ICommand {
@@ -9,9 +9,9 @@ public class JoinGameCommand extends JoinGameCommandData implements ICommand {
         super(username, gameName);
     }
     @Override
-    public CommandResult execute() {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.joinGame(username, gameName);
+        serverFacade.joinGame(username, gameName);
     }
 
     public String getGameName(){

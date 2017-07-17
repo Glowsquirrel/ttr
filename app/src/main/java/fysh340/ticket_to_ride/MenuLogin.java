@@ -78,7 +78,7 @@ public class MenuLogin extends AppCompatActivity implements Observer {
 
         if (webSocket.initialize(ip, mPort, username, password)){
             clientModel.setIp(ip);
-            serverProxy.login(username, password);
+            serverProxy.login(username, password, null);
         }
 
     }
@@ -94,7 +94,7 @@ public class MenuLogin extends AppCompatActivity implements Observer {
 
         if (webSocket.initialize(ip, mPort, username, password)){
             clientModel.setIp(ip);
-            serverProxy.register(username, password);
+            serverProxy.register(username, password, null);
         }
     }
 

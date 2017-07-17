@@ -1,4 +1,4 @@
-package serverfacade.commands;
+package interfaces;
 
 public interface ICommand {
     void execute();

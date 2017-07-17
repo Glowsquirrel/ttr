@@ -2,8 +2,6 @@ package clientfacade;
 
 import java.util.List;
 
-import commandresults.*;
-import commandresults.CommandResult;
 import interfaces.IClient;
 import model.ClientModel;
 import model.UnstartedGame;
@@ -20,52 +18,59 @@ public class ClientFacade implements IClient{
     }
 
     @Override
-    public void loginUser(String username, String password, String message){
+    public boolean loginUser(String username, String password, String message, String sessionID){
         clientModel.setMyUser(username);
         if (message != null)
             this.postMessage(message);
+        return true;
     }
 
     @Override
-    public void registerUser (String username, String password, String message){
+    public boolean registerUser (String username, String password, String message, String sessionID){
         if (message != null)
             this.postMessage(message); //registering should only ever do a toast at most
+        return true;
     }
 
     @Override
-    public void startGame(String username, String gameName, String message) {
+    public boolean startGame(String username, String gameName, String message) {
         clientModel.setStartedGame(true);
         if (message != null)
             this.postMessage(message);
+        return true;
     }
 
     @Override
-    public void updateSingleUserGameList(String username, List<UnstartedGame> gameList, String message){
+    public boolean updateSingleUserGameList(String username, List<UnstartedGame> gameList, String message){
         clientModel.setGamesToStart(gameList);
         if (message != null)
             this.postMessage(message);
+        return true;
     }
 
     @Override
-    public void createGame(String username, String gameName, String message){ //only called if server already accepted a true createGame
+    public boolean createGame(String username, String gameName, String message){ //only called if server already accepted a true createGame
         clientModel.setHasCreatedGame(true);
         clientModel.setHasGame(true);
         if (message != null)
             this.postMessage(message);
+        return true;
     }
 
     @Override
-    public void joinGame(String username, String gameName, String message){
+    public boolean joinGame(String username, String gameName, String message){
         clientModel.setHasGame(true);
         if (message != null)
             this.postMessage(message);
+        return true;
     }
 
     @Override
-    public void leaveGame(String username, String gameName, String message){
+    public boolean leaveGame(String username, String gameName, String message){
         clientModel.setHasGame(false);
         if (message != null)
             this.postMessage(message);
+        return true;
     }
-    //TODO add more methods that will handle each type of CommandResult subclass
+    //TODO add more methods that will handle commands from the server
 }

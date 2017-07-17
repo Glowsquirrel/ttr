@@ -12,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import commandresults.CommandResult;
-import commandresults.FailedResult;
+import commandresults.MessageResult;
+import commandresults.PollGamesResult;
 import handlers.ServerWebSocket;
 import interfaces.IClient;
 import model.UnstartedGame;
@@ -49,66 +50,65 @@ public class ClientProxy implements IClient
      * @param message
      */
     @Override
-    public void updateSingleUserGameList(String username, List<UnstartedGame> gameList, String message)
+    public boolean updateSingleUserGameList(String username, List<UnstartedGame> gameList, String message)
     {
-        CommandResult result = new CommandResult(Utils.POLL_TYPE, username, null, message);
-        ConcurrentHashMap<String, Session> loggedInSessions = ServerWebSocket.getLoggedInSessions();
+        CommandResult result = new PollGamesResult(gameList);
+        Session mySession = ServerWebSocket.getMySession(username);
         String resultJson = gson.toJson(result);
-
-        for (Map.Entry<String, Session> sessionEntry : loggedInSessions.entrySet())
+        try
         {
-            try
-            {
-                Session session = sessionEntry.getValue();
-                session.getRemote().sendString(resultJson);
-            }
-            catch (IOException | WebSocketException ex)
-            {
-                ex.printStackTrace();
-            }
+            mySession.getRemote().sendString(resultJson);
+            return true;
+        }
+        catch (IOException | WebSocketException ex)
+        {
+            ex.printStackTrace();
+            return false;
         }
     }
 
     @Override
-    public void loginUser(String username, String password, String message)
+    public boolean loginUser(String username, String password, String message, String sessionID)
     {
         CommandResult result = new CommandResult(Utils.LOGIN_TYPE, username, null, message);
         String resultJson = gson.toJson(result);
 
         //Update Websocket information with the server accepted login information
-        Session mySession = ServerWebSocket.getMySession(result.getUsername());
+        Session mySession = ServerWebSocket.getMySessionID(sessionID);
         ServerWebSocket mySocket = ServerWebSocket.getMySocket(mySession);
         mySocket.updateLoggedInSessions(username);
 
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
         catch (IOException ex)
         {
-            //
+            return false;
         }
     }
 
     @Override
-    public void registerUser(String username, String password, String message)
+    public boolean registerUser(String username, String password, String message, String sessionID)
     {
         CommandResult result = new CommandResult(Utils.REGISTER_TYPE, username, null, message);
-        Session mySession = ServerWebSocket.getMySession(result.getUsername());
+        Session mySession = ServerWebSocket.getMySessionID(sessionID);
         String resultJson = gson.toJson(result);
 
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
         catch (IOException ex)
         {
-            //
+            return false;
         }
     }
 
     @Override
-    public void startGame(String username, String gameName, String message)
+    public boolean startGame(String username, String gameName, String message)
     {
         CommandResult result = new CommandResult(Utils.START_TYPE, username, gameName, message);
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
@@ -117,15 +117,16 @@ public class ClientProxy implements IClient
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
         catch (IOException ex)
         {
-            //
+            return false;
         }
     }
 
     @Override
-    public void joinGame(String username, String gameName, String message)
+    public boolean joinGame(String username, String gameName, String message)
     {
         CommandResult result = new CommandResult(Utils.JOIN_TYPE, username, gameName, message);
         String resultJson = gson.toJson(result);
@@ -137,15 +138,16 @@ public class ClientProxy implements IClient
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
         catch (IOException ex)
         {
-            //
+            return false;
         }
     }
 
     @Override
-    public void leaveGame(String username, String gameName, String message)
+    public boolean leaveGame(String username, String gameName, String message)
     {
         CommandResult result = new CommandResult(Utils.LEAVE_TYPE, username, gameName, message);
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
@@ -154,14 +156,16 @@ public class ClientProxy implements IClient
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
-        catch (IOException ex){
-            //
+        catch (IOException ex)
+        {
+            return false;
         }
     }
 
     @Override
-    public void createGame(String username, String gameName, String message)
+    public boolean createGame(String username, String gameName, String message)
     {
         CommandResult result = new CommandResult(Utils.CREATE_TYPE, username, gameName, message);
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
@@ -170,10 +174,11 @@ public class ClientProxy implements IClient
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
         catch (IOException ex)
         {
-            //
+            return false;
         }
     }
 
@@ -181,9 +186,12 @@ public class ClientProxy implements IClient
     public void clearDatabase(String username, String message)
     {
         Session mySession = ServerWebSocket.getMySession(username);
+        MessageResult messageResult = new MessageResult(username, message);
+        String resultJson = gson.toJson(messageResult);
+
         try
         {
-            mySession.getRemote().sendString(message);
+            mySession.getRemote().sendString(resultJson);
         }
         catch(IOException ex)
         {
@@ -191,18 +199,22 @@ public class ClientProxy implements IClient
         }
     }
 
-    public void rejectCommand(String username, String message)
+    public boolean rejectCommand(String identifier, String message)
     {
-        FailedResult failedResult = new FailedResult(message);
-        Session mySession = ServerWebSocket.getMySession(username);
-        String resultJson = gson.toJson(failedResult);
+        MessageResult messageResult = new MessageResult(message);
+        Session mySession = ServerWebSocket.getMySession(identifier);
+        if (mySession == null)
+            mySession = ServerWebSocket.getMySessionID(identifier);
+
+        String resultJson = gson.toJson(messageResult);
         try
         {
             mySession.getRemote().sendString(resultJson);
+            return true;
         }
         catch (IOException ex)
         {
-            //
+            return false;
         }
     }
 }

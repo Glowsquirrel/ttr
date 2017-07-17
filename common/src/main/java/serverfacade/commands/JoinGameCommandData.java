@@ -1,10 +1,12 @@
 package serverfacade.commands;
 
+import utils.Utils;
+
 public class JoinGameCommandData extends Command{
     protected String gameName;
 
     public JoinGameCommandData(String username, String gameName){
-        super.setType("joingame");
+        super.setType(Utils.JOIN_TYPE);
         this.username = username;
         this.gameName = gameName;
     }

@@ -26,10 +26,7 @@ public class ServerFacade implements IServer
     
     //Data Members
 
-    private ConcurrentHashMap<String, Session> allLoggedinSessions = ServerWebSocket.getLoggedInSessions();
-    private Gson gson = new Gson();
     private ClientProxy clientProxy = new ClientProxy();
-
     private MasterDAO mDatabaseAccess;
     
     //Constructors
@@ -44,24 +41,26 @@ public class ServerFacade implements IServer
     public void clearDatabase(String username)
     {
         boolean success = false;
-        String message = "";
+        String message = null;
         
         try
         {
             mDatabaseAccess.clear();
+            message = "Database cleared!";
             success = true;
         }
         catch(SQLException ex)
         {
             message = ex.getMessage();
         }
-        
-        //return new CommandResult(CLEAR_TYPE, success, message, null);
 
-        synchronized (ClientProxy.class)
-        {
-            clientProxy.clearDatabase(username, message);
+        synchronized (ClientProxy.class){
+            if (success)
+                clientProxy.clearDatabase(username, message);
+            else
+                clientProxy.rejectCommand(username, message);
         }
+
     }
     
     private UnstartedGame convertGame(Game fromDatabase)
@@ -89,10 +88,10 @@ public class ServerFacade implements IServer
     //TODO: The ServerModel should not know about any result objects.
 
     @Override
-    public void login(String username, String password)
+    public void login(String username, String password, String sessionID)
     {
         boolean success = false;
-        String message = "Success.";
+        String message = null;
         
         try
         {
@@ -107,7 +106,13 @@ public class ServerFacade implements IServer
             message = ex.getMessage();
         }
 
-        clientProxy.loginUser(username, password, message);
+        synchronized (ClientProxy.class) {
+            if (success) {
+                clientProxy.loginUser(username, password, message, sessionID);
+            }
+            else
+                clientProxy.rejectCommand(sessionID, message);
+        }
 
         //LoginResult loginResult = new LoginResult(success, username, message);
 
@@ -166,7 +171,7 @@ public class ServerFacade implements IServer
      * @param password Password to verify identity.
      */
     @Override
-    public void register(String username, String password)
+    public void register(String username, String password, String sessionID)
     {
         boolean success = false;
         String message = "Registered as: " + username;
@@ -186,7 +191,10 @@ public class ServerFacade implements IServer
 
         synchronized (ClientProxy.class)
         {
-            clientProxy.registerUser(username, password, message);
+            if (success)
+                clientProxy.registerUser(username, password, message, sessionID);
+            else
+                clientProxy.rejectCommand(sessionID, message);
         }
     }
 

@@ -49,16 +49,12 @@ public class ServerCommunicator{
     public static void main(String[] args) throws Exception{
         String portNumber = "8080";
         int port = 8080;
-        //HandlerCollection handlerCollection = new HandlerCollection();
-        //handlerCollection.setHandlers(new org.eclipse.jetty.server.Handler[] {new CommandHandler(), new MyDefaultHandler()});
-        //server.setHandler(handlerCollection);
 
-        //ServletContextHandler context0 = new ServletContextHandler(ServletContextHandler.SESSIONS);
-
-
-        WebSocketHandler wsHandler = new WebSocketHandler() {
+        WebSocketHandler wsHandler = new WebSocketHandler()
+        {
             @Override
-            public void configure(WebSocketServletFactory factory) {
+            public void configure(WebSocketServletFactory factory)
+            {
                 factory.register(ServerWebSocket.class);
             }
         };
@@ -68,25 +64,16 @@ public class ServerCommunicator{
         connector.setPort(port);
         server.addConnector(connector);
 
-        //ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        //context.setContextPath("/");
-        //server.setHandler(context);
-
         ResourceHandler rh = new ResourceHandler();
         rh.setDirectoriesListed(true);
         rh.setResourceBase("./server/web");
 
         wsHandler.setHandler(rh);
 
-        //ServletHolder holder = new ServletHolder("ws-events", EventServlet.class);
-        //context.addServlet(holder, "/ws");
-
-
         server.setHandler(wsHandler);
         server.start();
         server.join();
 
-        //new ServerCommunicator2().run(portNumber);
     }
 
 }

@@ -14,8 +14,6 @@ public class GameStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
 
-        ServerProxy serverProxy = new ServerProxy();
-        serverProxy.createWebSocket(clientModel.getMyUsername(), clientModel.getMyGameName());
     }
     @Override
     public void onBackPressed(){

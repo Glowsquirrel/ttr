@@ -1,17 +1,18 @@
 package serverfacade.commands;
 
-import commandresults.CommandResult;
+import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class LeaveGameCommand extends LeaveGameCommandData implements ICommand{
+public class LeaveGameCommand extends LeaveGameCommandData implements ICommand {
 
     public LeaveGameCommand(String username, String gameName){
         super(username, gameName);
     }
 
     @Override
-    public CommandResult execute() {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.leaveGame(username, gameName);
+        if (username != null && gameName != null)
+            serverFacade.leaveGame(username, gameName);
     }
 }

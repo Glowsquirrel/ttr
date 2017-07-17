@@ -16,14 +16,16 @@ import websocket.ClientWebSocket;
 /**
  *
  */
-public class ClientCommunicator {
-    private ClientModel clientModel = ClientModel.getMyClientModel();
+public class ClientCommunicator
+{
     private ClientWebSocket webSocket = ClientWebSocket.getClientWebSocket();
     private Gson gson = new Gson();
 
-    public void doCommand(Command command){
+    public void doCommand(Command command)
+    {
         String myJsonString;
-        switch (command.getType()){
+        switch (command.getType())
+        {
             case "login":
                 myJsonString = gson.toJson(command, LoginCommandData.class);
                 break;
@@ -51,8 +53,5 @@ public class ClientCommunicator {
         }
 
         webSocket.sendJson(myJsonString);
-
-        //new CommandTask(clientModel.getIp(), clientModel.getPort(), command).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-
 }

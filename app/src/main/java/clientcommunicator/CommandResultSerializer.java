@@ -10,6 +10,14 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
+
+import clientfacade.commands.CreateGameResultX;
+import clientfacade.commands.JoinGameResultX;
+import clientfacade.commands.LeaveGameResultX;
+import clientfacade.commands.LoginResultX;
+import clientfacade.commands.PollGamesResultX;
+import clientfacade.commands.RegisterResultX;
+import clientfacade.commands.StartGameResultX;
 import commandresults.CommandResult;
 import commandresults.LoginResult;
 import commandresults.PollGamesResult;
@@ -32,34 +40,34 @@ public class CommandResultSerializer implements JsonDeserializer<CommandResult> 
         Gson gson = new Gson();
         CommandResult typeModel = null;
 
-        //TODO add a switch statement for each Command in server Commands package
+        //TODO add a switch statement for each CommandResultX type
         switch (type){
             case "login": {
-                typeModel = gson.fromJson(jsonObject, LoginResult.class);
+                typeModel = gson.fromJson(jsonObject, LoginResultX.class);
                 break;
             }
             case "register": {
-                typeModel = gson.fromJson(jsonObject, CommandResult.class);
+                typeModel = gson.fromJson(jsonObject, RegisterResultX.class);
                 break;
             }
             case "pollgames": {
-                typeModel = gson.fromJson(jsonObject, PollGamesResult.class);
+                typeModel = gson.fromJson(jsonObject, PollGamesResultX.class);
                 break;
             }
             case "creategame": {
-                typeModel = gson.fromJson(jsonObject, CommandResult.class);
+                typeModel = gson.fromJson(jsonObject, CreateGameResultX.class);
                 break;
             }
             case "startgame": {
-                typeModel = gson.fromJson(jsonObject, CommandResult.class);
+                typeModel = gson.fromJson(jsonObject, StartGameResultX.class);
                 break;
             }
             case "leavegame": {
-                typeModel = gson.fromJson(jsonObject, CommandResult.class);
+                typeModel = gson.fromJson(jsonObject, LeaveGameResultX.class);
                 break;
             }
             case "joingame": {
-                typeModel = gson.fromJson(jsonObject, CommandResult.class);
+                typeModel = gson.fromJson(jsonObject, JoinGameResultX.class);
                 break;
             }
         }

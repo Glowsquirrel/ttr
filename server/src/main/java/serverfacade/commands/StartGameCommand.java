@@ -1,13 +1,9 @@
 package serverfacade.commands;
 
-import commandresults.CommandResult;
+import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class StartGameCommand extends StartGameCommandData implements ICommand{
-
-    public StartGameCommand(String gameName){
-        super(gameName);
-    }
+public class StartGameCommand extends StartGameCommandData implements ICommand {
 
     @Override
     public void execute() {

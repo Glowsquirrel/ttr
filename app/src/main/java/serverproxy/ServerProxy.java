@@ -19,58 +19,47 @@ import websocket.ClientWebSocket;
  */
 public class ServerProxy implements IServer{
     private ClientCommunicator clientCommunicator = new ClientCommunicator();
-    private ClientWebSocket webSocket = ClientWebSocket.getClientWebSocket();
 
     @Override
-    public LoginResult login(String username, String password){
+    public void login(String username, String password, String sessionID){
         LoginCommandData commandData = new LoginCommandData(username, password);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
     @Override
-    public CommandResult register(String username, String password) {
+    public void register(String username, String password, String sessionID) {
         RegisterCommandData commandData = new RegisterCommandData(username, password);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
     @Override
-    public PollGamesResult pollGameList(String username) {
+    public void pollGameList(String username) {
         PollGamesCommandData commandData = new PollGamesCommandData(username);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
     @Override
-    public CommandResult createGame(String username, String gameName, int playerNum) {
+    public void createGame(String username, String gameName, int playerNum) {
         CreateGameCommandData commandData = new CreateGameCommandData(username, gameName, playerNum);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
     @Override
-    public CommandResult joinGame(String username, String gameName) {
+    public void joinGame(String username, String gameName) {
         JoinGameCommandData commandData = new JoinGameCommandData(username, gameName);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
     @Override
-    public CommandResult leaveGame(String username, String gameName) {
+    public void leaveGame(String username, String gameName) {
         LeaveGameCommandData commandData = new LeaveGameCommandData(username, gameName);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
     @Override
-    public CommandResult startGame(String gameName, String username) {
-        StartGameCommandData commandData = new StartGameCommandData(gameName);
+    public void startGame(String username, String gameName) {
+        StartGameCommandData commandData = new StartGameCommandData(username, gameName);
         clientCommunicator.doCommand(commandData);
-        return null;
     }
 
-    public void createWebSocket(String username, String gameName){
-
-    }
 }

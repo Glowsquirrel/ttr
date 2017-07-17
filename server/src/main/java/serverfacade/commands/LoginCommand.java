@@ -1,6 +1,6 @@
 package serverfacade.commands;
 
-import commandresults.CommandResult;
+import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
 public class LoginCommand extends LoginCommandData implements ICommand {
@@ -9,8 +9,8 @@ public class LoginCommand extends LoginCommandData implements ICommand {
         super(username, password);
     }
 
-    public CommandResult execute(){
+    public void execute(){
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.login(username, password);
+        serverFacade.login(username, password, sessionID);
     }
 }

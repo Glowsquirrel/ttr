@@ -1,20 +1,27 @@
 package serverfacade.commands;
 
-public class CreateGameCommandData extends Command{
+import utils.Utils;
+
+public class CreateGameCommandData extends Command
+{
     protected String gameName;
     protected int numPlayers;
 
-    public CreateGameCommandData(String username, String gameName, int numPlayers){
-        super.setType("creategame");
+    public CreateGameCommandData(String username, String gameName, int numPlayers)
+    {
+        super.setType(Utils.CREATE_TYPE);
         this.username = username;
         this.gameName = gameName;
         this.numPlayers = numPlayers;
     }
-    public String getUsername() {
+
+    public String getUsername()
+    {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username)
+    {
         this.username = username;
     }
 }

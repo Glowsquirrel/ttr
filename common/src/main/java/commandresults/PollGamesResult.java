@@ -5,13 +5,15 @@ import model.UnstartedGame;
 
 public class PollGamesResult extends CommandResult {
 
+    protected List<UnstartedGame> gameList;
+
+    protected PollGamesResult(){};
 
     public PollGamesResult(List<UnstartedGame> gameList){
         super.setType("pollgames");
         this.gameList = gameList;
     }
 
-    private List<UnstartedGame> gameList;
 
     public List<UnstartedGame> getGameList() {
         return gameList;
