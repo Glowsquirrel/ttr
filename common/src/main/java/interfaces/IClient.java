@@ -9,7 +9,7 @@ public interface IClient {
     boolean loginUser(String username, String password, String message, String sessionID);
     boolean registerUser(String username, String password, String message, String sessionID);
 
-    boolean startGame(String username, String gameName, String message);
+    List<String> startGame(String username, String gameName, String message);
     boolean updateSingleUserGameList(String username, List<UnstartedGame> gameList, String message);
     boolean joinGame(String username, String gameName, String message);
     boolean leaveGame(String username, String gameName, String message);

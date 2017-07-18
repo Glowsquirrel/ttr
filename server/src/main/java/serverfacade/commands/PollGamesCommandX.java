@@ -3,8 +3,8 @@ package serverfacade.commands;
 import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class PollGamesCommand extends PollGamesCommandData implements ICommand {
-    public PollGamesCommand(String username) {
+public class PollGamesCommandX extends PollGamesCommand implements ICommand {
+    public PollGamesCommandX(String username) {
         super(username);
     }
 

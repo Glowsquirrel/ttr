@@ -3,7 +3,7 @@ package serverfacade.commands;
 import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class StartGameCommand extends StartGameCommandData implements ICommand {
+public class StartGameCommandX extends StartGameCommand implements ICommand {
 
     @Override
     public void execute() {

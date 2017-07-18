@@ -3,9 +3,9 @@ package serverfacade.commands;
 import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class JoinGameCommand extends JoinGameCommandData implements ICommand {
+public class JoinGameCommandX extends JoinGameCommand implements ICommand {
 
-    public JoinGameCommand(String username, String gameName){
+    public JoinGameCommandX(String username, String gameName){
         super(username, gameName);
     }
     @Override

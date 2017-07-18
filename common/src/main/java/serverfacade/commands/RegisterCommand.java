@@ -2,10 +2,10 @@ package serverfacade.commands;
 
 import utils.Utils;
 
-public class RegisterCommandData extends Command {
+public class RegisterCommand extends Command {
     protected String password;
 
-    public RegisterCommandData(String username, String password) {
+    public RegisterCommand(String username, String password) {
         super.setType(Utils.REGISTER_TYPE);
         this.username = username;
         this.password = password;

@@ -33,11 +33,11 @@ public class ClientFacade implements IClient{
     }
 
     @Override
-    public boolean startGame(String username, String gameName, String message) {
+    public List<String> startGame(String username, String gameName, String message) {
         clientModel.setStartedGame(true);
         if (message != null)
             this.postMessage(message);
-        return true;
+        return null;
     }
 
     @Override

@@ -2,10 +2,10 @@ package serverfacade.commands;
 
 import utils.Utils;
 
-public class LoginCommandData extends Command {
+public class LoginCommand extends Command {
     protected String password;
 
-    public LoginCommandData(String username, String password) {
+    public LoginCommand(String username, String password) {
         super.setType(Utils.LOGIN_TYPE);
         this.username = username;
         this.password = password;

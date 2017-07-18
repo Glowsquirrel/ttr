@@ -3,9 +3,9 @@ package serverfacade.commands;
 import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class LoginCommand extends LoginCommandData implements ICommand {
+public class LoginCommandX extends LoginCommand implements ICommand {
 
-    public LoginCommand(String username, String password) {
+    public LoginCommandX(String username, String password) {
         super(username, password);
     }
 

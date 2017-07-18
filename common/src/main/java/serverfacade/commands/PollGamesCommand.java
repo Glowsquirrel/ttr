@@ -2,9 +2,9 @@ package serverfacade.commands;
 
 import utils.Utils;
 
-public class PollGamesCommandData extends Command {
+public class PollGamesCommand extends Command {
 
-    public PollGamesCommandData(String username) {
+    public PollGamesCommand(String username) {
         super.setType(Utils.POLL_TYPE);
         this.username = username;
     }

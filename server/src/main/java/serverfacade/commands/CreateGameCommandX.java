@@ -3,9 +3,9 @@ package serverfacade.commands;
 import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class CreateGameCommand extends CreateGameCommandData implements ICommand {
+public class CreateGameCommandX extends CreateGameCommand implements ICommand {
 
-    public CreateGameCommand(String username, String gameName, int numPlayers){
+    public CreateGameCommandX(String username, String gameName, int numPlayers){
         super(username, gameName, numPlayers);
     }
 

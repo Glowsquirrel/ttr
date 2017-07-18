@@ -22,6 +22,7 @@ import commandresults.CommandResult;
 import commandresults.LoginResult;
 import commandresults.PollGamesResult;
 import model.UnstartedGame;
+import utils.Utils;
 
 /**
  * Server Side. Gets a command as a JSON string and makes it a real command.
@@ -42,31 +43,31 @@ public class CommandResultSerializer implements JsonDeserializer<CommandResult> 
 
         //TODO add a switch statement for each CommandResultX type
         switch (type){
-            case "login": {
+            case Utils.LOGIN_TYPE: {
                 typeModel = gson.fromJson(jsonObject, LoginResultX.class);
                 break;
             }
-            case "register": {
+            case Utils.REGISTER_TYPE: {
                 typeModel = gson.fromJson(jsonObject, RegisterResultX.class);
                 break;
             }
-            case "pollgames": {
+            case Utils.POLL_TYPE: {
                 typeModel = gson.fromJson(jsonObject, PollGamesResultX.class);
                 break;
             }
-            case "creategame": {
+            case Utils.CREATE_TYPE: {
                 typeModel = gson.fromJson(jsonObject, CreateGameResultX.class);
                 break;
             }
-            case "startgame": {
+            case Utils.START_TYPE: {
                 typeModel = gson.fromJson(jsonObject, StartGameResultX.class);
                 break;
             }
-            case "leavegame": {
+            case Utils.LEAVE_TYPE: {
                 typeModel = gson.fromJson(jsonObject, LeaveGameResultX.class);
                 break;
             }
-            case "joingame": {
+            case Utils.JOIN_TYPE: {
                 typeModel = gson.fromJson(jsonObject, JoinGameResultX.class);
                 break;
             }

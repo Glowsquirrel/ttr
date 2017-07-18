@@ -2,16 +2,20 @@ package serverfacade.commands;
 
 import utils.Utils;
 
-public class LeaveGameCommandData extends Command{
+public class JoinGameCommand extends Command{
     protected String gameName;
 
-    public LeaveGameCommandData(String username, String gameName){
-        super.setType(Utils.LEAVE_TYPE);
+    public JoinGameCommand(String username, String gameName){
+        super.setType(Utils.JOIN_TYPE);
         this.username = username;
         this.gameName = gameName;
     }
     public String getUsername() {
         return username;
+    }
+
+    public String getGameName() {
+        return gameName;
     }
 
     public void setUsername(String username) {

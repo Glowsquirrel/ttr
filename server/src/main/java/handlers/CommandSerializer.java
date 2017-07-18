@@ -10,15 +10,15 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import serverfacade.commands.ClearDatabaseCommand;
+import serverfacade.commands.ClearDatabaseCommandX;
 import serverfacade.commands.Command;
-import serverfacade.commands.CreateGameCommand;
-import serverfacade.commands.JoinGameCommand;
-import serverfacade.commands.LeaveGameCommand;
-import serverfacade.commands.LoginCommand;
-import serverfacade.commands.PollGamesCommand;
-import serverfacade.commands.RegisterCommand;
-import serverfacade.commands.StartGameCommand;
+import serverfacade.commands.CreateGameCommandX;
+import serverfacade.commands.JoinGameCommandX;
+import serverfacade.commands.LeaveGameCommandX;
+import serverfacade.commands.LoginCommandX;
+import serverfacade.commands.PollGamesCommandX;
+import serverfacade.commands.RegisterCommandX;
+import serverfacade.commands.StartGameCommandX;
 
 /**
  * Server Side. Gets a command as a JSON string and makes it a real command.
@@ -41,35 +41,35 @@ class CommandSerializer implements JsonDeserializer<Command> {
         //TODO add a switch statement for each Command in server Commands package
         switch (type){
             case "login": {
-                typeModel = gson.fromJson(jsonObject, LoginCommand.class);
+                typeModel = gson.fromJson(jsonObject, LoginCommandX.class);
                 break;
             }
             case "register": {
-                typeModel = gson.fromJson(jsonObject, RegisterCommand.class);
+                typeModel = gson.fromJson(jsonObject, RegisterCommandX.class);
                 break;
             }
             case "pollgames": {
-                typeModel = gson.fromJson(jsonObject, PollGamesCommand.class);
+                typeModel = gson.fromJson(jsonObject, PollGamesCommandX.class);
                 break;
             }
             case "creategame": {
-                typeModel = gson.fromJson(jsonObject, CreateGameCommand.class);
+                typeModel = gson.fromJson(jsonObject, CreateGameCommandX.class);
                 break;
             }
             case "startgame": {
-                typeModel = gson.fromJson(jsonObject, StartGameCommand.class);
+                typeModel = gson.fromJson(jsonObject, StartGameCommandX.class);
                 break;
             }
             case "leavegame": {
-                typeModel = gson.fromJson(jsonObject, LeaveGameCommand.class);
+                typeModel = gson.fromJson(jsonObject, LeaveGameCommandX.class);
                 break;
             }
             case "joingame": {
-                typeModel = gson.fromJson(jsonObject, JoinGameCommand.class);
+                typeModel = gson.fromJson(jsonObject, JoinGameCommandX.class);
                 break;
             }
             case "cleardb": {
-                typeModel = gson.fromJson(jsonObject, ClearDatabaseCommand.class);
+                typeModel = gson.fromJson(jsonObject, ClearDatabaseCommandX.class);
                 break;
             }
         }

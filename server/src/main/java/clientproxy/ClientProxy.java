@@ -6,6 +6,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,14 +31,15 @@ public class ClientProxy implements IClient
     private Gson gson = new Gson();
 
     /**
-     * Updates all logged in client's game list. Used any time the server modifies the game list in any way.
+     * Updates the game list of all clients who are at the menus. Should be used any time the server
+     * modifies the game list in any way.
      * @param gameList The new game list to go to all clients.
      * @param message A message from the server. If there is no message, leave null.
      */
-    public void updateAllLoggedInUserGameLists(List<UnstartedGame> gameList, String message)
+    public void updateAllUsersInMenus(List<UnstartedGame> gameList, String message)
     {
-        ConcurrentHashMap<String, Session> allLoggedInSessions = ServerWebSocket.getLoggedInSessions();
-        for (Map.Entry<String, Session> sessionEntry : allLoggedInSessions.entrySet())
+        ConcurrentHashMap<String, Session> allMenuSessions = ServerWebSocket.getAllMenuSessions();
+        for (Map.Entry<String, Session> sessionEntry : allMenuSessions.entrySet())
         {
             updateSingleUserGameList(sessionEntry.getKey(), gameList, message);
         }
@@ -76,7 +78,7 @@ public class ClientProxy implements IClient
         //Update Websocket information with the server accepted login information
         Session mySession = ServerWebSocket.getMySessionID(sessionID);
         ServerWebSocket mySocket = ServerWebSocket.getMySocket(mySession);
-        mySocket.updateLoggedInSessions(username);
+        mySocket.updateMenuSessions(username);
 
         try
         {
@@ -108,21 +110,23 @@ public class ClientProxy implements IClient
     }
 
     @Override
-    public boolean startGame(String username, String gameName, String message)
+    public List<String> startGame(String username, String gameName, String message)
     {
         CommandResult result = new CommandResult(Utils.START_TYPE, username, gameName, message);
-        Session mySession = ServerWebSocket.getMySession(result.getUsername());
         String resultJson = gson.toJson(result);
+        List<String> clientReceipts = new ArrayList<>();
 
-        try
-        {
-            mySession.getRemote().sendString(resultJson);
-            return true;
+        ConcurrentHashMap<String, Session> gameSession = ServerWebSocket.getGameSession(gameName);
+        for (Map.Entry<String, Session> sessionEntry : gameSession.entrySet()) {
+            try {
+                (sessionEntry.getValue()).getRemote().sendString(resultJson);
+                clientReceipts.add(sessionEntry.getKey());
+            }catch (IOException ex){ //connection was in an non open state. do not add username to receipt list
+
+            }
         }
-        catch (IOException ex)
-        {
-            return false;
-        }
+
+        return clientReceipts;
     }
 
     @Override

@@ -2,12 +2,12 @@ package serverfacade.commands;
 
 import utils.Utils;
 
-public class CreateGameCommandData extends Command
+public class CreateGameCommand extends Command
 {
     protected String gameName;
     protected int numPlayers;
 
-    public CreateGameCommandData(String username, String gameName, int numPlayers)
+    public CreateGameCommand(String username, String gameName, int numPlayers)
     {
         super.setType(Utils.CREATE_TYPE);
         this.username = username;

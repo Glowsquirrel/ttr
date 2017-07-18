@@ -4,17 +4,15 @@ import interfaces.ICommand;
 import serverfacade.ServerFacade;
 import utils.Utils;
 
-public class ClearDatabaseCommand extends Command implements ICommand
-{
-    public ClearDatabaseCommand(String username)
-    {
+public class ClearDatabaseCommandX extends Command implements ICommand {
+
+    public ClearDatabaseCommandX(String username) {
         super.username = username;
         super.setType(Utils.CLEAR_TYPE);
     }
 
     @Override
-    public void execute()
-    {
+    public void execute() {
         ServerFacade serverFacade = new ServerFacade();
         serverFacade.clearDatabase(username);
     }

@@ -3,9 +3,9 @@ package serverfacade.commands;
 import interfaces.ICommand;
 import serverfacade.ServerFacade;
 
-public class LeaveGameCommand extends LeaveGameCommandData implements ICommand {
+public class LeaveGameCommandX extends LeaveGameCommand implements ICommand {
 
-    public LeaveGameCommand(String username, String gameName){
+    public LeaveGameCommandX(String username, String gameName){
         super(username, gameName);
     }
 
