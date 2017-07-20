@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,6 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
     private ClientModel mClientModel = ClientModel.getMyClientModel();
     private ServerProxy mServerProxy = new ServerProxy();
-    //private PollerTask myPoller;
     private MyGameListAdapter mAdapter;
 
     @Override
@@ -81,71 +81,38 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         mAdapter = new MyGameListAdapter(mClientModel.getGamesToStart()); //create the search adapter once, update its data later
         mRecyclerView.setAdapter(mAdapter);
 
-        //set up spinner
+        mClientModel.register(this); //registers this controller as an observer to the ClientModel
+        mServerProxy.pollGameList(mClientModel.getMyUsername());
+
+        setupButtons();
+        setupSpinner();
+    }
+
+    private void setupButtons(){
+        Button createGameButton = (Button) findViewById(R.id.createGameButton);
+        createGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createGame(view);
+            }
+        });
+    }
+
+
+    private void setupSpinner(){
         Spinner numPlayerSpinner = (Spinner)findViewById(R.id.playernum_spinner);
         ArrayAdapter<CharSequence> numPlayerAdapter = ArrayAdapter.createFromResource(
                 this, R.array.player_num_array, R.layout.support_simple_spinner_dropdown_item);
         numPlayerSpinner.setAdapter(numPlayerAdapter);
-
-        //myPoller = new PollerTask(2000); //poll every 10s. currently slow for debug purposes
-        //myPoller.pollGameList();
-        //getApplicationContext().startService(new Intent(this, PollerTask.class));
-        mServerProxy.pollGameList(mClientModel.getMyUsername());
+        LinearLayout spinnerLayout = (LinearLayout) findViewById(R.id.playernum_spinner_layout);
+        spinnerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSpinner(view);
+            }
+        });
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        mClientModel.register(this); //registers this controller as an observer to the ClientModel
-        //mClientModel.register(this);
-
-    }
-    @Override
-    public void onPause(){
-        super.onPause();
-        //myPoller.stopPoller();
-    }
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        //mClientModel.unregister(this); //registers this controller as an observer to the ClientModel
-        //myPoller.stopPoller();
-        //mClientModel.unregister(this);
-    }
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        //myPoller.stopPoller();
-        mClientModel.removeMyUser();
-        mClientModel.unregister(this);
-    }
-
-    @Override
-    public void update() {
-        //String pollerUpdateCount = "Poll # " + String.valueOf(myPoller.getPollCount() + " @" + String.valueOf(myPoller.getMsDelay() + "ms"));
-        //Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
-
-        if(mClientModel.hasCreatedGame()){
-            mClientModel.setHasCreatedGame(false);
-            mServerProxy.joinGame(mClientModel.getMyUsername(), mClientModel.getMyGameName());
-        }
-        else if(mClientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
-            //mClientModel.setHasGame(false);
-            mClientModel.unregister(this);
-            Intent intent = new Intent(this, MenuGameLobby.class);
-            //intent.putExtra("poller", (Serializable)myPoller);
-            //myPoller.stopPoller();
-            startActivity(intent);
-        }
-        else if (mClientModel.hasMessage()){ //If the model has a message, Toast the message
-            Toast.makeText(getApplicationContext(), mClientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
-            mClientModel.receivedMessage();
-        }
-        else { //If nothing else, refresh the data inside the adapter.
-            mAdapter.swapData(mClientModel.getGamesToStart());
-        }
-    }
 
     public void createGame(View view){
         EditText gameNameEdit = (EditText)findViewById(R.id.gamename);
@@ -158,6 +125,34 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
     public void showSpinner(View view){ //allows the layout consisting of text and spinner to open up the spinner item selection dropdown menu
         findViewById(R.id.playernum_spinner).performClick();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mClientModel.removeMyUser();
+        mClientModel.unregister(this);
+    }
+
+    @Override
+    public void update() {
+
+        if(mClientModel.hasCreatedGame()){
+            mClientModel.setHasCreatedGame(false);
+            mServerProxy.joinGame(mClientModel.getMyUsername(), mClientModel.getMyGameName());
+        }
+        else if(mClientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
+            mClientModel.unregister(this);
+            Intent intent = new Intent(this, MenuGameLobby.class);
+            startActivity(intent);
+        }
+        else if (mClientModel.hasMessage()){ //If the model has a message, Toast the message
+            Toast.makeText(getApplicationContext(), mClientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
+            mClientModel.receivedMessage();
+        }
+        else { //If nothing else, refresh the data inside the adapter.
+            mAdapter.swapData(mClientModel.getGamesToStart());
+        }
     }
 
     private class MyGameListAdapter extends RecyclerView.Adapter<MyGameListAdapter.ViewHolder> {

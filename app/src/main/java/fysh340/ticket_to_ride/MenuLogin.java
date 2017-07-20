@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import interfaces.Observer;
@@ -42,13 +43,33 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         String usernameString = sharedPref.getString("username", getString(R.string.default_string));
         String passwordString = sharedPref.getString("password", getString(R.string.default_string));
 
-        EditText ip = (EditText)findViewById(R.id.ip_address);
-        EditText username = (EditText)findViewById(R.id.username);
-        EditText password = (EditText)findViewById(R.id.password);
+        EditText ip = (EditText) findViewById(R.id.ip_address);
+        EditText username = (EditText) findViewById(R.id.username);
+        EditText password = (EditText) findViewById(R.id.password);
 
         ip.setText(ipString);
         username.setText(usernameString);
         password.setText(passwordString);
+
+        setupButtons();
+    }
+
+    private void setupButtons(){
+        Button mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login(view);
+            }
+        });
+
+        Button mRegisterButton = (Button) findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                register(view);
+            }
+        });
 
     }
 
@@ -59,9 +80,9 @@ public class MenuLogin extends AppCompatActivity implements Observer {
     }
 
     public void login(View view){
-        EditText ipEdit = (EditText)findViewById(R.id.ip_address);
-        EditText usernameEdit = (EditText)findViewById(R.id.username);
-        EditText passwordEdit = (EditText)findViewById(R.id.password);
+        EditText ipEdit = (EditText) findViewById(R.id.ip_address);
+        EditText usernameEdit = (EditText) findViewById(R.id.username);
+        EditText passwordEdit = (EditText) findViewById(R.id.password);
 
         String ip = ipEdit.getText().toString();
         String username = usernameEdit.getText().toString();
