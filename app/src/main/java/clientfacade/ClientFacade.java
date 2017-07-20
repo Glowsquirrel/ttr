@@ -93,6 +93,10 @@ public class ClientFacade implements IClient{
 
     }
 
+    public void addHistory(String message){
+
+    }
+
     //use a username to get the players color. might go into clientmodel?
     private Color getPlayerColor(String username){
 
