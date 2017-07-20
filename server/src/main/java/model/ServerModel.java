@@ -1,9 +1,13 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import clientproxy.ClientProxy;
 
 /**
  * ServerModel is the server model root class.
@@ -21,18 +25,46 @@ public class ServerModel {
 
     //NOTE: Both really should be maps. I'm not sure if changing the UnstartedGame list to a map rocks the boat
     //too much on other people's parts. Thoughts..?
-    Map<String, UnstartedGame> allUnstartedGames = new HashMap<>();
-    Map<String, StartedGame> allStartedGames = new HashMap<>();
-    Set<User> allUsers = new HashSet<>();
+    Map<String, UnstartedGame> allUnstartedGames;
+    Map<String, StartedGame> allStartedGames;
+    Set<User> allUsers;
+    ClientProxy toClient;
+
+    private static class LazyModelHelper{
+        private static final ServerModel MODEL_INSTANCE = new ServerModel();
+    }
+
+    public static ServerModel getInstance(){
+
+        return LazyModelHelper.MODEL_INSTANCE;
+    }
+
+    private ServerModel(){
+        allUnstartedGames = new HashMap<>();
+        allStartedGames = new HashMap<>();
+        allUsers = new HashSet<>();
+        toClient = new ClientProxy();
+    }
 
    /***********************************BEFORE GAME*******************************************/
-    public boolean addUnstartedGame(UnstartedGame newGame){
-        if (allUnstartedGames.containsKey(newGame.getGameName())){
-            return false;
-        }
 
-        allUnstartedGames.put(newGame.getGameName(), newGame);
-        return true;
+    /**
+     *  <h1>Add Unstarted Game</h1>
+     *  Checks to see if a game exists, rejecting the creation command if so, and adds the game
+     *  to the list of unstarted games if not; reports success to the proxy.
+     *
+     *  @param          newGame         The new game being proposed by the client
+     */
+   public void addUnstartedGame(UnstartedGame newGame){
+        String gameCreator = newGame.getUsernames().get(1);
+
+        if (allUnstartedGames.containsKey(newGame.getGameName())){
+            String message = "Game already exists.";
+            toClient.rejectCommand(gameCreator, message);
+        } else {
+            allUnstartedGames.put(newGame.getGameName(), newGame);
+            toClient.createGame(gameCreator, newGame.getGameName());
+        }
     }
 
     public void setAllUnstartedGames( Map<String, UnstartedGame> allUnstartedGame) {
@@ -43,30 +75,64 @@ public class ServerModel {
         allStartedGames = startedGames;
     }
 
-    public boolean addUser(User user) {
+    public void addUser(User user, String sessionID) {
+        toClient = new ClientProxy();
+        String message = "User registered.";
         if(allUsers.add(user)) {
-            return true;
+            toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
+        } else {
+            message = "User already exists.";
+            toClient.rejectCommand(sessionID, message);
         }
-        return false;
     }
 
-    public boolean userExists(User user) {
+    public void validateUser(User user, String sessionID) {
+        toClient = new ClientProxy();
+
         if (allUsers.contains(user)){
-            return true;
+            for (User currentUser : allUsers){
+                if (currentUser.getUsername().equals(user.getUsername())){
+                    if (currentUser.getPassword().equals(user.getPassword())){
+                        toClient.loginUser(user.getUsername(), user.getPassword(), sessionID);
+                    }
+                }
+            }
+        } else{
+            String message = "Log in failed.";
+            toClient.rejectCommand(sessionID, message);
         }
-        return false;
+
     }
 
-    public boolean passwordMatches(User user) {
-        for (User currentUser : allUsers){
-            if (currentUser.getUsername().equals(user.getUsername())){
-                if (currentUser.getPassword().equals(user.getPassword())){
-                    return true;
+    /**
+     *  <h1>Poll Game List</h1>
+     *  Sends the current list of games that haven't started to the proxy.
+     *
+     *  @param          username            The user that's requesting the game list
+     */
+    public void pollGameList(String username){
+        List<UnstartedGame> joinableGames = new ArrayList<>();
+        for(String nextGameName : allUnstartedGames.keySet()){
+            joinableGames.add(allUnstartedGames.get(nextGameName));
+        }
+        toClient.updateSingleUserGameList(username, joinableGames);
+    }
+
+    public void addPlayerToGame(String username, String gameName) {
+        for(String nextGameName : allUnstartedGames.keySet()) {
+            if(gameName.equals(nextGameName)) {
+                List<String> currentPlayers = allUnstartedGames.get(nextGameName).getUsernames();
+                if(!currentPlayers.contains(username)){
+                    currentPlayers.add(username);
+                    allUnstartedGames.get(nextGameName).setUsernames(currentPlayers);
+                    toClient.joinGame(username, gameName);
+                } else {
+                    //TODO: Call rejoin game in proxy
                 }
             }
         }
-        return false;
     }
+
    /****************************************STARTING GAME****************************************/
     public void startGame(String gameName) {
         try {
@@ -159,7 +225,7 @@ public class ServerModel {
 
     /*************************************Claim Route*************************************/
 
-    public void clameRoute(String gameName, String playerName, int routeId) {
+    public void claimRoute(String gameName, String playerName, int routeId) {
         try {
             this.getGame(gameName).claimRoute(playerName, routeId);
         }
