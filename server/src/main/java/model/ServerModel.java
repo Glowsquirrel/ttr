@@ -104,6 +104,28 @@ public class ServerModel {
 
     }
 
+    private List<UnstartedGame> getUnstartedGamesList(){
+        List<UnstartedGame> joinableGames = new ArrayList<>();
+
+        for(String nextGameName : allUnstartedGames.keySet()){
+            joinableGames.add(allUnstartedGames.get(nextGameName));
+        }
+        return joinableGames;
+    }
+
+    private List<RunningGame> getStartedGamesList(){
+        List<RunningGame> startedGames = new ArrayList<>();
+
+        for(String nextGameName : allStartedGames.keySet()){
+            RunningGame nextStartedGame = new RunningGame(allStartedGames.get(nextGameName)
+                    .gameName,
+                    allStartedGames.get(nextGameName)
+                            .allPlayers.size());
+            startedGames.add(nextStartedGame);
+        }
+        return startedGames;
+    }
+
     /**
      *  <h1>Poll Game List</h1>
      *  Sends the current list of games that haven't started to the proxy.
@@ -111,11 +133,7 @@ public class ServerModel {
      *  @param          username            The user that's requesting the game list
      */
     public void pollGameList(String username){
-        List<UnstartedGame> joinableGames = new ArrayList<>();
-        for(String nextGameName : allUnstartedGames.keySet()){
-            joinableGames.add(allUnstartedGames.get(nextGameName));
-        }
-        toClient.updateSingleUserGameList(username, joinableGames);
+        toClient.updateSingleUserGameList(username, getUnstartedGamesList(), getStartedGamesList());
     }
 
     public void addPlayerToGame(String username, String gameName) {
@@ -126,11 +144,31 @@ public class ServerModel {
                     currentPlayers.add(username);
                     allUnstartedGames.get(nextGameName).setUsernames(currentPlayers);
                     toClient.joinGame(username, gameName);
+                    toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
                 } else {
                     //TODO: Call rejoin game in proxy
                 }
             }
         }
+    }
+
+    public void removePlayerFromGame(String username, String gameName) {
+        for(String nextGameName : allUnstartedGames.keySet()) {
+            if(gameName.equals(nextGameName)) {
+                List<String> currentPlayers = allUnstartedGames.get(nextGameName).getUsernames();
+                if(currentPlayers.contains(username)){
+                    currentPlayers.remove(username);
+                    allUnstartedGames.get(nextGameName).setUsernames(currentPlayers);
+                    toClient.leaveGame(username, gameName);
+                    toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+                }
+            } else {
+                //Shouldn't be possible to get here based on UI
+                String message = "Player not in game.";
+                toClient.rejectCommand(username, message);
+            }
+        }
+
     }
 
    /****************************************STARTING GAME****************************************/

@@ -1,10 +1,8 @@
 package serverfacade;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import interfaces.IServer;
-import model.Game;
 import model.ServerModel;
 import model.UnstartedGame;
 import model.User;
@@ -86,7 +84,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void leaveGame(String username, String gameName) {
-        //TODO: implement me with ServerModel logic
+        mSingletonModel.removePlayerFromGame(username, gameName);
     }
 
     /**
