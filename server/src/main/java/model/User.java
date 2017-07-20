@@ -58,18 +58,24 @@ public class User
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
         if (this.getClass() != obj.getClass()) {
             return false;
         }
 
         User comparedUser = (User)obj;
+
         if (comparedUser.getUsername().equals(this.mUsername)){
             if (comparedUser.getPassword().equals(this.mPassword)) {
                 return true;
             }
         }
-
         return false;
     }
 
+    @Override
+    public int hashCode(){
+        return this.mUsername.hashCode() * this.mPassword.hashCode();
+    }
 }

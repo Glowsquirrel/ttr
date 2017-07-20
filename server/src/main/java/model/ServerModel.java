@@ -55,15 +55,15 @@ public class ServerModel {
      *
      *  @param          newGame         The new game being proposed by the client
      */
-   public void addUnstartedGame(UnstartedGame newGame){
-        String gameCreator = newGame.getUsernames().get(1);
+   public void addUnstartedGame(String username, UnstartedGame newGame){
 
         if (allUnstartedGames.containsKey(newGame.getGameName())){
             String message = "Game already exists.";
-            toClient.rejectCommand(gameCreator, message);
+            toClient.rejectCommand(username, message);
         } else {
             allUnstartedGames.put(newGame.getGameName(), newGame);
-            toClient.createGame(gameCreator, newGame.getGameName());
+            toClient.createGame(username, newGame.getGameName());
+            toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
         }
     }
 
@@ -77,7 +77,7 @@ public class ServerModel {
 
     public void addUser(User user, String sessionID) {
         toClient = new ClientProxy();
-        String message = "User registered.";
+        String message = "Registered as " + user.getUsername() + ".";
         if(allUsers.add(user)) {
             toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
         } else {

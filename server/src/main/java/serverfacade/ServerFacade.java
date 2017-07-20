@@ -60,7 +60,7 @@ public class ServerFacade implements IServer {
         playerUsernames.add(username);
         UnstartedGame newGame = new UnstartedGame(gameName, playerUsernames.size(), playerNum,
                                                     playerUsernames);
-        mSingletonModel.addUnstartedGame(newGame);
+        mSingletonModel.addUnstartedGame(username, newGame);
     }
 
     /**
