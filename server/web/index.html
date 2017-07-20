@@ -164,6 +164,36 @@
               window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
+            function drawtraindeck()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincarddeck\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+            }
+            function drawtrainface()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincardfaceup\",\"username\":\"username\",\"gameName\":\"gameName\",\"index\":\"0\"}");
+            }
+            function drawdestcard()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawthreedestcards\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+            }
+            function returndestcard()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"returndestcards\",\"username\":\"username\",\"gameName\":\"gameName\",\"destCards\":[\t]}");
+            }
+            function claimroute()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"username\",\"gameName\":\"gameName\",\"routeID\":\"0\"}");
+            }
+            function sendchat()
+            {
+              window.scrollTo(0,document.body.scrollHeight);
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"chatmessage\",\"username\":\"username\",\"gameName\":\"gameName\",\"message\":\"message\"}");
+            }
         </script>
     </head>
     <body>
@@ -187,6 +217,9 @@
                   <li>
                     <a href="javascript:register()" >Register</a> Register user with given data.
                   </li>
+               </ul>
+               <p></p>
+               <ul>
                   <li>
                     <a href="javascript:poll()" >Poll</a> Test polling.
                   </li>
@@ -201,6 +234,27 @@
                   </li>
                   <li>
                     <a href="javascript:startgame()" >Start Game</a> Start the game.
+                  </li>
+               </ul>
+               <p></p>
+               <ul>
+                  <li>
+                    <a href="javascript:drawtraindeck()" >Draw Train Card (Deck)</a> Draw a Train Card from the Deck.
+                  </li>
+                  <li>
+                    <a href="javascript:drawtrainface()" >Draw Train Card (Face up)</a> Draw Train Card from face up (by card index location).
+                  </li>
+                  <li>
+                    <a href="javascript:drawdestcard()" >Draw Destination Card</a> Draw a Destination Card from the Deck.
+                  </li>
+                  <li>
+                    <a href="javascript:returndestcard()" >Return Destination Card(s)</a> Return a Destination Card (by cardID).
+                  </li>
+                  <li>
+                    <a href="javascript:claimroute()" >Claim Route</a> Claim a route.
+                  </li>
+                  <li>
+                    <a href="javascript:sendchat()" >Send Chat Message</a> Send a message to all players.
                   </li>
               </ul>
             </div>
