@@ -5,13 +5,24 @@ import java.util.List;
 import model.UnstartedGame;
 
 public interface IClient {
+    //login screen
+    void loginUser(String username, String password, String sessionID);
+    void registerUser(String username, String password, String message, String sessionID);
 
-    boolean loginUser(String username, String password, String message, String sessionID);
-    boolean registerUser(String username, String password, String message, String sessionID);
+    //menus
+    void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
+                   List<Integer> trainCards, List<Integer> faceUpCards);
+    void updateSingleUserGameList(String username, List<UnstartedGame> gameList);
+    void joinGame(String username, String gameName);
+    void leaveGame(String username, String gameName);
+    void createGame(String username, String gameName);
 
-    List<String> startGame(String username, String gameName, String message);
-    boolean updateSingleUserGameList(String username, List<UnstartedGame> gameList, String message);
-    boolean joinGame(String username, String gameName, String message);
-    boolean leaveGame(String username, String gameName, String message);
-    boolean createGame(String username, String gameName, String message);
+    //in-game
+    void addChat(String username, String message);
+    void claimRoute(String username, int routeID);
+    void drawDestCards(String username, List<Integer> destCards);
+    void drawTrainCardDeck(String username, int trainCard);
+    void drawTrainCardFaceUp(String username, int trainCard);
+    void returnDestCards(String username, List<Integer> destCards);
+    void returnFirstDestCards(String username, int cardReturned);
 }

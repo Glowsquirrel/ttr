@@ -2,53 +2,81 @@ package clientcommunicator;
 
 import com.google.gson.Gson;
 
-import serverfacade.commands.Command;
-import serverfacade.commands.CreateGameCommand;
-import serverfacade.commands.JoinGameCommand;
-import serverfacade.commands.LeaveGameCommand;
-import serverfacade.commands.LoginCommand;
-import serverfacade.commands.PollGamesCommand;
-import serverfacade.commands.RegisterCommand;
-import serverfacade.commands.StartGameCommand;
+import commands.*;
+import commands.game.ChatCommand;
+import commands.game.ClaimRouteCommand;
+import commands.game.DrawThreeDestCardsCommand;
+import commands.game.DrawTrainCardFromDeckCommand;
+import commands.game.DrawTrainCardFromFaceUpCommand;
+import commands.game.ReturnDestCardsCommand;
+import commands.game.ReturnFirstDestCardCommand;
+import commands.game.StartGameCommand;
+import commands.menu.CreateGameCommand;
+import commands.menu.JoinGameCommand;
+import commands.menu.LeaveGameCommand;
+import commands.menu.LoginCommand;
+import commands.menu.PollGamesCommand;
+import commands.menu.RegisterCommand;
+import utils.Utils;
 import websocket.ClientWebSocket;
 
 /**
  *
  */
-public class ClientCommunicator
-{
+public class ClientCommunicator {
     private ClientWebSocket webSocket = ClientWebSocket.getClientWebSocket();
     private Gson gson = new Gson();
 
-    public void doCommand(Command command)
-    {
+    public void doCommand(Command command) {
         String myJsonString;
-        switch (command.getType())
-        {
-            case "login":
+        switch (command.getType()) {
+            case Utils.LOGIN_TYPE:
                 myJsonString = gson.toJson(command, LoginCommand.class);
                 break;
-            case "register":
+            case Utils.REGISTER_TYPE:
                 myJsonString = gson.toJson(command, RegisterCommand.class);
                 break;
-            case "creategame":
-                myJsonString = gson.toJson(command, CreateGameCommand.class);
-                break;
-            case "pollgames":
+            case Utils.POLL_TYPE:
                 myJsonString = gson.toJson(command, PollGamesCommand.class);
                 break;
-            case "startgame":
-                myJsonString = gson.toJson(command, StartGameCommand.class);
+            case Utils.CREATE_TYPE:
+                myJsonString = gson.toJson(command, CreateGameCommand.class);
                 break;
-            case "leavegame":
-                myJsonString = gson.toJson(command, LeaveGameCommand.class);
-                break;
-            case "joingame":
+            case Utils.JOIN_TYPE:
                 myJsonString = gson.toJson(command, JoinGameCommand.class);
                 break;
-
+            case Utils.LEAVE_TYPE:
+                myJsonString = gson.toJson(command, LeaveGameCommand.class);
+                break;
+            case Utils.START_TYPE:
+                myJsonString = gson.toJson(command, StartGameCommand.class);
+                break;
+            case Utils.MESSAGE_TYPE:
+                myJsonString = gson.toJson(command, ChatCommand.class);
+                break;
+            case Utils.DRAW_DEST_CARDS_TYPE:
+                myJsonString = gson.toJson(command, DrawThreeDestCardsCommand.class);
+                break;
+            case Utils.RETURN_FIRST_DEST_CARD_TYPE:
+                myJsonString = gson.toJson(command, ReturnFirstDestCardCommand.class);
+                break;
+            case Utils.RETURN_DEST_CARDS_TYPE:
+                myJsonString = gson.toJson(command, ReturnDestCardsCommand.class);
+                break;
+            case Utils.DRAW_TRAIN_CARD_DECK_TYPE:
+                myJsonString = gson.toJson(command, DrawTrainCardFromDeckCommand.class);
+                break;
+            case Utils.DRAW_TRAIN_CARD_FACEUP_TYPE:
+                myJsonString = gson.toJson(command, DrawTrainCardFromFaceUpCommand.class);
+                break;
+            case Utils.CLAIM_ROUTE_TYPE:
+                myJsonString = gson.toJson(command, ClaimRouteCommand.class);
+                break;
+            case Utils.CHAT_TYPE:
+                myJsonString = gson.toJson(command, ChatCommand.class);
+                break;
             default:
-                myJsonString = "";
+                myJsonString = "Error parsing Json String. Check ClientCommunicator";
         }
 
         webSocket.sendJson(myJsonString);

@@ -38,9 +38,9 @@ public class MenuLogin extends AppCompatActivity implements Observer {
 
         //load the previous login attempt data
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.default_string), Context.MODE_PRIVATE);
-        String ipString = sharedPref.getString("ip", "");
-        String usernameString = sharedPref.getString("username", "");
-        String passwordString = sharedPref.getString("password", "");
+        String ipString = sharedPref.getString("ip", getString(R.string.default_string));
+        String usernameString = sharedPref.getString("username", getString(R.string.default_string));
+        String passwordString = sharedPref.getString("password", getString(R.string.default_string));
 
         EditText ip = (EditText)findViewById(R.id.ip_address);
         EditText username = (EditText)findViewById(R.id.username);

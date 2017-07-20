@@ -8,7 +8,7 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="start_own_game">Start your own game:</string>
-    <string name="enter_game_name">Enter the name of the game you would like to create:</string>
+    <string name="enter_game_name">Enter the gameName of the game you would like to create:</string>
     <string name="number_players">Choose the Number of Players:</string>
     <string name="create_game">Create Game</string>
     <string name="join_game">Join an existing game:</string>

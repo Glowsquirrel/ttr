@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import interfaces.Observable;
 import interfaces.Observer;
@@ -43,7 +42,7 @@ public class ClientModel implements Observable{
     public boolean isGameFull() {
         gameFull=false;
         for(UnstartedGame i:gamesToStart) {
-            if(i.getName().equals(myGameName)) {
+            if(i.getGameName().equals(myGameName)) {
                 if(i.getPlayersNeeded()==i.getPlayersIn())
                 {
                     gameFull=true;
@@ -80,7 +79,7 @@ public class ClientModel implements Observable{
     public boolean isStartedGame() {
         startedGame=true;
         for(UnstartedGame i:gamesToStart) {
-            if(i.getName().equals(myGameName)) {
+            if(i.getGameName().equals(myGameName)) {
                 startedGame=false;
             }
         }
@@ -128,7 +127,7 @@ public class ClientModel implements Observable{
         List<String>toreturn=null;
         int size=0;
         for(UnstartedGame i:gamesToStart) {
-            if(i.getName().equals(myGameName)) {
+            if(i.getGameName().equals(myGameName)) {
                 size=i.getPlayersNeeded();
                 toreturn=i.getUsernames();
             }

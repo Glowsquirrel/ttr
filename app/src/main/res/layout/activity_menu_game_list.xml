@@ -76,7 +76,7 @@
                         android:text="@string/enter_game_name"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp"
-                        android:id="@+id/name"
+                        android:id="@+id/gameName"
                         android:gravity="center"/>
 
                     <EditText

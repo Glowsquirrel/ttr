@@ -17,7 +17,6 @@ import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
 
-//TODO implement this class
 public class MenuGameLobby extends AppCompatActivity implements Observer {
         private ClientModel clientModel = ClientModel.getMyClientModel();
         private SearchAdapter fAdapter;

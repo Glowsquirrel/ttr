@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -13,14 +14,17 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
+import commands.Command;
 import serverfacade.ServerFacade;
-import serverfacade.commands.Command;
+
 import interfaces.ICommand;
-import serverfacade.commands.LeaveGameCommandX;
+import serverfacade.commands.menu.LeaveGameCommandX;
+import utils.Utils;
 
 @WebSocket
 public class ServerWebSocket
 {
+    private static Logger logger = Logger.getLogger(Utils.SERVER_LOG);
     //for keeping track of all connections
     private static ConcurrentHashMap<String, Session> allSessions = new ConcurrentHashMap<>();
 
@@ -92,7 +96,7 @@ public class ServerWebSocket
     public void onClose(int statusCode, String reason)
     {
         synchronized (ServerFacade.class) {
-            System.out.println("Close: statusCode = " + statusCode + ", reason = " + reason);
+            logger.info("Close: statusCode = " + statusCode + ", reason = " + reason);
             LeaveGameCommandX kickDC = new LeaveGameCommandX(this.username, this.gameName);
             kickDC.execute();
             //removes session from master list & socket list
@@ -117,7 +121,7 @@ public class ServerWebSocket
 
     @OnWebSocketError
     public void onError(Throwable t) {
-        System.out.println("Error: " + t.getMessage());
+        logger.warning("Error: " + t.getMessage());
     }
 
     /**
@@ -133,27 +137,26 @@ public class ServerWebSocket
         this.session.setIdleTimeout(600000); //timeout occurs if no communication for 10m (may be changed later)
 
         if (!allSessions.containsKey(this.sessionID)){ //if device not connected, connect and add them
-            System.out.println("Connecting new device id: " + this.sessionID);
+            logger.fine("Connecting new device id: " + this.sessionID);
             allSessions.put(this.sessionID, session);
             myServerWebSockets.put(this.session, this);
         } else {
             try {
-                System.out.println("ALREADY CONNECTED");
+                logger.severe("ALREADY CONNECTED! Was this client properly removed when they disconnected?");
                 session.disconnect();
             }catch (IOException ex){
                 ex.printStackTrace();
             }
         }
-        System.out.println("Connecting: " + session.getRemoteAddress().getAddress());
+        logger.fine("Connecting: " + session.getRemoteAddress().getAddress());
     }
 
     @OnWebSocketMessage
     public void onMessage(String message)
     {
-
-        System.out.println("Message: " + message);
+        logger.finest("Message: " + message);
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Command.class, new CommandSerializer());
+        gsonBuilder.registerTypeAdapter(Command.class, new CommandXSerializer());
         Gson gson = gsonBuilder.create();
 
         synchronized (ServerFacade.class) {
@@ -165,6 +168,7 @@ public class ServerWebSocket
                 ex.printStackTrace();
                 try {
                     session.getRemote().sendString("Illegal request! The server has kicked you.");
+                    logger.severe("A client has sent a bad request! Was this client in the right HashMap?");
                     session.disconnect();
                 } catch (IOException ioex) {
                     ioex.printStackTrace();

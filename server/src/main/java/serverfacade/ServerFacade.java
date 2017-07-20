@@ -27,6 +27,7 @@ public class ServerFacade implements IServer {
     
     //Utility Methods
     public void clearDatabase(String username) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = null;
         
@@ -47,7 +48,7 @@ public class ServerFacade implements IServer {
     
     private UnstartedGame convertGame(Game fromDatabase) {
         UnstartedGame convertedGame = new UnstartedGame();
-        convertedGame.setName(fromDatabase.getID());
+        convertedGame.setGameName(fromDatabase.getID());
     
         List<String> names = new ArrayList<>();
     
@@ -64,11 +65,9 @@ public class ServerFacade implements IServer {
     
     //Access Methods
 
-    //TODO: ServerModel should handle all methods listed here.
-    //TODO: The ServerModel should not know about any result objects.
-
     @Override
     public void login(String username, String password, String sessionID) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = null;
         
@@ -82,7 +81,7 @@ public class ServerFacade implements IServer {
         }
 
         if (success) {
-            clientProxy.loginUser(username, password, message, sessionID);
+            clientProxy.loginUser(username, password, sessionID);
         } else
             clientProxy.rejectCommand(sessionID, message);
     }
@@ -96,6 +95,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void pollGameList(String username) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         List<Game> openGames = null;
         String message = "";
@@ -114,7 +114,7 @@ public class ServerFacade implements IServer {
             unstartedGames.add(convertGame(openGame));
         }
 
-        clientProxy.updateSingleUserGameList(username, unstartedGames, message);
+        clientProxy.updateSingleUserGameList(username, unstartedGames);
 
     }
     
@@ -129,6 +129,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void register(String username, String password, String sessionID) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = "Registered as: " + username;
         
@@ -158,6 +159,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void createGame(String username, String gameName, int playerNum) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = "Game created.";
         try {
@@ -168,7 +170,6 @@ public class ServerFacade implements IServer {
         }
 
         if (success) {
-            //TODO: Ask ServerModel for List<UnstartedGames>. Should call same method as pollGameList.
             List<Game> openGames = null;
             try {
                 openGames = mDatabaseAccess.getOpenGames();
@@ -184,10 +185,12 @@ public class ServerFacade implements IServer {
                 unstartedGames.add(convertGame(openGame));
             }
 
-            //client create game
-            clientProxy.createGame(username, gameName, message);
-            //update everyone
-            clientProxy.updateAllUsersInMenus(unstartedGames, null);
+            if (success) {
+                //client create game
+                clientProxy.createGame(username, gameName);
+                //update everyone
+                clientProxy.updateAllUsersInMenus(unstartedGames);
+            }
         } else
             clientProxy.rejectCommand(username, message);
     }
@@ -201,6 +204,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void joinGame(String username, String gameName) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = null;
 
@@ -212,7 +216,6 @@ public class ServerFacade implements IServer {
         }
 
         if (success) {
-            //TODO: Ask ServerModel for List<UnstartedGames>. Should call same method as pollGameList.
             List<Game> openGames;
             try
             {
@@ -232,9 +235,9 @@ public class ServerFacade implements IServer {
             }
 
             //client join game
-            clientProxy.joinGame(username, gameName, message);
+            clientProxy.joinGame(username, gameName);
             //update everyone
-            clientProxy.updateAllUsersInMenus(unstartedGames, message);
+            clientProxy.updateAllUsersInMenus(unstartedGames);
         } else
                 clientProxy.rejectCommand(username, message);
     }
@@ -248,6 +251,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void leaveGame(String username, String gameName) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = null;
         
@@ -259,7 +263,6 @@ public class ServerFacade implements IServer {
         }
 
         if (success) {
-            //TODO: Ask ServerModel for List<UnstartedGames>. Should call same method as pollGameList.
             List<Game> openGames;
             try {
                 openGames = mDatabaseAccess.getOpenGames();
@@ -275,9 +278,9 @@ public class ServerFacade implements IServer {
             }
 
             //client leave game
-            clientProxy.leaveGame(username, gameName, message);
+            clientProxy.leaveGame(username, gameName);
             //update everyone
-            clientProxy.updateAllUsersInMenus(unstartedGames, message);
+            clientProxy.updateAllUsersInMenus(unstartedGames);
         }
     }
 
@@ -291,6 +294,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void startGame(String gameName, String username) {
+        //TODO: implement me with ServerModel logic
         boolean success = false;
         String message = null;
         
@@ -302,7 +306,6 @@ public class ServerFacade implements IServer {
         }
 
         if (success) {
-            //TODO: Ask ServerModel for List<UnstartedGames>. Should call same method as pollGameList.
             List<Game> openGames;
             try {
                 openGames = mDatabaseAccess.getOpenGames();
@@ -317,10 +320,42 @@ public class ServerFacade implements IServer {
                 unstartedGames.add(convertGame(openGame));
             }
 
-            clientProxy.startGame(username, gameName, message);
-            clientProxy.updateAllUsersInMenus(unstartedGames, message);
+            List<String> playerNames = new ArrayList<>();
+
+
+            clientProxy.startGame(username, gameName, playerNames, null, null, null);
+            clientProxy.updateAllUsersInMenus(unstartedGames);
         } else
             clientProxy.rejectCommand(username, message);
     }
-    
+
+    @Override
+    public void drawThreeDestCards(String username, String gameName) {
+        //TODO: implement me with ServerModel logic
+    }
+
+    @Override
+    public void returnDestCards(String username, String gameName, List<Integer> destCards) {
+         //TODO: implement me with ServerModel logic
+    }
+
+    @Override
+    public void drawTrainCardFromDeck(String username, String gameName) {
+        //TODO: implement me with ServerModel logic
+    }
+
+    @Override
+    public void drawTrainCardFromFaceUp(String username, String gameName, int index) {
+        //TODO: implement me with ServerModel logic
+    }
+
+    @Override
+    public void claimRoute(String username, String gameName, int routeID) {
+        //TODO: implement me with ServerModel logic
+    }
+
+    @Override
+    public void sendChatMessage(String username, String gameName, String message) {
+        //TODO: implement me with ServerModel logic
+    }
 }

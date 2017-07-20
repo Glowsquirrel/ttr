@@ -4,12 +4,18 @@ import java.util.List;
 
 public class UnstartedGame {
 
-    private String name;
+    private String gameName;
     private List<String> usernames;
     private int playersIn;
     private int playersNeeded;
 
-    //TODO I need a constructor!
+    public UnstartedGame(){}
+    public UnstartedGame(String gameName, int playersIn, int playersNeeded, List<String> usernames){
+        this.gameName = gameName;
+        this.playersIn = playersIn;
+        this.playersNeeded = playersNeeded;
+        this.usernames = usernames;
+    }
 
     public boolean isStarted() {
         return started;
@@ -22,12 +28,12 @@ public class UnstartedGame {
     private boolean started=false;
 
 
-    public String getName() {
-        return name;
+    public String getGameName() {
+        return gameName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
     }
 
     public List<String> getUsernames() {

@@ -196,7 +196,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             UnstartedGame myGame = allGames.get(position);
 
             final String gameName;
-            gameName = myGame.getName();
+            gameName = myGame.getGameName();
             int currentPlayers = myGame.getPlayersIn();
             int neededPlayers = myGame.getPlayersNeeded();
             String playerString = currentPlayers + "/" + neededPlayers + " " + getString(R.string.players);

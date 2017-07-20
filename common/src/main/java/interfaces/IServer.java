@@ -1,8 +1,6 @@
 package interfaces;
 
-import commandresults.CommandResult;
-import commandresults.LoginResult;
-import commandresults.PollGamesResult;
+import java.util.List;
 
 /**
  * The IServer defines methods that the client will call, but will actually be executed on the server.
@@ -23,6 +21,13 @@ public interface IServer {
     void joinGame(String username, String gameName);
     void leaveGame(String username, String gameName);
     void startGame(String gameName, String username);
+
+    void drawThreeDestCards(String username, String gameName);
+    void returnDestCards(String username, String gameName, List<Integer> destCards);
+    void drawTrainCardFromDeck(String username, String gameName);
+    void drawTrainCardFromFaceUp(String username, String gameName, int index);
+    void claimRoute(String username, String gameName, int routeID);
+    void sendChatMessage(String username, String gameName, String message);
 
 }
 

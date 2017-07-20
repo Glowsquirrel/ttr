@@ -9,6 +9,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import handlers.*;
+import utils.Utils;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -31,7 +32,7 @@ public class ServerCommunicator{
 
     private static void initLog() throws IOException{
         Level logLevel = Level.ALL;
-        logger = Logger.getLogger("serverlog");
+        logger = Logger.getLogger(Utils.SERVER_LOG);
         logger.setLevel(logLevel);
         logger.setUseParentHandlers(false);
 

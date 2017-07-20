@@ -6,9 +6,8 @@ import com.google.gson.JsonSyntaxException;
 
 import java.util.concurrent.TimeUnit;
 
-import clientcommunicator.CommandResultSerializer;
-import clientfacade.ClientFacade;
-import commandresults.CommandResult;
+import clientcommunicator.CommandResultXSerializer;
+import results.Result;
 import interfaces.ICommand;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,12 +41,10 @@ public class ClientWebSocket extends WebSocketListener
     {
         ws.send(myString);
     }
-    public boolean initialize(String ip, String port, String username, String password)
-    {
+    public boolean initialize(String ip, String port, String username, String password) {
         this.username = username;
         this.password = password;
-        if (!listening)
-        {
+        if (!listening) {
             if (ip.trim().equals(""))
                 return false;
             this.ip = ip;
@@ -68,30 +65,27 @@ public class ClientWebSocket extends WebSocketListener
     }
 
     @Override
-    public void onOpen(WebSocket webSocket, Response respone)
-    {
+    public void onOpen(WebSocket webSocket, Response respone) {
 
 
     }
 
     @Override
-    public void onMessage(WebSocket webSocket, String serverMessage)
-    {
+    public void onMessage(WebSocket webSocket, String serverMessage) {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(CommandResult.class, new CommandResultSerializer());
+        gsonBuilder.registerTypeAdapter(Result.class, new CommandResultXSerializer());
         Gson customGson = gsonBuilder.create();
 
-        CommandResult commandResult = customGson.fromJson(serverMessage, CommandResult.class);
-        ((ICommand)commandResult).execute();
+        Result result = customGson.fromJson(serverMessage, Result.class);
+        ((ICommand) result).execute();
     }
 
 
 
     @Override
-    public void onMessage(WebSocket webSocket, ByteString bytes)
-    {
-        //TODO: figure out how to send/receive an input/output stream via websocket
+    public void onMessage(WebSocket webSocket, ByteString bytes) {
+
     }
 
     @Override
@@ -101,7 +95,7 @@ public class ClientWebSocket extends WebSocketListener
         listening = false;
         isDisconnected = true;
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
             initialize(this.ip, this.port, this.username, this.password);
         }catch (InterruptedException ex){
             //
@@ -117,7 +111,7 @@ public class ClientWebSocket extends WebSocketListener
         }
         else
             listening = false;
-        //could not connect to server
+        //unknown reason for disconnect
     }
 
     public void quit()
