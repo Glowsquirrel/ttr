@@ -71,7 +71,7 @@ public class ServerWebSocket
     public void joinGameSession(String username, String gameName) {
         this.username = username;
         this.gameName = gameName;
-        if (gameSessions.containsKey(gameName)) { //if the gameName already exists
+        if (gameSessions.containsKey(gameName)) { //if the gameName is already stored, add them
             ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
             myGameSession.put(this.username, this.session);
         } else { //create a new hashmap for that game
@@ -84,6 +84,15 @@ public class ServerWebSocket
     public void leaveGameSession(String username, String gameName)
     {
         this.gameName = null; //set to null to check for logic errors
+        if (gameSessions.containsKey(gameName)){
+            ConcurrentHashMap<String, Session> myGameSession = new ConcurrentHashMap<>();
+            if (myGameSession.containsKey(username)){
+                myGameSession.remove(username);
+                if (myGameSession.size() == 0){
+                    gameSessions.remove(gameName);
+                }
+            }
+        }
 
     }
 

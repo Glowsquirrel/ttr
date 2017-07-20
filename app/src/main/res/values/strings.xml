@@ -14,11 +14,4 @@
     <string name="join_game">Join an existing game:</string>
     <string name="players">Players</string>
 
-
-    <string-array name="player_num_array">
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
 </resources>

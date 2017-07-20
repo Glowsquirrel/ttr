@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.List;
 
+import model.RunningGame;
 import model.UnstartedGame;
 
 public interface IClient {
@@ -12,7 +13,7 @@ public interface IClient {
     //menus
     void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                    List<Integer> trainCards, List<Integer> faceUpCards);
-    void updateSingleUserGameList(String username, List<UnstartedGame> gameList);
+    void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList);
     void joinGame(String username, String gameName);
     void leaveGame(String username, String gameName);
     void createGame(String username, String gameName);

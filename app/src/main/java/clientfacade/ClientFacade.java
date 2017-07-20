@@ -6,6 +6,7 @@ import java.util.List;
 
 import interfaces.IClient;
 import model.ClientModel;
+import model.RunningGame;
 import model.UnstartedGame;
 
 /**
@@ -38,8 +39,8 @@ public class ClientFacade implements IClient{
     }
 
     @Override
-    public void updateSingleUserGameList(String username, List<UnstartedGame> gameList){
-        clientModel.setGamesToStart(gameList);
+    public void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList){
+        clientModel.setGamesToStart(unstartedGameList);
     }
 
     @Override
@@ -90,6 +91,10 @@ public class ClientFacade implements IClient{
 
     @Override
     public void returnFirstDestCards(String username, int cardReturned){
+
+    }
+
+    public void addHistory(String message){
 
     }
 

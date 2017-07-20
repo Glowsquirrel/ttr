@@ -5,4 +5,11 @@
     <color name="colorAccent">#ff7373</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <color name="neon_yellow">#ccff00</color>
+    <color name="neon_orange">#FF9933</color>
+    <color name="neon_green">#32cd32</color>
+    <color name="neon_pink">#ff69b4</color>
+    <color name="neon_grey">#7F7F7F</color>
+
 </resources>

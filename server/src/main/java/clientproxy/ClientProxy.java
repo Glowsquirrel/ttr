@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import model.RunningGame;
 import results.*;
 import results.game.ChatResult;
 import results.game.ClaimRouteResult;
@@ -45,23 +46,22 @@ public class ClientProxy implements IClient {
     /**
      * Updates the game list of all clients who are at the menus. Should be used any time the server
      * modifies the game list in any way.
-     * @param gameList The new game list to go to all clients.
+
      */
-    public void updateAllUsersInMenus(List<UnstartedGame> gameList) {
+    public void updateAllUsersInMenus(List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList) {
         ConcurrentHashMap<String, Session> allMenuSessions = ServerWebSocket.getAllMenuSessions();
         for (Map.Entry<String, Session> sessionEntry : allMenuSessions.entrySet()) {
-            updateSingleUserGameList(sessionEntry.getKey(), gameList);
+            updateSingleUserGameList(sessionEntry.getKey(), unstartedGameList, runningGameList);
         }
     }
 
     /**
      * Updates a single client's game list. Will be used for when a client sends a pollgamerequest.
      * @param username
-     * @param gameList
      */
     @Override
-    public void updateSingleUserGameList(String username, List<UnstartedGame> gameList) {
-        Result result = new PollGamesResult(gameList);
+    public void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList) {
+        Result result = new PollGamesResult(unstartedGameList, runningGameList);
         Session mySession = ServerWebSocket.getMySession(username);
         String resultJson = gson.toJson(result);
         try {
@@ -138,6 +138,9 @@ public class ClientProxy implements IClient {
         Result result = new LeaveGameResult(username, gameName);
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
         String resultJson = gson.toJson(result);
+
+        ServerWebSocket mySocket = ServerWebSocket.getMySocket(mySession);
+        mySocket.leaveGameSession(username, gameName);
 
         try {
             mySession.getRemote().sendString(resultJson);

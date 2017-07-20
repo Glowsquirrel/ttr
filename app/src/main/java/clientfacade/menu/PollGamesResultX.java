@@ -9,6 +9,6 @@ public class PollGamesResultX extends PollGamesResult implements ICommand{
     @Override
     public void execute() {
         ClientFacade clientFacade = new ClientFacade();
-        clientFacade.updateSingleUserGameList(super.username, super.gameList);
+        clientFacade.updateSingleUserGameList(super.username, super.unstartedGameList, super.runningGameList);
     }
 }
