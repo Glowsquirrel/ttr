@@ -2,12 +2,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 public class Player {
 
     private String userName;
+    private List<TrainCard> trainCardHand = new ArrayList<>();
     private int numOfRedCards = 0;
     private int numOfGreenCards = 0;
     private int numOfBlueCards = 0;
@@ -23,7 +25,10 @@ public class Player {
     }
 
      public void addTrainCards(ArrayList<TrainCard> drawnCards){
+
          for (TrainCard currentCard : drawnCards){
+             trainCardHand.add(currentCard);
+
              if (currentCard == TrainCard.RED){
                  numOfRedCards++;
              }
@@ -95,6 +100,19 @@ public class Player {
     public String getUsername() {
         return userName;
     }
+
+    public List<DestCard> getDestCards() {
+        return destCardHand;
+    }
+
+    public List<Integer> getTrainCardCodes() {
+        List<Integer> trainCardCodes = new ArrayList<>();
+        for (TrainCard trainCard : trainCardHand) {
+            trainCardCodes.add(TrainCard.getTrainCardInt(trainCard));
+        }
+        return trainCardCodes;
+    }
+
     /**
      * For error testing
      */

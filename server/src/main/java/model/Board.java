@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 public class Board {
@@ -17,10 +18,101 @@ public class Board {
     private Map<Integer, DestCard> destCardMap = new HashMap<>();
 
     Board(){
-        BoardSetUp setUpMyBoard = new BoardSetUp(this);
-        setUpMyBoard.initializeBoard();
+        destCardMap = DestCard.createDestCardMap();
+        setDestCardMap(destCardMap);
+
+        routeMap = Route.createRouteMap();
+        setRouteMap(routeMap);
+
+        initializeTrainCardDeck();
+        shuffleTrainCardDeck(null);
+        setFaceUpTrainCards(faceUpTrainCards);
+
+        drawFaceUpCards();
+        setTrainCardDeck(trainCardDeck);
+
+        initializeDestCardDeck();
+        shuffleDestCarDeck();
+        setDestCardDeck(destCardDeck);
     }
 
+ /***********************************BOARD SETUP/SHUFFLING*****************************************/
+    private void initializeTrainCardDeck() {
+
+        final int NUM_OF_EACH_COLOR = 12;
+        final int NUM_OF_LOCOMOTIVES = 14;
+        final int NUM_OF_COLORS = 8;
+        final int VALUE_OF_LOCOMOTIVE = 8;
+
+        for (int a = 0; a < NUM_OF_COLORS; a++) {
+            for (int b = 0; b < NUM_OF_EACH_COLOR; b++) {
+                trainCardDeck.add(TrainCard.getTrainCard(a));
+            }
+        }
+
+        for (int a = 0; a < NUM_OF_LOCOMOTIVES; a++) {
+            trainCardDeck.add(TrainCard.getTrainCard(VALUE_OF_LOCOMOTIVE));
+        }
+    }
+
+    void shuffleTrainCardDeck(ArrayList<TrainCard> discardedTrainCards) {
+
+        final int NUM_OF_SWITCHES = 1000;
+        List<TrainCard> shuffledDeck;
+
+        if(discardedTrainCards != null) {
+            shuffledDeck = discardedTrainCards;
+        } else {
+            shuffledDeck = trainCardDeck;
+        }
+
+        Random randomNumGenerator = new Random();
+        for (int a = 0; a < NUM_OF_SWITCHES; a++) {
+
+            int positionOne = randomNumGenerator.nextInt(shuffledDeck.size());
+            int positionTwo = randomNumGenerator.nextInt(shuffledDeck.size());
+
+            TrainCard savedCard = shuffledDeck.get(positionOne);
+            shuffledDeck.set(positionOne, shuffledDeck.get(positionTwo));
+            shuffledDeck.set(positionTwo, savedCard);
+        }
+        trainCardDeck = shuffledDeck;
+    }
+
+    private void drawFaceUpCards() {
+        final int FIFTH_INDEX = 4;
+
+        faceUpTrainCards = (ArrayList<TrainCard>)trainCardDeck.subList(0, FIFTH_INDEX);
+        for (int a = 0; a < FIFTH_INDEX; a++) {
+            trainCardDeck.remove(0);
+        }
+    }
+
+    private void initializeDestCardDeck() {
+        destCardDeck = (ArrayList<DestCard>)destCardMap.values();
+    }
+
+    private void shuffleDestCarDeck(){
+
+        final int NUM_OF_SWITCHES = 1000;
+        List<DestCard> shuffledDeck = destCardDeck;
+
+        Random randomNumGenerator = new Random();
+        for (int a = 0; a < NUM_OF_SWITCHES; a++) {
+
+            int positionOne = randomNumGenerator.nextInt(shuffledDeck.size());
+            int positionTwo = randomNumGenerator.nextInt(shuffledDeck.size());
+
+            DestCard savedCard = shuffledDeck.get(positionOne);
+            shuffledDeck.set(positionOne, shuffledDeck.get(positionTwo));
+            shuffledDeck.set(positionTwo, savedCard);
+        }
+
+        destCardDeck = shuffledDeck;
+
+    }
+
+ /**********************************GAMEPLAY************************************************/
     public ArrayList<TrainCard> drawTrainCards(int numberDrawn) {
 
         final int TOP_CARD_INDEX = 0;
@@ -61,7 +153,14 @@ public class Board {
     }
 
 
+    public List<Integer> getFaceUpCardCodes() {
+        List<Integer> faceUpCodes = new ArrayList<>();
 
+        for (TrainCard trainCard : faceUpTrainCards) {
+            faceUpCodes.add(TrainCard.getTrainCardInt(trainCard));
+        }
+        return faceUpCodes;
+    }
 
 
 
