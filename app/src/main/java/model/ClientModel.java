@@ -44,8 +44,7 @@ public class ClientModel implements Observable{
         gameFull=false;
         for(UnstartedGame i:gamesToStart) {
             if(i.getGameName().equals(myGameName)) {
-                if(i.getPlayersNeeded()==i.getPlayersIn())
-                {
+                if(i.getPlayersNeeded() == i.getPlayersIn()) {
                     gameFull=true;
                 }
             }
@@ -53,9 +52,6 @@ public class ClientModel implements Observable{
         return gameFull;
     }
 
-    public void setGameFull(boolean gameFull) {
-        this.gameFull = gameFull;
-    }
 
     private String myGameName;
 

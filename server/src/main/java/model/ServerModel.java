@@ -170,8 +170,8 @@ public class ServerModel {
         }
 
         if (success) {
-            toClient.leaveGame(username, gameName);
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+            toClient.leaveGame(username, gameName);
         } else {
             String message = "Player not in game.";
             toClient.rejectCommand(username, message);

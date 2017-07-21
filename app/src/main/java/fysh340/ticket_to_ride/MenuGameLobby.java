@@ -18,63 +18,51 @@ import model.ClientModel;
 import serverproxy.ServerProxy;
 
 public class MenuGameLobby extends AppCompatActivity implements Observer {
-        private ClientModel clientModel = ClientModel.getMyClientModel();
-        private SearchAdapter fAdapter;
-        private RecyclerView recyclerView;
-        private TextView text;
-        private ServerProxy serverProxy = new ServerProxy();
-        //private PollerTask poller;
-        private Button start;
+
+    private ClientModel clientModel = ClientModel.getMyClientModel();
+    private SearchAdapter fAdapter;
+    private RecyclerView recyclerView;
+    private TextView text;
+    private ServerProxy serverProxy = new ServerProxy();
+    private Button start;
 
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            //poller = getIntent().getExtras().getSerializable("poller");
-            setContentView(R.layout.activity_menu_game_lobby);
-            clientModel.register(this); //registers this controller as an observer to the ClientModel
-            recyclerView = (RecyclerView) findViewById(R.id.playerList);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            start=(Button) findViewById(R.id.StartButton);
-            Button leave=(Button) findViewById(R.id.LeaveButton);
-            start.setEnabled(false);
-            start.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view) {
-                    serverProxy.startGame(clientModel.getMyUsername(), clientModel.getMyGameName());
-                }
-
-            });
-            leave.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view) {
-                    serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
-                    clientModel.setLeftGame(true);
-                    clientModel.setHasGame(false);
-                    finish();
-                }
-
-            });
-            clientModel.setLeftGame(false);
-            updateUI();
-
-        }
-
-        private void updateUI() {
-            recyclerView.removeAllViewsInLayout();
-            List<String> players = clientModel.getPlayersinGame();
-            fAdapter = new SearchAdapter(players);
-            recyclerView.setAdapter(fAdapter);
-        }
     @Override
-    public void onStart()
-    {
-        super.onStart();
-        //poller = new PollerTask(6000); //poll every 3s
-        //poller.pollGameList();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu_game_lobby);
+        clientModel.register(this); //registers this controller as an observer to the ClientModel
+        recyclerView = (RecyclerView) findViewById(R.id.playerList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        start = (Button) findViewById(R.id.StartButton);
+        Button leave=(Button) findViewById(R.id.LeaveButton);
+        start.setEnabled(false);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serverProxy.startGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+            }
+        });
+        leave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+                clientModel.setLeftGame(true);
+                clientModel.setHasGame(false);
+                finish();
+            }
+        });
+        clientModel.setLeftGame(false);
+        updateUI();
     }
+
+    private void updateUI() {
+        recyclerView.removeAllViewsInLayout();
+        List<String> players = clientModel.getPlayersinGame();
+        fAdapter = new SearchAdapter(players);
+        recyclerView.setAdapter(fAdapter);
+    }
+
     @Override
     public void onBackPressed() {
         //poller.stopPoller();
@@ -96,8 +84,6 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
         @Override
         public void update() {
-            //String pollerUpdateCount = "Poll # " + String.valueOf(poller.getPollCount() + " @" + String.valueOf(poller.getMsDelay() + "ms"));
-            //Toast.makeText(getApplicationContext(), pollerUpdateCount,Toast.LENGTH_SHORT).show(); //Toast poller count
             if(clientModel.hasGame()) {
                 updateUI();
                 if(clientModel.isGameFull())

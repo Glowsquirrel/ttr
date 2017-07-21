@@ -110,6 +110,9 @@ public class ClientProxy implements IClient {
         String resultJson = gson.toJson(result);
 
         Session mySession = ServerWebSocket.getMySession(username);
+        ServerWebSocket mySocket = ServerWebSocket.getMySocket(mySession);
+        mySocket.removeFromMenus(username);
+
         try {
             mySession.getRemote().sendString(resultJson);
         } catch (IOException ex){
@@ -192,6 +195,7 @@ public class ClientProxy implements IClient {
 
     public void rejoinGame(String username, String gameName){
 
+
     }
 
     public void sendToGame(String gameName, Result result){
@@ -207,7 +211,6 @@ public class ClientProxy implements IClient {
                 logger.warning("Failed to send a: " + result.getType() + " command to the player: " + sessionEntry.getKey() + "in the: " + gameName + " game.");
             }
         }
-
         logger.info("Sent a: " + result.getType() + " command to the: " + gameName + " game.");
     }
 

@@ -41,13 +41,11 @@ public class ServerWebSocket
         return allSessions.get(sessionID);
     }
 
-    public static ConcurrentHashMap<String, Session> getAllMenuSessions()
-    {
+    public static ConcurrentHashMap<String, Session> getAllMenuSessions() {
         return allMenuSessions;
     }
 
-    public static ConcurrentHashMap<String, Session> getGameSession(String gameName)
-    {
+    public static ConcurrentHashMap<String, Session> getGameSession(String gameName) {
         return gameSessions.get(gameName);
     }
 
@@ -56,13 +54,11 @@ public class ServerWebSocket
         return allMenuSessions.get(username);
     }
 
-    public static ServerWebSocket getMySocket(Session mySession)
-    {
+    public static ServerWebSocket getMySocket(Session mySession) {
         return myServerWebSockets.get(mySession);
     }
 
-    public void updateMenuSessions(String username)
-    {
+    public void updateMenuSessions(String username) {
         this.username = username;
         allMenuSessions.put(username, this.session);
     }
@@ -84,19 +80,35 @@ public class ServerWebSocket
         }
     }
 
-    public void leaveGameSession(String username, String gameName)
-    {
+    public void leaveGameSession(String username, String gameName) {
         this.gameName = null; //set to null to check for logic errors
-        if (gameSessions.containsKey(gameName)){
-            ConcurrentHashMap<String, Session> myGameSession = new ConcurrentHashMap<>();
-            if (myGameSession.containsKey(username)){
+        if (gameSessions.containsKey(gameName)) {
+            ConcurrentHashMap<String, Session> myGameSession = gameSessions.get(gameName);
+            if (myGameSession.containsKey(username)) {
                 myGameSession.remove(username);
-                if (myGameSession.size() == 0){
+                if (myGameSession.size() == 0) {
                     gameSessions.remove(gameName);
                 }
             }
         }
+    }
 
+    public void removeFromMenus(String username) {
+        if (allMenuSessions.containsKey(username))
+            allMenuSessions.remove(username);
+    }
+
+    public void rejoinGameSession(String username, String gameName) {
+        this.gameName = gameName;
+        if (gameSessions.containsKey(gameName)) { //if the session exists, add them back
+            ConcurrentHashMap<String, Session> myGameSession = gameSessions.get(gameName);
+            myGameSession.put(username, this.session);
+            allMenuSessions.remove(username); //remove the client from the menu users
+        } else { //if the session doesn't exist (if the server is restarted, loaded from the database and they are the first player to rejoin)
+            ConcurrentHashMap<String, Session> myGameSession = new ConcurrentHashMap<>();
+            myGameSession.put(username, this.session);
+            gameSessions.put(gameName, myGameSession);
+        }
     }
 
     private String sessionID;
@@ -105,23 +117,25 @@ public class ServerWebSocket
     private String gameName;
 
     @OnWebSocketClose
-    public void onClose(int statusCode, String reason)
-    {
+    public void onClose(int statusCode, String reason) {
         synchronized (ServerFacade.class) {
             logger.info("Close: statusCode = " + statusCode + ", reason = " + reason);
-            LeaveGameCommandX kickDC = new LeaveGameCommandX(this.username, this.gameName);
-            kickDC.execute();
+
             //removes session from master list & socket list
             if (ServerWebSocket.allSessions.containsKey(this.sessionID)) {
                 allSessions.remove(this.sessionID);
                 myServerWebSockets.remove(this.session);
             }
+
             //removes session from logged in list & game if in one
             if (this.username != null) {
                 if (allMenuSessions.containsKey(this.username)) {
                     allMenuSessions.remove(this.username);
                 }
                 if (this.gameName != null) {
+                    //if the client was in a game, call ServerFacade.leaveGame();
+                    LeaveGameCommandX kickDC = new LeaveGameCommandX(this.username, this.gameName);
+                    kickDC.execute();
                     ConcurrentHashMap<String, Session> myGameSession = gameSessions.get(gameName);
                     if (myGameSession.containsKey(this.username)) {
                         myGameSession.remove(this.username);
@@ -180,7 +194,8 @@ public class ServerWebSocket
                 ex.printStackTrace();
                 try {
                     session.getRemote().sendString("Illegal request! The server has kicked you.");
-                    logger.severe("A client has sent a bad request! Was this client in the right HashMap?");
+                    logger.severe("A client has sent a bad request! Was this client in the right HashMap? Check the ServerWebSocket!");
+                    logger.severe("Exceptions are currently getting sinked into the ServerWebSocket. If you threw an exception in your code, fix it there. If it wasn't yours, but someone else's, let them know (also how to duplicate it if possible).");
                     session.disconnect();
                 } catch (IOException ioex) {
                     ioex.printStackTrace();
