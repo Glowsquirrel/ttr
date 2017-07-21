@@ -9,7 +9,9 @@ public class Utils {
     public static final String CREATE_TYPE = "creategame";
     public static final String JOIN_TYPE = "joingame";
     public static final String LEAVE_TYPE = "leavegame";
+
     public static final String START_TYPE = "startgame";
+    public static final String REJOIN_TYPE = "rejoingame";
 
     public static final String MESSAGE_TYPE = "message";
     public static final String DRAW_DEST_CARDS_TYPE = "drawthreedestcards";

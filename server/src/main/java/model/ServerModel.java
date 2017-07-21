@@ -25,10 +25,10 @@ public class ServerModel {
 
     //NOTE: Both really should be maps. I'm not sure if changing the UnstartedGame list to a map rocks the boat
     //too much on other people's parts. Thoughts..?
-    Map<String, UnstartedGame> allUnstartedGames;
-    Map<String, StartedGame> allStartedGames;
-    Set<User> allUsers;
-    ClientProxy toClient;
+    private Map<String, UnstartedGame> allUnstartedGames;
+    private Map<String, StartedGame> allStartedGames;
+    private Set<User> allUsers;
+    private ClientProxy toClient;
 
     private static class LazyModelHelper{
         private static final ServerModel MODEL_INSTANCE = new ServerModel();
@@ -57,7 +57,7 @@ public class ServerModel {
      */
    public void addUnstartedGame(String username, UnstartedGame newGame){
 
-        if (allUnstartedGames.containsKey(newGame.getGameName())){
+        if (allUnstartedGames.containsKey(newGame.getGameName()) || allStartedGames.containsKey(newGame.getGameName())){
             String message = "Game already exists.";
             toClient.rejectCommand(username, message);
         } else {
@@ -94,6 +94,7 @@ public class ServerModel {
                 if (currentUser.getUsername().equals(user.getUsername())){
                     if (currentUser.getPassword().equals(user.getPassword())){
                         toClient.loginUser(user.getUsername(), user.getPassword(), sessionID);
+                        break;
                     }
                 }
             }
@@ -137,38 +138,44 @@ public class ServerModel {
     }
 
     public void addPlayerToGame(String username, String gameName) {
-        for(String nextGameName : allUnstartedGames.keySet()) {
-            if(gameName.equals(nextGameName)) {
-                List<String> currentPlayers = allUnstartedGames.get(nextGameName).getUsernames();
-                if(!currentPlayers.contains(username)){
-                    currentPlayers.add(username);
-                    allUnstartedGames.get(nextGameName).setUsernames(currentPlayers);
-                    toClient.joinGame(username, gameName);
-                    toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
-                } else {
-                    //TODO: Call rejoin game in proxy
-                }
+        boolean success = false;
+        if (allUnstartedGames.containsKey(gameName)){
+            UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
+            if (!myUnstartedGame.hasEnoughPlayersToStart()){
+                myUnstartedGame.addPlayer(username);
+                success = true;
             }
+        }
+
+        if (success) {
+            toClient.joinGame(username, gameName);
+            toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+        } else {
+            String message = "Could not join game.";
+            toClient.rejectCommand(username, message);
         }
     }
 
     public void removePlayerFromGame(String username, String gameName) {
-        for(String nextGameName : allUnstartedGames.keySet()) {
-            if(gameName.equals(nextGameName)) {
-                List<String> currentPlayers = allUnstartedGames.get(nextGameName).getUsernames();
-                if(currentPlayers.contains(username)){
-                    currentPlayers.remove(username);
-                    allUnstartedGames.get(nextGameName).setUsernames(currentPlayers);
-                    toClient.leaveGame(username, gameName);
-                    toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+        boolean success = false;
+        if (allUnstartedGames.containsKey(gameName)){
+            UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
+            if (myUnstartedGame.hasPlayer(username)){ //if the player is in the game, remove them from the game
+                myUnstartedGame.removePlayer(username);
+                success = true;
+                if (myUnstartedGame.hasNoPlayers()){ //if number of players == 0, remove the game
+                    allUnstartedGames.remove(gameName);
                 }
-            } else {
-                //Shouldn't be possible to get here based on UI
-                String message = "Player not in game.";
-                toClient.rejectCommand(username, message);
             }
         }
 
+        if (success) {
+            toClient.leaveGame(username, gameName);
+            toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+        } else {
+            String message = "Player not in game.";
+            toClient.rejectCommand(username, message);
+        }
     }
 
    /****************************************STARTING GAME****************************************/
@@ -182,20 +189,20 @@ public class ServerModel {
     }
 
     private StartedGame activateGame(String gameName) throws GamePlayException {
-        for (int a = 0; a < allUnstartedGames.size(); a++) {
 
-            UnstartedGame currentGame = allUnstartedGames.get(a);
+        if (allUnstartedGames.containsKey(gameName)){
+            UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
+            StartedGame newlyStartedGame = new StartedGame(myUnstartedGame);
 
-            if (currentGame.getGameName().equals(gameName)){
+            allUnstartedGames.remove(gameName);
+            allStartedGames.put(gameName, newlyStartedGame);
 
-                allUnstartedGames.remove(a);
-                StartedGame newlyStartedGame = new StartedGame(currentGame);
+            //TODO: need to send a start game result to everyone in the game
 
-                allStartedGames.put(currentGame.getGameName(), newlyStartedGame);
-                newlyStartedGame.preGameSetup(currentGame.getUsernames()); //TODO: Implement Layer
-                return newlyStartedGame;
-            }
+            toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+            return newlyStartedGame;
         }
+
         throw new GamePlayException("Game " + gameName +  " does not exist.");
     }
 

@@ -19,14 +19,14 @@ public class StartedGame {
 
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
-        preGameSetup(unstartedGame.getUsernames());
+        preGameSetup(unstartedGame.getUsernamesInGame());
     }
 
     /**
      * @note Must deal cards before setting up deck for correct error handling.
      * @return True if successful, false otherwise.
      */
-    public void preGameSetup(List<String> userNames) {
+    private void preGameSetup(List<String> userNames) {
 
         board = new Board();
         final int TRAIN_CARD_DRAW = 4;

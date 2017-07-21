@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import interfaces.Observable;
 import interfaces.Observer;
 
@@ -129,7 +130,7 @@ public class ClientModel implements Observable{
         for(UnstartedGame i:gamesToStart) {
             if(i.getGameName().equals(myGameName)) {
                 size=i.getPlayersNeeded();
-                toreturn=i.getUsernames();
+                toreturn=i.getUsernamesInGame();
             }
         }
         if(toreturn==null)

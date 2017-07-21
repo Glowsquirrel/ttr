@@ -1,7 +1,7 @@
 package serverfacade;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import interfaces.IServer;
 import model.ServerModel;
 import model.UnstartedGame;
@@ -56,10 +56,8 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void createGame(String username, String gameName, int playerNum) {
-        List<String> playerUsernames = new ArrayList<>();
-        playerUsernames.add(username);
-        UnstartedGame newGame = new UnstartedGame(gameName, playerUsernames.size(), playerNum,
-                                                    playerUsernames);
+        UnstartedGame newGame = new UnstartedGame(gameName, playerNum);
+        newGame.addPlayer(username);
         mSingletonModel.addUnstartedGame(username, newGame);
     }
 
@@ -98,6 +96,13 @@ public class ServerFacade implements IServer {
     @Override
     public void startGame(String gameName, String username) {
         //TODO: implement me with ServerModel logic
+        //username might be useless?
+        mSingletonModel.startGame(gameName);
+    }
+
+    @Override
+    public void rejoinGame(String username, String gameName) {
+
     }
 
     @Override
@@ -108,6 +113,7 @@ public class ServerFacade implements IServer {
     @Override
     public void returnDestCards(String username, String gameName, List<Integer> destCards) {
          //TODO:  Need a way to account for only one card or no cards being returned
+        //if no cards are being returned, this will not be called
     }
 
     @Override

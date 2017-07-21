@@ -11,8 +11,22 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import commands.Command;
-import serverfacade.commands.game.*;
-import serverfacade.commands.menu.*;
+import serverfacade.commands.game.ChatCommandX;
+import serverfacade.commands.game.ClaimRouteCommandX;
+import serverfacade.commands.game.DrawThreeDestCardsCommandX;
+import serverfacade.commands.game.DrawTrainCardFromDeckCommandX;
+import serverfacade.commands.game.DrawTrainCardFromFaceUpCommandX;
+import serverfacade.commands.game.RejoinCommandX;
+import serverfacade.commands.game.ReturnDestCardsCommandX;
+import serverfacade.commands.game.ReturnFirstDestCardCommandX;
+import serverfacade.commands.game.StartGameCommandX;
+import serverfacade.commands.menu.ClearDatabaseCommandX;
+import serverfacade.commands.menu.CreateGameCommandX;
+import serverfacade.commands.menu.JoinGameCommandX;
+import serverfacade.commands.menu.LeaveGameCommandX;
+import serverfacade.commands.menu.LoginCommandX;
+import serverfacade.commands.menu.PollGamesCommandX;
+import serverfacade.commands.menu.RegisterCommandX;
 import utils.Utils;
 
 /**
@@ -57,6 +71,9 @@ class CommandXSerializer implements JsonDeserializer<Command> {
                 break;
             case Utils.START_TYPE:
                 typeModel = gson.fromJson(jsonObject, StartGameCommandX.class);
+                break;
+            case Utils.REJOIN_TYPE:
+                typeModel = gson.fromJson(jsonObject, RejoinCommandX.class);
                 break;
             case Utils.RETURN_FIRST_DEST_CARD_TYPE:
                 typeModel = gson.fromJson(jsonObject, ReturnFirstDestCardCommandX.class);

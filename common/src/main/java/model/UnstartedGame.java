@@ -1,20 +1,19 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UnstartedGame {
 
     private String gameName;
-    private List<String> usernames;
+    private List<String> usernames = new ArrayList<>();
     private int playersIn;
     private int playersNeeded;
 
     public UnstartedGame(){}
-    public UnstartedGame(String gameName, int playersIn, int playersNeeded, List<String> usernames){
+    public UnstartedGame(String gameName, int playersNeeded){
         this.gameName = gameName;
-        this.playersIn = playersIn;
         this.playersNeeded = playersNeeded;
-        this.usernames = usernames;
     }
 
     public boolean isStarted() {
@@ -36,8 +35,32 @@ public class UnstartedGame {
         this.gameName = gameName;
     }
 
-    public List<String> getUsernames() {
+    public List<String> getUsernamesInGame() {
         return usernames;
+    }
+
+    public void addPlayer(String username){
+        this.usernames.add(username);
+        this.playersIn++;
+    }
+
+    public boolean hasPlayer(String username){
+        return this.usernames.contains(username);
+    }
+
+    public void removePlayer(String username){
+        if (this.usernames.contains(username)) {
+            this.usernames.remove(username);
+            this.playersIn--;
+        }
+    }
+
+    public boolean hasEnoughPlayersToStart(){
+        return this.playersIn == this.playersNeeded;
+    }
+
+    public boolean hasNoPlayers(){
+        return this.playersIn == 0;
     }
 
     public void setUsernames(List<String> usernames) {

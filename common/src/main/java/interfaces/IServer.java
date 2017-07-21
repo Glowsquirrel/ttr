@@ -21,7 +21,8 @@ public interface IServer {
     void joinGame(String username, String gameName);
     void leaveGame(String username, String gameName);
     void startGame(String gameName, String username);
-
+    void rejoinGame(String username, String gameName);
+    
     void drawThreeDestCards(String username, String gameName);
     void returnDestCards(String username, String gameName, List<Integer> destCards);
     void drawTrainCardFromDeck(String username, String gameName);

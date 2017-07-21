@@ -8,6 +8,7 @@ import commands.game.ClaimRouteCommand;
 import commands.game.DrawThreeDestCardsCommand;
 import commands.game.DrawTrainCardFromDeckCommand;
 import commands.game.DrawTrainCardFromFaceUpCommand;
+import commands.game.RejoinCommand;
 import commands.game.ReturnDestCardsCommand;
 import commands.game.StartGameCommand;
 import commands.menu.CreateGameCommand;
@@ -63,6 +64,12 @@ public class ServerProxy implements IServer{
     @Override
     public void startGame(String username, String gameName) {
         StartGameCommand command = new StartGameCommand(username, gameName);
+        clientCommunicator.doCommand(command);
+    }
+
+    @Override
+    public void rejoinGame(String username, String gameName) {
+        RejoinCommand command = new RejoinCommand(username, gameName);
         clientCommunicator.doCommand(command);
     }
 
