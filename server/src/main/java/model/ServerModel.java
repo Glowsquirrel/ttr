@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import clientproxy.ClientProxy;
 
 /**
@@ -81,7 +80,7 @@ public class ServerModel {
         if(allUsers.add(user)) {
             toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
         } else {
-            message = "User already exists.";
+            message = user.getUsername() + "is already registered.";
             toClient.rejectCommand(sessionID, message);
         }
     }
@@ -94,12 +93,12 @@ public class ServerModel {
                 if (currentUser.getUsername().equals(user.getUsername())){
                     if (currentUser.getPassword().equals(user.getPassword())){
                         toClient.loginUser(user.getUsername(), user.getPassword(), sessionID);
-                        break;
+                        return;
                     }
                 }
             }
         } else{
-            String message = "Log in failed.";
+            String message = "Login failed.";
             toClient.rejectCommand(sessionID, message);
         }
 
