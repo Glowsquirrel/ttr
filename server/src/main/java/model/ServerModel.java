@@ -119,9 +119,9 @@ public class ServerModel {
 
         for(String nextGameName : allStartedGames.keySet()){
             RunningGame nextStartedGame = new RunningGame(allStartedGames.get(nextGameName)
-                    .gameName,
+                    .getGameName(),
                     allStartedGames.get(nextGameName)
-                            .allPlayers.size());
+                            .getAllPlayers().size());
             startedGames.add(nextStartedGame);
         }
         return startedGames;
@@ -207,9 +207,9 @@ public class ServerModel {
     }
 
    /****************************************ROUND ONE*********************************************/
-    public void returnFirstDestCard(String gameName, String playerName, int destCard) {
+    public void returnDestCard(String gameName, String playerName, int destCard) {
         try {
-            this.getGame(gameName).returnFirstRoundDestCard(playerName, destCard);
+            this.getGame(gameName).returnDestCard(playerName, destCard);
         }
         catch (GamePlayException ex){
             System.out.println(ex.getMessage());
@@ -235,16 +235,6 @@ public class ServerModel {
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());
-        }
-    }
-
-    public void returnDestCards(String gameName, String playerName,
-                                int cardOne, int cardTwo) throws GamePlayException {
-        try {
-            this.getGame(gameName).returnDestCards(playerName, cardOne, cardTwo);
-        }
-        catch (GamePlayException ex){
-            System.out.println (ex.getMessage());
         }
     }
 

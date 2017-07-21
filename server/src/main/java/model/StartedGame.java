@@ -1,8 +1,12 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import results.Result;
+
 
 /**
  * Container class for started games.
@@ -13,20 +17,25 @@ import java.util.Map;
 // TODO: Add result.
 public class StartedGame {
 
-    String gameName;
-    Map<String, Player> allPlayers = new HashMap<>();
-    Board board;
+    private String gameName;
+    private Map<String, Player> allPlayers = new HashMap<>();
+    private Board board;
+    private List<Result> gameHistory = new ArrayList<>();
 
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
         preGameSetup(unstartedGame.getUsernamesInGame());
     }
 
+
+
+
+/************************************START GAME************************************************/
     /**
      * @note Must deal cards before setting up deck for correct error handling.
      * @return True if successful, false otherwise.
      */
-    private void preGameSetup(List<String> userNames) {
+    public List<Result> preGameSetup(List<String> userNames) {
 
         board = new Board();
         final int TRAIN_CARD_DRAW = 4;
@@ -39,9 +48,30 @@ public class StartedGame {
 
             allPlayers.put(userNames.get(a), newPlayer);
         }
+        return ResultCreator.startGameResults(this);
     }
 
-    public void returnFirstRoundDestCard(String playerName, int returnedCardKey)
+
+/********************************DrawDestCards****************************************************/
+    public Result drawThreeDestCards(String playerName) throws GamePlayException {
+
+        Player currentPlayer = allPlayers.get(playerName);
+        ArrayList<DestCard> drawnDestCards;
+
+        if (currentPlayer != null) {
+            drawnDestCards = board.drawDestCards();
+            currentPlayer.addDestCards(drawnDestCards);
+        }
+        else {
+            throw new GamePlayException("Invalid player name");
+        }
+        return ResultCreator.drawDestCardResults(playerName, drawnDestCards, board.getDestCardMap());
+    }
+
+
+
+    //How are cardOne and cardTwo converted from the command? Is there any way it could arbitrarily change?
+    public Result returnDestCard(String playerName, int returnedCardKey)
             throws GamePlayException {
 
         Player currentPlayer = allPlayers.get(playerName);
@@ -52,38 +82,15 @@ public class StartedGame {
         else {
             throw new GamePlayException("Invalid player name");
         }
+
+        return ResultCreator.returnDestCardResults();
     }
 
-    public void drawThreeDestCards(String playerName) throws GamePlayException {
-        Player currentPlayer = allPlayers.get(playerName);
-        if (currentPlayer != null) {
-           currentPlayer.addDestCards(board.drawDestCards());
-        }
-        else {
-            throw new GamePlayException("Invalid player name");
-        }
-    }
 
-    //How are cardOne and cardTwo converted from the command? Is there any way it could arbitrarily change?
-    public void returnDestCards(String playerName, int cardOneKey, int cardTwoKey)
-            throws GamePlayException {
-        Player currentPlayer = allPlayers.get(playerName);
-        if (currentPlayer != null) {
 
-            DestCard cardOne = board.getDestCardMap().get(cardOneKey);
-            DestCard cardTwo = board.getDestCardMap().get(cardTwoKey);
 
-            if(currentPlayer.removeDestCards(cardOne, cardTwo)){
-                board.pushBackDestCards(cardOne, cardTwo);
-            }
-
-        }
-        else {
-            throw new GamePlayException("Invalid player name");
-        }
-    }
-
-    public void drawTrainCardFromDeck(String playerName) throws GamePlayException {
+/**********************************DrawTrainCards************************************************/
+    public Result drawTrainCardFromDeck(String playerName) throws GamePlayException {
 
         final int TRAIN_CARD_DRAW = 1;
         Player currentPlayer = allPlayers.get(playerName);
@@ -93,9 +100,12 @@ public class StartedGame {
         else {
             throw new GamePlayException("Invalid player name");
         }
+        return ResultCreator.drawTCFromDeckResults();
     }
 
-    public void drawTrainCardFromFaceUp(String playerName) throws GamePlayException{
+
+
+    public Result drawTrainCardFromFaceUp(String playerName) throws GamePlayException{
         Player currentPlayer = allPlayers.get(playerName);
         if (currentPlayer != null) {
 
@@ -103,9 +113,13 @@ public class StartedGame {
         else {
             throw new GamePlayException("Invalid player name");
         }
+        return ResultCreator.drawTCFromFaceUpResults();
     }
 
-    public void claimRoute(String playerName, int routeId) throws GamePlayException {
+
+
+    /************************************ClaimRoute*******************************************/
+    public Result claimRoute(String playerName, int routeId) throws GamePlayException {
         Player currentPlayer = allPlayers.get(playerName);
         if (currentPlayer != null) {
 
@@ -113,8 +127,42 @@ public class StartedGame {
         else {
             throw new GamePlayException("Invalid player name");
         }
+
+        return ResultCreator.claimRouteResult();
     }
 
 
+
+    /***********************************Getters*****************************************/
+    public List<Result> getGameHistory() {
+        return gameHistory;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public Map<String, Player> getAllPlayers() {
+        return allPlayers;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public enum TurnState {
+        BEFORE_TURN,
+        DRAW_DEST,
+        DRAW_TRAIN_CARD,
+        CLAIM_ROUTE;
+
+        public void setState(String thisFunction) {
+            switch(this) {
+                case BEFORE_TURN: {
+
+                }
+            }
+        }
+    }
 
 }
