@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import clientproxy.ClientProxy;
 
 /**
@@ -81,7 +80,7 @@ public class ServerModel {
         if(allUsers.add(user)) {
             toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
         } else {
-            message = "User already exists.";
+            message = user.getUsername() + "is already registered.";
             toClient.rejectCommand(sessionID, message);
         }
     }
@@ -94,12 +93,12 @@ public class ServerModel {
                 if (currentUser.getUsername().equals(user.getUsername())){
                     if (currentUser.getPassword().equals(user.getPassword())){
                         toClient.loginUser(user.getUsername(), user.getPassword(), sessionID);
-                        break;
+                        return;
                     }
                 }
             }
         } else{
-            String message = "Log in failed.";
+            String message = "Login failed.";
             toClient.rejectCommand(sessionID, message);
         }
 
@@ -188,7 +187,7 @@ public class ServerModel {
         }
     }
 
-    private StartedGame activateGame(String gameName) throws GamePlayException {
+    private void activateGame(String gameName) throws GamePlayException {
 
         if (allUnstartedGames.containsKey(gameName)){
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
@@ -196,11 +195,22 @@ public class ServerModel {
 
             allUnstartedGames.remove(gameName);
             allStartedGames.put(gameName, newlyStartedGame);
+            
+            Board currentGameSetup = newlyStartedGame.getBoard();
 
-            //TODO: need to send a start game result to everyone in the game
+            //For each player, gather their/game details so the proxy can start the game for each
+            for(Player currentPlayer : newlyStartedGame.getAllPlayers().values()){
+                List<Integer> destinationCardIDs = new ArrayList<>();
+                for(DestCard currentCard : currentPlayer.getDestCards()){
+                    destinationCardIDs.add(currentCard.getMapValue());
+                }
+                toClient.startGame(currentPlayer.getUsername(), gameName,
+                                    myUnstartedGame.getUsernamesInGame(), destinationCardIDs,
+                                    currentPlayer.getTrainCardCodes(),
+                                    currentGameSetup.getFaceUpCardCodes());
+            }
 
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
-            return newlyStartedGame;
         }
 
         throw new GamePlayException("Game " + gameName +  " does not exist.");

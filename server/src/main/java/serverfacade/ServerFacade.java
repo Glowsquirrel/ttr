@@ -95,7 +95,6 @@ public class ServerFacade implements IServer {
      */
     @Override
     public void startGame(String gameName, String username) {
-        //TODO: implement me with ServerModel logic
         //username might be useless?
         mSingletonModel.startGame(gameName);
     }
