@@ -82,14 +82,16 @@ public class Board {
     private void drawFaceUpCards() {
         final int FIFTH_INDEX = 4;
 
-        faceUpTrainCards = (ArrayList<TrainCard>)trainCardDeck.subList(0, FIFTH_INDEX);
+        faceUpTrainCards.clear();
+        faceUpTrainCards.addAll(trainCardDeck.subList(0, FIFTH_INDEX));
         for (int a = 0; a < FIFTH_INDEX; a++) {
             trainCardDeck.remove(0);
         }
     }
 
     private void initializeDestCardDeck() {
-        destCardDeck = (ArrayList<DestCard>)destCardMap.values();
+        destCardDeck.clear();
+        destCardDeck.addAll(destCardMap.values());
     }
 
     private void shuffleDestCarDeck(){

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +21,8 @@ public class ResultCreator {
     /************************************START GAME************************************************/
     public static List<Result> startGameResults(StartedGame game) {
 
-        Set<Player> playerSet = (Set<Player>)game.getAllPlayers().values();
+        Set<Player> playerSet = new HashSet<>();
+        playerSet.addAll(game.getAllPlayers().values());
         List<Result> allResults = new ArrayList<>();
 
         List<String> playerNames = new ArrayList<>();
