@@ -92,7 +92,9 @@ public class Board {
     }
 
     private void initializeDestCardDeck() {
-        destCardDeck = (ArrayList<DestCard>)destCardMap.values();
+        destCardDeck.clear();
+        destCardDeck.addAll(destCardMap.values());
+
     }
 
     private void shuffleDestCarDeck(){
