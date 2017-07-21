@@ -16,6 +16,7 @@ public class Board {
 
     private Map<Integer, Route> routeMap = new HashMap<>();
     private Map<Integer, DestCard> destCardMap = new HashMap<>();
+    private boolean replaceFaceUpFlag = false;
 
     Board(){
         destCardMap = DestCard.createDestCardMap();
@@ -34,6 +35,8 @@ public class Board {
         initializeDestCardDeck();
         shuffleDestCarDeck();
         setDestCardDeck(destCardDeck);
+
+        countLocomotives();
     }
 
  /***********************************BOARD SETUP/SHUFFLING*****************************************/
@@ -82,16 +85,14 @@ public class Board {
     private void drawFaceUpCards() {
         final int FIFTH_INDEX = 4;
 
-        faceUpTrainCards.clear();
-        faceUpTrainCards.addAll(trainCardDeck.subList(0, FIFTH_INDEX));
+        faceUpTrainCards = new ArrayList<>(trainCardDeck.subList(0, FIFTH_INDEX));
         for (int a = 0; a < FIFTH_INDEX; a++) {
             trainCardDeck.remove(0);
         }
     }
 
     private void initializeDestCardDeck() {
-        destCardDeck.clear();
-        destCardDeck.addAll(destCardMap.values());
+        destCardDeck = (ArrayList<DestCard>)destCardMap.values();
     }
 
     private void shuffleDestCarDeck(){
@@ -114,7 +115,23 @@ public class Board {
 
     }
 
+    private void countLocomotives() {
+        int numOfLocomotives = 0;
+        final int LOCOMOTIVE_INDEX = 8;
+        final int LOCOMOTIVE_LIMIT = 2;
+        for (TrainCard trainCard : faceUpTrainCards) {
+            if (TrainCard.getTrainCardInt(trainCard) == LOCOMOTIVE_INDEX) {
+                numOfLocomotives++;
+            }
+        }
+
+        if (numOfLocomotives > LOCOMOTIVE_LIMIT) {
+            replaceFaceUpFlag = true;
+        }
+
+    }
  /**********************************GAMEPLAY************************************************/
+
     public ArrayList<TrainCard> drawTrainCards(int numberDrawn) {
 
         final int TOP_CARD_INDEX = 0;
@@ -134,7 +151,7 @@ public class Board {
         final int SIZE_OF_DRAW = 3;
         final int TOP_CARD_INDEX = 0;
 
-        ArrayList<DestCard> drawnDestCards = new ArrayList<DestCard>();
+        ArrayList<DestCard> drawnDestCards = new ArrayList<>();
         for (int a = 0; a < SIZE_OF_DRAW; a++) {
             DestCard topCard = destCardDeck.get(TOP_CARD_INDEX);
             drawnDestCards.add(topCard);
@@ -145,12 +162,9 @@ public class Board {
     }
 
 
-    public void pushBackDestCards(DestCard cardOne, DestCard cardTwo) {
+    public void pushBackDestCards(DestCard cardOne) {
         if (cardOne != null) {
             destCardDeck.add(cardOne);
-        }
-        if (cardTwo != null) {
-            destCardDeck.add(cardTwo);
         }
     }
 
@@ -164,7 +178,21 @@ public class Board {
         return faceUpCodes;
     }
 
+    public TrainCard drawFaceUpCard(int index) {
 
+        final int TOP_CARD_INDEX = 0;
+
+        TrainCard returnedCard = faceUpTrainCards.get(index);
+        faceUpTrainCards.set(index, trainCardDeck.get(TOP_CARD_INDEX));
+        trainCardDeck.remove(TOP_CARD_INDEX);
+
+        countLocomotives();
+        return returnedCard;
+    }
+
+    public boolean getReplaceFaceUpFlag() {
+        return replaceFaceUpFlag;
+    }
 
     void setDestCardDeck(List<DestCard> destCardDeck) {
         this.destCardDeck = destCardDeck;

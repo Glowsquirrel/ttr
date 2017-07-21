@@ -13,6 +13,7 @@ public class DestCard {
     private int mapValue;
 
     public DestCard(int mapValue, City startCity, City endCity, int pointValue){
+        this.mapValue = mapValue;
         this.startCity = startCity;
         this.endCity = endCity;
         this.pointValue = pointValue;

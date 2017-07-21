@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import clientproxy.ClientProxy;
+import results.Result;
 
 /**
  * ServerModel is the server model root class.
@@ -187,19 +188,22 @@ public class ServerModel {
         }
     }
 
-    private StartedGame activateGame(String gameName) throws GamePlayException {
+    private void activateGame(String gameName) throws GamePlayException {
 
         if (allUnstartedGames.containsKey(gameName)){
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
             StartedGame newlyStartedGame = new StartedGame(myUnstartedGame);
 
             allUnstartedGames.remove(gameName);
+            List<Result> startResults =
+                newlyStartedGame.preGameSetup(myUnstartedGame.getUsernamesInGame());
             allStartedGames.put(gameName, newlyStartedGame);
 
-            //TODO: need to send a start game result to everyone in the game
 
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
-            return newlyStartedGame;
+            for (Result result : startResults) {
+               // toClient.startGame();
+            }
         }
 
         throw new GamePlayException("Game " + gameName +  " does not exist.");
@@ -248,9 +252,9 @@ public class ServerModel {
         }
     }
 
-    public void drawTrainCardFromFaceUp(String gameName, String playerName) {
+    public void drawTrainCardFromFaceUp(String gameName, String playerName, int index) {
         try {
-            this.getGame(gameName).drawTrainCardFromFaceUp(playerName);
+            this.getGame(gameName).drawTrainCardFromFaceUp(playerName, index);
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());

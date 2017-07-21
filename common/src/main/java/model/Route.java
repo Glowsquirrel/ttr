@@ -21,7 +21,8 @@ public class Route {
     private City startCity;
     private City endCity;
     private int length;
-    private TrainCard color;
+    private TrainCard originalColor;
+    private PlayerColor claimedColor;
     private boolean doubleRoute;
     private boolean claimed = false;
     private int pointValue;
@@ -30,7 +31,7 @@ public class Route {
         this.startCity = startCity;
         this.endCity = endCity;
         this.length = length;
-        this.color = color;
+        this.originalColor = color;
         this.doubleRoute = doubleRoute;
         setPointValue();
     }
@@ -47,9 +48,7 @@ public class Route {
         this.length = length;
     }
 
-    public void setColor(TrainCard color) {
-        this.color = color;
-    }
+
 
     public City getStartCity() {
         return startCity;
@@ -64,7 +63,7 @@ public class Route {
     }
 
     public TrainCard getColor() {
-        return color;
+        return originalColor;
     }
 
     public int getPointValue() {
@@ -78,7 +77,8 @@ public class Route {
         return isClaimed();
     }
 
-    public void claimRoute() {
+    public void claimRoute(PlayerColor playerColor) {
+        claimedColor = playerColor;
         claimed = true;
     }
 
