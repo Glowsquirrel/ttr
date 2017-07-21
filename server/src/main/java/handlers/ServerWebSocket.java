@@ -3,10 +3,6 @@ package handlers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
-
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -14,10 +10,13 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
-import commands.Command;
-import serverfacade.ServerFacade;
+import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
+import commands.Command;
 import interfaces.ICommand;
+import serverfacade.ServerFacade;
 import serverfacade.commands.menu.LeaveGameCommandX;
 import utils.Utils;
 
@@ -66,6 +65,10 @@ public class ServerWebSocket
     {
         this.username = username;
         allMenuSessions.put(username, this.session);
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void joinGameSession(String username, String gameName) {

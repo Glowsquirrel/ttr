@@ -11,13 +11,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import handlers.ServerWebSocket;
+import interfaces.IClient;
 import model.RunningGame;
-import results.*;
+import model.UnstartedGame;
+import results.Result;
 import results.game.ChatResult;
 import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
+import results.game.RejoinResult;
 import results.game.ReturnDestCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
@@ -28,9 +32,6 @@ import results.menu.LoginResult;
 import results.menu.MessageResult;
 import results.menu.PollGamesResult;
 import results.menu.RegisterResult;
-import handlers.*;
-import interfaces.IClient;
-import model.UnstartedGame;
 import utils.Utils;
 
 /**
@@ -189,6 +190,10 @@ public class ClientProxy implements IClient {
         }
     }
 
+    public void rejoinGame(String username, String gameName){
+
+    }
+
     public void sendToGame(String gameName, Result result){
         String resultJson = getResultTypeAsJson(result);
         ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
@@ -212,10 +217,31 @@ public class ClientProxy implements IClient {
 
         try {
             myUserSession.getRemote().sendString(resultJson);
-            logger.info("Sent a: " + result.getType() + " command to " + username + ".");
+            logger.fine("Sent a: " + result.getType() + " command to " + username + ".");
         } catch (IOException ex){
             ex.printStackTrace();
             logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
+        }
+
+    }
+
+    public void sendToOthersInGame(String username, String gameName, Result result){
+        String resultJson = getResultTypeAsJson(result);
+        ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
+
+        for (Map.Entry<String, Session> sessionEntry : myGameSession.entrySet()){
+            Session myUserSession = sessionEntry.getValue();
+
+            ServerWebSocket myUserWebSocket = ServerWebSocket.getMySocket(myUserSession);
+            if (myUserWebSocket.getUsername().equals(username))
+                continue;
+
+            try {
+                myUserSession.getRemote().sendString(resultJson);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
+            }
         }
 
     }
@@ -243,6 +269,9 @@ public class ClientProxy implements IClient {
                 break;
             case Utils.START_TYPE:
                 myJsonString = gson.toJson(result, StartGameResult.class);
+                break;
+            case Utils.REJOIN_TYPE:
+                myJsonString = gson.toJson(result, RejoinResult.class);
                 break;
             case Utils.MESSAGE_TYPE:
                 myJsonString = gson.toJson(result, MessageResult.class);
