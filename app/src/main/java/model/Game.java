@@ -2,17 +2,23 @@ package model;
 
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Game {
 
+    private Game(){};
+    public static final Game myGame=new Game();
     private int numOfPlayers = 0;
     private String gameName;
     private ArrayList<String> playerUserNames = new ArrayList<>();
+    private Map<String, Player> playerMap;
 
+    public String getGameName() {
+        return gameName;
+    }
 
-    Game(String gameName, String userName){
+    public void setGameName(String gameName) {
         this.gameName = gameName;
-        addPlayer(userName);
     }
 
     public boolean addPlayer(String userName){
@@ -24,4 +30,5 @@ public class Game {
         }
         return false;
     }
+
 }

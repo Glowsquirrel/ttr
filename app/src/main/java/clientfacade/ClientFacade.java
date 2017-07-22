@@ -6,6 +6,7 @@ import java.util.List;
 
 import interfaces.IClient;
 import model.ClientModel;
+import model.Game;
 import model.RunningGame;
 import model.UnstartedGame;
 
@@ -15,6 +16,7 @@ import model.UnstartedGame;
  */
 public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
+    private Game game=Game.myGame;
 
     public void postMessage(String message){
         clientModel.setMessageToToast(message);
@@ -34,6 +36,7 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
+        game.setGameName(gameName);
         //TODO: put all the start game info into clientModel.
     }
 
