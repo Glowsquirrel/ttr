@@ -29,9 +29,11 @@ public class PlayerData extends Fragment implements Observer {
     @Override
     public void update()
     {
+        updateRV();
 
     }
     private void updateRV() {
+        mRV.removeAllViewsInLayout();
         mAdapter = new adapter( mGame.getPlayerListToDisplay());
         mRV.setAdapter( mAdapter);
     }
@@ -48,6 +50,7 @@ public class PlayerData extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_player_data, container, false);
         mRV= (RecyclerView)  v.findViewById( R.id.player_list);
+        mGame.register(this);
         return v;
     }
     private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener

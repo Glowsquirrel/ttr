@@ -55,11 +55,10 @@
         </RelativeLayout>
 
     </android.support.constraint.ConstraintLayout>
-
     <FrameLayout android:id="@+id/left_drawer"
         android:layout_width="800dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:background="@color/blue" />
-
+        android:background="@color/white"
+        />
 </android.support.v4.widget.DrawerLayout>
