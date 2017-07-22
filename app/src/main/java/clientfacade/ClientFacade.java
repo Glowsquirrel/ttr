@@ -98,6 +98,11 @@ public class ClientFacade implements IClient{
 
     }
 
+    public void replaceFaceUpCards(List<Integer> trainCards) {
+
+    }
+
+
     //use a username to get the players color. might go into clientmodel?
     private Color getPlayerColor(String username){
 

@@ -122,7 +122,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public void drawTrainCardFromFaceUp(String username, String gameName, int index) {
-        mSingletonModel.drawTrainCardFromFaceUp(gameName, username);
+        mSingletonModel.drawTrainCardFromFaceUp(gameName, username, index);
     }
 
     @Override
