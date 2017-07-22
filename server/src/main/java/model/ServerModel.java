@@ -187,7 +187,7 @@ public class ServerModel {
         }
     }
 
-    private void activateGame(String gameName) throws GamePlayException {
+    private StartedGame activateGame(String gameName) throws GamePlayException {
 
         if (allUnstartedGames.containsKey(gameName)){
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
@@ -195,15 +195,16 @@ public class ServerModel {
 
             allUnstartedGames.remove(gameName);
             allStartedGames.put(gameName, newlyStartedGame);
-            
-            Board currentGameSetup = newlyStartedGame.getBoard();
 
-            //For each player, gather their/game details so the proxy can start the game for each
-            for(Player currentPlayer : newlyStartedGame.getAllPlayers().values()){
+            Board currentGameSetup = newlyStartedGame.getBoard();
+            
+            //For each player, get their/game details to have the proxy start the game for each
+            for(Player currentPlayer : newlyStartedGame.getAllPlayers().values()) {
                 List<Integer> destinationCardIDs = new ArrayList<>();
-                for(DestCard currentCard : currentPlayer.getDestCards()){
+                for(DestCard currentCard : currentPlayer.getDestCards()) {
                     destinationCardIDs.add(currentCard.getMapValue());
                 }
+                
                 toClient.startGame(currentPlayer.getUsername(), gameName,
                                     myUnstartedGame.getUsernamesInGame(), destinationCardIDs,
                                     currentPlayer.getTrainCardCodes(),
@@ -211,6 +212,7 @@ public class ServerModel {
             }
 
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+            return newlyStartedGame;
         }
 
         throw new GamePlayException("Game " + gameName +  " does not exist.");
