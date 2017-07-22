@@ -11,32 +11,9 @@ public class DestCard {
     private City endCity;
     private int pointValue;
     private int mapValue;
-
-    public DestCard(int mapValue, City startCity, City endCity, int pointValue){
-        this.mapValue = mapValue;
-        this.startCity = startCity;
-        this.endCity = endCity;
-        this.pointValue = pointValue;
-    }
-
-    public City getStartCity() {
-        return startCity;
-    }
-
-    public City getEndCity() {
-        return endCity;
-    }
-
-    public int getPointValue() {
-        return pointValue;
-    }
-
-    public int getMapValue() {
-        return mapValue;
-    }
-
-    public static Map<Integer, DestCard> createDestCardMap() {
-
+    private static Map<Integer, DestCard> destCardMap;
+    static
+    {
         Map<Integer, DestCard> destCardMap = new HashMap<>();
 
         destCardMap.put(0, new DestCard(0, BOSTON, MIAMI, 12));
@@ -69,8 +46,37 @@ public class DestCard {
         destCardMap.put(27, new DestCard(27, VANCOUVER, SANTA_FE, 13));
         destCardMap.put(28, new DestCard(28, WINNIPEG, HOUSTON, 12));
         destCardMap.put(29, new DestCard(29, WINNIPEG, LITTLE_ROCK, 11));
+    }
 
-        return destCardMap;
+    public DestCard(int mapValue, City startCity, City endCity, int pointValue){
+        this.mapValue = mapValue;
+        this.startCity = startCity;
+        this.endCity = endCity;
+        this.pointValue = pointValue;
+    }
+
+    public City getStartCity() {
+        return startCity;
+    }
+
+    public City getEndCity() {
+        return endCity;
+    }
+
+    public int getPointValue() {
+        return pointValue;
+    }
+
+    public int getMapValue() {
+        return mapValue;
+    }
+
+    public DestCard getDestCardByInt(int cardIndex) {
+        if(destCardMap.containsKey(cardIndex)) {
+            return destCardMap.get(cardIndex);
+        } else {
+            return null;
+        }
     }
 
     @Override
