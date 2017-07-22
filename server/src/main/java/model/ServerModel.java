@@ -256,7 +256,7 @@ public class ServerModel {
             AllPlayerInfoResult newDetails = new AllPlayerInfoResult();
             Map<String, Player> playersInGame = currentGame.getAllPlayers();
             for(Player nextPlayer : playersInGame.values()) {
-
+                //newDetails.addPlayerInfo(nextPlayer.getUsername(), nextPlayer.);
             }
 
         }

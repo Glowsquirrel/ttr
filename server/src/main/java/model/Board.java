@@ -20,7 +20,7 @@ public class Board {
 
     Board(){
         //Just need to get the map here, so constructor values are irrelevant
-        setDestCardMap(new DestCard(1,null, null, 1).getDestCardMap());
+        setDestCardMap(new DestCard(1,City.BOSTON, City.MIAMI, 1).getDestCardMap());
 
         routeMap = Route.createRouteMap();
         setRouteMap(routeMap);
