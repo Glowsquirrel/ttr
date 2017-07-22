@@ -79,6 +79,10 @@ public class DestCard {
         }
     }
 
+    public Map<Integer, DestCard> getDestCardMap() {
+        return destCardMap;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this.getClass() != obj.getClass()) {
@@ -92,6 +96,11 @@ public class DestCard {
             }
         }
         return false;
+    }
+    @Override
+    public String toString()
+    {
+        return startCity+" to "+endCity;
     }
 }
 

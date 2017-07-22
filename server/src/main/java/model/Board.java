@@ -19,8 +19,8 @@ public class Board {
     private boolean replaceFaceUpFlag = false;
 
     Board(){
-        destCardMap = DestCard.createDestCardMap();
-        setDestCardMap(destCardMap);
+        //Just need to get the map here, so constructor values are irrelevant
+        setDestCardMap(new DestCard(1,City.BOSTON, City.MIAMI, 1).getDestCardMap());
 
         routeMap = Route.createRouteMap();
         setRouteMap(routeMap);
