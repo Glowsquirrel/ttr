@@ -8,6 +8,15 @@ public class Player {
     private String userName;
     private int numOfRedCards = 0;
     private int numOfGreenCards = 0;
+    private int cardNum=0;
+
+    public int getCardNum() {
+        return cardNum;
+    }
+
+    public void setCardNum(int cardNum) {
+        this.cardNum = cardNum;
+    }
 
     public String getUserName() {
         return userName;
