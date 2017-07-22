@@ -6,15 +6,32 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+
 import java.lang.reflect.Type;
 
-import clientfacade.game.*;
-import clientfacade.menu.*;
+import clientfacade.game.ChatResultX;
+import clientfacade.game.ClaimRouteResultX;
+import clientfacade.game.DrawThreeDestCardsResultX;
+import clientfacade.game.DrawTrainCardFromDeckResultX;
+import clientfacade.game.DrawTrainCardFromFaceUpResultX;
+import clientfacade.game.GameHistoryX;
+import clientfacade.game.RejoinResultX;
+import clientfacade.game.ReplaceFaceUpCardsResultX;
+import clientfacade.game.ReturnDestCardsResultX;
+import clientfacade.game.ReturnFirstDestCardResultX;
+import clientfacade.game.StartGameResultX;
+import clientfacade.menu.CreateGameResultX;
+import clientfacade.menu.JoinGameResultX;
+import clientfacade.menu.LeaveGameResultX;
+import clientfacade.menu.LoginResultX;
+import clientfacade.menu.MessageResultX;
+import clientfacade.menu.PollGamesResultX;
+import clientfacade.menu.RegisterResultX;
 import results.Result;
 import utils.Utils;
 
 /**
- * Server Side. Gets a command as a JSON string and makes it a real command.
+ * Client side. Receives a result from the server and makes it into an executable result.
  */
 public class CommandResultXSerializer implements JsonDeserializer<Result> {
 
@@ -52,6 +69,9 @@ public class CommandResultXSerializer implements JsonDeserializer<Result> {
             case Utils.START_TYPE:
                 typeModel = gson.fromJson(jsonObject, StartGameResultX.class);
                 break;
+            case Utils.REJOIN_TYPE:
+                typeModel = gson.fromJson(jsonObject, RejoinResultX.class);
+                break;
             case Utils.MESSAGE_TYPE:
                 typeModel = gson.fromJson(jsonObject, MessageResultX.class);
                 break;
@@ -75,6 +95,12 @@ public class CommandResultXSerializer implements JsonDeserializer<Result> {
                 break;
             case Utils.CHAT_TYPE:
                 typeModel = gson.fromJson(jsonObject, ChatResultX.class);
+                break;
+            case Utils.GAME_HISTORY_TYPE:
+                typeModel = gson.fromJson(jsonObject, GameHistoryX.class);
+                break;
+            case Utils.REPLACE_ALL_FACEUP_TYPE:
+                typeModel = gson.fromJson(jsonObject, ReplaceFaceUpCardsResultX.class);
                 break;
 
         }

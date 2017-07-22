@@ -133,6 +133,7 @@ public class ClientModel implements Observable{
 
     public void startGame(){
         this.gameIsStarted = true;
+        notifyObserver();
     }
     public boolean gameIsStarted() {
         return gameIsStarted;

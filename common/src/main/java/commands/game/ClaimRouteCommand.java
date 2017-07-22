@@ -14,4 +14,8 @@ public class ClaimRouteCommand extends Command {
         this.gameName = gameName;
         this.routeID = routeID;
     }
+
+    public int getRouteID() {
+        return routeID;
+    }
 }

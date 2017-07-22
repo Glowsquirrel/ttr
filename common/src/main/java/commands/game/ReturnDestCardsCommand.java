@@ -16,4 +16,8 @@ public class ReturnDestCardsCommand extends Command {
         this.gameName = gameName;
         this.destCards = destCards;
     }
+
+    public List<Integer> getDestCards() {
+        return destCards;
+    }
 }

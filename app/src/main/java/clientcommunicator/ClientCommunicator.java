@@ -2,12 +2,13 @@ package clientcommunicator;
 
 import com.google.gson.Gson;
 
-import commands.*;
+import commands.Command;
 import commands.game.ChatCommand;
 import commands.game.ClaimRouteCommand;
 import commands.game.DrawThreeDestCardsCommand;
 import commands.game.DrawTrainCardFromDeckCommand;
 import commands.game.DrawTrainCardFromFaceUpCommand;
+import commands.game.RejoinCommand;
 import commands.game.ReturnDestCardsCommand;
 import commands.game.ReturnFirstDestCardCommand;
 import commands.game.StartGameCommand;
@@ -26,6 +27,7 @@ import websocket.ClientWebSocket;
 public class ClientCommunicator {
     private ClientWebSocket webSocket = ClientWebSocket.getClientWebSocket();
     private Gson gson = new Gson();
+
 
     public void doCommand(Command command) {
         String myJsonString;
@@ -50,6 +52,9 @@ public class ClientCommunicator {
                 break;
             case Utils.START_TYPE:
                 myJsonString = gson.toJson(command, StartGameCommand.class);
+                break;
+            case Utils.REJOIN_TYPE:
+                myJsonString = gson.toJson(command, RejoinCommand.class);
                 break;
             case Utils.MESSAGE_TYPE:
                 myJsonString = gson.toJson(command, ChatCommand.class);
@@ -78,6 +83,7 @@ public class ClientCommunicator {
             default:
                 myJsonString = "Error parsing Json String. Check ClientCommunicator";
         }
+
 
         webSocket.sendJson(myJsonString);
     }

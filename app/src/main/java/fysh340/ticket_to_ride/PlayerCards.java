@@ -1,18 +1,12 @@
 package fysh340.ticket_to_ride;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,8 +24,7 @@ public class PlayerCards extends Fragment implements Observer{
     private TextView mDestination;
 
     @Override
-    public void update()
-    {
+    public void update() {
 
     }
     private void updateRV() {
@@ -53,8 +46,7 @@ public class PlayerCards extends Fragment implements Observer{
          mRV= (RecyclerView)  v.findViewById( R.id.destinationCardList);
         return v;
     }
-    private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
+    private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public itemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.destination_card_item_view, parent, false));
             mDestination = (TextView) itemView.findViewById( R.id.destinations);
@@ -73,8 +65,8 @@ public class PlayerCards extends Fragment implements Observer{
         {
 
         }
-
     }
+
     private class adapter extends RecyclerView.Adapter <itemHolder>
     {
         private List<DestCard> itemlist=null;

@@ -14,4 +14,8 @@ public class ChatCommand extends Command {
         this.gameName = gameName;
         this.message = message;
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

@@ -1,7 +1,5 @@
 package fysh340.ticket_to_ride;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +12,6 @@ import java.util.List;
 
 import interfaces.Observer;
 import model.ClientModel;
-import model.DestCard;
 import model.Game;
 
 public class PlayerData extends Fragment implements Observer {

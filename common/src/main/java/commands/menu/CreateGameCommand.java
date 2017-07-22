@@ -25,4 +25,12 @@ public class CreateGameCommand extends Command
     {
         this.username = username;
     }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
 }

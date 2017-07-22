@@ -12,4 +12,8 @@ public class DrawTrainCardFromDeckCommand extends Command {
         super.username = username;
         this.gameName = gameName;
     }
+
+    public String getGameName() {
+        return gameName;
+    }
 }

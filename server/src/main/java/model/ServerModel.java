@@ -315,7 +315,7 @@ public class ServerModel {
     public void sendToClients(String playerName, String gameName, Result result, String resultType) {
         toClient.sendToUser(playerName, result);
         allCommandLists.get(gameName).add(result);
-        Result gameHistory = new GameHistoryResult(playerName, resultType);
+        Result gameHistory = new GameHistoryResult(playerName, resultType, 5, 5, 5, 5, 5, 5);
         toClient.sendToOthersInGame(playerName, gameName, gameHistory);
         allCommandLists.get(gameName).add(gameHistory);
     }

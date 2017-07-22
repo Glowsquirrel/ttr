@@ -14,4 +14,8 @@ public class ReturnFirstDestCardCommand extends Command {
         this.gameName = gameName;
         this.destCard = destCard;
     }
+
+    public int getDestCard() {
+        return destCard;
+    }
 }
