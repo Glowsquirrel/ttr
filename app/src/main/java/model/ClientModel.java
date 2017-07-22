@@ -287,21 +287,5 @@ public class ClientModel implements Observable{
 
     public List<DestCard> myDestinationCards;
 
-    private boolean chat;
 
-    public boolean isChat() {
-        return chat;
-    }
-
-    public void setChat(boolean chat) {
-        this.chat = chat;
-    }
-    public List<String> getChatStrings()
-    {
-        return new ArrayList<String>();
-    }
-    public List<String> getHistoryStrings()
-    {
-        return new ArrayList<String>();
-    }
 }

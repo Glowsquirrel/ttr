@@ -13,13 +13,18 @@ import java.util.List;
 import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
+import model.Player;
 
 public class PlayerData extends Fragment implements Observer {
     private adapter mAdapter;
     private RecyclerView mRV;
     private ClientModel mClientModel = ClientModel.getMyClientModel();
-    private Game mGame;
+    private Game mGame=Game.myGame;
     private TextView mUsername;
+    private TextView mRoute;
+    private TextView mCards;
+    private TextView mTrains;
+    private TextView mPoints;
 
     @Override
     public void update()
@@ -27,7 +32,7 @@ public class PlayerData extends Fragment implements Observer {
 
     }
     private void updateRV() {
-        mAdapter = new adapter( mClientModel.getPlayersinGame());
+        mAdapter = new adapter( mGame.getPlayerListToDisplay());
         mRV.setAdapter( mAdapter);
     }
 
@@ -50,13 +55,22 @@ public class PlayerData extends Fragment implements Observer {
         public itemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.game_player_item_view, parent, false));
             mUsername = (TextView) itemView.findViewById( R.id.username);
+            mRoute = (TextView) itemView.findViewById( R.id.routesNum);
+            mCards = (TextView) itemView.findViewById( R.id.cardsNum);
+            mTrains = (TextView) itemView.findViewById( R.id.trainsNum);
+            mPoints = (TextView) itemView.findViewById( R.id.pointsNum);
             // itemView.findViewById(R.id.sequence).setOnClickListener(this);
         }
-        private String mItem;
-        public void bind( String item)
+        private Player mItem;
+        public void bind( Player item)
         {
             mItem = item;
-            mUsername.setText(mItem);
+            mUsername.setText(mItem.getUserName());
+            mRoute.setText(mItem.getRoutes());
+            mCards.setText(mItem.getCardNum());
+            mTrains.setText(mItem.getTrains());
+            mPoints.setText(mItem.getRoutes());
+
 
         }
         @Override
@@ -68,8 +82,8 @@ public class PlayerData extends Fragment implements Observer {
     }
     private class adapter extends RecyclerView.Adapter <itemHolder>
     {
-        private List<String> itemlist=null;
-        public adapter(List <String> items) { itemlist = items; }
+        private List<Player> itemlist=null;
+        public adapter(List <Player> items) { itemlist = items; }
         @Override
         public itemHolder onCreateViewHolder(ViewGroup parent, int viewType)
         { LayoutInflater layoutInflater = LayoutInflater.from( getActivity());
@@ -77,7 +91,7 @@ public class PlayerData extends Fragment implements Observer {
         @Override
         public void onBindViewHolder(itemHolder holder, int position)
         {
-            String item=itemlist.get(position);
+            Player item=itemlist.get(position);
             holder.bind(item);
             holder.setIsRecyclable(false);
         }
