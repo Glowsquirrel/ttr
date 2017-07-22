@@ -5,6 +5,7 @@ import android.graphics.Color;
 import java.util.List;
 
 import interfaces.IClient;
+import model.ChatHistoryModel;
 import model.ClientModel;
 import model.Deck;
 import model.Game;
@@ -18,6 +19,7 @@ import model.UnstartedGame;
 public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private Game game=Game.myGame;
+    private ChatHistoryModel chatModel=ChatHistoryModel.myChat;
 
     public void postMessage(String message){
         clientModel.setMessageToToast(message);
@@ -69,7 +71,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void addChat(String username, String message){
-
+        chatModel.addChat(username,message);
     }
 
     @Override
@@ -106,6 +108,7 @@ public class ClientFacade implements IClient{
 
     public void addHistory(String username, String message, int numTrainCards, int numTrainCardsHeld,
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
+        chatModel.addHistory(username,message);
         //TODO:
     }
 
