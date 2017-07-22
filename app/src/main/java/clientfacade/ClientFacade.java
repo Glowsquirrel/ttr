@@ -5,7 +5,10 @@ import android.graphics.Color;
 import java.util.List;
 
 import interfaces.IClient;
+import model.ChatHistoryModel;
 import model.ClientModel;
+import model.Deck;
+import model.Game;
 import model.RunningGame;
 import model.UnstartedGame;
 
@@ -15,6 +18,8 @@ import model.UnstartedGame;
  */
 public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
+    private Game game=Game.myGame;
+    private ChatHistoryModel chatModel=ChatHistoryModel.myChat;
 
     public void postMessage(String message){
         clientModel.setMessageToToast(message);
@@ -34,6 +39,13 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
+        game.setGameName(gameName);
+        game.setDestCards(destCards); //May want to remove this here and from Game model
+        Deck.getInstance().setAvailableDestCards(destCards);
+        game.setTrainCards(trainCards);
+        game.setFaceUpCards(faceUpCards); //May want to remove this here and from Game model
+        Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
+        game.setPlayerMap(playerNames);
         //TODO: put all the start game info into clientModel.
     }
 
@@ -59,7 +71,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void addChat(String username, String message){
-
+        chatModel.addChat(username,message);
     }
 
     @Override
@@ -69,7 +81,9 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-
+        if(username.equals(clientModel.getMyUsername())) {
+            Deck.getInstance().setAvailableDestCards(destCards);
+        }
     }
 
     @Override
@@ -94,11 +108,12 @@ public class ClientFacade implements IClient{
 
     public void addHistory(String username, String message, int numTrainCards, int numTrainCardsHeld,
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
+        chatModel.addHistory(username,message);
         //TODO:
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
-
+        Deck.getInstance().setAvailableFaceUpCards(trainCards);
     }
 
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import interfaces.Observer;
+import model.ChatHistoryModel;
 import model.ClientModel;
 import model.DestCard;
 import model.Game;
@@ -22,27 +23,26 @@ public class ChatHistory extends Fragment implements Observer {
 
     private adapter mAdapter;
     private RecyclerView mRV;
-    private ClientModel mClientModel = ClientModel.getMyClientModel();
-    private Game mGame;
+    private ChatHistoryModel chatModel=ChatHistoryModel.myChat;
     private TextView action;
     private Button mToDisplay;
 
     @Override
     public void update()
     {
-
+        updateRV();
     }
     private void updateRV() {
-
-        if(mClientModel.isChat()) {
+        mRV.removeAllViewsInLayout();
+        if(chatModel.isChat()) {
             mToDisplay.setText("History");
-            mAdapter = new adapter(mClientModel.getChatStrings());
+            mAdapter = new adapter(chatModel.getChatStrings());
             mRV.setAdapter(mAdapter);
         }
         else
         {
             mToDisplay.setText("Chat");
-            mAdapter = new adapter(mClientModel.getHistoryStrings());
+            mAdapter = new adapter(chatModel.getHistoryStrings());
             mRV.setAdapter(mAdapter);
         }
     }
@@ -62,6 +62,7 @@ public class ChatHistory extends Fragment implements Observer {
         mToDisplay=(Button)  v.findViewById((R.id.todisplay));
        setButton();
         updateRV();
+        chatModel.register(this);
         return v;
     }
     private void setButton() {

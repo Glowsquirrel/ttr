@@ -2,15 +2,25 @@ package model;
 
 
 public enum TrainCard {
-    PURPLE,
-    WHITE,
-    BLUE,
-    YELLOW,
-    ORANGE,
-    BLACK,
-    RED,
-    GREEN,
-    WILD;
+    PURPLE ("Purple"),
+    WHITE ("White"),
+    BLUE ("Blue"),
+    YELLOW ("Yellow"),
+    ORANGE ("Orange"),
+    BLACK ("Black"),
+    RED ("Red"),
+    GREEN ("Green"),
+    WILD ("Wild");
+
+    private String mPrettyName;
+
+    TrainCard(String prettyName) {
+        mPrettyName = prettyName;
+    }
+
+    public String getPrettyname() {
+        return mPrettyName;
+    }
 
     private static TrainCard[] values = TrainCard.values();
 
