@@ -4,22 +4,35 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
 
 import interfaces.Observer;
+import model.ClientModel;
+import model.DestCard;
+import model.Game;
 
 public class PlayerData extends Fragment implements Observer {
+    private adapter mAdapter;
+    private RecyclerView mRV;
+    private ClientModel mClientModel = ClientModel.getMyClientModel();
+    private Game mGame;
+    private TextView mUsername;
+
     @Override
     public void update()
     {
 
     }
-
-    public PlayerData() {
+    private void updateRV() {
+        mAdapter = new adapter( mClientModel.getPlayersinGame());
+        mRV.setAdapter( mAdapter);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +43,50 @@ public class PlayerData extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_player_data, container, false);
+        // Inflate the layout for this fragment
+        View v=inflater.inflate(R.layout.fragment_player_data, container, false);
+        mRV= (RecyclerView)  v.findViewById( R.id.player_list);
+        return v;
+    }
+    private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
+        public itemHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.game_player_item_view, parent, false));
+            mUsername = (TextView) itemView.findViewById( R.id.username);
+            // itemView.findViewById(R.id.sequence).setOnClickListener(this);
+        }
+        private String mItem;
+        public void bind( String item)
+        {
+            mItem = item;
+            mUsername.setText(mItem);
+
+        }
+        @Override
+        public void onClick( View view)
+        {
+
+        }
+
+    }
+    private class adapter extends RecyclerView.Adapter <itemHolder>
+    {
+        private List<String> itemlist=null;
+        public adapter(List <String> items) { itemlist = items; }
+        @Override
+        public itemHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        { LayoutInflater layoutInflater = LayoutInflater.from( getActivity());
+            return new itemHolder( layoutInflater, parent); }
+        @Override
+        public void onBindViewHolder(itemHolder holder, int position)
+        {
+            String item=itemlist.get(position);
+            holder.bind(item);
+            holder.setIsRecyclable(false);
+        }
+        @Override public int getItemCount()
+        { return itemlist.size(); }
+
     }
 
 }
