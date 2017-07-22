@@ -195,7 +195,7 @@ public class Board {
 
     public List<Integer> replaceFaceUpCards() {
         trainCardDeck.addAll(faceUpTrainCards);
-        faceUpTrainCards.clear()
+        faceUpTrainCards.clear();
         final int FIFTH_INDEX = 4;
 
         for (int a = 0; a < FIFTH_INDEX; a++) {
