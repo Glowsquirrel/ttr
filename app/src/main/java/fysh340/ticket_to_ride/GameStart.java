@@ -1,20 +1,16 @@
 package fysh340.ticket_to_ride;
 
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import fysh340.ticket_to_ride.map.MapInitializer;
 import model.ClientModel;
-import serverproxy.ServerProxy;
 
 public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
     ClientModel clientModel = ClientModel.getMyClientModel();
@@ -24,7 +20,7 @@ public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
     private ChatHistory chatHistory;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
-    private SupportMapFragment mapFragment;
+    //private SupportMapFragment mapFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +30,18 @@ public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
         playerCards = new PlayerCards();
         deck = new Deck();
         chatHistory=new ChatHistory();
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        //getSupportFragmentManager().beginTransaction().add()
 
+
+        FragmentManager fm = this.getSupportFragmentManager();
+
+        //MapFragment mapFragment = fysh340.ticket_to_ride.fragments.MapFragment.newInstance();
+        //fm.beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();
+
+        //MapFragment mapFragment = MapFragment.newInstance();
+        //getSupportFragmentManager().beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();
+
+        /*
         FragmentTransaction transaction =
                 getSupportFragmentManager().beginTransaction();
         mDrawerList = (FrameLayout) findViewById(R.id.left_drawer);
@@ -45,10 +50,10 @@ public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
         transaction.add(R.id.deck_fragment_container, deck);
         transaction.add(R.id.players_fragment_container, playerData);
         transaction.add(R.id.left_drawer,chatHistory);
-        transaction.add(R.id.map_fragment_container, mapFragment);
-
+//        transaction.add(R.id.map_fragment_container, mapFragment);
 
         transaction.commit();
+        */
 
     }
     @Override

@@ -40,7 +40,6 @@
 
         <activity android:name=".GameStart"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar.Fullscreen"
             android:configChanges="orientation|keyboardHidden" />
     </application>
 
