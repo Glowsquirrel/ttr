@@ -58,6 +58,10 @@ public class PlayerData extends Fragment implements Observer {
         public itemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.game_player_item_view, parent, false));
             mUsername = (TextView) itemView.findViewById( R.id.username);
+            mRoute = (TextView) itemView.findViewById( R.id.routesNum);
+            mCards = (TextView) itemView.findViewById( R.id.cardsNum);
+            mTrains = (TextView) itemView.findViewById( R.id.trainsNum);
+            mPoints = (TextView) itemView.findViewById( R.id.pointsNum);
             // itemView.findViewById(R.id.sequence).setOnClickListener(this);
         }
         private Player mItem;
@@ -65,6 +69,11 @@ public class PlayerData extends Fragment implements Observer {
         {
             mItem = item;
             mUsername.setText(mItem.getUserName());
+            mRoute.setText(mItem.getRoutes());
+            mCards.setText(mItem.getCardNum());
+            mTrains.setText(mItem.getTrains());
+            mPoints.setText(mItem.getRoutes());
+
 
         }
         @Override
