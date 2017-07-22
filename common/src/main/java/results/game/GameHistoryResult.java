@@ -7,8 +7,9 @@ public class GameHistoryResult extends Result{
     protected String message;
 
     protected GameHistoryResult(){}
-    public GameHistoryResult(String message){
+    public GameHistoryResult(String username, String message){
         super.type = Utils.GAME_HISTORY_TYPE;
+        super.username = username;
         this.message = message;
     }
 }

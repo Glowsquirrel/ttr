@@ -23,4 +23,8 @@ public class StartGameResult extends Result {
         this.trainCards = trainCards;
         this.faceUpCards = faceUpCards;
     }
+
+    public String getUsername() {
+        return username;
+    }
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import clientproxy.ClientProxy;
 import results.Result;
+import results.game.GameHistoryResult;
 
 /**
  * ServerModel is the server model root class.
@@ -29,6 +30,7 @@ public class ServerModel {
     private Map<String, StartedGame> allStartedGames;
     private Set<User> allUsers;
     private ClientProxy toClient;
+    private Map<String, List<Result>> allCommandLists = new HashMap<>();
 
     private static class LazyModelHelper{
         private static final ServerModel MODEL_INSTANCE = new ServerModel();
@@ -191,18 +193,26 @@ public class ServerModel {
     private void activateGame(String gameName) throws GamePlayException {
 
         if (allUnstartedGames.containsKey(gameName)){
+
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
             StartedGame newlyStartedGame = new StartedGame(myUnstartedGame);
 
             allUnstartedGames.remove(gameName);
             List<Result> startResults =
                 newlyStartedGame.preGameSetup(myUnstartedGame.getUsernamesInGame());
-            allStartedGames.put(gameName, newlyStartedGame);
 
+            allStartedGames.put(gameName, newlyStartedGame);
+            allCommandLists.put(gameName, new ArrayList<Result>());
 
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
             for (Result result : startResults) {
-               // toClient.startGame();
+                //toClient.startGame(result.getUsername(), gameName, result);
+                allCommandLists.get(gameName).add(result);
+            }
+            while (newlyStartedGame.getReplaceFaceUpFlag()) {
+                Result nextResult =
+                        newlyStartedGame.replaceFaceUpCards();
+                allCommandLists.get(gameName).add(nextResult);
             }
         }
 
@@ -212,7 +222,9 @@ public class ServerModel {
    /****************************************ROUND ONE*********************************************/
     public void returnDestCard(String gameName, String playerName, int destCard) {
         try {
-            this.getGame(gameName).returnDestCard(playerName, destCard);
+            Result result =
+                this.getGame(gameName).returnDestCard(playerName, destCard);
+            sendToClients(playerName, gameName, result, "returnDestCard");
         }
         catch (GamePlayException ex){
             System.out.println(ex.getMessage());
@@ -234,7 +246,9 @@ public class ServerModel {
 
     public void drawThreeDestCards(String gameName, String playerName) {
         try {
-            this.getGame(gameName).drawThreeDestCards(playerName);
+            Result result =
+                    this.getGame(gameName).drawThreeDestCards(playerName);
+            sendToClients(playerName, gameName, result, "drawThreeDestCards");
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());
@@ -245,7 +259,9 @@ public class ServerModel {
 
     public void drawTrainCardFromDeck(String gameName, String playerName) {
         try {
-            this.getGame(gameName).drawTrainCardFromDeck(playerName);
+            Result result =
+                    this.getGame(gameName).drawTrainCardFromDeck(playerName);
+            sendToClients(playerName, gameName, result, "drawTrainCardFromDeck");
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());
@@ -254,7 +270,17 @@ public class ServerModel {
 
     public void drawTrainCardFromFaceUp(String gameName, String playerName, int index) {
         try {
-            this.getGame(gameName).drawTrainCardFromFaceUp(playerName, index);
+            StartedGame game = this.getGame(gameName);
+            Result result =
+                game.drawTrainCardFromFaceUp(playerName, index);
+            toClient.sendToGame(gameName, result);
+            allCommandLists.get(gameName).add(result);
+
+            while (game.getReplaceFaceUpFlag()) {
+                Result nextResult =
+                        game.replaceFaceUpCards();
+                allCommandLists.get(gameName).add(result);
+            }
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());
@@ -265,11 +291,31 @@ public class ServerModel {
 
     public void claimRoute(String gameName, String playerName, int routeId) {
         try {
-            this.getGame(gameName).claimRoute(playerName, routeId);
+            Result result =
+                    this.getGame(gameName).claimRoute(playerName, routeId);
+            sendToClients(playerName, gameName, result, "claimRoute");
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
+    public void chat(String gameName, String playerName, String message) {
+        try {
+            Result result =
+                    this.getGame(gameName).addChat(playerName, message);
+            toClient.sendToGame(gameName, result);
+        }
+        catch (GamePlayException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void sendToClients(String playerName, String gameName, Result result, String resultType) {
+        toClient.sendToUser(playerName, result);
+        allCommandLists.get(gameName).add(result);
+        Result gameHistory = new GameHistoryResult(playerName, resultType);
+        toClient.sendToOthersInGame(playerName, gameName, gameHistory);
+        allCommandLists.get(gameName).add(gameHistory);
+    }
 }

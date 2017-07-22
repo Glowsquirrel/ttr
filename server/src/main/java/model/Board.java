@@ -84,11 +84,11 @@ public class Board {
 
     private void drawFaceUpCards() {
         final int FIFTH_INDEX = 4;
-
         faceUpTrainCards = new ArrayList<>(trainCardDeck.subList(0, FIFTH_INDEX));
         for (int a = 0; a < FIFTH_INDEX; a++) {
             trainCardDeck.remove(0);
         }
+        countLocomotives();
     }
 
     private void initializeDestCardDeck() {
@@ -118,6 +118,8 @@ public class Board {
     }
 
     private void countLocomotives() {
+        replaceFaceUpFlag = false;
+
         int numOfLocomotives = 0;
         final int LOCOMOTIVE_INDEX = 8;
         final int LOCOMOTIVE_LIMIT = 2;
@@ -134,7 +136,7 @@ public class Board {
     }
  /**********************************GAMEPLAY************************************************/
 
-    public ArrayList<TrainCard> drawTrainCards(int numberDrawn) {
+    public ArrayList<TrainCard> drawTrainCardsFromDeck(int numberDrawn) {
 
         final int TOP_CARD_INDEX = 0;
         ArrayList<TrainCard> drawnTrainCards = new ArrayList<TrainCard>();
@@ -170,7 +172,6 @@ public class Board {
         }
     }
 
-
     public List<Integer> getFaceUpCardCodes() {
         List<Integer> faceUpCodes = new ArrayList<>();
 
@@ -192,6 +193,22 @@ public class Board {
         return returnedCard;
     }
 
+    public List<Integer> replaceFaceUpCards() {
+        trainCardDeck.addAll(faceUpTrainCards);
+        faceUpTrainCards.clear();
+        final int FIFTH_INDEX = 4;
+
+        for (int a = 0; a < FIFTH_INDEX; a++) {
+            faceUpTrainCards.add(trainCardDeck.get(0));
+            trainCardDeck.remove(0);
+        }
+
+        countLocomotives();
+        return getFaceUpCardCodes();
+    }
+
+    public void discardTrainCards(TrainCard routeType, int routeSize) {
+    }
     public boolean getReplaceFaceUpFlag() {
         return replaceFaceUpFlag;
     }

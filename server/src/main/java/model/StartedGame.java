@@ -8,11 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 import results.Result;
+import results.game.ChatResult;
 import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
-import results.game.GameHistoryResult;
+import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
 
@@ -24,15 +25,15 @@ import results.game.StartGameResult;
  */
 
 //QUESTION: Do we add an index for the players in the startGame Result?
-// TODO: TURN State
+// TODO: TURN State; discard pile; continuous routes
 public class StartedGame {
 
-    private List<GameHistoryResult> gameHistories;
     private String gameName;
     private Map<String, Player> allPlayers = new HashMap<>();
     private Board board;
     private List<Result> gameHistory = new ArrayList<>();
-
+    private List<Chat> allChats = new ArrayList<>();
+    private boolean replaceFaceUpFlag = false;
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
         preGameSetup(unstartedGame.getUsernamesInGame());
@@ -53,11 +54,12 @@ public class StartedGame {
 
         for(int a = 0; a < userNames.size(); a++) {
             Player newPlayer = new Player(userNames.get(a));
-            newPlayer.addTrainCards(board.drawTrainCards(TRAIN_CARD_DRAW));
+            newPlayer.addTrainCards(board.drawTrainCardsFromDeck(TRAIN_CARD_DRAW));
             newPlayer.addDestCards(board.drawDestCards());
             newPlayer.setPlayerColor(a);
             allPlayers.put(userNames.get(a), newPlayer);
         }
+        replaceFaceUpFlag = board.getReplaceFaceUpFlag();
         return startGameResults();
     }
 
@@ -156,7 +158,7 @@ public class StartedGame {
         List<TrainCard> trainCard;
 
         if (currentPlayer != null) {
-            trainCard = board.drawTrainCards(TRAIN_CARD_DRAW);
+            trainCard = board.drawTrainCardsFromDeck(TRAIN_CARD_DRAW);
             currentPlayer.addTrainCards(trainCard);
         } else {
             throw new GamePlayException("Invalid player name");
@@ -174,6 +176,7 @@ public class StartedGame {
 
         if (currentPlayer != null) {
              drawnCard = board.drawFaceUpCard(index);
+             replaceFaceUpFlag = board.getReplaceFaceUpFlag();
         } else {
             throw new GamePlayException("Invalid player name");
         }
@@ -182,7 +185,11 @@ public class StartedGame {
     }
 
 
-
+    public Result replaceFaceUpCards() {
+        List<Integer> newFaceUpCards = board.replaceFaceUpCards();
+        replaceFaceUpFlag = board.getReplaceFaceUpFlag();
+        return new ReplaceFaceUpCardsResult(newFaceUpCards);
+    }
     /************************************ClaimRoute*******************************************/
     public Result claimRoute(String playerName, int routeId) throws GamePlayException {
 
@@ -190,6 +197,10 @@ public class StartedGame {
 
         if (currentPlayer != null) {
             board.getRouteMap().get(routeId).claimRoute(retrievePlayerColor((playerName)));
+            int sizeOfRoute = board.getRouteMap().get(routeId).getLength();
+            TrainCard routeType = board.getRouteMap().get(routeId).getColor();
+            board.discardTrainCards(routeType, sizeOfRoute);
+
         } else {
             throw new GamePlayException("Invalid player name");
         }
@@ -218,6 +229,15 @@ public class StartedGame {
         return board;
     }
 
+    public boolean getReplaceFaceUpFlag() {
+        return replaceFaceUpFlag;
+    }
+    public Result addChat(String playerName, String message) {
+        allChats.add(new Chat(playerName, message));
+        return new ChatResult(playerName, message);
+    }
+
+
     public enum TurnState {
         BEFORE_TURN,
         DRAW_DEST,
@@ -233,7 +253,5 @@ public class StartedGame {
         }
     }
 
-    public void addToGameHistory(Result result) {
-        //allGameHistories.
-    }
+
 }
