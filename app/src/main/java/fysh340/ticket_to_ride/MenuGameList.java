@@ -138,7 +138,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     }
 
 
-    
+
     @Override
     public void update() {
         if (mClientModel.hasMessage()) {

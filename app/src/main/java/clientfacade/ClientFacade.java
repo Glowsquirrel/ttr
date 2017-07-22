@@ -101,6 +101,10 @@ public class ClientFacade implements IClient{
     }
 
 
+    public void updateAllPlayerInformation(List<String> usernames, List<Integer> numRoutesOwned, List<Integer> numTrainCardsHeld,
+                                           List<Integer> numDestCardsHeld, List<Integer> numTrainCars, List<Integer> score){
+
+    }
     //use a username to get the players color. might go into clientmodel?
     private Color getPlayerColor(String username){
 

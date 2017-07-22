@@ -111,8 +111,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public void returnDestCards(String username, String gameName, List<Integer> destCards) {
-         //TODO:  Need a way to account for only one card or no cards being returned
-        //if no cards are being returned, this will not be called
+         //TODO:  Need a way to account for only one card
     }
 
     @Override
@@ -132,6 +131,6 @@ public class ServerFacade implements IServer {
 
     @Override
     public void sendChatMessage(String username, String gameName, String message) {
-        //TODO:  Implement model ability to add messages
+        mSingletonModel.chat(gameName, username, message);
     }
 }
