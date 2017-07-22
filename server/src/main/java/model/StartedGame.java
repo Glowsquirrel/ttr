@@ -81,14 +81,16 @@ public class StartedGame {
                 destCardKeys.add(getDestCardInt(destCard, board.getDestCardMap()));
             }
 
-            allResults.add(new StartGameResult(player.getUsername(),
-                    gameName,
-                    playerNames,
-                    destCardKeys,
-                    player.getTrainCardCodes(),
-                    board.getFaceUpCardCodes()));
+            Result nextPlayer = new StartGameResult(player.getUsername(),
+                                                    gameName,
+                                                    playerNames,
+                                                    destCardKeys,
+                                                    player.getTrainCardCodes(),
+                                                    board.getFaceUpCardCodes());
+            allResults.add(nextPlayer);
         }
-        return null;
+
+        return allResults;
     }
 
     private static int getDestCardInt(DestCard comparedDestCard, Map<Integer, DestCard> destCardMap) {
