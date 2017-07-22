@@ -20,4 +20,9 @@ public class Chat {
     public String getMessage() {
         return message;
     }
+
+    public String toString()
+    {
+        return playerName+": "+message;
+    }
 }
