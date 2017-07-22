@@ -1,5 +1,6 @@
 package fysh340.ticket_to_ride;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -46,8 +48,6 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View view) {
                 serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
-                clientModel.setLeftGame(true);
-                clientModel.setHasGame(false);
                 finish();
             }
         });
@@ -60,74 +60,96 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         List<String> players = clientModel.getPlayersinGame();
         fAdapter = new SearchAdapter(players);
         recyclerView.setAdapter(fAdapter);
+        if (clientModel.gameIsFull())
+            start.setEnabled(true);
+        else
+            start.setEnabled(false);
     }
 
     @Override
     public void onBackPressed() {
         serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
+        finish();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        clientModel.removeMyGame();
+        //clientModel.setHasGame(false);
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
         clientModel.unregister(this);
-        clientModel.setHasGame(false);
     }
 
+    @Override
+    public void update() {
+
+        if (clientModel.hasMessage()){
+            clientModel.receivedMessage();
+            Toast.makeText(getApplicationContext(), clientModel.getMessageToToast(), Toast.LENGTH_SHORT).show();
+        }
+        if(clientModel.gameIsStarted()) {
+            Intent intent = new Intent(this, GameStart.class);
+            startActivity(intent);
+        }
+        else if (clientModel.hasNewGameLists()){
+            clientModel.receivedNewGameLists();
+            updateUI();
+        }
+
+    }
+
+    private class FilterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public FilterHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.lobby_players_item_view, parent, false));
+            text = (TextView) itemView.findViewById(R.id.player);
+            text.setOnClickListener(this);
+
+        }
+
+        private String username;
+
+        public void bind(String tobind) {
+            username = tobind;
+
+            text.setText(username);
+
+
+        }
+
         @Override
-        public void update() {
-
-
+        public void onClick(View view) {
         }
 
-        private class FilterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public FilterHolder(LayoutInflater inflater, ViewGroup parent) {
-                super(inflater.inflate(R.layout.lobby_players_item_view, parent, false));
-                text = (TextView) itemView.findViewById(R.id.player);
-                text.setOnClickListener(this);
+    }
 
-            }
+    private class SearchAdapter extends RecyclerView.Adapter<MenuGameLobby.FilterHolder> {
+        private List<String> itemlist = null;
 
-            private String username;
-
-            public void bind(String tobind) {
-                username = tobind;
-
-                text.setText(username);
-
-
-            }
-
-            @Override
-            public void onClick(View view) {
-            }
-
+        public SearchAdapter(List<String> items) {
+            itemlist = items;
         }
 
-        private class SearchAdapter extends RecyclerView.Adapter<MenuGameLobby.FilterHolder> {
-            private List<String> itemlist = null;
+        @Override
+        public FilterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(MenuGameLobby.this);
+            return new FilterHolder(layoutInflater, parent);
+        }
 
-            public SearchAdapter(List<String> items) {
-                itemlist = items;
-            }
+        @Override
+        public void onBindViewHolder(FilterHolder holder, int position) {
+            String p = itemlist.get(position);
+            holder.bind(p);
+            holder.setIsRecyclable(false);
+        }
 
-            @Override
-            public FilterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                LayoutInflater layoutInflater = LayoutInflater.from(MenuGameLobby.this);
-                return new FilterHolder(layoutInflater, parent);
-            }
-
-            @Override
-            public void onBindViewHolder(FilterHolder holder, int position) {
-                String p = itemlist.get(position);
-                holder.bind(p);
-                holder.setIsRecyclable(false);
-            }
-
-            @Override
-            public int getItemCount() {
-                return itemlist.size();
-            }
+        @Override
+        public int getItemCount() {
+            return itemlist.size();
+        }
 
         }
     }

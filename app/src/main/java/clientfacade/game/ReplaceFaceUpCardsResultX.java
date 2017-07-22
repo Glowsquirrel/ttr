@@ -1,8 +1,8 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import results.game.ReplaceFaceUpCardsResult;
 import interfaces.ICommand;
+import results.game.ReplaceFaceUpCardsResult;
 
 /**
  * Created by sjrme on 7/21/17.

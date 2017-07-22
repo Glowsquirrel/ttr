@@ -31,32 +31,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="10dp"
-                android:id="@+id/running_game_view">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/current_games"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="25sp"
-                    android:gravity="center"
-                    android:paddingBottom="5dp"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/running_game_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:nestedScrollingEnabled="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
                 >
 
                 <TextView

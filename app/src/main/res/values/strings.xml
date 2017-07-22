@@ -12,7 +12,7 @@
     <string name="number_players">Choose the Number of Players:</string>
     <string name="create_game">Create Game</string>
     <string name="join_game">Join an existing game:</string>
-    <string name="current_games">Other Games in Progress:</string>
+    <string name="current_games">Games in Progress:</string>
     <string name="players">Players</string>
 
 </resources>

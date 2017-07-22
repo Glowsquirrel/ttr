@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +56,6 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setAutoMeasureEnabled(true);
         mRecyclerView.setLayoutManager(llm);
-        mClientModel.setHasGame(false);
 
         //text watcher for create game button
         EditText gameName = (EditText) findViewById(R.id.gamename);
@@ -116,7 +118,6 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         String gameName = gameNameEdit.getText().toString();
         Spinner numPlayerSpinner = (Spinner) findViewById(R.id.playernum_spinner);
         int playerNum = Integer.parseInt(numPlayerSpinner.getSelectedItem().toString()); //spinner is hard coded into xml, so is safe to parseInt
-        mClientModel.setMyGame(gameName);
         mServerProxy.createGame(mClientModel.getMyUsername(), gameName, playerNum);
     }
 
@@ -127,22 +128,35 @@ public class MenuGameList extends AppCompatActivity implements Observer{
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        mClientModel.removeMyUser();
-        mClientModel.unregister(this);
+        mClientModel.removeMyUser(); //clear user
+        mClientModel.removeMyGame(); //clear game
     }
     @Override
     protected void onResume(){
-        mClientModel.register(this); //registers this controller as an observer to the ClientModel
         super.onResume();
+        mClientModel.register(this); //registers this controller as an observer to the ClientModel
     }
 
+
+    
     @Override
     public void update() {
-
-
-
-        else { //If nothing else, refresh the data inside the adapter.
+        if (mClientModel.hasMessage()) {
+            mClientModel.receivedMessage();
+            Toast.makeText(getApplicationContext(), mClientModel.getMessageToToast(), Toast.LENGTH_SHORT).show();
+        }
+        if (mClientModel.hasCreatedGame()) {
+            mClientModel.receivedCreatedGame();
+            mServerProxy.joinGame(mClientModel.getMyUsername(), mClientModel.getMyGameName());
+        } else if (mClientModel.hasJoinedGame()) {
+            mClientModel.receivedHasJoinedGame();
+            mClientModel.unregister(this);
+            Intent intent = new Intent(getApplicationContext(), MenuGameLobby.class);
+            startActivity(intent); //proceed to game list screen
+        } else if (mClientModel.hasNewGameLists()){
+            mClientModel.receivedNewGameLists();
             mAdapter.swapData(mClientModel.getUnstartedGameList());
+            //swap with startedgamelist also
         }
     }
 
@@ -192,9 +206,21 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             holder.myView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.myView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_item));
-                    mClientModel.setMyGame(gameName);
-                    mServerProxy.joinGame(mClientModel.getMyUsername(), gameName);
+                    v.setVisibility(View.VISIBLE);
+                    Animation myAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_item);
+                    myAnimation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            mServerProxy.joinGame(mClientModel.getMyUsername(), gameName);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+                    holder.myView.startAnimation(myAnimation);
                 }
             });
         }
