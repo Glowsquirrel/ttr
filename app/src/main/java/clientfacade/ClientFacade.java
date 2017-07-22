@@ -92,8 +92,9 @@ public class ClientFacade implements IClient{
 
     }
 
-    public void addHistory(String message){
-
+    public void addHistory(String username, String message, int numTrainCards, int numTrainCardsHeld,
+                           int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
+        //TODO:
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
