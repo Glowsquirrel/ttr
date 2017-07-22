@@ -5,13 +5,59 @@ import java.util.List;
 
 public class Player {
 
-    String userName;
-    int numOfRedCards = 0;
-    int numOfGreenCards = 0;
-    int numOfBlueCards = 0;
-    int numOfYellowCards = 0;
-    int numOfBlackCards = 0;
-    int points;
+    private String userName;
+    private int numOfRedCards = 0;
+    private int numOfGreenCards = 0;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private int numOfBlueCards = 0;
+    private int numOfYellowCards = 0;
+    private int numOfBlackCards = 0;
+    private int points=0;
+    private int routes=0;
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(int routes) {
+        this.routes = routes;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public int getTrains() {
+        return trains;
+    }
+
+    public void setTrains(int trains) {
+        this.trains = trains;
+    }
+
+    private int turn;
+    private int trains;
+
 
      public boolean addCards(List<TrainCard> allCards){
          for (TrainCard currentCard : allCards){

@@ -37,6 +37,10 @@ public class ClientFacade implements IClient{
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
         game.setGameName(gameName);
+        game.setDestCards(destCards);
+        game.setTrainCards(trainCards);
+        game.setFaceUpCards(faceUpCards);
+        game.setPlayerMap(playerNames);
         //TODO: put all the start game info into clientModel.
     }
 

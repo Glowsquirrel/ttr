@@ -16,6 +16,7 @@ import interfaces.Observer;
 import model.ClientModel;
 import model.DestCard;
 import model.Game;
+import model.Player;
 
 public class PlayerData extends Fragment implements Observer {
     private adapter mAdapter;
@@ -23,6 +24,10 @@ public class PlayerData extends Fragment implements Observer {
     private ClientModel mClientModel = ClientModel.getMyClientModel();
     private Game mGame;
     private TextView mUsername;
+    private TextView mRoute;
+    private TextView mCards;
+    private TextView mTrains;
+    private TextView mPoints;
 
     @Override
     public void update()
@@ -30,7 +35,7 @@ public class PlayerData extends Fragment implements Observer {
 
     }
     private void updateRV() {
-        mAdapter = new adapter( mClientModel.getPlayersinGame());
+        mAdapter = new adapter( mGame.getPlayerListToDisplay());
         mRV.setAdapter( mAdapter);
     }
 
@@ -55,11 +60,11 @@ public class PlayerData extends Fragment implements Observer {
             mUsername = (TextView) itemView.findViewById( R.id.username);
             // itemView.findViewById(R.id.sequence).setOnClickListener(this);
         }
-        private String mItem;
-        public void bind( String item)
+        private Player mItem;
+        public void bind( Player item)
         {
             mItem = item;
-            mUsername.setText(mItem);
+            mUsername.setText(mItem.getUserName());
 
         }
         @Override
@@ -71,8 +76,8 @@ public class PlayerData extends Fragment implements Observer {
     }
     private class adapter extends RecyclerView.Adapter <itemHolder>
     {
-        private List<String> itemlist=null;
-        public adapter(List <String> items) { itemlist = items; }
+        private List<Player> itemlist=null;
+        public adapter(List <Player> items) { itemlist = items; }
         @Override
         public itemHolder onCreateViewHolder(ViewGroup parent, int viewType)
         { LayoutInflater layoutInflater = LayoutInflater.from( getActivity());
@@ -80,7 +85,7 @@ public class PlayerData extends Fragment implements Observer {
         @Override
         public void onBindViewHolder(itemHolder holder, int position)
         {
-            String item=itemlist.get(position);
+            Player item=itemlist.get(position);
             holder.bind(item);
             holder.setIsRecyclable(false);
         }
