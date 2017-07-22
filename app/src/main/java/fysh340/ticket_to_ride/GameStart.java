@@ -8,10 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
+import fysh340.ticket_to_ride.map.MapInitializer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
 
-public class GameStart extends AppCompatActivity {
+public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
     ClientModel clientModel = ClientModel.getMyClientModel();
     private PlayerData playerData;
     private PlayerCards playerCards;
@@ -19,6 +24,8 @@ public class GameStart extends AppCompatActivity {
     private ChatHistory chatHistory;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
+    private SupportMapFragment mapFragment;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_start);
@@ -27,6 +34,8 @@ public class GameStart extends AppCompatActivity {
         playerCards = new PlayerCards();
         deck = new Deck();
         chatHistory=new ChatHistory();
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         FragmentTransaction transaction =
                 getSupportFragmentManager().beginTransaction();
@@ -36,6 +45,7 @@ public class GameStart extends AppCompatActivity {
         transaction.add(R.id.deck_fragment_container, deck);
         transaction.add(R.id.players_fragment_container, playerData);
         transaction.add(R.id.left_drawer,chatHistory);
+        transaction.add(R.id.map_fragment_container, mapFragment);
 
 
         transaction.commit();
@@ -46,4 +56,8 @@ public class GameStart extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapInitializer.initMap(this, googleMap);
+    }
 }
