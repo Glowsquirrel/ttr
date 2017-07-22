@@ -6,6 +6,7 @@ import java.util.List;
 
 import interfaces.IClient;
 import model.ClientModel;
+import model.Deck;
 import model.Game;
 import model.RunningGame;
 import model.UnstartedGame;
@@ -37,9 +38,11 @@ public class ClientFacade implements IClient{
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
         game.setGameName(gameName);
-        game.setDestCards(destCards);
+        game.setDestCards(destCards); //May want to remove this here and from Game model
+        Deck.getInstance().setAvailableDestCards(destCards);
         game.setTrainCards(trainCards);
-        game.setFaceUpCards(faceUpCards);
+        game.setFaceUpCards(faceUpCards); //May want to remove this here and from Game model
+        Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
         game.setPlayerMap(playerNames);
         //TODO: put all the start game info into clientModel.
     }
@@ -76,7 +79,9 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-
+        if(username.equals(clientModel.getMyUsername())) {
+            Deck.getInstance().setAvailableDestCards(destCards);
+        }
     }
 
     @Override
@@ -105,7 +110,7 @@ public class ClientFacade implements IClient{
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
-
+        Deck.getInstance().setAvailableFaceUpCards(trainCards);
     }
 
 
