@@ -9,7 +9,7 @@ public class AllPlayerInfoResultX extends AllPlayerInfoResult implements IComman
     @Override
     public void execute() {
         ClientFacade clientFacade = new ClientFacade();
-        clientFacade.updateAllPlayerInformation(super.usernames, super.numRoutesOwned, super.numCardsHeld,
-                super.numTrainCars, super.score);
+        clientFacade.updateAllPlayerInformation(super.usernames, super.numRoutesOwned, super.numTrainCardsHeld,
+                super.numDestCardsHeld, super.numTrainCars, super.score);
     }
 }
