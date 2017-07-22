@@ -79,6 +79,10 @@ public class DestCard {
         }
     }
 
+    public Map<Integer, DestCard> getDestCardMap() {
+        return destCardMap;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this.getClass() != obj.getClass()) {

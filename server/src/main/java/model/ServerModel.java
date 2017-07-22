@@ -9,6 +9,7 @@ import java.util.Set;
 
 import clientproxy.ClientProxy;
 import results.Result;
+import results.game.AllPlayerInfoResult;
 import results.game.GameHistoryResult;
 
 /**
@@ -247,9 +248,17 @@ public class ServerModel {
 
     public void drawThreeDestCards(String gameName, String playerName) {
         try {
-            Result result =
-                    this.getGame(gameName).drawThreeDestCards(playerName);
+            StartedGame currentGame = this.getGame(gameName);
+
+            Result result = currentGame.drawThreeDestCards(playerName);
             sendToClients(playerName, gameName, result, "drawThreeDestCards");
+
+            AllPlayerInfoResult newDetails = new AllPlayerInfoResult();
+            Map<String, Player> playersInGame = currentGame.getAllPlayers();
+            for(Player nextPlayer : playersInGame.values()) {
+
+            }
+
         }
         catch (GamePlayException ex) {
             System.out.println(ex.getMessage());
