@@ -15,7 +15,14 @@ import model.TrainCard;
 import static model.City.BOSTON;
 import static model.City.MIAMI;
 
-
+/**
+ *  <h1>Deck Fragment</h1>
+ *  Creates a view, which shows face-up deck cards and available destination cards when drawing
+ *  from that deck, for the in-game activity.
+ *
+ *  @author         Nathan Finch
+ *  @since          7-22-17
+ */
 public class Deck extends Fragment implements Observer {
     private static model.Deck mViewableDeck;
     static {
