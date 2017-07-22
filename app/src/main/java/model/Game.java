@@ -1,12 +1,18 @@
 package model;
 
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Game {
+import interfaces.Observable;
+import interfaces.Observer;
+
+public class Game implements Observable{
 
     private Game(){};
     public static final Game myGame=new Game();
@@ -18,6 +24,7 @@ public class Game {
     private List<Integer> trainCards;
     private List<Integer> faceUpCards;
     private List<Player> playerListToDisplay;
+    private ArrayList<Observer> observers = new ArrayList<>();
 
     public List<Player> getPlayerListToDisplay() {
         playerListToDisplay=new ArrayList();
@@ -90,6 +97,34 @@ public class Game {
             playerMap.put(name,p);
 
         }
+    }
+    @Override
+    public void register(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void unregister(Observer deleteObserver) {
+        int observerIndex = observers.indexOf(deleteObserver);
+        if(observerIndex>=0) {
+            observers.remove(observerIndex);
+        }
+    }
+
+    @Override
+    public void notifyObserver() {
+
+        Handler uiHandler = new Handler(Looper.getMainLooper()); //gets the UI thread
+        Runnable runnable = new Runnable() { //
+            @Override
+            public void run() {
+                for (int i = 0; i < observers.size(); i++){
+                    observers.get(i).update();
+                }
+            }
+        };
+        uiHandler.post(runnable); //do the run() method in previously declared runnable on UI thread
+
     }
 
 }

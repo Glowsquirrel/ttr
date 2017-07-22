@@ -23,17 +23,17 @@ public class ChatHistory extends Fragment implements Observer {
 
     private adapter mAdapter;
     private RecyclerView mRV;
-    private ChatHistoryModel chatModel=ChatHistoryModel.model;
+    private ChatHistoryModel chatModel=ChatHistoryModel.myChat;
     private TextView action;
     private Button mToDisplay;
 
     @Override
     public void update()
     {
-
+        updateRV();
     }
     private void updateRV() {
-
+        mRV.removeAllViewsInLayout();
         if(chatModel.isChat()) {
             mToDisplay.setText("History");
             mAdapter = new adapter(chatModel.getChatStrings());
@@ -62,6 +62,7 @@ public class ChatHistory extends Fragment implements Observer {
         mToDisplay=(Button)  v.findViewById((R.id.todisplay));
        setButton();
         updateRV();
+        chatModel.register(this);
         return v;
     }
     private void setButton() {
