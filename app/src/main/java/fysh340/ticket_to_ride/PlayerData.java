@@ -22,7 +22,7 @@ public class PlayerData extends Fragment implements Observer {
     private adapter mAdapter;
     private RecyclerView mRV;
     private ClientModel mClientModel = ClientModel.getMyClientModel();
-    private Game mGame;
+    private Game mGame=Game.myGame;
     private TextView mUsername;
     private TextView mRoute;
     private TextView mCards;
