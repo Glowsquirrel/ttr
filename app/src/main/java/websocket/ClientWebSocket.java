@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import clientcommunicator.CommandResultXSerializer;
 import interfaces.ICommand;
+import model.ClientModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -78,7 +79,9 @@ public class ClientWebSocket extends WebSocketListener
         Gson customGson = gsonBuilder.create();
 
         Result result = customGson.fromJson(serverMessage, Result.class);
-        ((ICommand) result).execute();
+        synchronized (ClientModel.class) {
+            ((ICommand) result).execute();
+        }
     }
 
 

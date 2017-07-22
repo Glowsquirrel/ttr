@@ -131,7 +131,8 @@ public class MenuLogin extends AppCompatActivity implements Observer {
             Intent intent = new Intent(this, MenuGameList.class);
             startActivity(intent); //proceed to game list screen
         } else if (clientModel.hasMessage()) {
-            Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            clientModel.receivedMessage();
+            Toast.makeText(getApplicationContext(), clientModel.getMessageToToast(), Toast.LENGTH_SHORT).show();
         }
     }
 

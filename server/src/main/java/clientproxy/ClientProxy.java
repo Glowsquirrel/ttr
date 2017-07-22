@@ -246,7 +246,6 @@ public class ClientProxy implements IClient {
                 logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
             }
         }
-
     }
 
     private String getResultTypeAsJson(Result result){

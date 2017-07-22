@@ -17,7 +17,7 @@ public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
 
     public void postMessage(String message){
-        clientModel.setErrorMessage(message);
+        clientModel.setMessageToToast(message);
     }
 
     @Override
@@ -27,15 +27,14 @@ public class ClientFacade implements IClient{
 
     @Override
     public void registerUser (String username, String password, String message, String sessionID){
-        if (message != null)
-            this.postMessage(message); //registering should only ever do a toast at most
+        this.postMessage(message); //registering should only ever do a toast
     }
 
     @Override
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
-        clientModel.setStartedGame(true);
-        //TODO get playerNames and put into ClientModel
+        clientModel.startGame();
+        //TODO: put all the start game info into clientModel.
     }
 
     @Override
@@ -45,18 +44,17 @@ public class ClientFacade implements IClient{
 
     @Override
     public void createGame(String username, String gameName){ //only called if server already accepted a true createGame
-        clientModel.setCreatedGame(true);
-        clientModel.setHasGame(true);
+        clientModel.setCreatedGame(gameName);
     }
 
     @Override
     public void joinGame(String username, String gameName){
-        clientModel.setHasGame(true);
+        clientModel.setHasGame(gameName);
     }
 
     @Override
     public void leaveGame(String username, String gameName){
-        clientModel.setInGameLobby(false);
+        //clientModel.setInGameLobby(false);
     }
 
     @Override

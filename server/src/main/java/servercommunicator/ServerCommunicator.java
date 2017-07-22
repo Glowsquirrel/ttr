@@ -1,6 +1,17 @@
 package servercommunicator;
 
-import java.io.*;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.websocket.server.WebSocketHandler;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -8,14 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import handlers.*;
+import handlers.ServerWebSocket;
 import utils.Utils;
-
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.websocket.server.WebSocketHandler;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 public class ServerCommunicator{
 
@@ -73,6 +78,23 @@ public class ServerCommunicator{
 
         server.setHandler(wsHandler);
         server.start();
+
+        //output ip addresses to logger
+        try {
+            Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+            for (NetworkInterface netint : Collections.list(nets)) {
+                String info = netint.getName();
+                logger.info("Name: " + info);
+                Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+
+                for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+                    logger.info("InetAddress: " + inetAddress);
+                }
+            }
+        }catch (SocketException ex){
+            logger.severe("Socket exception in Network interface");
+        }
+
         server.join();
 
     }

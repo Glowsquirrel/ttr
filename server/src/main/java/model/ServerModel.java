@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import clientproxy.ClientProxy;
 import results.Result;
 import results.game.GameHistoryResult;
@@ -83,7 +84,7 @@ public class ServerModel {
         if(allUsers.add(user)) {
             toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
         } else {
-            message = user.getUsername() + "is already registered.";
+            message = user.getUsername() + " is already registered.";
             toClient.rejectCommand(sessionID, message);
         }
     }
@@ -101,7 +102,7 @@ public class ServerModel {
                 }
             }
         } else{
-            String message = "Login failed.";
+            String message = "Invalid login information.";
             toClient.rejectCommand(sessionID, message);
         }
 
