@@ -115,17 +115,27 @@ public class MockServer {
                         List<String> playerNames = new ArrayList<>();
                         playerNames.add(mycommand.getUsername());
                         List<Integer> destCards = new ArrayList<>();
-                        destCards.add(10);
-                        destCards.add(15);
-                        destCards.add(5);
+                        Random rand = new Random();
+                        int c1 = rand.nextInt(29) + 1;
+                        int c2 = rand.nextInt(29) + 1;
+                        int c3 = rand.nextInt(29) + 1;
+                        destCards.add(c1);
+                        destCards.add(c2);
+                        destCards.add(c3);
                         List<Integer> trainCards = new ArrayList<>();
-                        trainCards.add(50);
-                        trainCards.add(77);
-                        trainCards.add(22);
+                        int tc1 = rand.nextInt(109) + 1;
+                        int tc2 = rand.nextInt(109) + 1;
+                        int tc3 = rand.nextInt(109) + 1;
+                        trainCards.add(tc1);
+                        trainCards.add(tc2);
+                        trainCards.add(tc3);
                         List<Integer> faceUpCards = new ArrayList<>();
-                        faceUpCards.add(5);
-                        faceUpCards.add(0);
-                        faceUpCards.add(66);
+                        int fc1 = rand.nextInt(109) + 1;
+                        int fc2 = rand.nextInt(109) + 1;
+                        int fc3 = rand.nextInt(109) + 1;
+                        faceUpCards.add(fc1);
+                        faceUpCards.add(fc2);
+                        faceUpCards.add(fc3);
                         clientFacade.startGame(mycommand.getUsername(), mycommand.getGameName(), playerNames, destCards, trainCards, faceUpCards);
                     }
                 }
