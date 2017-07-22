@@ -274,6 +274,19 @@ public class ClientModel implements Observable{
     public boolean hasGame() {return hasGame;}
 
 
+    //in game info
+
+    public List<DestCard> getMyDestinationCards() {
+        return myDestinationCards;
+    }
+
+    public void setMyDestinationCards(List<DestCard> myDestinationCards) {
+        this.myDestinationCards = myDestinationCards;
+    }
+
+    public List<DestCard> myDestinationCards;
+
+
 
 
 }

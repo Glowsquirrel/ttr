@@ -87,5 +87,10 @@ public class DestCard {
         }
         return false;
     }
+    @Override
+    public String toString()
+    {
+        return startCity+" to "+endCity;
+    }
 }
 
