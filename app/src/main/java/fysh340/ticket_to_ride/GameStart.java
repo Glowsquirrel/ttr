@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import fysh340.ticket_to_ride.fragments.MapFragment;
 import fysh340.ticket_to_ride.map.MapInitializer;
 import model.ClientModel;
 
@@ -35,8 +36,11 @@ public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
 
         FragmentManager fm = this.getSupportFragmentManager();
 
-        //MapFragment mapFragment = fysh340.ticket_to_ride.fragments.MapFragment.newInstance();
-        //fm.beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();
+        MapFragment mapFragment = MapFragment.newInstance();
+
+        fm.beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();
+        
+
 
         //MapFragment mapFragment = MapFragment.newInstance();
         //getSupportFragmentManager().beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();

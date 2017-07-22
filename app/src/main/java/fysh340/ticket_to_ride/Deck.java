@@ -6,18 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.List;
-import java.util.Map;
+
 import interfaces.Observer;
-import model.City;
-import model.ClientModel;
-import model.DestCard;
-import model.Game;
 import model.TrainCard;
 import serverproxy.ServerProxy;
-
-import static model.City.BOSTON;
-import static model.City.MIAMI;
 
 /**
  *  <h1>Deck Fragment</h1>
@@ -55,6 +49,7 @@ public class Deck extends Fragment implements Observer {
         //When drawing destination cards, get the available ones
         cardsByID = mViewableDeck.getDestinationCards();
 
+        /*
         //Just need the map, so card initialization values are irrelevant
         Map<Integer, DestCard> cardsReference = new DestCard(0, BOSTON, MIAMI, 12).getDestCardMap();
 
@@ -65,6 +60,7 @@ public class Deck extends Fragment implements Observer {
             City to = nextCard.getEndCity();
             mDestinationCards[i].setText(from.getPrettyName() + " to " + to.getPrettyName());
         }
+        */
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
