@@ -3,7 +3,37 @@ package model;
 
 import java.util.HashMap;
 import java.util.Map;
-import static model.City.*;
+
+import static model.City.ATLANTA;
+import static model.City.BOSTON;
+import static model.City.CALGARY;
+import static model.City.CHICAGO;
+import static model.City.DALLAS;
+import static model.City.DENVER;
+import static model.City.DULUTH;
+import static model.City.EL_PASO;
+import static model.City.HELENA;
+import static model.City.HOUSTON;
+import static model.City.KANSAS_CITY;
+import static model.City.LITTLE_ROCK;
+import static model.City.LOS_ANGELES;
+import static model.City.MIAMI;
+import static model.City.MONTREAL;
+import static model.City.NASHVILLE;
+import static model.City.NEW_ORLEANS;
+import static model.City.NEW_YORK;
+import static model.City.OKLAHOMA_CITY;
+import static model.City.PHOENIX;
+import static model.City.PITTSBURGH;
+import static model.City.PORTLAND;
+import static model.City.SALT_LAKE_CITY;
+import static model.City.SANTA_FE;
+import static model.City.SAN_FRANCISCO;
+import static model.City.SAULT_ST_MARIE;
+import static model.City.SEATTLE;
+import static model.City.TORONTO;
+import static model.City.VANCOUVER;
+import static model.City.WINNIPEG;
 
 public class DestCard {
 
@@ -11,11 +41,44 @@ public class DestCard {
     private City endCity;
     private int pointValue;
     private int mapValue;
-    private static Map<Integer, DestCard> destCardMap;
-    static
-    {
-        Map<Integer, DestCard> destCardMap = new HashMap<>();
 
+
+
+    public DestCard(int mapValue, City startCity, City endCity, int pointValue){
+        this.mapValue = mapValue;
+        this.startCity = startCity;
+        this.endCity = endCity;
+        this.pointValue = pointValue;
+    }
+
+    public City getStartCity() {
+        return startCity;
+    }
+
+    public City getEndCity() {
+        return endCity;
+    }
+
+    public int getPointValue() {
+        return pointValue;
+    }
+
+    public int getMapValue() {
+        return mapValue;
+    }
+
+
+    public DestCard getDestCardByInt(int cardIndex, Map<Integer, DestCard> destCardMap) {
+        if(destCardMap.containsKey(cardIndex)) {
+            return destCardMap.get(cardIndex);
+        } else {
+            return null;
+        }
+    }
+
+
+    public static Map<Integer, DestCard> createDestCardMap() {
+        Map<Integer, DestCard> destCardMap = new HashMap<>();
         destCardMap.put(0, new DestCard(0, BOSTON, MIAMI, 12));
         destCardMap.put(1, new DestCard(1, CALGARY, PHOENIX, 13));
         destCardMap.put(2, new DestCard(2, CALGARY, SALT_LAKE_CITY, 7));
@@ -46,40 +109,6 @@ public class DestCard {
         destCardMap.put(27, new DestCard(27, VANCOUVER, SANTA_FE, 13));
         destCardMap.put(28, new DestCard(28, WINNIPEG, HOUSTON, 12));
         destCardMap.put(29, new DestCard(29, WINNIPEG, LITTLE_ROCK, 11));
-    }
-
-    public DestCard(int mapValue, City startCity, City endCity, int pointValue){
-        this.mapValue = mapValue;
-        this.startCity = startCity;
-        this.endCity = endCity;
-        this.pointValue = pointValue;
-    }
-
-    public City getStartCity() {
-        return startCity;
-    }
-
-    public City getEndCity() {
-        return endCity;
-    }
-
-    public int getPointValue() {
-        return pointValue;
-    }
-
-    public int getMapValue() {
-        return mapValue;
-    }
-
-    public DestCard getDestCardByInt(int cardIndex) {
-        if(destCardMap.containsKey(cardIndex)) {
-            return destCardMap.get(cardIndex);
-        } else {
-            return null;
-        }
-    }
-
-    public Map<Integer, DestCard> getDestCardMap() {
         return destCardMap;
     }
 

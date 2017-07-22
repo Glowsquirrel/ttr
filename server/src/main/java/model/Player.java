@@ -1,23 +1,27 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class Player {
 
     private String userName;
     private List<TrainCard> trainCardHand = new ArrayList<>();
-    private int numOfRedCards = 0;
-    private int numOfGreenCards = 0;
+
+    private int numOfPurpleCards = 0;
+    private int numOfWhiteCards = 0;
     private int numOfBlueCards = 0;
     private int numOfYellowCards = 0;
+    private int numOfOrangeCards = 0;
     private int numOfBlackCards = 0;
+    private int numOfRedCards = 0;
+    private int numOfGreenCards = 0;
+    private int numOfWildCards = 0;
+
     private PlayerColor playerColor;
     private ArrayList<DestCard> destCardHand = new ArrayList<>();
-    private Set<DestCard> newlyDrawnDestCards = new HashSet();
+    private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
     int points;
 
     public Player(String userName) {
@@ -28,12 +32,11 @@ public class Player {
 
          for (TrainCard currentCard : drawnCards){
              trainCardHand.add(currentCard);
-
-             if (currentCard == TrainCard.RED){
-                 numOfRedCards++;
+             if (currentCard == TrainCard.PURPLE){
+                 numOfPurpleCards++;
              }
-             else if (currentCard == TrainCard.GREEN){
-                 numOfGreenCards++;
+             else if (currentCard == TrainCard.WHITE) {
+                 numOfWhiteCards++;
              }
              else if (currentCard == TrainCard.BLUE){
                  numOfBlueCards++;
@@ -41,8 +44,20 @@ public class Player {
              else if (currentCard == TrainCard.YELLOW){
                  numOfYellowCards++;
              }
-             else {
+             else if (currentCard == TrainCard.ORANGE){
+                 numOfOrangeCards++;
+             }
+             else if (currentCard == TrainCard.BLACK){
                  numOfBlackCards++;
+             }
+             else if (currentCard == TrainCard.RED){
+                 numOfRedCards++;
+             }
+             else if (currentCard == TrainCard.GREEN){
+                 numOfGreenCards++;
+             }
+             else {
+                 numOfWildCards++;
              }
          }
      }
@@ -129,4 +144,9 @@ public class Player {
     public void setPlayerColor(int position) {
         playerColor = PlayerColor.getPlayerColor(position);
     }
+
+    public List<DestCard> getNewlyDrawnDestCards() {
+        return newlyDrawnDestCards;
+    }
+
 }

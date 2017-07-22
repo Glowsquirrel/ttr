@@ -19,11 +19,8 @@ public class Board {
     private boolean replaceFaceUpFlag = false;
 
     Board(){
-        //Just need to get the map here, so constructor values are irrelevant
-        setDestCardMap(new DestCard(1,City.BOSTON, City.MIAMI, 1).getDestCardMap());
-
+        destCardMap = DestCard.createDestCardMap();
         routeMap = Route.createRouteMap();
-        setRouteMap(routeMap);
 
         initializeTrainCardDeck();
         shuffleTrainCardDeck(null);
@@ -82,10 +79,12 @@ public class Board {
         trainCardDeck = shuffledDeck;
     }
 
+    //Sublist takes from 0 to one below the second parameter.
     private void drawFaceUpCards() {
-        final int FIFTH_INDEX = 4;
-        faceUpTrainCards = new ArrayList<>(trainCardDeck.subList(0, FIFTH_INDEX));
-        for (int a = 0; a < FIFTH_INDEX; a++) {
+        final int FIFTH_CARD =  5;
+
+        faceUpTrainCards = new ArrayList<>(trainCardDeck.subList(0, FIFTH_CARD));
+        for (int a = 0; a < FIFTH_CARD; a++) {
             trainCardDeck.remove(0);
         }
         countLocomotives();
@@ -94,7 +93,6 @@ public class Board {
     private void initializeDestCardDeck() {
         destCardDeck.clear();
         destCardDeck.addAll(destCardMap.values());
-
     }
 
     private void shuffleDestCarDeck(){
@@ -159,7 +157,7 @@ public class Board {
         for (int a = 0; a < SIZE_OF_DRAW; a++) {
             DestCard topCard = destCardDeck.get(TOP_CARD_INDEX);
             drawnDestCards.add(topCard);
-            trainCardDeck.remove(TOP_CARD_INDEX);
+            destCardDeck.remove(TOP_CARD_INDEX);
         }
 
         return drawnDestCards;
@@ -223,14 +221,6 @@ public class Board {
 
     void setFaceUpTrainCards(List<TrainCard> faceUpTrainCards) {
         this.faceUpTrainCards = faceUpTrainCards;
-    }
-
-    void setRouteMap(Map<Integer, Route> routeMap) {
-        this.routeMap = routeMap;
-    }
-
-    void setDestCardMap(Map<Integer, DestCard> destCardMap) {
-        this.destCardMap = destCardMap;
     }
 
     public Map<Integer, DestCard> getDestCardMap() {

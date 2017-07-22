@@ -25,7 +25,7 @@ import results.game.StartGameResult;
  */
 
 //QUESTION: Do we add an index for the players in the startGame Result?
-// TODO: TURN State; discard pile; continuous routes
+// TODO: TURN State; discard pile; continuous routes; check for correct destCard return, check for low card amount; double route enabled; draw 2 locomotives check;
 public class StartedGame {
 
     private String gameName;
@@ -34,9 +34,9 @@ public class StartedGame {
     private List<Result> gameHistory = new ArrayList<>();
     private List<Chat> allChats = new ArrayList<>();
     private boolean replaceFaceUpFlag = false;
+
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
-        preGameSetup(unstartedGame.getUsernamesInGame());
     }
 
 
@@ -77,7 +77,7 @@ public class StartedGame {
         for (Player player : playerSet) {
 
             List<Integer> destCardKeys = new ArrayList<>();
-            for (DestCard destCard : player.getDestCards()) {
+            for (DestCard destCard : player.getNewlyDrawnDestCards()) {
                 destCardKeys.add(getDestCardInt(destCard, board.getDestCardMap()));
             }
 
@@ -95,13 +95,13 @@ public class StartedGame {
 
     private static int getDestCardInt(DestCard comparedDestCard, Map<Integer, DestCard> destCardMap) {
 
-        Set<DestCard> allDestCards = (Set<DestCard>)destCardMap.values();
+        Set<DestCard> allDestCards = new HashSet<>(destCardMap.values());
         for(DestCard destCard : allDestCards) {
             if (destCard.equals(comparedDestCard)){
                 return destCard.getMapValue();
             }
         }
-        return -1;   //TODO: need to send a start game result to everyone in the game
+        return -1;
     }
 
 /********************************DrawDestCards*****************************************************/
@@ -192,6 +192,7 @@ public class StartedGame {
         replaceFaceUpFlag = board.getReplaceFaceUpFlag();
         return new ReplaceFaceUpCardsResult(newFaceUpCards);
     }
+
     /************************************ClaimRoute*******************************************/
     public Result claimRoute(String playerName, int routeId) throws GamePlayException {
 

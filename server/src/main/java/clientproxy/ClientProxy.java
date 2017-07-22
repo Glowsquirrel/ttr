@@ -118,8 +118,8 @@ public class ClientProxy implements IClient {
         } catch (IOException ex){
             ex.printStackTrace();
         }
-
     }
+
     @Override
     public void startGame(String username, String gameName, List<String> playerNames,
                           List<Integer> destCards,List<Integer> trainCards, List<Integer> faceUpCards) {

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import clientproxy.ClientProxy;
 import results.Result;
-import results.game.GameHistoryResult;
 
 /**
  * ServerModel is the server model root class.
@@ -25,8 +24,6 @@ import results.game.GameHistoryResult;
 //TODO: Call ClientProxy
 public class ServerModel {
 
-    //NOTE: Both really should be maps. I'm not sure if changing the UnstartedGame list to a map rocks the boat
-    //too much on other people's parts. Thoughts..?
     private Map<String, UnstartedGame> allUnstartedGames;
     private Map<String, StartedGame> allStartedGames;
     private Set<User> allUsers;
@@ -64,6 +61,7 @@ public class ServerModel {
             String message = "Game already exists.";
             toClient.rejectCommand(username, message);
         } else {
+            newGame.addPlayer(username);
             allUnstartedGames.put(newGame.getGameName(), newGame);
             toClient.createGame(username, newGame.getGameName());
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
@@ -105,7 +103,6 @@ public class ServerModel {
             String message = "Invalid login information.";
             toClient.rejectCommand(sessionID, message);
         }
-
     }
 
     private List<UnstartedGame> getUnstartedGamesList(){
@@ -213,6 +210,7 @@ public class ServerModel {
             while (newlyStartedGame.getReplaceFaceUpFlag()) {
                 Result nextResult =
                         newlyStartedGame.replaceFaceUpCards();
+                toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
         }
@@ -280,7 +278,8 @@ public class ServerModel {
             while (game.getReplaceFaceUpFlag()) {
                 Result nextResult =
                         game.replaceFaceUpCards();
-                allCommandLists.get(gameName).add(result);
+                toClient.sendToGame(gameName, nextResult);
+                allCommandLists.get(gameName).add(nextResult);
             }
         }
         catch (GamePlayException ex) {
@@ -315,8 +314,8 @@ public class ServerModel {
     public void sendToClients(String playerName, String gameName, Result result, String resultType) {
         toClient.sendToUser(playerName, result);
         allCommandLists.get(gameName).add(result);
-        Result gameHistory = new GameHistoryResult(playerName, resultType);
-        toClient.sendToOthersInGame(playerName, gameName, gameHistory);
-        allCommandLists.get(gameName).add(gameHistory);
+        //Result gameHistory = new GameHistoryResult(playerName, resultType, );
+        //toClient.sendToOthersInGame(playerName, gameName, gameHistory);
+       // allCommandLists.get(gameName).add(gameHistory);
     }
 }
