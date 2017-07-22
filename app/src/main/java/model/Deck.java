@@ -43,6 +43,14 @@ public class Deck implements Observable{
         mFaceUpCards = newCards;
     }
 
+    public List<Integer> getFaceUpCards() {
+        return mFaceUpCards;
+    }
+
+    public List<Integer> getDestinationCards() {
+        return mDestinationCards;
+    }
+
     @Override
     public void register(Observer o) {
         mObservers.add(o);

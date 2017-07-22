@@ -103,10 +103,10 @@ public class ClientProxy implements IClient {
         }
     }
 
-    @Override
-    public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
-                          List<Integer> trainCards, List<Integer> faceUpCards) {
-        Result result = new StartGameResult(username, gameName, playerNames, destCards, trainCards, faceUpCards);
+    public void startGame(Result result, String username) {
+        //String username, String gameName, List<String> playerNames, List<Integer> destCards,
+                //List<Integer> trainCards, List<Integer> faceUpCards
+        //Result result = new StartGameResult(username, gameName, playerNames, destCards, trainCards, faceUpCards);
         String resultJson = gson.toJson(result);
 
         Session mySession = ServerWebSocket.getMySession(username);
@@ -118,6 +118,13 @@ public class ClientProxy implements IClient {
         } catch (IOException ex){
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void startGame(String username, String gameName, List<String> playerNames,
+                          List<Integer> destCards,List<Integer> trainCards, List<Integer> faceUpCards) {
+    //List<Integer> trainCards, List<Integer> faceUpCards
+    //Result result = new StartGameResult(username, gameName, playerNames, destCards, trainCards, faceUpCards);){
 
     }
 
