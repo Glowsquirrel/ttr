@@ -57,7 +57,7 @@ public class ServerFacade implements IServer {
     @Override
     public void createGame(String username, String gameName, int playerNum) {
         UnstartedGame newGame = new UnstartedGame(gameName, playerNum);
-        newGame.addPlayer(username);
+        //newGame.addPlayer(username);
         mSingletonModel.addUnstartedGame(username, newGame);
     }
 
@@ -123,7 +123,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public void drawTrainCardFromFaceUp(String username, String gameName, int index) {
-        mSingletonModel.drawTrainCardFromFaceUp(gameName, username);
+        mSingletonModel.drawTrainCardFromFaceUp(gameName, username, index);
     }
 
     @Override

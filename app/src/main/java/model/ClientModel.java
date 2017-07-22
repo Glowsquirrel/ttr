@@ -10,15 +10,14 @@ import interfaces.Observable;
 import interfaces.Observer;
 
 public class ClientModel implements Observable{
+    //singleton pattern:
+    private static final ClientModel myClientModel = new ClientModel();
+    private ClientModel(){}
+
     //For Login/Register:
-
-    ClientModel(){
-
-    }
     private boolean leftGame;
     private String ip;
     private String port = "8080";
-    private static final ClientModel myClientModel = new ClientModel();
 
     public boolean isLeftGame() {
         return leftGame;
@@ -29,20 +28,19 @@ public class ClientModel implements Observable{
     }
 
     //begin User
-    private User user = User.getMyUser();
-    private boolean userLoggedIn = false;
-    //end User
+
     private boolean hasGame = false;
 
     //end Observer
     private String errorMessage;
-    List<UnstartedGame> gamesToStart;
+    private List<UnstartedGame> unstartedGameList = new ArrayList<>();
+    private List<RunningGame> runningGameList = new ArrayList<>();
     private boolean gameFull;
     private boolean startedGame=false;
 
     public boolean isGameFull() {
         gameFull=false;
-        for(UnstartedGame i:gamesToStart) {
+        for(UnstartedGame i: unstartedGameList) {
             if(i.getGameName().equals(myGameName)) {
                 if(i.getPlayersNeeded() == i.getPlayersIn()) {
                     gameFull=true;
@@ -63,19 +61,9 @@ public class ClientModel implements Observable{
         this.myGameName = gameName;
     }
 
-    private boolean hasCreatedGame = false;
-
-    public boolean hasCreatedGame() {
-        return hasCreatedGame;
-    }
-
-    public void setHasCreatedGame(boolean hasCreatedGame) {
-        this.hasCreatedGame = hasCreatedGame;
-    }
-
     public boolean isStartedGame() {
         startedGame=true;
-        for(UnstartedGame i:gamesToStart) {
+        for(UnstartedGame i: unstartedGameList) {
             if(i.getGameName().equals(myGameName)) {
                 startedGame=false;
             }
@@ -83,11 +71,39 @@ public class ClientModel implements Observable{
         return startedGame;
     }
 
+    //begin menu login
+    private String username;
+
+    public String getMyUsername() {
+        return username;
+    }
+
+    private boolean hasUser;
+
+    public boolean hasUser() {
+        return hasUser;
+    }
+
+    public void setMyUser(String username, boolean hasUser) {
+        this.username = username;
+        this.hasUser = hasUser;
+        notifyObserver();
+    }
+    //end menu login
+
     public void setStartedGame(boolean startedGame) {
         this.startedGame = startedGame;
     }
 
+    private boolean createdGame = false;
 
+    public boolean hasCreatedGame() {
+        return createdGame;
+    }
+
+    public void setCreatedGame(boolean createdGame) {
+        this.createdGame = createdGame;
+    }
 
     //begin Observer
     private ArrayList<Observer> observers = new ArrayList<>();
@@ -107,23 +123,26 @@ public class ClientModel implements Observable{
 
 
 
-    public List<UnstartedGame> getGamesToStart() {
-        if (gamesToStart == null) {
-            return new ArrayList<UnstartedGame>();
-        }
-        return gamesToStart;
-
+    public List<UnstartedGame> getUnstartedGameList() {
+        return this.unstartedGameList;
+    }
+    public List<RunningGame> getRunningGameList(){
+        return this.runningGameList;
     }
 
-    public void setGamesToStart(List<UnstartedGame> gamestoStart) {
-        gamesToStart = gamestoStart;
+    public void setGameLists(List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList){
+        if (unstartedGameList != null)
+            this.unstartedGameList = unstartedGameList;
+        if (runningGameList != null)
+            this.runningGameList = runningGameList;
         notifyObserver();
     }
+
     public List<String> getPlayersinGame()
     {
         List<String>toreturn=null;
         int size=0;
-        for(UnstartedGame i:gamesToStart) {
+        for(UnstartedGame i: unstartedGameList) {
             if(i.getGameName().equals(myGameName)) {
                 size=i.getPlayersNeeded();
                 toreturn=i.getUsernamesInGame();
@@ -138,26 +157,6 @@ public class ClientModel implements Observable{
             toreturn.add("Waiting for player "+l);
         }
         return toreturn;
-    }
-
-    public String getMyUsername(){
-        return user.getUsername();
-    }
-    public String getAuthToken(){
-        return user.getAuthToken();
-    }
-
-    public void setMyUser(String username) {
-        user.setMyUsername(username);
-        userLoggedIn = true;
-        notifyObserver();
-    }
-    public void removeMyUser(){
-        userLoggedIn = false;
-    }
-
-    public boolean hasLoginUser(){
-        return userLoggedIn;
     }
 
 

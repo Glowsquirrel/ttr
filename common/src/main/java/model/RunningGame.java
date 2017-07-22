@@ -8,4 +8,12 @@ public class RunningGame {
         this.gameName = gameName;
         this.gameSize = gameSize;
     }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public int getGameSize() {
+        return gameSize;
+    }
 }

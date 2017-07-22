@@ -1,6 +1,5 @@
 package fysh340.ticket_to_ride;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,40 +64,19 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
 
     @Override
     public void onBackPressed() {
-        //poller.stopPoller();
         serverProxy.leaveGame(clientModel.getMyUsername(), clientModel.getMyGameName());
-        finish();
+    }
 
-    }
-    @Override
-    public void onStop(){
-        super.onStop();
-        //poller.stopPoller();
-        clientModel.unregister(this);
-    }
     @Override
     public void onDestroy(){
         super.onDestroy();
+        clientModel.unregister(this);
         clientModel.setHasGame(false);
     }
 
         @Override
         public void update() {
-            if(clientModel.hasGame()) {
-                updateUI();
-                if(clientModel.isGameFull())
-                {
-                    start.setEnabled(true);
-                }
-            }
-            if(clientModel.isStartedGame()&&!clientModel.isLeftGame())
-            {
-                clientModel.unregister(this);
-                Intent intent = new Intent(this, GameStart.class);
-                startActivity(intent);
-            }
-            else
-                updateUI();
+
 
         }
 

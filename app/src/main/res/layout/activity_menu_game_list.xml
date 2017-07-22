@@ -31,7 +31,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="10dp"
-                android:visibility="gone"
                 android:id="@+id/running_game_view">
 
                 <TextView
@@ -44,7 +43,7 @@
                     android:paddingBottom="5dp"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/started_game_recycler"
+                    android:id="@+id/running_game_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -57,7 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                >
 
                 <TextView
                     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                     android:paddingBottom="5dp"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/unstarted_game_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

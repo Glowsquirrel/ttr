@@ -7,7 +7,6 @@ import com.google.gson.JsonSyntaxException;
 import java.util.concurrent.TimeUnit;
 
 import clientcommunicator.CommandResultXSerializer;
-import results.Result;
 import interfaces.ICommand;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,6 +14,7 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
+import results.Result;
 import serverproxy.ServerProxy;
 
 public class ClientWebSocket extends WebSocketListener
@@ -58,8 +58,8 @@ public class ClientWebSocket extends WebSocketListener
                     .build();
             ws = client.newWebSocket(request, this);
             listening = true;
-            if (isDisconnected)
-                serverProxy.login(username, password, null);
+            //if (isDisconnected)
+              //  serverProxy.login(username, password, null);
         }
         return true;
     }
@@ -92,11 +92,11 @@ public class ClientWebSocket extends WebSocketListener
     public void onClosing(WebSocket webSocket, int code, String reason)
     {
         //output("Closing : " + code + " / " + reason);
-        listening = false;
+        //listening = false;
         isDisconnected = true;
         try {
             Thread.sleep(1000);
-            initialize(this.ip, this.port, this.username, this.password);
+            //initialize(this.ip, this.port, this.username, this.password);
         }catch (InterruptedException ex){
             //
         }

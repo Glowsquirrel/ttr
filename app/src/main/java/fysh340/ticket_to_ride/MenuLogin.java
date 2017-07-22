@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
@@ -74,9 +75,14 @@ public class MenuLogin extends AppCompatActivity implements Observer {
     }
 
     @Override
-    protected void onStart(){
-        super.onStart();
+    protected void onResume(){
+        super.onResume();
         clientModel.register(this); //adds this controller to the list of observers
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        clientModel.unregister(this);
     }
 
     public void login(View view){
@@ -121,14 +127,11 @@ public class MenuLogin extends AppCompatActivity implements Observer {
 
     @Override
     public void update() {
-        if (clientModel.hasLoginUser()){
-            clientModel.unregister(this); //removes this controller from list of observers
-            clientModel.removeMyUser();
+        if (clientModel.hasUser()) {
             Intent intent = new Intent(this, MenuGameList.class);
             startActivity(intent); //proceed to game list screen
-        }
-        else{ //get stored error message and display it
-            Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
+        } else if (clientModel.hasMessage()) {
+            Toast.makeText(getApplicationContext(), clientModel.getErrorMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

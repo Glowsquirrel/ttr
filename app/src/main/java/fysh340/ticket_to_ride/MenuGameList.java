@@ -1,11 +1,11 @@
 package fysh340.ticket_to_ride;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.widget.RecyclerView;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -22,14 +21,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import model.UnstartedGame;
 import interfaces.Observer;
 import model.ClientModel;
+import model.UnstartedGame;
 import serverproxy.ServerProxy;
 
 public class MenuGameList extends AppCompatActivity implements Observer{
@@ -51,7 +49,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
         setupUI(findViewById(android.R.id.content));
 
-        RecyclerView mRecyclerView = (RecyclerView)  findViewById( R.id.recyclerView);
+        RecyclerView mRecyclerView = (RecyclerView)  findViewById( R.id.unstarted_game_recycler);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setAutoMeasureEnabled(true);
         mRecyclerView.setLayoutManager(llm);
@@ -78,10 +76,9 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         });
 
         //recyclerview adapter
-        mAdapter = new MyGameListAdapter(mClientModel.getGamesToStart()); //create the search adapter once, update its data later
+        mAdapter = new MyGameListAdapter(mClientModel.getUnstartedGameList()); //create the search adapter once, update its data later
         mRecyclerView.setAdapter(mAdapter);
 
-        mClientModel.register(this); //registers this controller as an observer to the ClientModel
         mServerProxy.pollGameList(mClientModel.getMyUsername());
 
         setupButtons();
@@ -133,25 +130,19 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         mClientModel.removeMyUser();
         mClientModel.unregister(this);
     }
+    @Override
+    protected void onResume(){
+        mClientModel.register(this); //registers this controller as an observer to the ClientModel
+        super.onResume();
+    }
 
     @Override
     public void update() {
 
-        if(mClientModel.hasCreatedGame()){
-            mClientModel.setHasCreatedGame(false);
-            mServerProxy.joinGame(mClientModel.getMyUsername(), mClientModel.getMyGameName());
-        }
-        else if(mClientModel.hasGame()) { //If the model has a game, switch to Lobby view. The same poller should continue.
-            mClientModel.unregister(this);
-            Intent intent = new Intent(this, MenuGameLobby.class);
-            startActivity(intent);
-        }
-        else if (mClientModel.hasMessage()){ //If the model has a message, Toast the message
-            Toast.makeText(getApplicationContext(), mClientModel.getErrorMessage(),Toast.LENGTH_LONG).show();
-            mClientModel.receivedMessage();
-        }
+
+
         else { //If nothing else, refresh the data inside the adapter.
-            mAdapter.swapData(mClientModel.getGamesToStart());
+            mAdapter.swapData(mClientModel.getUnstartedGameList());
         }
     }
 
@@ -182,7 +173,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
         @Override
         public MyGameListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_list_item_view, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.unstarted_game_list_item_view, parent, false);
             return new ViewHolder(itemView);
         }
 

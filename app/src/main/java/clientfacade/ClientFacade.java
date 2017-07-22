@@ -22,7 +22,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void loginUser(String username, String password, String sessionID){
-        clientModel.setMyUser(username);
+        clientModel.setMyUser(username, true);
     }
 
     @Override
@@ -40,12 +40,12 @@ public class ClientFacade implements IClient{
 
     @Override
     public void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList){
-        clientModel.setGamesToStart(unstartedGameList);
+        clientModel.setGameLists(unstartedGameList, runningGameList);
     }
 
     @Override
     public void createGame(String username, String gameName){ //only called if server already accepted a true createGame
-        clientModel.setHasCreatedGame(true);
+        clientModel.setCreatedGame(true);
         clientModel.setHasGame(true);
     }
 
@@ -56,7 +56,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void leaveGame(String username, String gameName){
-        clientModel.setHasGame(false);
+        clientModel.setInGameLobby(false);
     }
 
     @Override
