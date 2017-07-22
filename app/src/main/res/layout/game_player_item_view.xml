@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="110dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/customborder">
+    <LinearLayout
+        android:id="@+id/player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/playertag"
+            android:text="Player: "
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="65"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:scrollHorizontally="true"/>
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/routes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/routesTag"
+            android:text="Routes: "
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="65"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:scrollHorizontally="true"/>
+
+        <TextView
+            android:id="@+id/routesNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/cardsTag"
+            android:text="Cards: "
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="65"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:scrollHorizontally="true"/>
+
+        <TextView
+            android:id="@+id/cardsNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/trains"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/trainsTag"
+            android:text="Trains: "
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="65"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:scrollHorizontally="true"/>
+
+        <TextView
+            android:id="@+id/trainsNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/points"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/pointsTag"
+            android:text="Points: "
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="65"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:scrollHorizontally="true"/>
+
+        <TextView
+            android:id="@+id/pointsNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="35"
+            android:textSize="16sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>
