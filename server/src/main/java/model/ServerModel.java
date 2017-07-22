@@ -207,7 +207,7 @@ public class ServerModel {
 
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
             for (Result result : startResults) {
-                //toClient.startGame(result.getUsername(), gameName, result);
+                toClient.startGame(result, result.getUsername());
                 allCommandLists.get(gameName).add(result);
             }
             while (newlyStartedGame.getReplaceFaceUpFlag()) {
