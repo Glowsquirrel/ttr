@@ -2,18 +2,16 @@ package fysh340.ticket_to_ride;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import fysh340.ticket_to_ride.fragments.MapFragment;
-import fysh340.ticket_to_ride.map.MapInitializer;
+import fysh340.ticket_to_ride.fragments.PlayerCards;
 import model.ClientModel;
 
-public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
+public class GameStart extends AppCompatActivity {
     ClientModel clientModel = ClientModel.getMyClientModel();
     private PlayerData playerData;
     private PlayerCards playerCards;
@@ -36,37 +34,24 @@ public class GameStart extends AppCompatActivity implements OnMapReadyCallback {
 
         FragmentManager fm = this.getSupportFragmentManager();
 
+        FragmentTransaction transaction = fm.beginTransaction();
+
         MapFragment mapFragment = MapFragment.newInstance();
+        PlayerCards playerCardsFragment = new PlayerCards();
 
-        fm.beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();
-        
+        transaction.add(R.id.map_fragment_container, mapFragment);
+        transaction.add(R.id.cards_fragment_container, playerCardsFragment);
 
 
-        //MapFragment mapFragment = MapFragment.newInstance();
-        //getSupportFragmentManager().beginTransaction().add(R.id.map_fragment_container, mapFragment).commit();
-
-        /*
-        FragmentTransaction transaction =
-                getSupportFragmentManager().beginTransaction();
-        mDrawerList = (FrameLayout) findViewById(R.id.left_drawer);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        transaction.add(R.id.cards_fragment_container, playerCards);
-        transaction.add(R.id.deck_fragment_container, deck);
-        transaction.add(R.id.players_fragment_container, playerData);
-        transaction.add(R.id.left_drawer,chatHistory);
-//        transaction.add(R.id.map_fragment_container, mapFragment);
 
         transaction.commit();
-        */
+        
 
     }
     @Override
     public void onBackPressed(){
-        finish();
+        //finish();
+        //do nothing on back pressed
     }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        MapInitializer.initMap(this, googleMap);
-    }
+    
 }

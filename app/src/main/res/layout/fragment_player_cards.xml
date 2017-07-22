@@ -2,58 +2,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fysh340.ticket_to_ride.PlayerCards">
+    tools:context="fysh340.ticket_to_ride.fragments.PlayerCards">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="100">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/red"
             android:text="0"
             android:id="@+id/red"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/blue"
             android:text="0"
             android:id="@+id/blue"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/green"
             android:text="0"
             android:id="@+id/green"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:text="0"
             android:id="@+id/white"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/yellow"
             android:text="0"
             android:id="@+id/yellow"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/purple"
             android:text="0"
             android:id="@+id/purple"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:background="@color/orange"
             android:text="0"
@@ -61,15 +69,18 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="5"
             android:layout_height="match_parent"
             android:background="@drawable/grad"
+            android:textAlignment="center"
             android:text="0"
             android:id="@+id/locomotive"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/destinationCardList"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="25"
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="5dp"/>

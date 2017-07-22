@@ -1,4 +1,4 @@
-package fysh340.ticket_to_ride;
+package fysh340.ticket_to_ride.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ClientModel;
 import model.DestCard;
