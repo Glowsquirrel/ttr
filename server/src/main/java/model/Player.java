@@ -15,7 +15,7 @@ public class Player {
     private int numOfBlueCards = 0;
     private int numOfYellowCards = 0;
     private int numOfBlackCards = 0;
-
+    private PlayerColor playerColor;
     private ArrayList<DestCard> destCardHand = new ArrayList<>();
     private Set<DestCard> newlyDrawnDestCards = new HashSet();
     int points;
@@ -24,7 +24,7 @@ public class Player {
         this.userName = userName;
     }
 
-     public void addTrainCards(ArrayList<TrainCard> drawnCards){
+     public void addTrainCards(List<TrainCard> drawnCards){
 
          for (TrainCard currentCard : drawnCards){
              trainCardHand.add(currentCard);
@@ -51,7 +51,7 @@ public class Player {
      * Places drawn cards in newlyDrawnDestCards member. Does not add them to hand.
      * @param drawnCards Cards drawn from board's DestCardDeck
      */
-    public void addDestCards(ArrayList<DestCard> drawnCards) {
+    public void addDestCards(List<DestCard> drawnCards) {
         for (DestCard currentCard : drawnCards) {
             newlyDrawnDestCards.add(currentCard);
         }
@@ -121,5 +121,12 @@ public class Player {
                 + numOfBlueCards + numOfGreenCards;
 
         return allCards;
+    }
+
+    public PlayerColor getPlayerColor() {
+        return playerColor;
+    }
+    public void setPlayerColor(int position) {
+        playerColor = PlayerColor.getPlayerColor(position);
     }
 }
