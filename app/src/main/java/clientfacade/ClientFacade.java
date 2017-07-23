@@ -97,7 +97,7 @@ public class ClientFacade implements IClient{
     }
 
     @Override
-    public void returnDestCards(String username, List<Integer> destCards){
+    public void returnDestCards(String username, int destCard){
 
     }
 

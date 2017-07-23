@@ -229,8 +229,16 @@ public class StartedGame {
         if (currentPlayer != null) {
             Route route = board.getRouteMap().get(routeId);
 
-            if (route.claimRoute(retrievePlayerColor((playerName)), allPlayers.size())){
+            int sisterRouteKey = route.getSisterRouteKey();
+            boolean sisterRouteClaimed = false;
+
+            if (sisterRouteKey > 0) {
+                sisterRouteClaimed = board.getRouteMap().get(route.getSisterRouteKey()).isClaimed();
+            }
+
+            if (route.claimRoute(currentPlayer.getPlayerColor(), allPlayers.size(), sisterRouteClaimed)){
                 board.discardTrainCards(route.getColor(), route.getLength());
+                currentPlayer.addScore(route.getPointValue());
             } else {
                 throw new GamePlayException("Cannot claim double route.");
             }
@@ -297,16 +305,16 @@ public class StartedGame {
         switch (turnState) {
             case BEFORE_TURN:
                   switchBeforeTurn(commandType);
-
+                  break;
             case DREW_DEST_CARDS:
                  switchDrawDest(commandType);
-
+                 break;
             case RETURNED_ONE_DEST_CARD:
                  switchReturnedOneDestCard(commandType);
-
+                 break;
             case DREW_ONE_TRAIN_CARD:
                  switchDrawTrainCard(commandType);
-
+                 break;
             default:
                 throw new GamePlayException("What in the world");
         }
@@ -314,26 +322,25 @@ public class StartedGame {
 
     private void switchBeforeTurn(CommandType commandType) throws GamePlayException {
         switch (commandType) {
-            case DRAW_THREE_DEST_CARDS: {
+            case DRAW_THREE_DEST_CARDS:
                 turnState = TurnState.DREW_DEST_CARDS;
-            }
-            case DRAW_TRAIN_CARD_FROM_DECK: {
+                break;
+            case DRAW_TRAIN_CARD_FROM_DECK:
                 turnState = TurnState.DREW_ONE_TRAIN_CARD;
-            }
-            case FACEUP_NON_LOCOMOTIVE: {
+                break;
+            case FACEUP_NON_LOCOMOTIVE:
                 turnState = TurnState.DREW_ONE_TRAIN_CARD;
-            }
-            case FACEUP_LOCOMOTIVE: {
+                break;
+            case FACEUP_LOCOMOTIVE:
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
-            }
-            case CLAIM_ROUTE: {
+                break;
+            case CLAIM_ROUTE:
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
-            }
-            default: {
+                break;
+            default:
                 throw new GamePlayException("Illegal move");
-            }
         }
     }
 
@@ -353,22 +360,19 @@ public class StartedGame {
         }
     }
 
-    private boolean switchReturnedOneDestCard(CommandType commandType) {
+    private void switchReturnedOneDestCard(CommandType commandType) throws GamePlayException {
         switch (commandType) {
 
-            case RETURN_DEST_CARD: {
+            case RETURN_DEST_CARD:
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
-                return true;
-            }
-            case RETURN_NO_DEST_CARD: {
+                break;
+            case RETURN_NO_DEST_CARD:
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
-                return true;
-            }
-            default:{
-                return false;
-            }
+                break;
+            default:
+                throw new GamePlayException("Illegal Move");
         }
     }
 

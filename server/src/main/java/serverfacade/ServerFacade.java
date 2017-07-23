@@ -1,7 +1,5 @@
 package serverfacade;
 
-import java.util.List;
-
 import interfaces.IServer;
 import model.ServerModel;
 import model.UnstartedGame;
@@ -110,8 +108,8 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public void returnDestCards(String username, String gameName, List<Integer> destCards) {
-         //TODO:  Need a way to account for only one card
+    public void returnDestCards(String username, String gameName, int destCard) {
+        mSingletonModel.returnDestCard(gameName, username, destCard); //TODO:  Need a way to account for only one card
     }
 
     @Override

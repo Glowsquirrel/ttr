@@ -1,23 +1,21 @@
 package commands.game;
 
-import java.util.List;
-
 import commands.Command;
 import utils.Utils;
 
 public class ReturnDestCardsCommand extends Command {
     protected String gameName;
-    protected List<Integer> destCards;
+    protected int destCard;
 
     protected ReturnDestCardsCommand(){}
-    public ReturnDestCardsCommand(String username, String gameName, List<Integer> destCards){
+    public ReturnDestCardsCommand(String username, String gameName, int destCard){
         super.type = Utils.RETURN_DEST_CARDS_TYPE;
         super.username = username;
         this.gameName = gameName;
-        this.destCards = destCards;
+        this.destCard = destCard;
     }
 
-    public List<Integer> getDestCards() {
-        return destCards;
+    public int getDestCard() {
+        return destCard;
     }
 }

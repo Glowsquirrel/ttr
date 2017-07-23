@@ -1,7 +1,5 @@
 package interfaces;
 
-import java.util.List;
-
 /**
  * The IServer defines methods that the client will call, but will actually be executed on the server.
  * These functions will all return void because they require a connection which will be done by an
@@ -24,7 +22,7 @@ public interface IServer {
     void rejoinGame(String username, String gameName);
     
     void drawThreeDestCards(String username, String gameName);
-    void returnDestCards(String username, String gameName, List<Integer> destCards);
+    void returnDestCards(String username, String gameName, int destCard);
     void drawTrainCardFromDeck(String username, String gameName);
     void drawTrainCardFromFaceUp(String username, String gameName, int index);
     void claimRoute(String username, String gameName, int routeID);

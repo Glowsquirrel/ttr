@@ -9,6 +9,6 @@ public class ChatCommandX extends ChatCommand implements ICommand{
     @Override
     public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-
+        serverFacade.sendChatMessage(username, gameName, message);
     }
 }
