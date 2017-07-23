@@ -221,9 +221,9 @@ public class ClientProxy implements IClient {
         logger.info("Sent a: " + result.getType() + " command to the: " + gameName + " game.");
     }
 
-    public void sendToUser(String username, Result result){
+    public void sendToUser(String username, String gameName, Result result){
         String resultJson = getResultTypeAsJson(result);
-        Session myUserSession = ServerWebSocket.getMySession(username);
+        Session myUserSession = ServerWebSocket.getMyPlayerSessionInGame(username, gameName);
 
         try {
             myUserSession.getRemote().sendString(resultJson);

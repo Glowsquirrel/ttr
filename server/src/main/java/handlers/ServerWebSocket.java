@@ -49,9 +49,13 @@ public class ServerWebSocket
         return gameSessions.get(gameName);
     }
 
-    public static Session getMySession(String username)
-    {
+    public static Session getMySession(String username) {
         return allMenuSessions.get(username);
+    }
+
+    public static Session getMyPlayerSessionInGame(String username, String gameName){
+        ConcurrentHashMap<String, Session> myGameSession = getGameSession(gameName);
+        return myGameSession.get(username);
     }
 
     public static ServerWebSocket getMySocket(Session mySession) {
