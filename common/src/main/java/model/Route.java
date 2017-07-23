@@ -26,7 +26,7 @@ public class Route {
     private int sisterRouteKey;
     private boolean claimed = false;
     private int pointValue;
-    private Route sisterRoute = null;
+
 
     public Route(City startCity, City endCity, int length, TrainCard color, int sisterRouteKey) {
 
@@ -91,6 +91,8 @@ public class Route {
         claimed = true;
         return true;
     }
+
+    //If there is no "sister" or double route, the sisterRoute key passed is -1.
 
     public static Map<Integer, Route> createRouteMap() {
         Map<Integer, Route> routeMap = new HashMap<>();

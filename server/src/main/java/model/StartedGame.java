@@ -17,6 +17,8 @@ import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
 
+import static model.TrainCard.WILD;
+
 
 /**
  *
@@ -25,7 +27,7 @@ import results.game.StartGameResult;
  */
 
 //QUESTION: Do we add an index for the players in the startGame Result?
-// TODO: discard pile; continuous routes; check for correct destCard return, check for low card amount; double route enabled;
+// TODO: discard pile; continuous routes; check for correct destCard return, check for low card amount;
 public class StartedGame {
 
     private String gameName;
@@ -128,7 +130,6 @@ public class StartedGame {
 
     private Result drawDestCardResults(String playerName, List<DestCard> drawnDestCards) {
 
-
         List<Integer> drawnCardKeys = new ArrayList<>();
         for (DestCard destCard : drawnDestCards) {
             drawnCardKeys.add(getDestCardInt(destCard, board.getDestCardMap()));
@@ -219,7 +220,7 @@ public class StartedGame {
     }
 
     /************************************ClaimRoute*******************************************/
-    public Result claimRoute(String playerName, int routeId) throws GamePlayException {
+    public Result claimRoute(String playerName, int routeId, List<Integer> trainCards) throws GamePlayException {
 
         throwIfNotPlayersTurn(playerName);
         switchTurnState(CommandType.CLAIM_ROUTE);
@@ -227,7 +228,13 @@ public class StartedGame {
         Player currentPlayer = allPlayers.get(playerName);
 
         if (currentPlayer != null) {
+            List<TrainCard> returnedTrainCards = convertKeysToTrainCards(trainCards);
             Route route = board.getRouteMap().get(routeId);
+
+            if(!correctCards(route, returnedTrainCards)){
+                throw new GamePlayException("Cannot claim route with cards given.");
+            }
+
 
             int sisterRouteKey = route.getSisterRouteKey();
             boolean sisterRouteClaimed = false;
@@ -237,7 +244,7 @@ public class StartedGame {
             }
 
             if (route.claimRoute(currentPlayer.getPlayerColor(), allPlayers.size(), sisterRouteClaimed)){
-                board.discardTrainCards(route.getColor(), route.getLength());
+                board.discardTrainCards(returnedTrainCards);
                 currentPlayer.addScore(route.getPointValue());
             } else {
                 throw new GamePlayException("Cannot claim double route.");
@@ -254,6 +261,36 @@ public class StartedGame {
         return allPlayers.get(playerName).getPlayerColor();
     }
 
+    private List<TrainCard> convertKeysToTrainCards(List<Integer> trainCards) {
+        List<TrainCard> returnTrainCards =  new ArrayList<>();
+        for(int a : trainCards) {
+            returnTrainCards.add(TrainCard.getTrainCard(a));
+        }
+        return returnTrainCards;
+    }
+
+    private boolean correctCards(Route route, List<TrainCard>returnedTrainCards) {
+
+        if (route.getLength() != returnedTrainCards.size()){
+            return false;
+        }
+
+        TrainCard routeColor = route.getColor();
+        TrainCard firstTrainCard = returnedTrainCards.get(0);
+        for (TrainCard currentCard : returnedTrainCards) {
+            if (currentCard != firstTrainCard) {
+                return false;
+            }
+        }
+        if (routeColor == WILD) {
+           return true;
+        }
+        else if (routeColor == firstTrainCard){
+            return true;
+        }
+
+        return false;
+    }
     /*************************************Getters**********************************************/
     public List<Result> getGameHistory() {
         return gameHistory;

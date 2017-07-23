@@ -205,7 +205,8 @@ public class Board {
         return getFaceUpCardCodes();
     }
 
-    public void discardTrainCards(TrainCard routeType, int routeSize) {
+    public void discardTrainCards(List<TrainCard> discardedTrainCards) {
+        this.discardedTrainCards.addAll(discardedTrainCards);
     }
     public boolean getReplaceFaceUpFlag() {
         return replaceFaceUpFlag;

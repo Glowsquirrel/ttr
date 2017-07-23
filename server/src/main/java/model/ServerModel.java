@@ -289,10 +289,10 @@ public class ServerModel {
 
     /*************************************Claim Route*************************************/
 
-    public void claimRoute(String gameName, String playerName, int routeId) {
+    public void claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
         try {
             Result result =
-                    this.getGame(gameName).claimRoute(playerName, routeId);
+                    this.getGame(gameName).claimRoute(playerName, routeId, trainCards);
             sendToClients(playerName, gameName, result, "claimRoute");
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, ex.getMessage());

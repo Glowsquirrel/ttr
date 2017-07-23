@@ -9,6 +9,6 @@ public class ClaimRouteCommandX extends ClaimRouteCommand implements ICommand {
     @Override
     public void execute() {
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.claimRoute(username, gameName, routeID);
+        serverFacade.claimRoute(username, gameName, routeID, trainCards);
     }
 }
