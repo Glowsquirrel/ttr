@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="120dp"
+    android:orientation="vertical" android:layout_width="100dp"
     android:layout_height="match_parent"
-    android:background="@drawable/customborder">
+    android:background="@drawable/customborder"
+    android:paddingRight="1dp"
+    android:paddingLeft="1dp"
+    android:layout_centerHorizontal="true">
 
 
 
@@ -11,28 +14,30 @@
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:textSize="13sp"
-        android:gravity="center"
-        android:text="myUsername" />
+        android:gravity="center|top"
+        android:text="myUsername"
+        android:ellipsize="end"/>
 
     <RelativeLayout
         android:id="@+id/trains"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="14dp"
         android:layout_below="@id/username">
 
         <TextView
             android:id="@+id/trainsTag"
-            android:text="Trains: "
-            android:layout_width="42dp"
+            android:text="Trains"
+            android:layout_width="35dp"
             android:layout_height="match_parent"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/trainsNum"
-            android:layout_width="18dp"
+            android:layout_width="15dp"
             android:layout_height="match_parent"
             android:textSize="12sp"
-            android:textAlignment="center"
+            android:gravity="start"
+            android:textAlignment="textStart"
             android:layout_toRightOf="@id/trainsTag"
             android:text="20"/>
 
@@ -41,7 +46,7 @@
 
     <RelativeLayout
         android:id="@+id/card"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="14dp"
         android:layout_below="@id/username"
         android:layout_toRightOf="@id/trains"
@@ -49,15 +54,16 @@
 
         <TextView
             android:id="@+id/cardsTag"
-            android:text="Cards: "
-            android:layout_width="42dp"
+            android:text="Cards"
+            android:layout_width="35dp"
             android:layout_height="match_parent"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/cardsNum"
-            android:layout_width="18dp"
-            android:textAlignment="center"
+            android:layout_width="15dp"
+            android:gravity="start"
+            android:textAlignment="textStart"
             android:layout_height="match_parent"
             android:textSize="12sp"
             android:text="888"
@@ -68,31 +74,32 @@
 
     <RelativeLayout
         android:id="@+id/routes"
-        android:layout_width="60dp"
+        android:layout_width="50dp"
         android:layout_height="14dp"
         android:layout_below="@id/trains">
 
         <TextView
             android:id="@+id/routesTag"
-            android:text="Routes: "
-            android:layout_width="42dp"
+            android:text="Routes"
+            android:layout_width="38dp"
             android:layout_height="match_parent"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/routesNum"
-            android:layout_width="18dp"
+            android:layout_width="15dp"
             android:layout_height="match_parent"
             android:textSize="12sp"
             android:text="8"
-            android:textAlignment="center"
+            android:gravity="start"
+            android:textAlignment="textStart"
             android:layout_toRightOf="@id/routesTag"/>
 
     </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/points"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="14dp"
             android:orientation="horizontal"
             android:layout_below="@id/card"
@@ -100,19 +107,19 @@
 
             <TextView
                 android:id="@+id/pointsTag"
-                android:text="Points: "
-                android:layout_width="42dp"
+                android:text="Score"
+                android:layout_width="35dp"
                 android:layout_height="match_parent"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/pointsNum"
-                android:layout_width="18dp"
+                android:layout_width="15dp"
                 android:layout_height="match_parent"
-                android:textAlignment="center"
+                android:gravity="start"
+                android:textAlignment="textStart"
                 android:textSize="12sp"
                 android:text="82"
-                android:gravity="center"
                 android:layout_toRightOf="@id/pointsTag"/>
 
         </RelativeLayout>

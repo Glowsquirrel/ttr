@@ -1,4 +1,4 @@
-package fysh340.ticket_to_ride;
+package fysh340.ticket_to_ride.menus;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ClientModel;
 import model.UnstartedGame;

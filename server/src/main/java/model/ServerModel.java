@@ -61,7 +61,7 @@ public class ServerModel {
             String message = "Game already exists.";
             toClient.rejectCommand(username, message);
         } else {
-            newGame.addPlayer(username);
+            //newGame.addPlayer(username);
             allUnstartedGames.put(newGame.getGameName(), newGame);
             toClient.createGame(username, newGame.getGameName());
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());

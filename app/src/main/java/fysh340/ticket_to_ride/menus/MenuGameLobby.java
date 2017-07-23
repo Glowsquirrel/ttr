@@ -1,4 +1,4 @@
-package fysh340.ticket_to_ride;
+package fysh340.ticket_to_ride.menus;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
 import model.ClientModel;
 import serverproxy.ServerProxy;
@@ -92,7 +94,7 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
             Toast.makeText(getApplicationContext(), clientModel.getMessageToToast(), Toast.LENGTH_SHORT).show();
         }
         if(clientModel.gameIsStarted()) {
-            Intent intent = new Intent(this, GameStart.class);
+            Intent intent = new Intent(this, GameView.class);
             startActivity(intent);
         }
         else if (clientModel.hasNewGameLists()){

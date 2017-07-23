@@ -1,7 +1,5 @@
-package fysh340.ticket_to_ride;
+package fysh340.ticket_to_ride.game.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -13,11 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ChatHistoryModel;
-import model.ClientModel;
-import model.DestCard;
-import model.Game;
 
 public class ChatHistory extends Fragment implements Observer {
 

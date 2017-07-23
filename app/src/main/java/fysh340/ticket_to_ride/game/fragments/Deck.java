@@ -1,4 +1,4 @@
-package fysh340.ticket_to_ride;
+package fysh340.ticket_to_ride.game.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,18 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.List;
 import java.util.Map;
+
+import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.City;
-import model.ClientModel;
 import model.DestCard;
-import model.Game;
 import model.TrainCard;
 import serverproxy.ServerProxy;
-
-import static model.City.BOSTON;
-import static model.City.MIAMI;
 
 /**
  *  <h1>Deck Fragment</h1>

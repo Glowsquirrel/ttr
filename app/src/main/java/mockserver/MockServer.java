@@ -31,7 +31,9 @@ public class MockServer {
     private static Map<String, String> loginMap = new HashMap<>();
 
     static{
-
+        loginMap.put("username", "password");
+        UnstartedGame mockGame = new UnstartedGame("mockGame", 1);
+        unstartedGameList.add(mockGame);
     }
 
     public void doCommand(Command command) {
