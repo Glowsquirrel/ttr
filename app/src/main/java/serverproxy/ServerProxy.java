@@ -1,7 +1,5 @@
 package serverproxy;
 
-import java.util.List;
-
 import clientcommunicator.ClientCommunicator;
 import commands.game.ChatCommand;
 import commands.game.ClaimRouteCommand;
@@ -18,7 +16,6 @@ import commands.menu.LoginCommand;
 import commands.menu.PollGamesCommand;
 import commands.menu.RegisterCommand;
 import interfaces.IServer;
-import mockserver.MockServer;
 
 /**
  * The ServerProxy is the proxy on the client side that lets the server do the actual execution.
@@ -82,7 +79,7 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public void returnDestCards(String username, String gameName, List<Integer> destCards) {
+    public void returnDestCards(String username, String gameName, int destCards) {
         ReturnDestCardsCommand command = new ReturnDestCardsCommand(username, gameName, destCards);
         clientCommunicator.doCommand(command);
     }
