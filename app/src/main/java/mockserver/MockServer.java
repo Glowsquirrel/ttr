@@ -164,7 +164,7 @@ public class MockServer {
             }
             case Utils.RETURN_DEST_CARDS_TYPE: {
                 ReturnDestCardsCommand mycommand = (ReturnDestCardsCommand)command;
-                clientFacade.returnDestCards(mycommand.getUsername(), mycommand.getDestCards());
+                clientFacade.returnDestCards(mycommand.getUsername(), mycommand.getDestCard());
                 break;
             }
             case Utils.DRAW_TRAIN_CARD_DECK_TYPE: {

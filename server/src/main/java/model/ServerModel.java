@@ -222,11 +222,11 @@ public class ServerModel {
     public void returnDestCard(String gameName, String playerName, int destCard) {
         try {
             Result result =
-                this.getGame(gameName).returnDestCard(playerName, destCard);
+                    this.getGame(gameName).returnDestCard(playerName, destCard);
             sendToClients(playerName, gameName, result, "returnDestCard");
         }
         catch (GamePlayException ex){
-            System.out.println(ex.getMessage());
+            toClient.rejectCommand(playerName, ex.getMessage());
         }
     }
 
@@ -250,20 +250,20 @@ public class ServerModel {
             sendToClients(playerName, gameName, result, "drawThreeDestCards");
         }
         catch (GamePlayException ex) {
-            System.out.println(ex.getMessage());
+            toClient.rejectCommand(playerName, ex.getMessage());
         }
     }
 
     /************************************DrawTrainCard****************************************/
 
     public void drawTrainCardFromDeck(String gameName, String playerName) {
+
         try {
             Result result =
                     this.getGame(gameName).drawTrainCardFromDeck(playerName);
             sendToClients(playerName, gameName, result, "drawTrainCardFromDeck");
-        }
-        catch (GamePlayException ex) {
-            System.out.println(ex.getMessage());
+        } catch (GamePlayException ex) {
+            toClient.rejectCommand(playerName, ex.getMessage());
         }
     }
 
@@ -283,7 +283,7 @@ public class ServerModel {
             }
         }
         catch (GamePlayException ex) {
-            System.out.println(ex.getMessage());
+            toClient.rejectCommand(playerName, ex.getMessage());
         }
     }
 
@@ -294,9 +294,8 @@ public class ServerModel {
             Result result =
                     this.getGame(gameName).claimRoute(playerName, routeId);
             sendToClients(playerName, gameName, result, "claimRoute");
-        }
-        catch (GamePlayException ex) {
-            System.out.println(ex.getMessage());
+        } catch (GamePlayException ex) {
+            toClient.rejectCommand(playerName, ex.getMessage());
         }
     }
 
@@ -307,7 +306,7 @@ public class ServerModel {
             toClient.sendToGame(gameName, result);
         }
         catch (GamePlayException ex) {
-            System.out.println(ex.getMessage());
+            toClient.rejectCommand(playerName, ex.getMessage());
         }
     }
 

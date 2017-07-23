@@ -24,6 +24,6 @@ public interface IClient {
     void drawDestCards(String username, List<Integer> destCards);
     void drawTrainCardDeck(String username, int trainCard);
     void drawTrainCardFaceUp(String username, int trainCard);
-    void returnDestCards(String username, List<Integer> destCards);
+    void returnDestCards(String username, int destCard);
     void returnFirstDestCards(String username, int cardReturned);
 }

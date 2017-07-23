@@ -149,4 +149,7 @@ public class Player {
         return newlyDrawnDestCards;
     }
 
+    public void addScore(int points) {
+        this.points += points;
+    }
 }
