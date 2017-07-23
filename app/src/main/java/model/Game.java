@@ -15,33 +15,25 @@ import interfaces.Observer;
 public class Game implements Observable{
 
     private Game(){};
-    public static final Game myGame=new Game();
+    public static final Game myGame = new Game();
     private int numOfPlayers = 0;
     private String gameName;
-    private ArrayList<String> playerUserNames = new ArrayList<>();
-    private Map<String, Player> playerMap;
+    private List<String> playerUserNames = new ArrayList<>();
+    private Map<String, Player> playerMap = new HashMap<>();
     private List<Integer> destCards;
     private List<Integer> trainCards;
     private List<Integer> faceUpCards;
-    private List<Player> playerListToDisplay;
     private ArrayList<Observer> observers = new ArrayList<>();
 
     public List<Player> getPlayerListToDisplay() {
-        playerListToDisplay=new ArrayList();
-        for(int i=0;i<numOfPlayers;i++)
-        {
-            for(String player: playerMap.keySet())
-            {
-                Player p=playerMap.get(player);
-                if(p.getTurn()==i)
-                {
-                    playerListToDisplay.add(p);
-                }
-            }
+        List<Player> playerListToDisplay = new ArrayList<>();
+        for (Player myPlayer : this.playerMap.values()){
+            playerListToDisplay.add(myPlayer);
         }
         return playerListToDisplay;
-
     }
+
+
 
 
     public List<Integer> getDestCards() {
@@ -76,28 +68,15 @@ public class Game implements Observable{
         this.gameName = gameName;
     }
 
-    public boolean addPlayer(String userName){
-
-        if (numOfPlayers < 5) {
-            playerUserNames.add(userName);
-            numOfPlayers++;
-            return true;
-        }
-        return false;
-    }
-    public void setPlayerMap(List<String> playerNames)
-    {
-        playerMap=new HashMap<>();
-        int i=0;
-        for(String name:playerNames)
-        {
-            Player p=new Player();
-            p.setTurn(i);
-            p.setUserName(name);
-            playerMap.put(name,p);
-
+    public void setPlayerMap(List<String> playerNames) {
+        this.playerUserNames = playerNames;
+        for(String name:playerNames) {
+            Player myPlayer = new Player();
+            myPlayer.setUserName(name);
+            playerMap.put(name, myPlayer);
         }
     }
+
     @Override
     public void register(Observer o) {
         observers.add(o);

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context="fysh340.ticket_to_ride.fragments.PlayerCards">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -66,7 +65,6 @@
             android:background="@color/orange"
             android:text="0"
             android:id="@+id/orange"/>
-
 
         <TextView
             android:layout_width="0dp"

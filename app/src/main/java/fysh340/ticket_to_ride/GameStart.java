@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import fysh340.ticket_to_ride.fragments.MapFragment;
 import fysh340.ticket_to_ride.fragments.PlayerCards;
+import fysh340.ticket_to_ride.fragments.PlayerData;
 import model.ClientModel;
 
 public class GameStart extends AppCompatActivity {
@@ -38,9 +39,11 @@ public class GameStart extends AppCompatActivity {
 
         MapFragment mapFragment = MapFragment.newInstance();
         PlayerCards playerCardsFragment = new PlayerCards();
+        PlayerData playerDataFragment = new PlayerData();
 
         transaction.add(R.id.map_fragment_container, mapFragment);
         transaction.add(R.id.cards_fragment_container, playerCardsFragment);
+        transaction.add(R.id.players_fragment_container, playerDataFragment);
 
 
 
@@ -48,6 +51,7 @@ public class GameStart extends AppCompatActivity {
         
 
     }
+
     @Override
     public void onBackPressed(){
         //finish();

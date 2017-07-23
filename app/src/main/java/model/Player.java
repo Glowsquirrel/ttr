@@ -52,10 +52,6 @@ public class Player {
         return turn;
     }
 
-    public void setTurn(int turn) {
-        this.turn = turn;
-    }
-
     public int getTrains() {
         return trains;
     }

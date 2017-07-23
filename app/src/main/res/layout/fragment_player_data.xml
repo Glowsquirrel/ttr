@@ -1,8 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fysh340.ticket_to_ride.PlayerData">
+    tools:context="fysh340.ticket_to_ride.fragments.PlayerData">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/player_list"
@@ -12,4 +12,4 @@
         android:padding="5dp"
         android:orientation="horizontal"/>
 
-</FrameLayout>
+</LinearLayout>
