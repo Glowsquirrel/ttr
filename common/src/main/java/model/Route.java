@@ -77,9 +77,16 @@ public class Route {
         return isClaimed();
     }
 
-    public void claimRoute(PlayerColor playerColor) {
+    public boolean claimRoute(PlayerColor playerColor, int numOfPlayersInGame) {
+        final int DOUBLE_ROUTE_LIMIT = 3;
+        if (doubleRoute){
+            if (numOfPlayersInGame < DOUBLE_ROUTE_LIMIT) {
+                return false;
+            }
+        }
         claimedColor = playerColor;
         claimed = true;
+        return true;
     }
 
     public static Map<Integer, Route> createRouteMap() {
