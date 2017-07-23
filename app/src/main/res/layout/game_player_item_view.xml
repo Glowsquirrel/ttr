@@ -1,148 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="110dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="120dp"
     android:layout_height="match_parent"
     android:background="@drawable/customborder">
-    <LinearLayout
-        android:id="@+id/player"
+
+
+
+    <TextView
+        android:id="@+id/username"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:layout_height="16dp"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:text="myUsername" />
 
-        <TextView
-            android:id="@+id/playertag"
-            android:text="Player: "
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="65"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:scrollHorizontally="true"/>
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="35"
-            android:textSize="16sp"
-            android:gravity="center"/>
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/routes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
-
-        <TextView
-            android:id="@+id/routesTag"
-            android:text="Routes: "
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="65"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:scrollHorizontally="true"/>
-
-        <TextView
-            android:id="@+id/routesNum"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="35"
-            android:textSize="16sp"
-            android:gravity="center"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
-
-        <TextView
-            android:id="@+id/cardsTag"
-            android:text="Cards: "
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="65"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:scrollHorizontally="true"/>
-
-        <TextView
-            android:id="@+id/cardsNum"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="35"
-            android:textSize="16sp"
-            android:gravity="center"/>
-
-    </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/trains"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:layout_width="60dp"
+        android:layout_height="14dp"
+        android:layout_below="@id/username">
 
         <TextView
             android:id="@+id/trainsTag"
             android:text="Trains: "
-            android:layout_width="0dp"
+            android:layout_width="42dp"
             android:layout_height="match_parent"
-            android:layout_weight="65"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:scrollHorizontally="true"/>
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/trainsNum"
-            android:layout_width="0dp"
+            android:layout_width="18dp"
             android:layout_height="match_parent"
-            android:layout_weight="35"
-            android:textSize="16sp"
-            android:gravity="center"/>
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:layout_toRightOf="@id/trainsTag"
+            android:text="20"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/points"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/card"
+        android:layout_width="60dp"
+        android:layout_height="14dp"
+        android:layout_below="@id/username"
+        android:layout_toRightOf="@id/trains"
+        android:layout_toEndOf="@id/trains">
 
         <TextView
-            android:id="@+id/pointsTag"
-            android:text="Points: "
-            android:layout_width="0dp"
+            android:id="@+id/cardsTag"
+            android:text="Cards: "
+            android:layout_width="42dp"
             android:layout_height="match_parent"
-            android:layout_weight="65"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:scrollHorizontally="true"/>
+            android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/pointsNum"
-            android:layout_width="0dp"
+            android:id="@+id/cardsNum"
+            android:layout_width="18dp"
+            android:textAlignment="center"
             android:layout_height="match_parent"
-            android:layout_weight="35"
-            android:textSize="16sp"
-            android:gravity="center"/>
+            android:textSize="12sp"
+            android:text="888"
+            android:layout_toRightOf="@id/cardsTag"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/routes"
+        android:layout_width="60dp"
+        android:layout_height="14dp"
+        android:layout_below="@id/trains">
+
+        <TextView
+            android:id="@+id/routesTag"
+            android:text="Routes: "
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/routesNum"
+            android:layout_width="18dp"
+            android:layout_height="match_parent"
+            android:textSize="12sp"
+            android:text="8"
+            android:textAlignment="center"
+            android:layout_toRightOf="@id/routesTag"/>
+
+    </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/points"
+            android:layout_width="60dp"
+            android:layout_height="14dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/card"
+            android:layout_toRightOf="@id/routes">
+
+            <TextView
+                android:id="@+id/pointsTag"
+                android:text="Points: "
+                android:layout_width="42dp"
+                android:layout_height="match_parent"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/pointsNum"
+                android:layout_width="18dp"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:text="82"
+                android:gravity="center"
+                android:layout_toRightOf="@id/pointsTag"/>
+
+        </RelativeLayout>
+
+</RelativeLayout>

@@ -40,7 +40,9 @@
 
         <activity android:name=".GameStart"
             android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.CustomFullScreen"
             android:configChanges="orientation|keyboardHidden" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

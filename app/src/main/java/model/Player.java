@@ -10,7 +10,7 @@ public class Player {
     private int numOfGreenCards = 0;
     private int cardNum=0;
 
-    public int getCardNum() {
+    public int getCards() {
         return cardNum;
     }
 

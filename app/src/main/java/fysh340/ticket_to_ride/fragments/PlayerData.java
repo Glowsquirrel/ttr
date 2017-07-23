@@ -1,5 +1,9 @@
 package fysh340.ticket_to_ride.fragments;
 
+
+
+
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,18 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import fysh340.ticket_to_ride.MenuGameList;
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
 import model.Player;
+import model.UnstartedGame;
 
 public class PlayerData extends Fragment implements Observer {
-    private adapter mAdapter;
+    private MyPlayerListAdapter mAdapter;
     private RecyclerView mRV;
     private ClientModel mClientModel = ClientModel.getMyClientModel();
     private Game mGame=Game.myGame;
@@ -32,7 +41,7 @@ public class PlayerData extends Fragment implements Observer {
     }
     private void updateRV() {
         mRV.removeAllViewsInLayout();
-        mAdapter = new adapter( mGame.getPlayerListToDisplay());
+        mAdapter = new MyPlayerListAdapter( mGame.getPlayerListToDisplay());
         mRV.setAdapter( mAdapter);
     }
 
@@ -55,6 +64,70 @@ public class PlayerData extends Fragment implements Observer {
         mGame.register(this);
         return v;
     }
+
+    private class MyPlayerListAdapter extends RecyclerView.Adapter<PlayerData.MyPlayerListAdapter.ViewHolder> {
+        private List<Player> allPlayers = new ArrayList<>();
+
+        private MyPlayerListAdapter(List<Player> newList){
+            allPlayers = newList;
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView itemUsername;
+            TextView itemRoutes;
+            TextView itemCards;
+            TextView itemTrains;
+            TextView itemPoints;
+            View myView;
+
+            ViewHolder(View view){
+                super(view);
+                itemUsername = (TextView) view.findViewById(R.id.username);
+                itemRoutes = (TextView) view.findViewById(R.id.routesNum);
+                itemCards = (TextView) view.findViewById(R.id.cardsNum);
+                itemTrains = (TextView) view.findViewById(R.id.trainsNum);
+                itemPoints = (TextView) view.findViewById(R.id.pointsNum);
+                myView = view;
+            }
+        }
+
+        void swapData(List<Player> newGameList){
+            allPlayers = newGameList;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public PlayerData.MyPlayerListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_player_item_view, parent, false);
+            return new PlayerData.MyPlayerListAdapter.ViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(final PlayerData.MyPlayerListAdapter.ViewHolder holder, final int position) {
+            Player myPlayer = allPlayers.get(position);
+
+            String playerName = myPlayer.getUserName();
+            int myRoutes = myPlayer.getRoutes();
+            int myCards = myPlayer.getCards();
+            int myTrains = myPlayer.getTrains();
+            int myPoints = myPlayer.getPoints();
+
+            holder.itemUsername.setText(playerName);
+            holder.itemRoutes.setText(String.valueOf(myRoutes));
+            holder.itemCards.setText(String.valueOf(myCards));
+            holder.itemTrains.setText(String.valueOf(myTrains));
+            holder.itemPoints.setText(String.valueOf(myPoints));
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return allPlayers.size();
+        }
+
+    }
+
+    /*
     private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private TextView mUsername;
@@ -78,7 +151,7 @@ public class PlayerData extends Fragment implements Observer {
             mItem = item;
             mUsername.setText(mItem.getUserName());
             mRoute.setText(mItem.getRoutes());
-            mCards.setText(mItem.getCardNum());
+            mCards.setText(mItem.getCards());
             mTrains.setText(mItem.getTrains());
             mPoints.setText(mItem.getRoutes());
 
@@ -110,5 +183,5 @@ public class PlayerData extends Fragment implements Observer {
         { return itemlist.size(); }
 
     }
-
+    */
 }
