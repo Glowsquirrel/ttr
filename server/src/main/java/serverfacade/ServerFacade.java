@@ -1,5 +1,7 @@
 package serverfacade;
 
+import java.util.List;
+
 import interfaces.IServer;
 import model.ServerModel;
 import model.UnstartedGame;
@@ -123,8 +125,8 @@ public class ServerFacade implements IServer {
     }
 
     @Override
-    public void claimRoute(String username, String gameName, int routeID) {
-        mSingletonModel.claimRoute(gameName, username, routeID);
+    public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+        mSingletonModel.claimRoute(gameName, username, routeID, trainCards);
     }
 
     @Override
