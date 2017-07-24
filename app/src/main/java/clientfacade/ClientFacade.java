@@ -40,8 +40,8 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
-        Player myself = new Player(username);
-        game.initializeMyGame(myself, gameName, playerNames, destCards, trainCards, faceUpCards);
+        Player myself = new Player(username, destCards);
+        game.initializeMyGame(myself, gameName, playerNames, trainCards, faceUpCards);
         Deck.getInstance().setAvailableDestCards(destCards);
         Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
     }

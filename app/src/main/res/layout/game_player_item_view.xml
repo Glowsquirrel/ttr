@@ -5,9 +5,8 @@
     android:background="@drawable/customborder"
     android:paddingRight="1dp"
     android:paddingLeft="1dp"
-    android:layout_centerHorizontal="true">
-
-
+    android:layout_centerHorizontal="true"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/username"

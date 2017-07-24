@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_list_item"
+    android:layout_width="250dp"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/customborder">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dest_card_cities"
+        android:gravity="center|top"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dest_card_city_name_1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="SAULT_ST_MARIE"
+            android:textSize="14sp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=" - "/>
+
+        <TextView
+            android:id="@+id/dest_card_city_name_2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="OKLAHOMA_CITY"
+            android:textSize="14sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dest_card_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dest_card_cities"
+        android:text="15"
+        android:textSize="14sp"
+        android:gravity="center"/>
+
+</RelativeLayout>
