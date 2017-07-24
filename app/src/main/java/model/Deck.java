@@ -2,13 +2,15 @@ package model;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import interfaces.Observable;
 import interfaces.Observer;
 
 /**
- *  <h1>Deck Model</h1>
+ *  <h1>DeckFragment Model</h1>
  *  Models the details that are presented as available (face up) deck cards, as well as
  *  destination cards available when the player chooses to draw.
  *

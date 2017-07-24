@@ -13,6 +13,9 @@ public class ClientModel implements Observable{
     //singleton pattern:
     private static final ClientModel myClientModel = new ClientModel();
     private ClientModel(){}
+    public static ClientModel getMyClientModel() {
+        return myClientModel;
+    }
 
     //begin message toasting
     private String messageToToast;
@@ -164,14 +167,6 @@ public class ClientModel implements Observable{
 
     //begin Observer
     private ArrayList<Observer> observers = new ArrayList<>();
-
-
-
-
-    public static ClientModel getMyClientModel() {
-        return myClientModel;
-    }
-
 
 
     public List<UnstartedGame> getUnstartedGameList() {

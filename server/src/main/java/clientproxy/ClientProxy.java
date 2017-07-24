@@ -186,17 +186,21 @@ public class ClientProxy implements IClient {
         }
     }
 
-    public void rejectCommand(String identifier, String message) {
+    public void rejectCommand(String identifier, String gameName, String message) {
         MessageResult messageResult = new MessageResult(identifier, message);
-        Session mySession = ServerWebSocket.getMySession(identifier);
-        if (mySession == null)
+        Session mySession = ServerWebSocket.getMyPlayerSessionInGame(identifier, gameName); //search by game first
+        if (mySession == null){ //search the menus
+            mySession = ServerWebSocket.getMySession(identifier);
+        }
+        if (mySession == null) //search everywhere
             mySession = ServerWebSocket.getMySessionID(identifier);
+
 
         String resultJson = gson.toJson(messageResult);
         try {
             mySession.getRemote().sendString(resultJson);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.warning("Client: " + identifier + " has already disconnected");
         }
     }
 
@@ -214,7 +218,6 @@ public class ClientProxy implements IClient {
             try {
                 myUserSession.getRemote().sendString(resultJson);
             } catch (IOException ex){
-                ex.printStackTrace();
                 logger.warning("Failed to send a: " + result.getType() + " command to the player: " + sessionEntry.getKey() + "in the: " + gameName + " game.");
             }
         }
@@ -229,7 +232,6 @@ public class ClientProxy implements IClient {
             myUserSession.getRemote().sendString(resultJson);
             logger.fine("Sent a: " + result.getType() + " command to " + username + ".");
         } catch (IOException ex){
-            ex.printStackTrace();
             logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
         }
 
@@ -249,7 +251,6 @@ public class ClientProxy implements IClient {
             try {
                 myUserSession.getRemote().sendString(resultJson);
             } catch (IOException ex) {
-                ex.printStackTrace();
                 logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
             }
         }

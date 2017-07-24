@@ -184,7 +184,7 @@ public class ServerWebSocket
     @OnWebSocketMessage
     public void onMessage(String message)
     {
-        logger.finest("Message: " + message);
+        logger.finest("Server Input: " + message);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Command.class, new CommandXSerializer());
         Gson gson = gsonBuilder.create();

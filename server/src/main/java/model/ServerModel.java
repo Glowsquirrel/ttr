@@ -59,7 +59,7 @@ public class ServerModel {
 
         if (allUnstartedGames.containsKey(newGame.getGameName()) || allStartedGames.containsKey(newGame.getGameName())){
             String message = "Game already exists.";
-            toClient.rejectCommand(username, message);
+            toClient.rejectCommand(username, newGame.getGameName(), message);
         } else {
             //newGame.addPlayer(username);
             allUnstartedGames.put(newGame.getGameName(), newGame);
@@ -83,7 +83,7 @@ public class ServerModel {
             toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
         } else {
             message = user.getUsername() + " is already registered.";
-            toClient.rejectCommand(sessionID, message);
+            toClient.rejectCommand(sessionID, null, message);
         }
     }
 
@@ -101,7 +101,7 @@ public class ServerModel {
             }
         } else{
             String message = "Invalid login information.";
-            toClient.rejectCommand(sessionID, message);
+            toClient.rejectCommand(sessionID, null, message);
         }
     }
 
@@ -152,7 +152,7 @@ public class ServerModel {
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
         } else {
             String message = "Could not join game.";
-            toClient.rejectCommand(username, message);
+            toClient.rejectCommand(username, gameName, message);
         }
     }
 
@@ -174,7 +174,7 @@ public class ServerModel {
             toClient.leaveGame(username, gameName);
         } else {
             String message = "Player not in game.";
-            toClient.rejectCommand(username, message);
+            toClient.rejectCommand(username, gameName, message);
         }
     }
 
@@ -226,7 +226,7 @@ public class ServerModel {
             sendToClients(playerName, gameName, result, "returnDestCard");
         }
         catch (GamePlayException ex){
-            toClient.rejectCommand(playerName, ex.getMessage());
+            toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }
 
@@ -250,7 +250,7 @@ public class ServerModel {
             sendToClients(playerName, gameName, result, "drawThreeDestCards");
         }
         catch (GamePlayException ex) {
-            toClient.rejectCommand(playerName, ex.getMessage());
+            toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }
 
@@ -263,7 +263,7 @@ public class ServerModel {
                     this.getGame(gameName).drawTrainCardFromDeck(playerName);
             sendToClients(playerName, gameName, result, "drawTrainCardFromDeck");
         } catch (GamePlayException ex) {
-            toClient.rejectCommand(playerName, ex.getMessage());
+            toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }
 
@@ -283,7 +283,7 @@ public class ServerModel {
             }
         }
         catch (GamePlayException ex) {
-            toClient.rejectCommand(playerName, ex.getMessage());
+            toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }
 
@@ -295,7 +295,7 @@ public class ServerModel {
                     this.getGame(gameName).claimRoute(playerName, routeId);
             sendToClients(playerName, gameName, result, "claimRoute");
         } catch (GamePlayException ex) {
-            toClient.rejectCommand(playerName, ex.getMessage());
+            toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }
 
@@ -306,7 +306,7 @@ public class ServerModel {
             toClient.sendToGame(gameName, result);
         }
         catch (GamePlayException ex) {
-            toClient.rejectCommand(playerName, ex.getMessage());
+            toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }
 

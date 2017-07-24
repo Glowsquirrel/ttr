@@ -8,18 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.fragments.AllPlayerDataFragment;
 import fysh340.ticket_to_ride.game.fragments.ChatHistory;
-import fysh340.ticket_to_ride.game.fragments.Deck;
+import fysh340.ticket_to_ride.game.fragments.DeckFragment;
 import fysh340.ticket_to_ride.game.fragments.MapFragment;
-import fysh340.ticket_to_ride.game.fragments.PlayerCards;
-import fysh340.ticket_to_ride.game.fragments.PlayerData;
+import fysh340.ticket_to_ride.game.fragments.PlayerCardsFragment;
 import model.ClientModel;
 
 public class GameView extends AppCompatActivity {
     ClientModel clientModel = ClientModel.getMyClientModel();
-    private PlayerData playerData;
-    private PlayerCards playerCards;
-    private Deck deck;
+    private AllPlayerDataFragment playerData;
+    private PlayerCardsFragment playerCardsFragment;
+    private DeckFragment deckFragment;
     private ChatHistory chatHistory;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
@@ -29,9 +29,9 @@ public class GameView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
 
-        playerData = new PlayerData();
-        playerCards = new PlayerCards();
-        deck = new Deck();
+        playerData = new AllPlayerDataFragment();
+        playerCardsFragment = new PlayerCardsFragment();
+        deckFragment = new DeckFragment();
         chatHistory=new ChatHistory();
         //getSupportFragmentManager().beginTransaction().add()
 
@@ -41,9 +41,9 @@ public class GameView extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
 
         MapFragment mapFragment = MapFragment.newInstance();
-        PlayerCards playerCardsFragment = new PlayerCards();
-        PlayerData playerDataFragment = new PlayerData();
-        Deck deckFragment = new Deck();
+        PlayerCardsFragment playerCardsFragment = new PlayerCardsFragment();
+        AllPlayerDataFragment playerDataFragment = new AllPlayerDataFragment();
+        DeckFragment deckFragment = new DeckFragment();
 
         transaction.add(R.id.map_fragment_container, mapFragment);
         transaction.add(R.id.cards_fragment_container, playerCardsFragment);

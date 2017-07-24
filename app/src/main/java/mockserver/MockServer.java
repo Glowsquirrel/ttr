@@ -153,9 +153,13 @@ public class MockServer {
             case Utils.DRAW_DEST_CARDS_TYPE: {
                 DrawThreeDestCardsCommand mycommand = (DrawThreeDestCardsCommand) command;
                 List<Integer> destCards = new ArrayList<>();
-                destCards.add(0);
-                destCards.add(1);
-                destCards.add(2);
+                Random rand = new Random();
+                int c1 = rand.nextInt(29) + 1;
+                int c2 = rand.nextInt(29) + 1;
+                int c3 = rand.nextInt(29) + 1;
+                destCards.add(c1);
+                destCards.add(c2);
+                destCards.add(c3);
                 clientFacade.drawDestCards(mycommand.getUsername(), destCards);
                 break;
             }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,19 +15,22 @@ import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.City;
 import model.DestCard;
+import model.Game;
 import model.TrainCard;
 import serverproxy.ServerProxy;
 
 /**
- *  <h1>Deck Fragment</h1>
+ *  <h1>DeckFragment Fragment</h1>
  *  Creates a view, which shows face-up deck cards and available destination cards when drawing
  *  from that deck, for the in-game activity.
  *
  *  @author         Nathan Finch
  *  @since          7-22-17
  */
-public class Deck extends Fragment implements Observer {
+public class DeckFragment extends Fragment implements Observer {
     private static model.Deck mViewableDeck;
+    private ServerProxy mServerProxy = new ServerProxy();
+    private Game mGame = Game.getGameInstance();
     static {
         mViewableDeck = model.Deck.getInstance();
     }
@@ -35,7 +39,7 @@ public class Deck extends Fragment implements Observer {
 
     private TextView[] mDestinationCards;
 
-    public Deck() {
+    public DeckFragment() {
         // Required empty public constructor
     }
 
@@ -108,7 +112,36 @@ public class Deck extends Fragment implements Observer {
             });
         }
 
+        setUpDeckListeners(deckView);
+
+        Button myContinueButton = (Button) deckView.findViewById(R.id.continueButton);
+        myContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return deckView;
+    }
+
+    private void setUpDeckListeners(View deckView){
+        TextView trainDeck = (TextView) deckView.findViewById(R.id.trainDeck);
+        trainDeck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mServerProxy.drawTrainCardFromDeck(mGame.getMyUsername(), mGame.getMyGameName());
+            }
+        });
+
+        TextView destDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
+        destDeck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mServerProxy.drawThreeDestCards(mGame.getMyUsername(), mGame.getMyGameName());
+            }
+        });
+
     }
 
 }

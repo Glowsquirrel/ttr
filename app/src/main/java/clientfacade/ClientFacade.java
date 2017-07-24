@@ -9,6 +9,7 @@ import model.ChatHistoryModel;
 import model.ClientModel;
 import model.Deck;
 import model.Game;
+import model.Player;
 import model.RunningGame;
 import model.UnstartedGame;
 
@@ -18,8 +19,8 @@ import model.UnstartedGame;
  */
 public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
-    private Game game=Game.myGame;
-    private ChatHistoryModel chatModel=ChatHistoryModel.myChat;
+    private Game game = Game.getGameInstance();
+    private ChatHistoryModel chatModel = ChatHistoryModel.myChat;
 
     public void postMessage(String message){
         clientModel.setMessageToToast(message);
@@ -39,14 +40,10 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
-        game.setGameName(gameName);
-        game.setDestCards(destCards); //May want to remove this here and from Game model
+        Player myself = new Player(username);
+        game.initializeMyGame(myself, gameName, playerNames, destCards, trainCards, faceUpCards);
         Deck.getInstance().setAvailableDestCards(destCards);
-        game.setTrainCards(trainCards);
-        game.setFaceUpCards(faceUpCards); //May want to remove this here and from Game model
         Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
-        game.setPlayerMap(playerNames);
-        //TODO: put all the start game info into clientModel.
     }
 
     @Override
@@ -55,7 +52,7 @@ public class ClientFacade implements IClient{
     }
 
     @Override
-    public void createGame(String username, String gameName){ //only called if server already accepted a true createGame
+    public void createGame(String username, String gameName){ //only called when server sends a create game result
         clientModel.setCreatedGame(gameName);
     }
 
@@ -81,14 +78,18 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-        if(username.equals(clientModel.getMyUsername())) {
+        if(username.equals(game.getMyUsername())) { //calling this method should always mean it is meant for this client
             Deck.getInstance().setAvailableDestCards(destCards);
         }
     }
 
     @Override
     public void drawTrainCardDeck(String username, int trainCard){
-
+        Player myself = game.getMyself();
+        myself.addTrainCard();
+        game.aPlayerHasChanged(true);
+        game.iHaveChanged(true);
+        game.notifyObserver();
     }
 
     @Override
@@ -121,7 +122,7 @@ public class ClientFacade implements IClient{
                                            List<Integer> numDestCardsHeld, List<Integer> numTrainCars, List<Integer> score){
 
     }
-    //use a username to get the players color. might go into clientmodel?
+    //use a username to get the players color. might go into game?
     private Color getPlayerColor(String username){
 
         return null;
