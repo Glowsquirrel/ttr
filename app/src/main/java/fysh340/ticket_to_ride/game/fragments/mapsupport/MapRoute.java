@@ -1,14 +1,51 @@
-package fysh340.ticket_to_ride.map;
+package fysh340.ticket_to_ride.game.fragments.mapsupport;
 
 
-import static fysh340.ticket_to_ride.map.MapCity.*;
-import static fysh340.ticket_to_ride.map.MapCity.HELENA;
-import static fysh340.ticket_to_ride.map.MapCity.NEW_ORLEANS;
-import static fysh340.ticket_to_ride.map.MapCity.NEW_YORK;
-import static fysh340.ticket_to_ride.map.MapRouteColor.*;
-import static fysh340.ticket_to_ride.map.MapRouteColor.GREEN;
-import static fysh340.ticket_to_ride.map.MapRouteColor.ORANGE;
-import static fysh340.ticket_to_ride.map.MapRouteColor.YELLOW;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.ATLANTA;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.BOSTON;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.CALGARY;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.CHARLESTON;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.CHICAGO;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.DALLAS;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.DENVER;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.DULUTH;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.EL_PASO;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.HELENA;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.HOUSTON;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.KANSAS_CITY;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.LAS_VEGAS;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.LITTLE_ROCK;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.LOS_ANGELES;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.MIAMI;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.MONTREAL;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.NASHVILLE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.NEW_ORLEANS;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.NEW_YORK;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.OKLAHOMA_CITY;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.OMAHA;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.PHOENIX;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.PITTSBURGH;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.PORTLAND;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.RALEIGH;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.SAINT_LOUIS;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.SALT_LAKE_CITY;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.SANTA_FE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.SAN_FRANCISCO;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.SAULT_ST_MARIE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.SEATTLE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.TORONTO;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.VANCOUVER;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.WASHINGTON;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapCity.WINNIPEG;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.BLACK;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.BLUE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.GRAY;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.GREEN;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.ORANGE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.PURPLE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.RED;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.WHITE;
+import static fysh340.ticket_to_ride.game.fragments.mapsupport.MapRouteColor.YELLOW;
 
 /**
  * Routes to show on the map

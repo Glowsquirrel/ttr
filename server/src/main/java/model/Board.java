@@ -19,7 +19,7 @@ public class Board {
     private boolean replaceFaceUpFlag = false;
 
     Board(){
-        destCardMap = DestCard.createDestCardMap();
+        destCardMap = DestCard.getDestCardMap();
         routeMap = Route.createRouteMap();
 
         initializeTrainCardDeck();

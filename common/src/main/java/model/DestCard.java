@@ -68,17 +68,23 @@ public class DestCard {
     }
 
 
-    public DestCard getDestCardByInt(int cardIndex, Map<Integer, DestCard> destCardMap) {
-        if(destCardMap.containsKey(cardIndex)) {
-            return destCardMap.get(cardIndex);
+    public static DestCard getDestCardByID(int cardID) {
+        if(destCardMap.containsKey(cardID)) {
+            return destCardMap.get(cardID);
         } else {
             return null;
         }
     }
 
+    private static Map<Integer, DestCard> destCardMap = createDestCardMap();
 
-    public static Map<Integer, DestCard> createDestCardMap() {
+    public static Map<Integer, DestCard> getDestCardMap(){
+        return destCardMap;
+    }
+
+    private static Map<Integer, DestCard> createDestCardMap() {
         Map<Integer, DestCard> destCardMap = new HashMap<>();
+
         destCardMap.put(0, new DestCard(0, BOSTON, MIAMI, 12));
         destCardMap.put(1, new DestCard(1, CALGARY, PHOENIX, 13));
         destCardMap.put(2, new DestCard(2, CALGARY, SALT_LAKE_CITY, 7));

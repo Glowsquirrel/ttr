@@ -2,25 +2,25 @@ package fysh340.ticket_to_ride.game.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
 import model.ClientModel;
 import model.DestCard;
 import model.Game;
 
 
-public class PlayerCardsFragment extends Fragment implements Observer{
+public class PlayerTrainCardsFragment extends Fragment implements Observer{
     private adapter mAdapter;
-    private RecyclerView mRV;
     private ClientModel mClientModel = ClientModel.getMyClientModel();
     private Game mGame;
     private TextView mDestination;
@@ -30,9 +30,7 @@ public class PlayerCardsFragment extends Fragment implements Observer{
 
     }
     private void updateRV() {
-        mRV.setLayoutManager( new LinearLayoutManager( getActivity()));
         mAdapter = new adapter( mClientModel.getMyDestinationCards());
-        mRV.setAdapter( mAdapter);
     }
 
     @Override
@@ -45,8 +43,14 @@ public class PlayerCardsFragment extends Fragment implements Observer{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_player_cards, container, false);
-         mRV= (RecyclerView)  v.findViewById( R.id.destinationCardList);
+        View v=inflater.inflate(R.layout.fragment_player_train_cards, container, false);
+        Button playerCardSwitchButton = (Button) v.findViewById(R.id.player_switch_cards_button);
+        playerCardSwitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GameView)getActivity()).switchPlayerCards();
+            }
+        });
         return v;
     }
     private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

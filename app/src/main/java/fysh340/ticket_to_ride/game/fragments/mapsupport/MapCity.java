@@ -1,4 +1,4 @@
-package fysh340.ticket_to_ride.map;
+package fysh340.ticket_to_ride.game.fragments.mapsupport;
 
 import com.google.android.gms.maps.model.LatLng;
 

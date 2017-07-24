@@ -57,7 +57,7 @@ public class DeckFragment extends Fragment implements Observer {
         //When drawing destination cards, get the available ones
         cardsByID = mViewableDeck.getDestinationCards();
         
-        Map<Integer, DestCard> cardsReference = DestCard.createDestCardMap();
+        Map<Integer, DestCard> cardsReference = DestCard.getDestCardMap();
 
         //For each view, set the text to the destination's from/to cities.
         for(int i = 0; i < mDestinationCards.length; ++i) {

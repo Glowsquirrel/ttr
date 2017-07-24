@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.map.MapHelper;
+import fysh340.ticket_to_ride.game.fragments.mapsupport.MapHelper;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnPolylineClickListener {

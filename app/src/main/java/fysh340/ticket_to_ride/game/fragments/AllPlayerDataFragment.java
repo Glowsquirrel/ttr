@@ -21,6 +21,9 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
     private MyPlayerListAdapter mAdapter;
     private Game mGame = Game.getGameInstance();
 
+    public AllPlayerDataFragment(){
+        mGame.register(this);
+    }
     @Override
     public void update() {
         if (mGame.aPlayerHasChanged()) {

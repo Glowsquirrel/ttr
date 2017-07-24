@@ -1,4 +1,4 @@
-package fysh340.ticket_to_ride.map;
+package fysh340.ticket_to_ride.game.fragments.mapsupport;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,7 +42,7 @@ public class MapHelper {
     private static final int ROUTE_GAP = 30000;
 
     private static final float MAX_ZOOM = 6.0f;
-    private static final float MIN_ZOOM = 4.75f;
+    private static final float MIN_ZOOM = 4.0f;
 
     private static final int CITY_RADIUS = 30000;
     private static final int CITY_FILL = Color.GRAY;

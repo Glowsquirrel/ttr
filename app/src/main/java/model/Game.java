@@ -27,7 +27,6 @@ public class Game implements Observable{
     private Player myself;
     private List<String> playerUserNames = new ArrayList<>();
     private Map<String, AbstractPlayer> playerMap = new HashMap<>();
-    private List<Integer> destCards;
     private List<Integer> trainCards;
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
@@ -44,11 +43,14 @@ public class Game implements Observable{
         return playerListToDisplay;
     }
 
+    public List<DestCard> getMyDestCards(){
+        return myself.getMyDestCards();
+    }
+
     public void initializeMyGame(Player myself, String gameName, List<String> playerNames,
-                                 List<Integer> destCards, List<Integer> trainCards, List<Integer> faceUpCards){
+                                 List<Integer> trainCards, List<Integer> faceUpCards){
         this.myself = myself;
         this.gameName = gameName;
-        this.destCards = destCards;
         this.trainCards = trainCards;
         this.faceUpCards = faceUpCards;
         this.playerUserNames = playerNames;
@@ -71,10 +73,6 @@ public class Game implements Observable{
         return myself;
     }
 
-
-    public List<Integer> getDestCards() {
-        return destCards;
-    }
 
     public List<Integer> getTrainCards() {
         return trainCards;

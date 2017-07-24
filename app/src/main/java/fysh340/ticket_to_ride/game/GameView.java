@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride.game;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -12,32 +13,36 @@ import fysh340.ticket_to_ride.game.fragments.AllPlayerDataFragment;
 import fysh340.ticket_to_ride.game.fragments.ChatHistory;
 import fysh340.ticket_to_ride.game.fragments.DeckFragment;
 import fysh340.ticket_to_ride.game.fragments.MapFragment;
-import fysh340.ticket_to_ride.game.fragments.PlayerCardsFragment;
+import fysh340.ticket_to_ride.game.fragments.PlayerDestCardsFragment;
+import fysh340.ticket_to_ride.game.fragments.PlayerTrainCardsFragment;
 import model.ClientModel;
 
 public class GameView extends AppCompatActivity {
     ClientModel clientModel = ClientModel.getMyClientModel();
-    private AllPlayerDataFragment playerData;
-    private PlayerCardsFragment playerCardsFragment;
+    private AllPlayerDataFragment allPlayerDataFragment;
+    private PlayerTrainCardsFragment playerTrainCardsFragment;
+    private PlayerDestCardsFragment playerDestCardsFragment;
     private DeckFragment deckFragment;
     private ChatHistory chatHistory;
+    private MapFragment mapFragment;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
+    private FragmentManager fragmentManager;
     //private SupportMapFragment mapFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
 
-        playerData = new AllPlayerDataFragment();
-        playerCardsFragment = new PlayerCardsFragment();
+        this.playerTrainCardsFragment = new PlayerTrainCardsFragment();
         deckFragment = new DeckFragment();
         chatHistory=new ChatHistory();
-        //getSupportFragmentManager().beginTransaction().add()
 
+        fragmentManager = this.getSupportFragmentManager();
 
-        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+<<<<<<< HEAD
         FragmentTransaction transaction = fm.beginTransaction();
 
         MapFragment mapFragment = MapFragment.newInstance();
@@ -45,18 +50,22 @@ public class GameView extends AppCompatActivity {
         AllPlayerDataFragment playerDataFragment = new AllPlayerDataFragment();
         DeckFragment deckFragment = new DeckFragment();
         ChatHistory chatHistory=new ChatHistory();
+=======
+        mapFragment = MapFragment.newInstance();
+        playerTrainCardsFragment = new PlayerTrainCardsFragment();
+        playerDestCardsFragment = new PlayerDestCardsFragment();
+        allPlayerDataFragment = new AllPlayerDataFragment();
+        deckFragment = new DeckFragment();
+>>>>>>> 48cc84b6ad261d2447dca8bc4ce4436407b884ea
 
         transaction.add(R.id.map_fragment_container, mapFragment);
-        transaction.add(R.id.cards_fragment_container, playerCardsFragment);
-        transaction.add(R.id.players_fragment_container, playerDataFragment);
+        transaction.add(R.id.cards_fragment_container, playerTrainCardsFragment);
+        transaction.add(R.id.players_fragment_container, allPlayerDataFragment);
         transaction.add(R.id.deck_fragment_container, deckFragment);
         transaction.add(R.id.left_drawer, chatHistory);
 
 
-
-
         transaction.commit();
-        
 
     }
 
@@ -65,5 +74,17 @@ public class GameView extends AppCompatActivity {
         //finish();
         //do nothing on back pressed
     }
-    
+
+    public void switchPlayerCards(){
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.cards_fragment_container);
+        if (f instanceof PlayerTrainCardsFragment){
+            ft.replace(R.id.cards_fragment_container, playerDestCardsFragment);
+        } else {
+            ft.replace(R.id.cards_fragment_container, playerTrainCardsFragment);
+        }
+        ft.commit();
+    }
 }
