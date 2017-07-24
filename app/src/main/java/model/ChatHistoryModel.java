@@ -15,7 +15,10 @@ import interfaces.Observer;
 
 public class ChatHistoryModel implements Observable{
     public static final ChatHistoryModel myChat=new ChatHistoryModel();
-    private ChatHistoryModel(){};
+    private ChatHistoryModel(){
+        chatList=new ArrayList<>();
+        historyList=new ArrayList<>();
+    };
     private ArrayList<Observer> observers = new ArrayList<>();
     private List<String> chatList;
     private List<String> historyList;
@@ -56,13 +59,26 @@ public class ChatHistoryModel implements Observable{
     public void setChat(boolean chat) {
         this.chat = chat;
     }
+    public void switchChat(){
+        if(chat)
+        {
+            chat=false;
+        }
+        else
+        {
+            chat=true;
+        }
+    };
     public void addChat(String username, String message)
     {
         chatList.add(username+": "+message);
         notifyObserver();
     }
+
+
     public void addHistory(String username, String message)
     {
+
         historyList.add(username+": "+message);
         notifyObserver();
     }

@@ -44,11 +44,14 @@ public class GameView extends AppCompatActivity {
         PlayerCardsFragment playerCardsFragment = new PlayerCardsFragment();
         AllPlayerDataFragment playerDataFragment = new AllPlayerDataFragment();
         DeckFragment deckFragment = new DeckFragment();
+        ChatHistory chatHistory=new ChatHistory();
 
         transaction.add(R.id.map_fragment_container, mapFragment);
         transaction.add(R.id.cards_fragment_container, playerCardsFragment);
         transaction.add(R.id.players_fragment_container, playerDataFragment);
         transaction.add(R.id.deck_fragment_container, deckFragment);
+        transaction.add(R.id.left_drawer, chatHistory);
+
 
 
 
