@@ -17,9 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.map.MapHelper;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener{
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnPolylineClickListener {
 
     @Override
     public boolean onMarkerClick(Marker marker) {
@@ -57,9 +58,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMarkerClickListener(this);
+
+        MapHelper.initMap(getActivity(), mMap);
+
+        mMap.setOnPolylineClickListener(this);
+
 
         if (savedMarker != null) {
             onMarkerClick(savedMarker);
@@ -78,4 +81,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
 
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+        // TODO: 7/24/17 do something when the polyline is clicked
+    }
 }
