@@ -1,5 +1,7 @@
 package serverproxy;
 
+import java.util.List;
+
 import clientcommunicator.ClientCommunicator;
 import commands.game.ChatCommand;
 import commands.game.ClaimRouteCommand;
@@ -97,8 +99,8 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public void claimRoute(String username, String gameName, int routeID) {
-        ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID);
+    public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+        ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID, null);
         clientCommunicator.doCommand(command);
     }
 
