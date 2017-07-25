@@ -18,6 +18,7 @@ import static model.TrainCard.YELLOW;
 
 public class Route {
 
+
     private City startCity;
     private City endCity;
     private int length;
@@ -27,7 +28,9 @@ public class Route {
     private boolean claimed = false;
     private int pointValue;
     private String owner;
-    private static Map<Integer, Route> routeMap;
+    private boolean doubleRoute;
+    private boolean sisterRouteClaimed;
+    private static HashMap<Integer, Route> routeMap;
 
     public Route(City startCity, City endCity, int length, TrainCard color, int sisterRouteKey) {
 
@@ -38,19 +41,14 @@ public class Route {
         this.sisterRouteKey = sisterRouteKey;
 
         setPointValue();
+        if (sisterRouteKey > -1) {
+            doubleRoute = true;
+        }
+        else {
+            doubleRoute = false;
+        }
     }
 
-    public void setStartCity(City startCity) {
-        this.startCity = startCity;
-    }
-
-    public void setEndCity(City endCity) {
-        this.endCity = endCity;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
 
     public City getStartCity() {
         return startCity;
@@ -77,12 +75,37 @@ public class Route {
     }
 
     public boolean isClaimed(){
-        return isClaimed();
+        return claimed;
     }
 
-    public String getOwner() {
+    public void setSisterRouteClamed() {
+        sisterRouteClaimed = true;
+    }
+
+    boolean sisterRouteIsClaimed(){
+        return sisterRouteClaimed;
+    }
+    void setClaimedColor(PlayerColor claimedColor) {
+        this.claimedColor = claimedColor;
+    }
+
+    void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    void claim() {
+        claimed = true;
+    }
+
+    String getOwner() {
         return owner;
     }
+
+    boolean isDoubleRoute() {
+        return  doubleRoute;
+    }
+
+    //If there is no "sister" or double route, the sisterRoute key passed is -1.
 
     public boolean claimRoute(PlayerColor playerColor, String playerName,
                               int numOfPlayersInGame, boolean sisterRouteClaimed) {
@@ -102,7 +125,6 @@ public class Route {
     public static Route getRouteByID(int routeID){
         return routeMap.get(routeID);
     }
-    //If there is no "sister" or double route, the sisterRoute key passed is -1.
 
     public static Map<Integer, Route> createRouteMap() {
         routeMap = new HashMap<>();
