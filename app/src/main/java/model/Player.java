@@ -189,16 +189,5 @@ public class Player extends AbstractPlayer {
          }
          return true;
      }
-     public List<Integer> exchangeCards(int length, int color)
-     {
-         //todo get rid of player cards when claiming route and return cards as an int
-         for(int i=0;i<length;i++)
-         {
-             switch(color)
-             {
-             }
-         }
-         return new ArrayList<Integer>();
-     }
 
 }
