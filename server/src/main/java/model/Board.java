@@ -122,7 +122,7 @@ public class Board {
         final int LOCOMOTIVE_INDEX = 8;
         final int LOCOMOTIVE_LIMIT = 2;
         for (TrainCard trainCard : faceUpTrainCards) {
-            if (TrainCard.getTrainCardInt(trainCard) == LOCOMOTIVE_INDEX) {
+            if (TrainCard.getIntByTrainCard(trainCard) == LOCOMOTIVE_INDEX) {
                 numOfLocomotives++;
             }
         }
@@ -174,7 +174,7 @@ public class Board {
         List<Integer> faceUpCodes = new ArrayList<>();
 
         for (TrainCard trainCard : faceUpTrainCards) {
-            faceUpCodes.add(TrainCard.getTrainCardInt(trainCard));
+            faceUpCodes.add(TrainCard.getIntByTrainCard(trainCard));
         }
         return faceUpCodes;
     }

@@ -130,7 +130,7 @@ public class DeckFragment extends Fragment implements Observer {
         trainDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mServerProxy.drawTrainCardFromDeck(mGame.getMyUsername(), mGame.getMyGameName());
+                mServerProxy.drawTrainCardFromDeck(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
             }
         });
 
@@ -138,7 +138,7 @@ public class DeckFragment extends Fragment implements Observer {
         destDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mServerProxy.drawThreeDestCards(mGame.getMyUsername(), mGame.getMyGameName());
+                mServerProxy.drawThreeDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
             }
         });
 

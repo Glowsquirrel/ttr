@@ -5,26 +5,81 @@ import java.util.List;
 
 
 public class Player extends AbstractPlayer {
-    private final int STARTING_NUMBER_OF_TRAINS = 45;
 
-    public Player(String userName, List<Integer> destCardInts){
+    public Player(String userName, List<Integer> trainCardInts, List<Integer> destCardInts){
         super.username = userName;
-        intializeMyDestCards(destCardInts);
+        intializeMyCards(trainCardInts, destCardInts);
     }
 
-    private void intializeMyDestCards(List<Integer> destCardInts){
+    private void intializeMyCards(List<Integer> trainCardInts, List<Integer> destCardInts){
+        for (int myTrainCardID : trainCardInts){
+            addTrainCardByInt(myTrainCardID);
+        }
         for (int myDestCardID : destCardInts){
             myDestCards.add(DestCard.getDestCardByID(myDestCardID));
         }
     }
 
-    private int numOfRedCards = 0;
-    private int numOfGreenCards = 0;
+    public void addTrainCardByInt(int myTrainCardInt){
+        super.addTrainCard();
+        TrainCard myTrainCard = TrainCard.getTrainCardTypeByInt(myTrainCardInt);
+        switch (myTrainCard){
+            case PURPLE:
+                this.numOfPurpleCards++;
+                break;
+            case WHITE:
+                this.numOfWhiteCards++;
+                break;
+            case BLUE:
+                this.numOfBlueCards++;
+                break;
+            case YELLOW:
+                this.numOfYellowCards++;
+                break;
+            case ORANGE:
+                this.numOfOrangeCards++;
+                break;
+            case BLACK:
+                this.numOfBlackCards++;
+                break;
+            case RED:
+                this.numOfRedCards++;
+                break;
+            case GREEN:
+                this.numOfGreenCards++;
+                break;
+            case WILD:
+                this.numOfWildCards++;
+                break;
+        }
+    }
+
+    private int numOfPurpleCards = 0;
+    private int numOfWhiteCards = 0;
     private int numOfBlueCards = 0;
     private int numOfYellowCards = 0;
+    private int numOfOrangeCards = 0;
     private int numOfBlackCards = 0;
+    private int numOfRedCards = 0;
+    private int numOfGreenCards = 0;
+    private int numOfWildCards = 0;
 
+    private List<TrainCard> myTrainCards = new ArrayList<>();
     private List<DestCard> myDestCards = new ArrayList<>();
+
+    public int[] getMyTrainCardsAsIntArray(){
+        int myTrainCards[] = new int[9];
+        myTrainCards[0] = this.numOfPurpleCards;
+        myTrainCards[1] = this.numOfWhiteCards;
+        myTrainCards[2] = this.numOfBlueCards;
+        myTrainCards[3] = this.numOfYellowCards;
+        myTrainCards[4] = this.numOfOrangeCards;
+        myTrainCards[5] = this.numOfBlackCards;
+        myTrainCards[6] = this.numOfRedCards;
+        myTrainCards[7] = this.numOfGreenCards;
+        myTrainCards[8] = this.numOfWildCards;
+        return myTrainCards;
+    }
 
     public List<DestCard> getMyDestCards() {
         return myDestCards;

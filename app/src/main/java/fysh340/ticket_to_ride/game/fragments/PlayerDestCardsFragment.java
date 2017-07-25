@@ -20,7 +20,7 @@ import model.DestCard;
 import model.Game;
 
 public class PlayerDestCardsFragment extends Fragment implements Observer{
-    private MyPlayerListAdapter mAdapter;
+    private MyDestCardAdapter mAdapter;
     private Game mGame = Game.getGameInstance();
     private RecyclerView mRecyclerView;
 
@@ -32,15 +32,16 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
     public void update() {
         if (mGame.aPlayerHasChanged()) {
             mGame.aPlayerHasChanged(false);
-            mAdapter.swapData(mGame.getMyDestCards());
+            mAdapter.swapData(mGame.getMyself().getMyDestCards());
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new MyPlayerListAdapter( mGame.getMyDestCards());
+        mAdapter = new MyDestCardAdapter( mGame.getMyself().getMyDestCards());
         mGame.register(this);
+        setRetainInstance(true);
     }
 
     @Override
@@ -71,10 +72,10 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
         return v;
     }
 
-    private class MyPlayerListAdapter extends RecyclerView.Adapter<MyPlayerListAdapter.ViewHolder> {
+    private class MyDestCardAdapter extends RecyclerView.Adapter<MyDestCardAdapter.ViewHolder> {
         private List<DestCard> allPlayers = new ArrayList<>();
 
-        private MyPlayerListAdapter(List<DestCard> newList){
+        private MyDestCardAdapter(List<DestCard> newList){
             allPlayers = newList;
         }
 
@@ -99,13 +100,13 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
         }
 
         @Override
-        public MyPlayerListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MyDestCardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dest_card, parent, false);
-            return new MyPlayerListAdapter.ViewHolder(itemView);
+            return new MyDestCardAdapter.ViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final MyPlayerListAdapter.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final MyDestCardAdapter.ViewHolder holder, final int position) {
             DestCard myDestCard = allPlayers.get(position);
 
             String city1 = myDestCard.getStartCity().getPrettyName();

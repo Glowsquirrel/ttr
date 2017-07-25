@@ -15,7 +15,7 @@ import interfaces.Observer;
 public class Game implements Observable{
     //singleton lazy loading pattern:
     private static Game myGame;
-    private Game(){};
+    private Game(){}
     public static Game getGameInstance(){
         if (myGame == null)
             myGame = new Game();
@@ -43,26 +43,22 @@ public class Game implements Observable{
         return playerListToDisplay;
     }
 
-    public List<DestCard> getMyDestCards(){
-        return myself.getMyDestCards();
-    }
 
-    public void initializeMyGame(Player myself, String gameName, List<String> playerNames,
-                                 List<Integer> trainCards, List<Integer> faceUpCards){
+    public void initializeMyGame(Player myself, String gameName, List<String> playerNames, List<Integer> faceUpCards){
         this.myself = myself;
         this.gameName = gameName;
-        this.trainCards = trainCards;
         this.faceUpCards = faceUpCards;
         this.playerUserNames = playerNames;
 
         for(String name : playerNames) {
-            if (name.equals(getMyUsername())){
-                playerMap.put(getMyUsername(), this.myself);
+            if (name.equals(myself.getMyUsername())){
+                playerMap.put(myself.getMyUsername(), this.myself);
                 continue;
             }
             VisiblePlayer myPlayer = new VisiblePlayer(name);
             playerMap.put(name, myPlayer);
         }
+
     }
 
     public String getMyGameName(){
@@ -82,10 +78,6 @@ public class Game implements Observable{
         return faceUpCards;
     }
 
-    public String getMyUsername() {
-        return myself.getUserName();
-    }
-
 
 
     //begin AllPlayerData flags
@@ -98,15 +90,15 @@ public class Game implements Observable{
     }
     //end AllPlayerData flags
 
-    //begin Player flags
-    private boolean iHaveChanged = false;
-    public boolean iHaveChanged() {
-        return iHaveChanged;
+    //begin trainCard flags
+    private boolean iHaveDifferentTrainCards = false;
+    public boolean iHaveDifferentTrainCards() {
+        return iHaveDifferentTrainCards;
     }
-    public void iHaveChanged(boolean haveChanged){
-        this.iHaveChanged = haveChanged;
+    public void iHaveDifferentTrainCards(boolean trainCardChange){
+        this.iHaveDifferentTrainCards = trainCardChange;
     }
-    //end Player flags
+    //end trainCard flags
 
     //begin Observable
     @Override

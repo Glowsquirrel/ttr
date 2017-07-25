@@ -183,7 +183,7 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
-        return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardInt(trainCard.get(0)));
+        return new DrawTrainCardFromDeckResult(playerName, TrainCard.getIntByTrainCard(trainCard.get(0)));
     }
 
 
@@ -209,7 +209,7 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
-        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardInt(drawnCard));
+        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getIntByTrainCard(drawnCard));
     }
 
 

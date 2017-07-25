@@ -8,71 +8,82 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:id="@+id/train_card_linear_layout">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="match_parent"
-            android:background="@color/red"
-            android:text="0"
-            android:id="@+id/red"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="match_parent"
-            android:background="@color/blue"
-            android:text="0"
-            android:id="@+id/blue"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="match_parent"
-            android:background="@color/green"
-            android:text="0"
-            android:id="@+id/green"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:text="0"
-            android:id="@+id/white"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="match_parent"
-            android:background="@color/yellow"
-            android:text="0"
-            android:id="@+id/yellow"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="9"
+            android:layout_weight="8"
             android:layout_height="match_parent"
             android:background="@color/purple"
             android:text="0"
-            android:id="@+id/purple"/>
+            android:id="@+id/cards_purple"/>
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="9"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:text="0"
+            android:id="@+id/cards_white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/blue"
+            android:text="0"
+            android:id="@+id/cards_blue"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/yellow"
+            android:text="0"
+            android:id="@+id/cards_yellow"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
             android:layout_height="match_parent"
             android:background="@color/orange"
             android:text="0"
-            android:id="@+id/orange"/>
+            android:id="@+id/cards_orange"/>
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="9"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:text="0"
+            android:id="@+id/cards_black"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:text="0"
+            android:id="@+id/cards_red"/>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/green"
+            android:text="0"
+            android:id="@+id/cards_green"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
             android:layout_height="match_parent"
             android:background="@drawable/grad"
             android:text="0"
-            android:id="@+id/locomotive"/>
+            android:id="@+id/cards_wild"/>
 
         <Button
             android:id="@+id/player_switch_cards_button"

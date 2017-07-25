@@ -100,7 +100,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
         public void onBindViewHolder(final AllPlayerDataFragment.MyPlayerListAdapter.ViewHolder holder, final int position) {
             AbstractPlayer myPlayer = allPlayers.get(position);
 
-            String playerName = myPlayer.getUserName();
+            String playerName = myPlayer.getMyUsername();
             int myTrains = myPlayer.getNumTrains();
             int myCards = myPlayer.getNumCards();
             int myRoutes = myPlayer.getNumRoutes();

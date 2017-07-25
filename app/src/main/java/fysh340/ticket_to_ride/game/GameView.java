@@ -27,7 +27,7 @@ public class GameView extends AppCompatActivity {
     private MapFragment mapFragment;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
-    private FragmentManager fragmentManager;
+    private boolean showingTrainCards = true;
     //private SupportMapFragment mapFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class GameView extends AppCompatActivity {
         deckFragment = new DeckFragment();
         chatHistory=new ChatHistory();
 
-        fragmentManager = this.getSupportFragmentManager();
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
@@ -49,7 +49,10 @@ public class GameView extends AppCompatActivity {
         deckFragment = new DeckFragment();
 
         transaction.add(R.id.map_fragment_container, mapFragment);
+
         transaction.add(R.id.cards_fragment_container, playerTrainCardsFragment);
+        transaction.add(R.id.cards_fragment_container, playerDestCardsFragment);
+        transaction.hide(playerDestCardsFragment);
         transaction.add(R.id.players_fragment_container, allPlayerDataFragment);
         transaction.add(R.id.deck_fragment_container, deckFragment);
 
@@ -64,14 +67,17 @@ public class GameView extends AppCompatActivity {
     }
 
     public void switchPlayerCards(){
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
-        Fragment f = this.getSupportFragmentManager().findFragmentById(R.id.cards_fragment_container);
-        if (f instanceof PlayerTrainCardsFragment){
-            ft.replace(R.id.cards_fragment_container, playerDestCardsFragment);
+        if (showingTrainCards){
+            showingTrainCards = false;
+            ft.hide(playerTrainCardsFragment);
+            ft.show(playerDestCardsFragment);
         } else {
-            ft.replace(R.id.cards_fragment_container, playerTrainCardsFragment);
+            showingTrainCards = true;
+            ft.hide(playerDestCardsFragment);
+            ft.show(playerTrainCardsFragment);
         }
         ft.commit();
     }

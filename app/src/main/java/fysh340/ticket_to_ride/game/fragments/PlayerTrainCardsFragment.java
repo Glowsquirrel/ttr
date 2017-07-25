@@ -2,48 +2,54 @@ package fysh340.ticket_to_ride.game.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
 import model.ClientModel;
-import model.DestCard;
 import model.Game;
 
 
 public class PlayerTrainCardsFragment extends Fragment implements Observer{
-    private adapter mAdapter;
     private ClientModel mClientModel = ClientModel.getMyClientModel();
-    private Game mGame;
-    private TextView mDestination;
+    private Game mGame = Game.getGameInstance();
+    private List<TextView> trainCardTextViews;
 
     @Override
     public void update() {
 
-    }
-    private void updateRV() {
-        mAdapter = new adapter( mClientModel.getMyDestinationCards());
+        if (mGame.iHaveDifferentTrainCards()){
+            mGame.iHaveDifferentTrainCards(false);
+            updateMyTrainCards(mGame.getMyself().getMyTrainCardsAsIntArray());
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mGame.register(this);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_player_train_cards, container, false);
+        View v = inflater.inflate(R.layout.fragment_player_train_cards, container, false);
+
+        LinearLayout mLinearLayout = (LinearLayout) v.findViewById(R.id.train_card_linear_layout);
+        createTrainCardTextViewList(mLinearLayout);
+
         Button playerCardSwitchButton = (Button) v.findViewById(R.id.player_switch_cards_button);
         playerCardSwitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,49 +57,24 @@ public class PlayerTrainCardsFragment extends Fragment implements Observer{
                 ((GameView)getActivity()).switchPlayerCards();
             }
         });
+        updateMyTrainCards(mGame.getMyself().getMyTrainCardsAsIntArray());
         return v;
     }
-    private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public itemHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.destination_card_item_view, parent, false));
-            mDestination = (TextView) itemView.findViewById( R.id.destinations);
-            // itemView.findViewById(R.id.sequence).setOnClickListener(this);
-        }
-        private DestCard mItem;
-        public void bind( DestCard item)
-        {
-            mItem = item;
-            mItem.toString();
-            mDestination.setText(mItem.toString());
 
-        }
-        @Override
-        public void onClick( View view)
-        {
-
+    public void updateMyTrainCards(int newTrainCardArray[]){
+        for (int i = 0; i < trainCardTextViews.size(); i++){
+            trainCardTextViews.get(i).setText(String.valueOf(newTrainCardArray[i]));
         }
     }
 
-    private class adapter extends RecyclerView.Adapter <itemHolder>
-    {
-        private List<DestCard> itemlist=null;
-        public adapter(List <DestCard> items) { itemlist = items; }
-        @Override
-        public itemHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        { LayoutInflater layoutInflater = LayoutInflater.from( getActivity());
-            return new itemHolder( layoutInflater, parent); }
-        @Override
-        public void onBindViewHolder(itemHolder holder, int position)
-        {
-            DestCard item=itemlist.get(position);
-            holder.bind(item);
-            holder.setIsRecyclable(false);
+    private void createTrainCardTextViewList(LinearLayout myLinearLayout){
+        this.trainCardTextViews = new ArrayList<>();
+        for (int i = 0; i < myLinearLayout.getChildCount(); i++){
+            View myView = myLinearLayout.getChildAt(i);
+
+            if (myView.getClass() == AppCompatTextView.class)
+                this.trainCardTextViews.add((TextView) myLinearLayout.getChildAt(i));
         }
-        @Override public int getItemCount()
-        { return itemlist.size(); }
-
     }
-
-
 
 }

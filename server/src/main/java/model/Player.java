@@ -123,7 +123,7 @@ public class Player {
     public List<Integer> getTrainCardCodes() {
         List<Integer> trainCardCodes = new ArrayList<>();
         for (TrainCard trainCard : trainCardHand) {
-            trainCardCodes.add(TrainCard.getTrainCardInt(trainCard));
+            trainCardCodes.add(TrainCard.getIntByTrainCard(trainCard));
         }
         return trainCardCodes;
     }

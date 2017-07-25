@@ -40,8 +40,8 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
-        Player myself = new Player(username, destCards);
-        game.initializeMyGame(myself, gameName, playerNames, trainCards, faceUpCards);
+        Player myself = new Player(username, trainCards, destCards);
+        game.initializeMyGame(myself, gameName, playerNames, faceUpCards);
         Deck.getInstance().setAvailableDestCards(destCards);
         Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
     }
@@ -78,7 +78,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-        if(username.equals(game.getMyUsername())) { //calling this method should always mean it is meant for this client
+        if(username.equals(game.getMyself().getMyUsername())) { //calling this method should always mean it is meant for this client
             Deck.getInstance().setAvailableDestCards(destCards);
         }
     }
@@ -86,9 +86,9 @@ public class ClientFacade implements IClient{
     @Override
     public void drawTrainCardDeck(String username, int trainCard){
         Player myself = game.getMyself();
-        myself.addTrainCard();
+        myself.addTrainCardByInt(trainCard);
         game.aPlayerHasChanged(true);
-        game.iHaveChanged(true);
+        game.iHaveDifferentTrainCards(true);
         game.notifyObserver();
     }
 

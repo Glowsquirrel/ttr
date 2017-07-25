@@ -14,7 +14,7 @@ public abstract class AbstractPlayer {
     private int numRoutes = 0;
     private int score = 0;
 
-    public String getUserName(){
+    public String getMyUsername(){
         return this.username;
     }
 
