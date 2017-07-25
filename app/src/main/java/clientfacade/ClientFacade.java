@@ -5,6 +5,7 @@ import android.graphics.Color;
 import java.util.List;
 
 import interfaces.IClient;
+import model.AbstractPlayer;
 import model.ChatHistoryModel;
 import model.ClientModel;
 import model.Deck;
@@ -76,6 +77,8 @@ public class ClientFacade implements IClient{
     @Override
     public void claimRoute(String username, int routeID){
         map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
+        String message = "Claimed route " + routeID;
+        chatModel.addHistory(username, message);
     }
 
     @Override
@@ -84,7 +87,10 @@ public class ClientFacade implements IClient{
             game.setPossibleDestCards(destCards);
             game.iHavePossibleDestCards(true);
             game.notifyObserver();
+            String message = "Drew " + destCards.size() + " destination cards";
+            chatModel.addHistory(username, message);
         }
+
     }
 
     @Override
@@ -94,27 +100,35 @@ public class ClientFacade implements IClient{
         game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
         game.notifyObserver();
+        String message = "Drew train card";
+        chatModel.addHistory(username, message);
     }
 
     @Override
     public void drawTrainCardFaceUp(String username, int trainCard){
-
+        String message = "Drew train card face up";
+        chatModel.addHistory(username, message);
     }
 
     @Override
     public void returnDestCards(String username, int destCard){
-
+        String message = "Returned destination card";
+        chatModel.addHistory(username, message);
     }
 
     @Override
     public void returnFirstDestCards(String username, int cardReturned){
-
+        String message = "Returned destination card";
+        chatModel.addHistory(username, message);
     }
 
-    public void addHistory(String username, String message, int numTrainCards, int numTrainCardsHeld,
+    public void addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
         chatModel.addHistory(username,message);
         //TODO:
+        AbstractPlayer player = game.getPlayerByName(username);
+        player.addToScore(score);
+        player.addMultipleTrainCards(numTrainCardsHeld);
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
