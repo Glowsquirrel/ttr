@@ -104,12 +104,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         int length=route.getLength();
         List<Integer> cards=myPlayer.exchangeCards(length,color);
         Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
         // TODO: 7/25/17 get actual cards from somewhere 
         mServerProxy.claimRoute(mClientModel.getMyUsername(), mGame.getMyGameName(), key, cards);
-=======
         mGame.setCurrentlySelectedRouteID(key);
->>>>>>> 7a9cd8b36152f9f72d21d968e97a61db6f13d5b3
     }
 
     @Override
