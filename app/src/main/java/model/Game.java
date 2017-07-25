@@ -30,6 +30,19 @@ public class Game implements Observable{
     private List<Integer> trainCards;
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
+    private int currentlySelectedRouteID;
+    private boolean newRouteID = false;
+
+    public int getCurrentlySelectedRouteID() {
+        newRouteID = false;
+        return currentlySelectedRouteID;
+    }
+
+    public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
+        this.currentlySelectedRouteID = currentlySelectedRouteID;
+        newRouteID = true;
+        notifyObserver();
+    }
 
     public AbstractPlayer getPlayerByName(String username) {
         return playerMap.get(username);

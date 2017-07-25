@@ -225,4 +225,15 @@ public enum MapRoute {
     public int getDir() {
         return dir;
     }
+
+    public int getKey() {
+        return key;
+    }
+
+    public static MapRoute getRoute(int key) {
+        for (MapRoute route : values()){
+            if (key == route.getKey()) return route;
+        }
+        return null;
+    }
 }

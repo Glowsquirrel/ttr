@@ -18,6 +18,7 @@ import static model.TrainCard.YELLOW;
 
 public class Route {
 
+
     private City startCity;
     private City endCity;
     private int length;
@@ -29,6 +30,7 @@ public class Route {
     private String owner;
     private boolean doubleRoute;
     private boolean sisterRouteClaimed;
+    private static HashMap<Integer, Route> routeMap;
 
     public Route(City startCity, City endCity, int length, TrainCard color, int sisterRouteKey) {
 
@@ -103,12 +105,29 @@ public class Route {
         return  doubleRoute;
     }
 
-
-
     //If there is no "sister" or double route, the sisterRoute key passed is -1.
 
+    public boolean claimRoute(PlayerColor playerColor, String playerName,
+                              int numOfPlayersInGame, boolean sisterRouteClaimed) {
+
+        final int DOUBLE_ROUTE_LIMIT = 3;
+        if (sisterRouteClaimed){
+            if (numOfPlayersInGame < DOUBLE_ROUTE_LIMIT) {
+                return false;
+            }
+        }
+        owner = playerName;
+        claimedColor = playerColor;
+        claimed = true;
+        return true;
+    }
+
+    public static Route getRouteByID(int routeID){
+        return routeMap.get(routeID);
+    }
+
     public static Map<Integer, Route> createRouteMap() {
-        Map<Integer, Route> routeMap = new HashMap<>();
+        routeMap = new HashMap<>();
 
         routeMap.put(0, new Route(ATLANTA, CHARLESTON, 2, WILD, -1));
         routeMap.put(1, new Route(ATLANTA, MIAMI, 5, BLUE, -1));
