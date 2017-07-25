@@ -78,9 +78,10 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-        if(username.equals(game.getMyself().getMyUsername())) { //calling this method should always mean it is meant for this client
+        if(username.equals(game.getMyself().getMyUsername())) { //calling this method should always mean it is meant for this client in the first place
             Deck.getInstance().setAvailableDestCards(destCards);
         }
+
     }
 
     @Override

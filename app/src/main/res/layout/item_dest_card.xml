@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/my_list_item"
-    android:layout_width="250dp"
+    android:layout_width="200dp"
     android:layout_height="match_parent"
     android:gravity="center"
     android:background="@drawable/customborder">
@@ -16,7 +16,7 @@
             android:id="@+id/dest_card_city_name_1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="SAULT_ST_MARIE"
+            android:text="Sault_St_Marie"
             android:textSize="14sp"
             android:gravity="center" />
 
@@ -29,7 +29,7 @@
             android:id="@+id/dest_card_city_name_2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="OKLAHOMA_CITY"
+            android:text="Oklahoma_City"
             android:textSize="14sp"
             android:gravity="center" />
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dest_card_cities"
         android:text="15"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:gravity="center"/>
 
 </RelativeLayout>

@@ -125,16 +125,16 @@ public class MockServer {
                         destCards.add(c2);
                         destCards.add(c3);
                         List<Integer> trainCards = new ArrayList<>();
-                        int tc1 = rand.nextInt(109) + 1;
-                        int tc2 = rand.nextInt(109) + 1;
-                        int tc3 = rand.nextInt(109) + 1;
+                        int tc1 = rand.nextInt(9);
+                        int tc2 = rand.nextInt(9);
+                        int tc3 = rand.nextInt(9);
                         trainCards.add(tc1);
                         trainCards.add(tc2);
                         trainCards.add(tc3);
                         List<Integer> faceUpCards = new ArrayList<>();
-                        int fc1 = rand.nextInt(109) + 1;
-                        int fc2 = rand.nextInt(109) + 1;
-                        int fc3 = rand.nextInt(109) + 1;
+                        int fc1 = rand.nextInt(9);
+                        int fc2 = rand.nextInt(9);
+                        int fc3 = rand.nextInt(9);
                         faceUpCards.add(fc1);
                         faceUpCards.add(fc2);
                         faceUpCards.add(fc3);
@@ -176,7 +176,7 @@ public class MockServer {
             case Utils.DRAW_TRAIN_CARD_DECK_TYPE: {
                 DrawTrainCardFromDeckCommand mycommand = (DrawTrainCardFromDeckCommand)command;
                 Random rand = new Random();
-                int card = rand.nextInt(100) + 1;
+                int card = rand.nextInt(9);
                 clientFacade.drawTrainCardDeck(mycommand.getUsername(), card);
                 break;
             }
