@@ -40,8 +40,12 @@ public class Game implements Observable{
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
+<<<<<<< Updated upstream
     private int trainCardDeckSize = 0;
     private int destinationCardDeckSize = 0;
+=======
+    private ServerError serverError = new ServerError();
+>>>>>>> Stashed changes
 
     /**
      * @pre this method must be declared on the only instance of the game object
@@ -354,5 +358,10 @@ public class Game implements Observable{
      */
     public List<DestCard> getPossibleDestCards(){
         return possibleDestCards;
+    }
+
+
+    public ServerError getServerError() {
+        return serverError;
     }
 }
