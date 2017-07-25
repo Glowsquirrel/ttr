@@ -99,8 +99,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         MapRoute route = (MapRoute) polyline.getTag();
         int key = route.getKey();
         Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
-        // TODO: 7/25/17 get actual cards from somewhere 
-        mServerProxy.claimRoute(mClientModel.getMyUsername(), mGame.getMyGameName(), key, new ArrayList<Integer>());
+        mGame.setCurrentlySelectedRouteID(key);
     }
 
     @Override
