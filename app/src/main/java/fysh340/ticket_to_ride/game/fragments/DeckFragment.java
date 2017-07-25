@@ -149,11 +149,11 @@ public class DeckFragment extends Fragment implements Observer {
         });
         
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
-        String deckDescription = TRAIN_DECK + mGame.getTrainCards().size();
+        String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
         mFaceDownCards.setText(deckDescription);
         
         mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
-        deckDescription = DEST_DECK + mGame.getPossibleDestCards().size();
+        deckDescription = DEST_DECK + mGame.getDestinationCardDeckSize();
         mDestinationDeck.setText(deckDescription);
 
         setUpDeckListeners(deckView);
