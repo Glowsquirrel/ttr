@@ -22,7 +22,9 @@ public class Player {
     private PlayerColor playerColor;
     private ArrayList<DestCard> destCardHand = new ArrayList<>();
     private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
-    int points;
+    private int points;
+    private int numOfRoutes;
+    private int numOfCars = 45;
 
     public Player(String userName) {
         this.userName = userName;
@@ -116,6 +118,25 @@ public class Player {
         return userName;
     }
 
+    public int getNumOfCars() {
+        return numOfCars;
+    }
+
+    public int getSizeOfTrainCardHand() {
+        return trainCardHand.size();
+    }
+
+    public int getSizeOfDestCardHand() {
+        return destCardHand.size();
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getNumOfRoutesOwned() {
+        return numOfRoutes;
+    }
     public List<DestCard> getDestCards() {
         return destCardHand;
     }
@@ -138,13 +159,21 @@ public class Player {
         return allCards;
     }
 
+    public boolean removeCars(int numOfCars) {
+        if (numOfCars < 0 || numOfCars > 6){
+            return false;
+        }
+        this.numOfCars -= numOfCars;
+        return true;
+    }
+
+
     public PlayerColor getPlayerColor() {
         return playerColor;
     }
     public void setPlayerColor(int position) {
         playerColor = PlayerColor.getPlayerColor(position);
     }
-
     public List<DestCard> getNewlyDrawnDestCards() {
         return newlyDrawnDestCards;
     }
@@ -152,4 +181,8 @@ public class Player {
     public void addScore(int points) {
         this.points += points;
     }
+    public void addNumOfRoutes() {
+        numOfRoutes++;
+    }
+
 }
