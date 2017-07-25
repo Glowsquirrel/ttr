@@ -9,6 +9,7 @@ import model.ChatHistoryModel;
 import model.ClientModel;
 import model.Deck;
 import model.Game;
+import model.MapModel;
 import model.Player;
 import model.RunningGame;
 import model.UnstartedGame;
@@ -21,6 +22,7 @@ public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private Game game = Game.getGameInstance();
     private ChatHistoryModel chatModel = ChatHistoryModel.myChat;
+    private MapModel map=MapModel.getMapInstance();
 
     public void postMessage(String message){
         clientModel.setMessageToToast(message);
@@ -73,7 +75,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void claimRoute(String username, int routeID){
-
+        map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
     }
 
     @Override
