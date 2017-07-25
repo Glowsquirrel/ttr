@@ -49,13 +49,15 @@ public class Game implements Observable{
         this.gameName = gameName;
         this.faceUpCards = faceUpCards;
         this.playerUserNames = playerNames;
-
+        int i=0;
         for(String name : playerNames) {
             if (name.equals(myself.getMyUsername())){
                 playerMap.put(myself.getMyUsername(), this.myself);
                 continue;
             }
             VisiblePlayer myPlayer = new VisiblePlayer(name);
+            myPlayer.setColor(i);
+            i++;
             playerMap.put(name, myPlayer);
         }
 
