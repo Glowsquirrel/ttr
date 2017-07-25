@@ -79,8 +79,8 @@ import java.util.List;
         boolean success = false;
 
         if (cardOne != null) {
-            for (DestCard currentCard : newlyDrawnDestCards) {
-                if (cardOne.equals(currentCard)) {
+            for (int a = 0; a < newlyDrawnDestCards.size(); a++) {
+                if (cardOne.equals(newlyDrawnDestCards.get(a))) {
                     success = true;
                     newlyDrawnDestCards.remove(cardOne);
                 }
@@ -117,11 +117,11 @@ import java.util.List;
 
     public boolean invalidDestCard(DestCard destCard) {
         for (DestCard drawnDestCard : newlyDrawnDestCards) {
-            if (destCard == drawnDestCard){
-                return true;
+            if (destCard.equals(drawnDestCard)){
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public String getUsername() {

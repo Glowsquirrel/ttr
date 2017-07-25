@@ -282,8 +282,7 @@ public class ServerModel {
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
-        }
-        catch (GamePlayException ex) {
+        } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
     }

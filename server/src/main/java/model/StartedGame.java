@@ -260,7 +260,7 @@ class StartedGame {
 
     private List<TrainCard> convertKeysToTrainCards(List<Integer> trainCards) {
         List<TrainCard> returnTrainCards =  new ArrayList<>();
-        for(int a : trainCards) {
+        for(Integer a : trainCards) {
             returnTrainCards.add(TrainCard.getTrainCard(a));
         }
         return returnTrainCards;
@@ -297,6 +297,7 @@ class StartedGame {
         switch (turnState) {
             case FIRST_ROUND:
                   switchFirstRound(commandType);
+                  break;
             case BEFORE_TURN:
                   switchBeforeTurn(commandType);
                   break;
@@ -315,11 +316,15 @@ class StartedGame {
     }
 
     private void switchFirstRound(CommandType commandType) throws GamePlayException {
-        if (commandType != CommandType.RETURN_DEST_CARD) {
+        if (commandType != CommandType.RETURN_DEST_CARD && commandType != CommandType.RETURN_NO_DEST_CARD) {
             throw new GamePlayException("Illegal move. You may only return dest cards.");
         }
 
-        advancePlayerTurn();
+        if (playerOrder.size()-1 == turnPointer){
+            turnPointer = 0;
+        } else {
+            turnPointer++;
+        }
         if (turnPointer == 0) {
             turnState = TurnState.BEFORE_TURN;
         }
@@ -430,7 +435,7 @@ class StartedGame {
         gameHistory = new GameHistoryResult(playerName, message,
                 player.getNumOfCars(), player.getSizeOfTrainCardHand(),
                 player.getSizeOfDestCardHand(), player.getNumOfRoutesOwned(),
-                player.getPoints(), routeNumber, board.getTrainCardDeckSize());
+                player.getPoints(), routeNumber, board.getTrainCardDeckSize(), board.getDestCardDeck().size());
     }
     Result getGameHistory() {
         return gameHistory;

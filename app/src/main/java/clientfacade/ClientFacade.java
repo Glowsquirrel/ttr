@@ -145,4 +145,8 @@ public class ClientFacade implements IClient{
 
         return null;
     }
+
+    public void showRejectMessage(String message) {
+        Game.getGameInstance().getServerError().setMessage(message);
+    }
 }

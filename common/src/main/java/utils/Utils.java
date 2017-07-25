@@ -26,5 +26,7 @@ public class Utils {
     public static final String REPLACE_ALL_FACEUP_TYPE = "replaceallfaceup";
     public static final String ALL_PLAYER_INFO_TYPE = "allplayerinfo";
 
+    public static final String REJECT_TYPE = "reject";
+
     public static final String SERVER_LOG = "serverlog";
 }

@@ -28,6 +28,7 @@ public class Game implements Observable{
     public static Game getGameInstance(){
         if (myGame == null)
             myGame = new Game();
+        
         return myGame;
     }
 
@@ -42,8 +43,10 @@ public class Game implements Observable{
     private int currentlySelectedRouteID;
     private int trainCardDeckSize = 0;
     private int destinationCardDeckSize = 0;
+    private ServerError serverError = new ServerError();
 
     /**
+     * retrieves the abstract player object associated with the username
      * @pre this method must be declared on the only instance of the game object
      * @pre the game needs to have been initialized before calling this method or else it will return null
      * @param username is the username of a player that is in the current game
@@ -56,6 +59,7 @@ public class Game implements Observable{
     }
 
     /**
+     * retrieves the players in the game
      * @pre game must be initialized before calling this method
      * @pre must be called on the game instance
      * @return list of abstract player objects currently in the game, if no players are initialized an empty list will be returned
@@ -182,24 +186,29 @@ public class Game implements Observable{
     //begin CurrentlySelectedRouteID flags
     private boolean newRouteID = false;
 
-    /**todo
-     *
+    /**
+     * records whether or not a route has been selected
+     * @pre the getCurrentlySelectedRouteId() and the setCurrentlySelectedRouteId() must be properly implementd by the game fragment
      * @return boolean value to be used as a flag
+     * @post returns false if the currently selected route has already been retreived through getCurrentlySelectedRoute or if a route was not selected
+     * @post returns true if the user has clicked on a route and this game object has been notified through setCurrentlySelectedRoutId() and the route has not been retreived
      */
     public boolean routeIDHasChanged() {
         return newRouteID;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *  @pre the user should have selected a route, if not returns null;
+     * @return int value associated with the route id
+     * @post sets the newRouteId flag to false
      */
     public int getCurrentlySelectedRouteID() {
         newRouteID = false;
         return currentlySelectedRouteID;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *Sets the currently selected route id by the user in the game
+     * @param currentlySelectedRouteID route id that was last clicked on by the user. Has a associated route object
+     *  @post sets the flag newRouteID to true
      */
     public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
         this.currentlySelectedRouteID = currentlySelectedRouteID;
@@ -209,16 +218,17 @@ public class Game implements Observable{
     
     //begin AllPlayerData flags
     private boolean playerHasChanged = false;
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *@pre aPlayerHasChanged method must be properly implemented to set the flag when a player changes
+     * @return boolean value to be used as a flag. If a player has changed returns true, else returns false
+     * @post no values are modified in the game object
      */
     public boolean aPlayerHasChanged() {
         return playerHasChanged;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     * @param playerHasChanged boolean value to be used as a flag, set to true if a player has changed, set to false if a player has not changed.
+     * @post  sets the playerHasChanged flag to the playerHasChanged boolean value given
      */
     public void aPlayerHasChanged(boolean playerHasChanged) {
         this.playerHasChanged = playerHasChanged;
@@ -227,32 +237,34 @@ public class Game implements Observable{
 
     //begin trainCard flags
     private boolean iHaveDifferentTrainCards = false;
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *@pre the flag must be properly set upon change to the train card
+     *@return boolean value to be used as a flag, returns true if a change has been made to the player train cards, false otherwise
+     *@post no values in the game object have changed
      */
     public boolean iHaveDifferentTrainCards() {
         return iHaveDifferentTrainCards;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     * @param trainCardChange boolean value to be used as a flag, set to true if a train card has changed, set to false if a train card has not changed.
+     * @post  sets the iHaveDifferentTrainCards flag to the playerHasChanged boolean value given
      */
     public void iHaveDifferentTrainCards(boolean trainCardChange){
         this.iHaveDifferentTrainCards = trainCardChange;
     }
     
     private boolean iHaveDifferentFaceUpCards = false;
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *@pre the flag must be properly set upon change to the face up cards
+     *@return boolean value to be used as a flag, returns true if a change has been made to the face up train cards, false otherwise
+     *@post no values in the game object have changed
      */
     public boolean iHaveDifferentFaceUpCards() {
         return iHaveDifferentFaceUpCards;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     * @param faceUpCardChange boolean value to be used as a flag, set to true if a train card has changed, set to false if a train card has not changed.
+     * @post  sets the iHaveDifferentFaceUpCards flag to the playerHasChanged boolean value given
      */
     public void iHaveDifferentFAceUpCards(boolean faceUpCardChange) {
         iHaveDifferentFaceUpCards = faceUpCardChange;
@@ -307,16 +319,17 @@ public class Game implements Observable{
     //end Observerable
 
     private boolean iHaveDifferentDestCards = false;
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *@pre the flag must be properly set upon change to the destination cards
+     *@return boolean value to be used as a flag, returns true if a change has been made to the player's destination cards, false otherwise
+     *@post no values in the game object have changed
      */
     public boolean iHaveDifferentDestCards(){
         return iHaveDifferentDestCards;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     * @param iHaveDifferentDestCards boolean value to be used as a flag, set to true if a destination card has changed, set to false if a destination card has not changed.
+     * @post  sets the iHaveDifferentDestCards flag to the iHaveDifferentDestCards boolean value given
      */
     public void iHaveDifferentDestCards(boolean iHaveDifferentDestCards){
         this.iHaveDifferentDestCards = iHaveDifferentDestCards;
@@ -324,9 +337,9 @@ public class Game implements Observable{
 
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private boolean iHavePossibleDestCards = false;
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**@pre the destination card associated with the integers in the list must not belong in the deck or to another player
+     * @param possibleDestCards must be a nonnull list of Integers with a value that is associated with a DestCard from 0 to 29
+     * @post converts the integer to a destination card and stores the destination card, wil overwrite any previously stored destination cards
      */
     public void setPossibleDestCards(List<Integer> possibleDestCards){
         this.possibleDestCards = new ArrayList<>();
@@ -334,25 +347,32 @@ public class Game implements Observable{
             this.possibleDestCards.add(DestCard.getDestCardByID(possibleDestCards.get(i)));
         }
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *@pre the flag must be properly set upon change to the possible destination cards
+     *@return boolean value to be used as a flag, returns true if there are possible destination cards availabe, false otherwise
+     *@post no values in the game object have changed
      */
     public boolean iHavePossibleDestCards(){
         return iHavePossibleDestCards;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     * @param iHavePossibleDestCards boolean value to be used as a flag, set to true if there are possible destination cards available, set to false if there are no cards available.
+     * @post  sets the iHaveDifferentTrainCards flag to the playerHasChanged boolean value given
      */
     public void iHavePossibleDestCards(boolean iHavePossibleDestCards){
         this.iHavePossibleDestCards = iHavePossibleDestCards;
     }
-    /**todo
-     *
-     * @return boolean value to be used as a flag
+    /**
+     *@pre the list of objects must be set for the game object by calling setPossibleDestCards() with a valid list pf possible destination cards
+     * @return List of DestCard objects for the user to choose from
+     * @post will return an empty list if possible destination cards weren't set correctly
      */
     public List<DestCard> getPossibleDestCards(){
         return possibleDestCards;
+    }
+
+
+    public ServerError getServerError() {
+        return serverError;
     }
 }
