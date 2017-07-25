@@ -213,9 +213,10 @@ public class ServerModel {
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
+        } else {
+            throw new GamePlayException("Game " + gameName +  " does not exist, or has started.");
         }
 
-        throw new GamePlayException("Game " + gameName +  " does not exist.");
     }
 
    /****************************************ROUND ONE*********************************************/
@@ -315,5 +316,6 @@ public class ServerModel {
         allCommandLists.get(game.getGameName()).add(result);
         toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
         allCommandLists.get(game.getGameName()).add(game.getGameHistory());
+        game.printBoardState();
     }
 }

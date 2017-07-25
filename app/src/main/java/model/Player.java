@@ -8,10 +8,10 @@ public class Player extends AbstractPlayer {
 
     public Player(String userName, List<Integer> trainCardInts, List<Integer> destCardInts){
         super.username = userName;
-        intializeMyCards(trainCardInts, destCardInts);
+        initializeMyCards(trainCardInts, destCardInts);
     }
 
-    private void intializeMyCards(List<Integer> trainCardInts, List<Integer> destCardInts){
+    private void initializeMyCards(List<Integer> trainCardInts, List<Integer> destCardInts){
         for (int myTrainCardID : trainCardInts){
             addTrainCardByInt(myTrainCardID);
         }

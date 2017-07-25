@@ -115,6 +115,15 @@ import java.util.List;
         return true;
     }
 
+    public boolean invalidDestCard(DestCard destCard) {
+        for (DestCard drawnDestCard : newlyDrawnDestCards) {
+            if (destCard == drawnDestCard){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getUsername() {
         return userName;
     }
@@ -154,10 +163,8 @@ import java.util.List;
      * For error testing
      */
     public int getTotalNumberOfCards(){
-        int allCards = numOfBlackCards + numOfYellowCards + numOfRedCards
+         return numOfBlackCards + numOfYellowCards + numOfRedCards
                 + numOfBlueCards + numOfGreenCards;
-
-        return allCards;
     }
 
     boolean removeCars(int numOfCars) {
