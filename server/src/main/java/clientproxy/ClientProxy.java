@@ -22,6 +22,7 @@ import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
 import results.game.GameHistoryResult;
+import results.game.RejectResult;
 import results.game.RejoinResult;
 import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnDestCardsResult;
@@ -316,6 +317,9 @@ public class ClientProxy implements IClient {
                 break;
             case Utils.REPLACE_ALL_FACEUP_TYPE:
                 myJsonString = gson.toJson(result, ReplaceFaceUpCardsResult.class);
+                break;
+            case Utils.REJECT_TYPE:
+                myJsonString = gson.toJson(result, RejectResult.class);
                 break;
             default:
                 myJsonString = "Error parsing into Json. Check ClientProxy.";
