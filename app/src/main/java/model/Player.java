@@ -20,6 +20,12 @@ public class Player extends AbstractPlayer {
         }
     }
 
+    public int getNumOfCards(){
+        return this.numOfPurpleCards + this.numOfWhiteCards + this.numOfBlueCards + this.numOfYellowCards +
+                this.numOfOrangeCards + this.numOfBlackCards + this.numOfRedCards + this.numOfGreenCards +
+                this.numOfWildCards;
+    }
+
     public void addTrainCardByInt(int myTrainCardInt){
         super.addTrainCard();
         TrainCard myTrainCard = TrainCard.getTrainCard(myTrainCardInt);

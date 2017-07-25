@@ -93,7 +93,8 @@ public class Game implements Observable{
                 i++;
                 continue;
             }
-            VisiblePlayer myPlayer = new VisiblePlayer(name);
+            VisiblePlayer myPlayer = new VisiblePlayer(name, myself.getNumOfCards());
+
             myPlayer.setColor(i);
             i++;
             playerMap.put(name, myPlayer);

@@ -19,7 +19,7 @@ public abstract class AbstractPlayer {
 
     protected String username;
     private int numTrains = STARTING_NUMBER_OF_TRAINS;
-    private int numCards = 0;
+    protected int numCards = 0;
     private int numRoutes = 0;
     private int score = 0;
     private int color;
