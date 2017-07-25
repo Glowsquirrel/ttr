@@ -15,6 +15,7 @@ import clientfacade.game.DrawThreeDestCardsResultX;
 import clientfacade.game.DrawTrainCardFromDeckResultX;
 import clientfacade.game.DrawTrainCardFromFaceUpResultX;
 import clientfacade.game.GameHistoryX;
+import clientfacade.game.RejectResultX;
 import clientfacade.game.RejoinResultX;
 import clientfacade.game.ReplaceFaceUpCardsResultX;
 import clientfacade.game.ReturnDestCardsResultX;
@@ -101,6 +102,9 @@ public class CommandResultXSerializer implements JsonDeserializer<Result> {
                 break;
             case Utils.REPLACE_ALL_FACEUP_TYPE:
                 typeModel = gson.fromJson(jsonObject, ReplaceFaceUpCardsResultX.class);
+                break;
+            case Utils.REJECT_TYPE:
+                typeModel = gson.fromJson(jsonObject, RejectResultX.class);
                 break;
 
         }
