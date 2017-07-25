@@ -145,7 +145,7 @@ import java.util.List;
     List<Integer> getTrainCardCodes() {
         List<Integer> trainCardCodes = new ArrayList<>();
         for (TrainCard trainCard : trainCardHand) {
-            trainCardCodes.add(TrainCard.getIntByTrainCard(trainCard));
+            trainCardCodes.add(TrainCard.getTrainCardKey(trainCard));
         }
         return trainCardCodes;
     }

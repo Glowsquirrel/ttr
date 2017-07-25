@@ -49,7 +49,7 @@ public enum TrainCard {
             return WILD;
     }
 
-    public static int getIntByTrainCard(TrainCard trainCard) {
+    public static int getTrainCardKey(TrainCard trainCard) {
         switch (trainCard) {
             case RED:
                     return 0;
