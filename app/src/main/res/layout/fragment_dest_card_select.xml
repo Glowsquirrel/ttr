@@ -11,9 +11,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15"
+        android:layout_weight="18"
         android:text="@string/select_your_dest_cards"
-        android:gravity="center"
+        android:gravity="center|top"
         android:textSize="16sp"
         android:textStyle="bold"
         android:id="@+id/first"/>
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|top"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/dest_card_select_1_city1"
@@ -40,11 +40,6 @@
                 android:text="@string/dest_card_sample_city1"
                 android:textSize="14sp"
                 android:gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/spaced_hyphen"/>
 
             <TextView
                 android:id="@+id/dest_card_select_1_city2"
@@ -84,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|top"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/dest_card_select_2_city1"
@@ -93,11 +88,6 @@
                 android:text="@string/dest_card_sample_city1"
                 android:textSize="14sp"
                 android:gravity="center" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/spaced_hyphen"/>
 
             <TextView
                 android:id="@+id/dest_card_select_2_city2"
@@ -137,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|top"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/dest_card_select_3_city1"
@@ -147,10 +137,6 @@
                 android:textSize="14sp"
                 android:gravity="center" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/spaced_hyphen"/>
 
             <TextView
                 android:id="@+id/dest_card_select_3_city2"

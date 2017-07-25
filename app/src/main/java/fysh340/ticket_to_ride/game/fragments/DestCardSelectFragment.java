@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
 import model.DestCard;
 import model.Game;
@@ -22,8 +26,10 @@ import serverproxy.ServerProxy;
 public class DestCardSelectFragment extends Fragment implements Observer{
     private Game mGame = Game.getGameInstance();
     private List<DestCard> possibleDestCards = new ArrayList<>();
-    private boolean atLeastOneDestCardSelected = false;
-
+    private List<DestCard> selectedDestCards = new ArrayList<>();
+    private LinearLayout destCard1;
+    private LinearLayout destCard2;
+    private LinearLayout destCard3;
 
     public DestCardSelectFragment() {
         // Required empty public constructor
@@ -36,21 +42,22 @@ public class DestCardSelectFragment extends Fragment implements Observer{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //possibleDestCards = mGame.getPossibleDestCards();
-        possibleDestCards.add(DestCard.getDestCardByID(0));
-        possibleDestCards.add(DestCard.getDestCardByID(1));
-        possibleDestCards.add(DestCard.getDestCardByID(2));
+        possibleDestCards = mGame.getPossibleDestCards();
     }
 
-    private List<DestCard> selectedDestCards = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //Get the view
-        View destCardSelectView = inflater.inflate(R.layout.fragment_dest_card_select, container, false);
+        final View destCardSelectView = inflater.inflate(R.layout.fragment_dest_card_select, container, false);
+
+        destCard1 = (LinearLayout) destCardSelectView.findViewById(R.id.dest_card_select_1);
+        destCard2 = (LinearLayout) destCardSelectView.findViewById(R.id.dest_card_select_2);
+        destCard3 = (LinearLayout) destCardSelectView.findViewById(R.id.dest_card_select_3);
 
         setUpDestCardListeners(destCardSelectView);
+
 
         Button confirmButton = (Button) destCardSelectView.findViewById(R.id.confirmButton);
         confirmButton.setEnabled(false);
@@ -65,63 +72,101 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                 for (DestCard destCard : possibleDestCards){
                     serverProxy.returnDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName(), destCard.getMapValue());
                 }
+                selectedDestCards.clear();
+                checkSelectedSize(destCardSelectView);
+                ((GameView)getActivity()).switchDeckFragment();
             }
         });
 
         return destCardSelectView;
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden){
+        if (!hidden && getView() != null){
+            possibleDestCards = mGame.getPossibleDestCards();
+            destCard1.setBackgroundResource(R.drawable.customborder);
+            destCard2.setBackgroundResource(R.drawable.customborder);
+            destCard3.setBackgroundResource(R.drawable.customborder);
+
+            //set up card 1
+            TextView card1city1 = (TextView) getView().findViewById(R.id.dest_card_select_1_city1);
+            TextView card1city2 = (TextView) getView().findViewById(R.id.dest_card_select_1_city2);
+            TextView card1score = (TextView) getView().findViewById(R.id.dest_card_select_1_score);
+            DestCard destCard1 = possibleDestCards.get(0);
+            card1city1.setText(destCard1.getStartCity().getPrettyName());
+            card1city2.setText(destCard1.getEndCity().getPrettyName());
+            card1score.setText(String.valueOf(destCard1.getPointValue()));
+
+            //set up card 2
+            TextView card2city1 = (TextView) getView().findViewById(R.id.dest_card_select_2_city1);
+            TextView card2city2 = (TextView) getView().findViewById(R.id.dest_card_select_2_city2);
+            TextView card2score = (TextView) getView().findViewById(R.id.dest_card_select_2_score);
+            DestCard destCard2 = possibleDestCards.get(1);
+            card2city1.setText(destCard2.getStartCity().getPrettyName());
+            card2city2.setText(destCard2.getEndCity().getPrettyName());
+            card2score.setText(String.valueOf(destCard2.getPointValue()));
+
+            //set up card 3
+            TextView card3city1 = (TextView) getView().findViewById(R.id.dest_card_select_3_city1);
+            TextView card3city2 = (TextView) getView().findViewById(R.id.dest_card_select_3_city2);
+            TextView card3score = (TextView) getView().findViewById(R.id.dest_card_select_3_score);
+            DestCard destCard3 = possibleDestCards.get(2);
+            card3city1.setText(destCard3.getStartCity().getPrettyName());
+            card3city2.setText(destCard3.getEndCity().getPrettyName());
+            card3score.setText(String.valueOf(destCard3.getPointValue()));
+
+        }
+    }
+
     private void setUpDestCardListeners(final View destCardsView){
-        if (possibleDestCards.size() > 0) {
-            final LinearLayout destCard1 = (LinearLayout) destCardsView.findViewById(R.id.dest_card_select_1);
             destCard1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedDestCards.contains(possibleDestCards.get(0))) {
-                        destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-                        selectedDestCards.remove(possibleDestCards.get(0));
-                    } else{
-                        destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
-                        selectedDestCards.add(possibleDestCards.get(0));
+                    if (possibleDestCards.size() > 0) {
+                        if (selectedDestCards.contains(possibleDestCards.get(0))) {
+                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.default_android_background));
+                            selectedDestCards.remove(possibleDestCards.get(0));
+                        } else {
+                            destCard1.setBackgroundResource(R.drawable.customborder);
+                            selectedDestCards.add(possibleDestCards.get(0));
+                        }
+                        checkSelectedSize(destCardsView);
                     }
-                    checkSelectedSize(destCardsView);
                 }
             });
-        }
 
-        if (possibleDestCards.size() > 1) {
-            final LinearLayout destCard2 = (LinearLayout) destCardsView.findViewById(R.id.dest_card_select_2);
             destCard2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedDestCards.contains(possibleDestCards.get(1))) {
-                        destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-                        selectedDestCards.remove(possibleDestCards.get(1));
-                    } else{
-                        destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
-                        selectedDestCards.add(possibleDestCards.get(1));
+                    if (possibleDestCards.size() > 1) {
+                        if (selectedDestCards.contains(possibleDestCards.get(1))) {
+                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.default_android_background));
+                            selectedDestCards.remove(possibleDestCards.get(1));
+                        } else {
+                            destCard2.setBackgroundResource(R.drawable.customborder);
+                            selectedDestCards.add(possibleDestCards.get(1));
+                        }
+                        checkSelectedSize(destCardsView);
                     }
-                    checkSelectedSize(destCardsView);
                 }
             });
-        }
 
-        if (possibleDestCards.size() > 2) {
-            final LinearLayout destCard3 = (LinearLayout) destCardsView.findViewById(R.id.dest_card_select_3);
             destCard3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (selectedDestCards.contains(possibleDestCards.get(2))) {
-                        destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-                        selectedDestCards.remove(possibleDestCards.get(2));
-                    } else{
-                        destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
-                        selectedDestCards.add(possibleDestCards.get(2));
+                    if (possibleDestCards.size() > 2) {
+                        if (selectedDestCards.contains(possibleDestCards.get(2))) {
+                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.default_android_background));
+                            selectedDestCards.remove(possibleDestCards.get(2));
+                        } else {
+                            destCard3.setBackgroundResource(R.drawable.customborder);
+                            selectedDestCards.add(possibleDestCards.get(2));
+                        }
+                        checkSelectedSize(destCardsView);
                     }
-                    checkSelectedSize(destCardsView);
                 }
             });
-        }
 
 
 
@@ -135,80 +180,4 @@ public class DestCardSelectFragment extends Fragment implements Observer{
             confirmButton.setEnabled(false);
         }
     }
-
-        /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        //Get the view
-        View destCardSelectView = inflater.inflate(R.layout.fragment_dest_card_select, container, false);
-
-
-
-        setUpDestCardListeners(destCardSelectView);
-
-        Button confirmButton = (Button) destCardSelectView.findViewById(R.id.confirmButton);
-        confirmButton.setEnabled(false);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        return destCardSelectView;
-    }
-
-    private void setUpDestCardListeners(final View destCardsView){
-        if (possibleDestCards.size() > 0){
-            final LinearLayout destCard1 = (LinearLayout) destCardsView.findViewById(R.id.dest_card_select_1);
-            destCard1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mGame.getMyself().addDestCard(possibleDestCards.get(0));
-                    possibleDestCards.remove(0);
-                    atLeastOneDestCardSelected = true;
-                    checkSelectedSize(destCardsView);
-                    destCard1.setVisibility(View.GONE);
-                }
-            });
-        }
-
-        if (possibleDestCards.size() > 1){
-            final LinearLayout destCard2 = (LinearLayout) destCardsView.findViewById(R.id.dest_card_select_2);
-            destCard2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mGame.getMyself().addDestCard(possibleDestCards.get(1));
-                    possibleDestCards.remove(0);
-                    atLeastOneDestCardSelected = true;
-                    checkSelectedSize(destCardsView);
-                    destCard2.setVisibility(View.GONE);
-                }
-            });
-        }
-
-        if (possibleDestCards.size() > 2){
-            final LinearLayout destCard3 = (LinearLayout) destCardsView.findViewById(R.id.dest_card_select_3);
-            destCard3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mGame.getMyself().addDestCard(possibleDestCards.get(2));
-                    possibleDestCards.remove(0);
-                    atLeastOneDestCardSelected = true;
-                    checkSelectedSize(destCardsView);
-                    destCard3.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
-
-    private void checkSelectedSize(View destCardsView){
-        Button confirmButton = (Button) destCardsView.findViewById(R.id.confirmButton);
-        if (atLeastOneDestCardSelected){
-            confirmButton.setEnabled(true);
-        }
-    }
-
-*/
 }

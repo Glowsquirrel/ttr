@@ -80,9 +80,10 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-        if (destCards.size() == 0) { //if there are no destCards returned, don't cause the fragment to switch
-            game.addPossibleDestCards(destCards);
+        if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
+            game.setPossibleDestCards(destCards);
             game.iHavePossibleDestCards(true);
+            game.notifyObserver();
         }
     }
 

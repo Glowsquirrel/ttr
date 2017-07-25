@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="default_android_background">#EEEEEE</color>
     <color name="colorPrimary">#00af87</color>
     <color name="colorPrimaryDark">#65737e</color>
     <color name="colorAccent">#ff7373</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
 
     <color name="neon_yellow">#ccff00</color>
     <color name="neon_orange">#FF9933</color>

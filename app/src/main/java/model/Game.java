@@ -164,9 +164,10 @@ public class Game implements Observable{
         this.iHaveDifferentDestCards = iHaveDifferentDestCards;
     }
 
-    private List<DestCard> possibleDestCards;
+    private List<DestCard> possibleDestCards = new ArrayList<>();
     private boolean iHavePossibleDestCards = false;
-    public void addPossibleDestCards(List<Integer> possibleDestCards){
+    public void setPossibleDestCards(List<Integer> possibleDestCards){
+        this.possibleDestCards = new ArrayList<>();
         for (int i = 0; i < possibleDestCards.size(); i++){
             this.possibleDestCards.add(DestCard.getDestCardByID(possibleDestCards.get(i)));
         }
