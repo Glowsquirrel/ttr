@@ -84,6 +84,12 @@ public class Game implements Observable{
         return faceUpCards;
     }
     
+    //begin CurrentlySelectedRouteID flags
+    private boolean newRouteID = false;
+    public boolean routeIDHasChanged() {
+        return newRouteID;
+    }
+    
     public int getCurrentlySelectedRouteID() {
         newRouteID = false;
         return currentlySelectedRouteID;
@@ -92,11 +98,6 @@ public class Game implements Observable{
         this.currentlySelectedRouteID = currentlySelectedRouteID;
         newRouteID = true;
         notifyObserver();
-    }
-    //begin CurrentlySelectedRouteID flags
-    private boolean newRouteID = false;
-    public boolean routeIDHasChanged() {
-        return newRouteID;
     }
     
     //begin AllPlayerData flags

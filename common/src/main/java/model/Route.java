@@ -123,7 +123,7 @@ public class Route {
     }
 
     public static Route getRouteByID(int routeID){
-        return routeMap.get(routeID);
+        return createRouteMap().get(routeID);
     }
 
     public static Map<Integer, Route> createRouteMap() {

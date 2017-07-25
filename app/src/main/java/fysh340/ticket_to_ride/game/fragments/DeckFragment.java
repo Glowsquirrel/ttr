@@ -56,6 +56,9 @@ public class DeckFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
+        mGame.register(this);
+        
         //Get the view
         View deckView = inflater.inflate(R.layout.fragment_deck, container, false);
 
