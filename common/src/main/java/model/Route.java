@@ -76,7 +76,7 @@ public class Route {
         return claimed;
     }
 
-    public void setSisterRouteClamed() {
+    public void setSisterRouteClaimed() {
         sisterRouteClaimed = true;
     }
 
