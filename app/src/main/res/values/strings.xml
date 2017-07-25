@@ -18,10 +18,5 @@
     <string name="train_card">Train Cards</string>
     <string name="deck_face_down">Draw from Face Down</string>
     <string name="dest_deck">Draw Dest. Cards</string>
-    <string name="choose_cards">Choose Selected Cards</string>
-    <string name="choose_route">Choose Route</string>
-    <string name="face_up_title">Face Up Cards</string>
-    <string name="selected_route_title">Selected Route</string>
-    <string name="claim_route">Claim Selected Route</string>
 
 </resources>
