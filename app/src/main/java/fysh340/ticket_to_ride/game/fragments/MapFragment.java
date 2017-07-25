@@ -2,6 +2,7 @@ package fysh340.ticket_to_ride.game.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void update() {
-        int color = getResources().getColor(mMapModel.getColor());
+        //int color = getResources().getColor(mMapModel.getColor());
+        int color = ContextCompat.getColor(getContext(), mMapModel.getColor());
         int routeID = mMapModel.getLastRoute();
         MapRoute route = MapRoute.getRoute(routeID);
         MapHelper.changeColor(route, color);
