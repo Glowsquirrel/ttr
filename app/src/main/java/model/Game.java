@@ -144,14 +144,26 @@ public class Game implements Observable{
     
     //begin CurrentlySelectedRouteID flags
     private boolean newRouteID = false;
+
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public boolean routeIDHasChanged() {
         return newRouteID;
     }
-    
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public int getCurrentlySelectedRouteID() {
         newRouteID = false;
         return currentlySelectedRouteID;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
         this.currentlySelectedRouteID = currentlySelectedRouteID;
         newRouteID = true;
@@ -160,9 +172,17 @@ public class Game implements Observable{
     
     //begin AllPlayerData flags
     private boolean playerHasChanged = false;
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public boolean aPlayerHasChanged() {
         return playerHasChanged;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void aPlayerHasChanged(boolean playerHasChanged) {
         this.playerHasChanged = playerHasChanged;
     }
@@ -170,28 +190,56 @@ public class Game implements Observable{
 
     //begin trainCard flags
     private boolean iHaveDifferentTrainCards = false;
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public boolean iHaveDifferentTrainCards() {
         return iHaveDifferentTrainCards;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void iHaveDifferentTrainCards(boolean trainCardChange){
         this.iHaveDifferentTrainCards = trainCardChange;
     }
     
     private boolean iHaveDifferentFaceUpCards = false;
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public boolean iHaveDifferentFaceUpCards() {
         return iHaveDifferentFaceUpCards;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void iHaveDifferentFAceUpCards(boolean faceUpCardChange) {
         iHaveDifferentFaceUpCards = faceUpCardChange;
     }
     //end trainCard flags
 
     //begin Observable
+    /**
+     * Overrides the register() method on the Observable interface
+     * @post the update method on o will be called each time notifyObserver() is called
+     * @param o Observer object that implements the observer interface to be notified by this observable
+     */
     @Override
     public void register(Observer o) {
         observers.add(o);
     }
 
+    /**
+     * Overrides the unregister() method on the Observable interface
+     * @param deleteObserver Object that implements the observor interface that is currently registered to
+     *                       this object
+     * @post deletObserver will no longer be updated or registered to this observable
+     * @post no other observers, or the observer will be modified
+     */
     @Override
     public void unregister(Observer deleteObserver) {
         int observerIndex = observers.indexOf(deleteObserver);
@@ -199,6 +247,12 @@ public class Game implements Observable{
             observers.remove(observerIndex);
         }
     }
+
+    /**
+     * Overrides the notifyObservor() method on the Observable interfaces
+     * @pre must have observer objects that have been registered to this observer
+     * @post calls the update method on any objects currently registered as observers
+     */
 
     @Override
     public void notifyObserver() {
@@ -216,27 +270,51 @@ public class Game implements Observable{
     //end Observerable
 
     private boolean iHaveDifferentDestCards = false;
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public boolean iHaveDifferentDestCards(){
         return iHaveDifferentDestCards;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void iHaveDifferentDestCards(boolean iHaveDifferentDestCards){
         this.iHaveDifferentDestCards = iHaveDifferentDestCards;
     }
 
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private boolean iHavePossibleDestCards = false;
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void setPossibleDestCards(List<Integer> possibleDestCards){
         this.possibleDestCards = new ArrayList<>();
         for (int i = 0; i < possibleDestCards.size(); i++){
             this.possibleDestCards.add(DestCard.getDestCardByID(possibleDestCards.get(i)));
         }
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public boolean iHavePossibleDestCards(){
         return iHavePossibleDestCards;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public void iHavePossibleDestCards(boolean iHavePossibleDestCards){
         this.iHavePossibleDestCards = iHavePossibleDestCards;
     }
+    /**todo
+     *
+     * @return boolean value to be used as a flag
+     */
     public List<DestCard> getPossibleDestCards(){
         return possibleDestCards;
     }
