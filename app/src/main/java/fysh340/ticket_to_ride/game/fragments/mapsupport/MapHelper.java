@@ -75,6 +75,7 @@ public class MapHelper {
         settings.setAllGesturesEnabled(false);
         settings.setZoomGesturesEnabled(true);
         settings.setScrollGesturesEnabled(true);
+        settings.setMapToolbarEnabled(false);
 
         // restrict the area for zooming and scrolling
         map.setMaxZoomPreference(MAX_ZOOM);
@@ -98,6 +99,7 @@ public class MapHelper {
             drawMapRoute(map, route, null);
         }
     }
+
 
     public static void drawMapRoute(GoogleMap map, MapRoute route, Integer color) {
         for (Polyline line : routePolyLineMap.get(route)) {
