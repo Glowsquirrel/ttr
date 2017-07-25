@@ -141,6 +141,12 @@ public class Game implements Observable{
         return faceUpCards;
     }
     
+    //begin CurrentlySelectedRouteID flags
+    private boolean newRouteID = false;
+    public boolean routeIDHasChanged() {
+        return newRouteID;
+    }
+    
     public int getCurrentlySelectedRouteID() {
         newRouteID = false;
         return currentlySelectedRouteID;
@@ -149,11 +155,6 @@ public class Game implements Observable{
         this.currentlySelectedRouteID = currentlySelectedRouteID;
         newRouteID = true;
         notifyObserver();
-    }
-    //begin CurrentlySelectedRouteID flags
-    private boolean newRouteID = false;
-    public boolean routeIDHasChanged() {
-        return newRouteID;
     }
     
     //begin AllPlayerData flags
@@ -212,4 +213,30 @@ public class Game implements Observable{
         uiHandler.post(runnable); //do the run() method in previously declared runnable on UI thread
     }
     //end Observerable
+
+    private boolean iHaveDifferentDestCards = false;
+    public boolean iHaveDifferentDestCards(){
+        return iHaveDifferentDestCards;
+    }
+    public void iHaveDifferentDestCards(boolean iHaveDifferentDestCards){
+        this.iHaveDifferentDestCards = iHaveDifferentDestCards;
+    }
+
+    private List<DestCard> possibleDestCards = new ArrayList<>();
+    private boolean iHavePossibleDestCards = false;
+    public void setPossibleDestCards(List<Integer> possibleDestCards){
+        this.possibleDestCards = new ArrayList<>();
+        for (int i = 0; i < possibleDestCards.size(); i++){
+            this.possibleDestCards.add(DestCard.getDestCardByID(possibleDestCards.get(i)));
+        }
+    }
+    public boolean iHavePossibleDestCards(){
+        return iHavePossibleDestCards;
+    }
+    public void iHavePossibleDestCards(boolean iHavePossibleDestCards){
+        this.iHavePossibleDestCards = iHavePossibleDestCards;
+    }
+    public List<DestCard> getPossibleDestCards(){
+        return possibleDestCards;
+    }
 }

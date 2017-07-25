@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
@@ -46,16 +47,23 @@ public class DeckFragment extends Fragment implements Observer {
                                        currentlySelected.getEndCity().getPrettyName();
             mSelectedRoute.setText(routeText);
         }
+        if (mGame.iHavePossibleDestCards()){
+            mGame.iHavePossibleDestCards(false);
+            ((GameView)getActivity()).switchDeckFragment();
+        }
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mGame.register(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
+        mGame.register(this);
+        
         //Get the view
         View deckView = inflater.inflate(R.layout.fragment_deck, container, false);
 

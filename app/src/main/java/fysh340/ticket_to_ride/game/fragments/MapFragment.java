@@ -77,6 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         MapHelper.initMap(getActivity(), mMap);
 
         mMap.setOnPolylineClickListener(this);
+        mMap.setOnMarkerClickListener(this);
 
 
         if (savedMarker != null) {

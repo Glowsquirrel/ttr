@@ -80,10 +80,11 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-        if(username.equals(game.getMyself().getMyUsername())) { //calling this method should always mean it is meant for this client in the first place
-            Deck.getInstance().setAvailableDestCards(destCards);
+        if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
+            game.setPossibleDestCards(destCards);
+            game.iHavePossibleDestCards(true);
+            game.notifyObserver();
         }
-
     }
 
     @Override

@@ -123,7 +123,7 @@ public class Route {
     }
 
     public static Route getRouteByID(int routeID){
-        return routeMap.get(routeID);
+        return createRouteMap().get(routeID);
     }
 
     public static Map<Integer, Route> createRouteMap() {
@@ -138,8 +138,8 @@ public class Route {
         routeMap.put(6, new Route(ATLANTA, RALEIGH, 2, WILD, 5));
         routeMap.put(7, new Route(BOSTON, MONTREAL, 2, WILD, 8));
         routeMap.put(8, new Route(BOSTON, MONTREAL, 2, WILD, 7));
-        routeMap.put(9, new Route(BOSTON, NEW_YORK, 2, ORANGE, 10));
-        routeMap.put(10, new Route(BOSTON, NEW_YORK, 2, BLACK, 9));
+        routeMap.put(9, new Route(BOSTON, NEW_YORK, 2, RED, 10));
+        routeMap.put(10, new Route(BOSTON, NEW_YORK, 2, YELLOW, 9));
         routeMap.put(11, new Route(CALGARY, HELENA, 4, WILD, -1));
         routeMap.put(12, new Route(CALGARY, SEATTLE, 4, WILD, -1));
         routeMap.put(13, new Route(CALGARY, VANCOUVER, 3, WILD, -1));
@@ -224,7 +224,7 @@ public class Route {
         routeMap.put(92, new Route(RALEIGH, WASHINGTON, 2, WILD, 93));
         routeMap.put(93, new Route(RALEIGH, WASHINGTON, 2, WILD, 92));
         routeMap.put(94, new Route(SALT_LAKE_CITY, SAN_FRANCISCO, 5, ORANGE, 95));
-        routeMap.put(95, new Route(SALT_LAKE_CITY, SAN_FRANCISCO, 5, ORANGE, 94));
+        routeMap.put(95, new Route(SALT_LAKE_CITY, SAN_FRANCISCO, 5, WHITE, 94));
         routeMap.put(96, new Route(SAULT_ST_MARIE, TORONTO, 2, WILD, -1));
         routeMap.put(97, new Route(SAULT_ST_MARIE, WINNIPEG, 6, WILD, -1));
         routeMap.put(98, new Route(SEATTLE, VANCOUVER, 1, WILD, 99));
