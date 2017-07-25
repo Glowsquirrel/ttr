@@ -42,11 +42,21 @@ public class GameView extends AppCompatActivity {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+<<<<<<< HEAD
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        MapFragment mapFragment = MapFragment.newInstance();
+        PlayerCardsFragment playerCardsFragment = new PlayerCardsFragment();
+        AllPlayerDataFragment playerDataFragment = new AllPlayerDataFragment();
+        DeckFragment deckFragment = new DeckFragment();
+        ChatHistory chatHistory=new ChatHistory();
+=======
         mapFragment = MapFragment.newInstance();
         playerTrainCardsFragment = new PlayerTrainCardsFragment();
         playerDestCardsFragment = new PlayerDestCardsFragment();
         allPlayerDataFragment = new AllPlayerDataFragment();
         deckFragment = new DeckFragment();
+>>>>>>> 48cc84b6ad261d2447dca8bc4ce4436407b884ea
 
         transaction.add(R.id.map_fragment_container, mapFragment);
 
@@ -55,6 +65,8 @@ public class GameView extends AppCompatActivity {
         transaction.hide(playerDestCardsFragment);
         transaction.add(R.id.players_fragment_container, allPlayerDataFragment);
         transaction.add(R.id.deck_fragment_container, deckFragment);
+        transaction.add(R.id.left_drawer, chatHistory);
+
 
         transaction.commit();
 
