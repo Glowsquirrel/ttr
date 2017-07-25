@@ -7,14 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.List;
-import java.util.Map;
-
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
-import model.City;
-import model.DestCard;
 import model.Game;
 import model.TrainCard;
 import serverproxy.ServerProxy;
@@ -28,16 +23,12 @@ import serverproxy.ServerProxy;
  *  @since          7-22-17
  */
 public class DeckFragment extends Fragment implements Observer {
-    private static model.Deck mViewableDeck;
     private ServerProxy mServerProxy = new ServerProxy();
     private Game mGame = Game.getGameInstance();
-    static {
-        mViewableDeck = model.Deck.getInstance();
-    }
 
     private TextView[] mFaceUpCards;
-
-    private TextView[] mDestinationCards;
+    
+    private TextView mSelectedRoute;
 
     public DeckFragment() {
         // Required empty public constructor
@@ -45,26 +36,8 @@ public class DeckFragment extends Fragment implements Observer {
 
     @Override
     public void update() {
-        //Get train cards that are up-for-grabs
-        List<Integer> cardsByID = mViewableDeck.getFaceUpCards();
-
-        //For each view, set the view text to the train card color/type
-        for(int i = 0; i < mFaceUpCards.length; ++i) {
-            TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(i));
-            mFaceUpCards[i].setText(nextCard.getPrettyname() + " Card");
-        }
-
-        //When drawing destination cards, get the available ones
-        cardsByID = mViewableDeck.getDestinationCards();
-        
-        Map<Integer, DestCard> cardsReference = DestCard.getDestCardMap();
-
-        //For each view, set the text to the destination's from/to cities.
-        for(int i = 0; i < mDestinationCards.length; ++i) {
-            DestCard nextCard = cardsReference.get(cardsByID.get(i));
-            City from = nextCard.getStartCity();
-            City to = nextCard.getEndCity();
-            mDestinationCards[i].setText(from.getPrettyName() + " to " + to.getPrettyName());
+        if(mGame.iHaveDifferentFaceUpCards()) {
+            repopulateFaceUpCards();
         }
     }
     @Override
@@ -86,11 +59,10 @@ public class DeckFragment extends Fragment implements Observer {
         mFaceUpCards[2] = (TextView)deckView.findViewById(R.id.third);
         mFaceUpCards[3] = (TextView)deckView.findViewById(R.id.fourth);
         mFaceUpCards[4] = (TextView)deckView.findViewById(R.id.fifth);
-
-        mDestinationCards = new TextView[3];
-        mDestinationCards[0] = (TextView)deckView.findViewById(R.id.destination1);
-        mDestinationCards[1] = (TextView)deckView.findViewById(R.id.destination2);
-        mDestinationCards[2] = (TextView)deckView.findViewById(R.id.destination3);
+    
+        repopulateFaceUpCards();
+        
+        mSelectedRoute = (TextView)deckView.findViewById(R.id.selectedRoute);
 
         //Set click listeners for each view
         for(int i = 0; i < mFaceUpCards.length; ++i) {
@@ -99,15 +71,6 @@ public class DeckFragment extends Fragment implements Observer {
                 public void onClick(View v) {
                     ServerProxy toServer = new ServerProxy();
                     //TODO: Find a way to get index within the inner class or don't use a loop
-                }
-            });
-        }
-
-        for(int i = 0; i < mDestinationCards.length; ++i) {
-            mDestinationCards[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
                 }
             });
         }
@@ -144,4 +107,15 @@ public class DeckFragment extends Fragment implements Observer {
 
     }
 
+    private void repopulateFaceUpCards() {
+        //Get train cards that are up-for-grabs
+        List<Integer> cardsByID = mGame.getFaceUpCards();
+    
+        //For each view, set the view text to the train card color/type
+        for(int i = 0; i < mFaceUpCards.length; ++i) {
+            TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(i));
+            String cardTitle = nextCard.getPrettyname() + " Card";
+            mFaceUpCards[i].setText(cardTitle);
+        }
+    }
 }

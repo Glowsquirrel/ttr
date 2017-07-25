@@ -111,6 +111,14 @@ public class Game implements Observable{
     public void iHaveDifferentTrainCards(boolean trainCardChange){
         this.iHaveDifferentTrainCards = trainCardChange;
     }
+    
+    private boolean iHaveDifferentFaceUpCards = false;
+    public boolean iHaveDifferentFaceUpCards() {
+        return iHaveDifferentFaceUpCards;
+    }
+    public void iHaveDifferentFAceUpCards(boolean faceUpCardChange) {
+        iHaveDifferentFaceUpCards = faceUpCardChange;
+    }
     //end trainCard flags
 
     //begin Observable
