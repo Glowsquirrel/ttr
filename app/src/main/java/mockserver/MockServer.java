@@ -135,9 +135,13 @@ public class MockServer {
                         int fc1 = rand.nextInt(9);
                         int fc2 = rand.nextInt(9);
                         int fc3 = rand.nextInt(9);
+                        int fc4 = rand.nextInt(9);
+                        int fc5 = rand.nextInt(9);
                         faceUpCards.add(fc1);
                         faceUpCards.add(fc2);
                         faceUpCards.add(fc3);
+                        faceUpCards.add(fc4);
+                        faceUpCards.add(fc4);
                         clientFacade.startGame(mycommand.getUsername(), mycommand.getGameName(), playerNames, destCards, trainCards, faceUpCards);
                     }
                 }

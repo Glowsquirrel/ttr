@@ -20,19 +20,29 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.fragments.mapsupport.MapHelper;
 import fysh340.ticket_to_ride.game.fragments.mapsupport.MapRoute;
+import interfaces.IServer;
+import interfaces.Observer;
 import model.ClientModel;
+import model.Game;
+import model.MapModel;
+import serverproxy.ServerProxy;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnPolylineClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener, GoogleMap.OnPolylineClickListener, Observer {
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        return false;
+        return true;
     }
 
     private GoogleMap mMap;
     private List<Polyline> myPolylines = new ArrayList<>();
     private Marker savedMarker;
+    private MapModel mMapModel = MapModel.getMapInstance();
+    private IServer mServerProxy = new ServerProxy();
+    private Game mGame = Game.getGameInstance();
+    private ClientModel mClientModel = ClientModel.getMyClientModel();
 
     public MapFragment() {
         // Required empty public constructor
@@ -53,6 +63,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mMapModel.register(this);
 
         return view;
 
@@ -84,10 +96,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onPolylineClick(Polyline polyline) {
-        // TODO: 7/24/17 do something when the polyline is clicked
         MapRoute route = (MapRoute) polyline.getTag();
         int key = route.getKey();
         Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
-//        ClientModel.getMyClientModel().setCurrentlySelectedRouteID(key);
+        // TODO: 7/25/17 get actual cards from somewhere
+        mGame.setCurrentlySelectedRouteID(key);
+    }
+
+    @Override
+    public void update() {
+        int color = getResources().getColor(mMapModel.getColor());
+        int routeID = mMapModel.getLastRoute();
+        MapRoute route = MapRoute.getRoute(routeID);
+        MapHelper.changeColor(route, color);
     }
 }

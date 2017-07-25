@@ -31,18 +31,6 @@ public class Game implements Observable{
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
-    private boolean newRouteID = false;
-
-    public int getCurrentlySelectedRouteID() {
-        newRouteID = false;
-        return currentlySelectedRouteID;
-    }
-
-    public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
-        this.currentlySelectedRouteID = currentlySelectedRouteID;
-        newRouteID = true;
-        notifyObserver();
-    }
 
     public AbstractPlayer getPlayerByName(String username) {
         return playerMap.get(username);
@@ -66,6 +54,8 @@ public class Game implements Observable{
         for(String name : playerNames) {
             if (name.equals(myself.getMyUsername())){
                 playerMap.put(myself.getMyUsername(), this.myself);
+                myself.setColor(i);
+                i++;
                 continue;
             }
             VisiblePlayer myPlayer = new VisiblePlayer(name);
@@ -90,9 +80,25 @@ public class Game implements Observable{
     }
 
     public List<Integer> getFaceUpCards() {
+        iHaveDifferentFAceUpCards(false);
         return faceUpCards;
     }
-
+    
+    public int getCurrentlySelectedRouteID() {
+        newRouteID = false;
+        return currentlySelectedRouteID;
+    }
+    public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
+        this.currentlySelectedRouteID = currentlySelectedRouteID;
+        newRouteID = true;
+        notifyObserver();
+    }
+    //begin CurrentlySelectedRouteID flags
+    private boolean newRouteID = false;
+    public boolean routeIDHasChanged() {
+        return newRouteID;
+    }
+    
     //begin AllPlayerData flags
     private boolean playerHasChanged = false;
     public boolean aPlayerHasChanged() {
@@ -110,6 +116,14 @@ public class Game implements Observable{
     }
     public void iHaveDifferentTrainCards(boolean trainCardChange){
         this.iHaveDifferentTrainCards = trainCardChange;
+    }
+    
+    private boolean iHaveDifferentFaceUpCards = false;
+    public boolean iHaveDifferentFaceUpCards() {
+        return iHaveDifferentFaceUpCards;
+    }
+    public void iHaveDifferentFAceUpCards(boolean faceUpCardChange) {
+        iHaveDifferentFaceUpCards = faceUpCardChange;
     }
     //end trainCard flags
 
