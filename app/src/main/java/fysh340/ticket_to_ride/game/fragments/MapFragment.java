@@ -25,6 +25,7 @@ import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
 import model.MapModel;
+import model.Player;
 import serverproxy.ServerProxy;
 
 
@@ -43,6 +44,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private IServer mServerProxy = new ServerProxy();
     private Game mGame = Game.getGameInstance();
     private ClientModel mClientModel = ClientModel.getMyClientModel();
+    private Player myPlayer=mGame.getMyself();
 
     public MapFragment() {
         // Required empty public constructor
@@ -98,9 +100,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void onPolylineClick(Polyline polyline) {
         MapRoute route = (MapRoute) polyline.getTag();
         int key = route.getKey();
+        int color=route.getColor();
+        int length=route.getLength();
+        List<Integer> cards=myPlayer.exchangeCards(length,color);
         Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
         // TODO: 7/25/17 get actual cards from somewhere 
-        mServerProxy.claimRoute(mClientModel.getMyUsername(), mGame.getMyGameName(), key, new ArrayList<Integer>());
+        mServerProxy.claimRoute(mClientModel.getMyUsername(), mGame.getMyGameName(), key, cards);
     }
 
     @Override

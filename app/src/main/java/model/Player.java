@@ -64,6 +64,90 @@ public class Player extends AbstractPlayer {
     private int numOfGreenCards = 0;
     private int numOfWildCards = 0;
 
+    public int getNumOfPurpleCards() {
+        return numOfPurpleCards;
+    }
+
+    public void setNumOfPurpleCards(int numOfPurpleCards) {
+        this.numOfPurpleCards = numOfPurpleCards;
+    }
+
+    public int getNumOfWhiteCards() {
+        return numOfWhiteCards;
+    }
+
+    public void setNumOfWhiteCards(int numOfWhiteCards) {
+        this.numOfWhiteCards = numOfWhiteCards;
+    }
+
+    public int getNumOfBlueCards() {
+        return numOfBlueCards;
+    }
+
+    public void setNumOfBlueCards(int numOfBlueCards) {
+        this.numOfBlueCards = numOfBlueCards;
+    }
+
+    public int getNumOfYellowCards() {
+        return numOfYellowCards;
+    }
+
+    public void setNumOfYellowCards(int numOfYellowCards) {
+        this.numOfYellowCards = numOfYellowCards;
+    }
+
+    public int getNumOfOrangeCards() {
+        return numOfOrangeCards;
+    }
+
+    public void setNumOfOrangeCards(int numOfOrangeCards) {
+        this.numOfOrangeCards = numOfOrangeCards;
+    }
+
+    public int getNumOfBlackCards() {
+        return numOfBlackCards;
+    }
+
+    public void setNumOfBlackCards(int numOfBlackCards) {
+        this.numOfBlackCards = numOfBlackCards;
+    }
+
+    public int getNumOfRedCards() {
+        return numOfRedCards;
+    }
+
+    public void setNumOfRedCards(int numOfRedCards) {
+        this.numOfRedCards = numOfRedCards;
+    }
+
+    public int getNumOfGreenCards() {
+        return numOfGreenCards;
+    }
+
+    public void setNumOfGreenCards(int numOfGreenCards) {
+        this.numOfGreenCards = numOfGreenCards;
+    }
+
+    public int getNumOfWildCards() {
+        return numOfWildCards;
+    }
+
+    public void setNumOfWildCards(int numOfWildCards) {
+        this.numOfWildCards = numOfWildCards;
+    }
+
+    public List<TrainCard> getMyTrainCards() {
+        return myTrainCards;
+    }
+
+    public void setMyTrainCards(List<TrainCard> myTrainCards) {
+        this.myTrainCards = myTrainCards;
+    }
+
+    public void setMyDestCards(List<DestCard> myDestCards) {
+        this.myDestCards = myDestCards;
+    }
+
     private List<TrainCard> myTrainCards = new ArrayList<>();
     private List<DestCard> myDestCards = new ArrayList<>();
 
@@ -104,6 +188,17 @@ public class Player extends AbstractPlayer {
              }
          }
          return true;
+     }
+     public List<Integer> exchangeCards(int length, int color)
+     {
+         //todo get rid of player cards when claiming route and return cards as an int
+         for(int i=0;i<length;i++)
+         {
+             switch(color)
+             {
+             }
+         }
+         return new ArrayList<Integer>();
      }
 
 }
