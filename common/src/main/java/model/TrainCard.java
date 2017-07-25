@@ -2,14 +2,14 @@ package model;
 
 
 public enum TrainCard {
-    PURPLE ("Purple"),
-    WHITE ("White"),
-    BLUE ("Blue"),
-    YELLOW ("Yellow"),
-    ORANGE ("Orange"),
-    BLACK ("Black"),
     RED ("Red"),
+    BLUE ("Blue"),
     GREEN ("Green"),
+    YELLOW ("Yellow"),
+    BLACK ("Black"),
+    PURPLE ("Purple"),
+    ORANGE ("Orange"),
+    WHITE ("White"),
     WILD ("Wild");
 
     private String mPrettyName;
@@ -49,23 +49,23 @@ public enum TrainCard {
             return WILD;
     }
 
-    public static int getIntByTrainCard(TrainCard trainCard) {
+    public static int getTrainCardKey(TrainCard trainCard) {
         switch (trainCard) {
-            case PURPLE:
+            case RED:
                     return 0;
-            case WHITE:
-                    return 1;
             case BLUE:
+                    return 1;
+            case GREEN:
                     return 2;
             case YELLOW:
                     return 3;
-            case ORANGE:
-                    return 4;
             case BLACK:
+                    return 4;
+            case PURPLE:
                     return 5;
-            case RED:
+            case ORANGE:
                     return 6;
-            case GREEN:
+            case WHITE:
                     return 7;
             case WILD:
                     return 8;

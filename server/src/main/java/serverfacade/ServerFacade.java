@@ -96,7 +96,8 @@ public class ServerFacade implements IServer {
     @Override
     public void startGame(String gameName, String username) {
         //username might be useless?
-        mSingletonModel.startGame(gameName);
+        //Answering question above--no, its useful to send fail messages.
+        mSingletonModel.startGame(gameName, username);
     }
 
     @Override

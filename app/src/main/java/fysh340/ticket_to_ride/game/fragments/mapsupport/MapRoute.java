@@ -225,4 +225,8 @@ public enum MapRoute {
     public int getDir() {
         return dir;
     }
+
+    public int getKey() {
+        return key;
+    }
 }

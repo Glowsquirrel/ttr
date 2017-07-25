@@ -179,12 +179,12 @@ public class ServerModel {
     }
 
    /****************************************STARTING GAME****************************************/
-    public void startGame(String gameName) {
+    public void startGame(String gameName, String username) {
         try {
             activateGame(gameName);
         }
         catch (GamePlayException ex){
-            System.out.println(ex.getMessage());
+           toClient.rejectCommand(username, gameName, ex.getMessage());
         }
     }
 
@@ -310,7 +310,7 @@ public class ServerModel {
         }
     }
 
-    public void sendToClients(String playerName, StartedGame game , Result result) {
+    private void sendToClients(String playerName, StartedGame game , Result result) {
         toClient.sendToUser(playerName, game.getGameName(), result);
         allCommandLists.get(game.getGameName()).add(result);
         toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());

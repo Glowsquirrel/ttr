@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Player {
+ class Player {
 
     private String userName;
     private List<TrainCard> trainCardHand = new ArrayList<>();
@@ -26,11 +26,11 @@ public class Player {
     private int numOfRoutes;
     private int numOfCars = 45;
 
-    public Player(String userName) {
+     Player(String userName) {
         this.userName = userName;
     }
 
-     public void addTrainCards(List<TrainCard> drawnCards){
+      void addTrainCards(List<TrainCard> drawnCards){
 
          for (TrainCard currentCard : drawnCards){
              trainCardHand.add(currentCard);
@@ -68,13 +68,14 @@ public class Player {
      * Places drawn cards in newlyDrawnDestCards member. Does not add them to hand.
      * @param drawnCards Cards drawn from board's DestCardDeck
      */
-    public void addDestCards(List<DestCard> drawnCards) {
+     void addDestCards(List<DestCard> drawnCards) {
         for (DestCard currentCard : drawnCards) {
             newlyDrawnDestCards.add(currentCard);
         }
     }
 
-    public boolean removeDestCards(DestCard cardOne, DestCard cardTwo) throws GamePlayException {
+
+     boolean removeDestCards(DestCard cardOne, DestCard cardTwo) throws GamePlayException {
         boolean success = false;
 
         if (cardOne != null) {
@@ -118,33 +119,33 @@ public class Player {
         return userName;
     }
 
-    public int getNumOfCars() {
+    int getNumOfCars() {
         return numOfCars;
     }
 
-    public int getSizeOfTrainCardHand() {
+    int getSizeOfTrainCardHand() {
         return trainCardHand.size();
     }
 
-    public int getSizeOfDestCardHand() {
+    int getSizeOfDestCardHand() {
         return destCardHand.size();
     }
 
-    public int getPoints() {
+    int getPoints() {
         return points;
     }
 
-    public int getNumOfRoutesOwned() {
+    int getNumOfRoutesOwned() {
         return numOfRoutes;
     }
     public List<DestCard> getDestCards() {
         return destCardHand;
     }
 
-    public List<Integer> getTrainCardCodes() {
+    List<Integer> getTrainCardCodes() {
         List<Integer> trainCardCodes = new ArrayList<>();
         for (TrainCard trainCard : trainCardHand) {
-            trainCardCodes.add(TrainCard.getIntByTrainCard(trainCard));
+            trainCardCodes.add(TrainCard.getTrainCardKey(trainCard));
         }
         return trainCardCodes;
     }
@@ -159,7 +160,7 @@ public class Player {
         return allCards;
     }
 
-    public boolean removeCars(int numOfCars) {
+    boolean removeCars(int numOfCars) {
         if (numOfCars < 0 || numOfCars > 6){
             return false;
         }
@@ -167,22 +168,92 @@ public class Player {
         return true;
     }
 
-
-    public PlayerColor getPlayerColor() {
+    PlayerColor getPlayerColor() {
         return playerColor;
     }
-    public void setPlayerColor(int position) {
+    void setPlayerColor(int position) {
         playerColor = PlayerColor.getPlayerColor(position);
     }
-    public List<DestCard> getNewlyDrawnDestCards() {
+    List<DestCard> getNewlyDrawnDestCards() {
         return newlyDrawnDestCards;
     }
 
-    public void addScore(int points) {
+    void addScore(int points) {
         this.points += points;
     }
-    public void addNumOfRoutes() {
+    void addNumOfRoutes() {
         numOfRoutes++;
     }
+
+    void removeTrainCards(List<TrainCard> discardedCards) {
+        for (int a = 0; a  < discardedCards.size(); a++) {
+            TrainCard trainCard = discardedCards.get(a);
+            switch (trainCard){
+                case RED:
+                    numOfRedCards--;
+                case GREEN:
+                    numOfGreenCards--;
+                case BLUE:
+                    numOfBlueCards--;
+                case YELLOW:
+                    numOfYellowCards--;
+                case BLACK:
+                    numOfBlackCards--;
+                case PURPLE:
+                    numOfPurpleCards--;
+                case ORANGE:
+                    numOfOrangeCards--;
+                case WHITE:
+                    numOfWhiteCards--;
+                case WILD:
+                    numOfWildCards--;
+            }
+            removeCardFromHand(trainCard);
+        }
+    }
+
+    private void removeCardFromHand(TrainCard trainCard) {
+        for(int a = 0; a < trainCardHand.size(); a++){
+            if (trainCard == trainCardHand.get(a)) {
+                trainCardHand.remove(a);
+                break;
+            }
+        }
+    }
+     int getNumOfPurpleCards() {
+         return numOfPurpleCards;
+     }
+
+     int getNumOfWhiteCards() {
+         return numOfWhiteCards;
+     }
+
+     int getNumOfBlueCards() {
+         return numOfBlueCards;
+     }
+
+     int getNumOfYellowCards() {
+         return numOfYellowCards;
+     }
+
+     int getNumOfOrangeCards() {
+         return numOfOrangeCards;
+     }
+
+     int getNumOfBlackCards() {
+         return numOfBlackCards;
+     }
+
+     int getNumOfRedCards() {
+         return numOfRedCards;
+     }
+
+     int getNumOfGreenCards() {
+         return numOfGreenCards;
+     }
+
+     int getNumOfWildCards() {
+         return numOfWildCards;
+     }
 
 }

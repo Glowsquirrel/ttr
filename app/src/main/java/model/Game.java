@@ -30,6 +30,19 @@ public class Game implements Observable{
     private List<Integer> trainCards;
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
+    private int currentlySelectedRouteID;
+    private boolean newRouteID = false;
+
+    public int getCurrentlySelectedRouteID() {
+        newRouteID = false;
+        return currentlySelectedRouteID;
+    }
+
+    public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
+        this.currentlySelectedRouteID = currentlySelectedRouteID;
+        newRouteID = true;
+        notifyObserver();
+    }
 
     public AbstractPlayer getPlayerByName(String username) {
         return playerMap.get(username);
@@ -49,13 +62,15 @@ public class Game implements Observable{
         this.gameName = gameName;
         this.faceUpCards = faceUpCards;
         this.playerUserNames = playerNames;
-
+        int i=0;
         for(String name : playerNames) {
             if (name.equals(myself.getMyUsername())){
                 playerMap.put(myself.getMyUsername(), this.myself);
                 continue;
             }
             VisiblePlayer myPlayer = new VisiblePlayer(name);
+            myPlayer.setColor(i);
+            i++;
             playerMap.put(name, myPlayer);
         }
 

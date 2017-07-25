@@ -12,6 +12,15 @@ public abstract class AbstractPlayer {
     private int numCards = 0;
     private int numRoutes = 0;
     private int score = 0;
+    private int color;
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     public String getMyUsername(){
         return this.username;

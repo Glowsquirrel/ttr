@@ -8,8 +8,9 @@ public enum PlayerColor {
     RED,
     BLUE,
     GREEN,
-    BLACK,
-    YELLOW;
+    YELLOW,
+    BLACK;
+
 
     private static PlayerColor[] values = PlayerColor.values();
 
