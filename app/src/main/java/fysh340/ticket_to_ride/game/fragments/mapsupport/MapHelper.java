@@ -30,7 +30,8 @@ import java.util.Set;
 import fysh340.ticket_to_ride.R;
 
 /**
- * Initializes the google maps for TTR
+ * Class that the google maps for TTR by drawing all of the routes, the cities, and the names for
+ * the city. It also provides functions to change color of routes when they are claimed.
  *
  * @author Shun Sambongi
  * @version 1.0
@@ -38,23 +39,64 @@ import fysh340.ticket_to_ride.R;
  */
 public class MapHelper {
 
+    /**
+     * The width of the routes drawn on the screen
+     */
     private static final int ROUTE_WIDTH = 25;
+
+    /**
+     * The gap between the segments of a route
+     */
     private static final int ROUTE_GAP = 30000;
 
+    /**
+     * The maximum zoom level for the map
+     */
     private static final float MAX_ZOOM = 6.0f;
+
+    /**
+     * The minimum zoom level for the map
+     */
     private static final float MIN_ZOOM = 4.0f;
 
+    /**
+     * The radius for the circles drawn at the city locations
+     */
     private static final int CITY_RADIUS = 30000;
+
+    /**
+     * The color of the cities
+     */
     private static final int CITY_FILL = Color.GRAY;
+
+    /**
+     * The color of the stroke for the cities
+     */
     private static final int CITY_STROKE = Color.BLACK;
 
+    /**
+     * Map that keeps a reference from each route to the segments that make up that route. Since
+     * each route is actually drawn using multiple (1 - 6) polylines, this makes sure that the
+     * segments can be referenced together (for example, when changing the color)
+     */
     private static Map<MapRoute, Set<Polyline>> routePolyLineMap = new HashMap<>();
+
+    // initializes the the map
     static {
         for (MapRoute route : MapRoute.values()) {
             routePolyLineMap.put(route, new HashSet<Polyline>());
         }
     }
 
+    /**
+     * Initializes the TTR map by drawing all of the cities and the routes to the map. In addition,
+     * it also sets the location for the map to the US as well as restricting some of the user
+     * gestures.
+     *
+     * @param context The Android context. Can just pass in an instance of the Activity hosting the
+     *                map fragment
+     * @param map     the GoogleMap object which will be initialized
+     */
     public static void initMap(final Context context, final GoogleMap map) {
 
         // set the map style
@@ -100,11 +142,15 @@ public class MapHelper {
         }
     }
 
-
+    /**
+     * Draws a route on the map
+     *
+     * @param map   the map that will be drawn on
+     * @param route the route to draw
+     * @param color the color to draw the route
+     */
     public static void drawMapRoute(GoogleMap map, MapRoute route, Integer color) {
-        for (Polyline line : routePolyLineMap.get(route)) {
-            line.remove();
-        }
+        routePolyLineMap.put(route, new HashSet<Polyline>());
 
         if (color == null) {
             color = route.getColor();
@@ -152,6 +198,12 @@ public class MapHelper {
             currPos = SphericalUtil.computeOffset(nextPos, gap, heading);
             heading = SphericalUtil.computeHeading(currPos, destPos);
             routePolyLineMap.get(route).add(line);
+        }
+    }
+
+    public static void changeColor(MapRoute route, int color) {
+        for (Polyline line : routePolyLineMap.get(route)) {
+            line.setColor(color);
         }
     }
 
