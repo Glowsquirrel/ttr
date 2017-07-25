@@ -125,11 +125,11 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                 public void onClick(View v) {
                     if (possibleDestCards.size() > 0) {
                         if (selectedDestCards.contains(possibleDestCards.get(0))) {
-                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.default_android_background));
                             selectedDestCards.remove(possibleDestCards.get(0));
-                        } else {
                             destCard1.setBackgroundResource(R.drawable.customborder);
+                        } else {
                             selectedDestCards.add(possibleDestCards.get(0));
+                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
@@ -141,11 +141,11 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                 public void onClick(View v) {
                     if (possibleDestCards.size() > 1) {
                         if (selectedDestCards.contains(possibleDestCards.get(1))) {
-                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.default_android_background));
                             selectedDestCards.remove(possibleDestCards.get(1));
-                        } else {
                             destCard2.setBackgroundResource(R.drawable.customborder);
+                        } else {
                             selectedDestCards.add(possibleDestCards.get(1));
+                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
@@ -157,11 +157,11 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                 public void onClick(View v) {
                     if (possibleDestCards.size() > 2) {
                         if (selectedDestCards.contains(possibleDestCards.get(2))) {
-                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.default_android_background));
                             selectedDestCards.remove(possibleDestCards.get(2));
-                        } else {
                             destCard3.setBackgroundResource(R.drawable.customborder);
+                        } else {
                             selectedDestCards.add(possibleDestCards.get(2));
+                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
