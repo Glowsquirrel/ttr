@@ -13,6 +13,7 @@ import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
+import results.game.GameHistoryResult;
 import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
@@ -27,19 +28,18 @@ import static model.TrainCard.WILD;
  */
 
 //QUESTION: Do we add an index for the players in the startGame Result?
-// TODO: discard pile; continuous routes; check for correct destCard return, check for low card amount;
+// TODO: continuous routes; check for low card amount; end game; check for low car amount;
 public class StartedGame {
 
     private String gameName;
     private Map<String, Player> allPlayers = new HashMap<>();
     private List<String> playerOrder = new ArrayList<>();
     private Board board;
-    private List<Result> gameHistory = new ArrayList<>();
     private List<Chat> allChats = new ArrayList<>();
     private boolean replaceFaceUpFlag = false;
     private int turnPointer = 0;
     private TurnState turnState = TurnState.BEFORE_TURN;
-
+    private Result gameHistory;
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
     }
@@ -82,7 +82,7 @@ public class StartedGame {
 
             List<Integer> destCardKeys = new ArrayList<>();
             for (DestCard destCard : player.getNewlyDrawnDestCards()) {
-                destCardKeys.add(getDestCardInt(destCard, board.getDestCardMap()));
+                destCardKeys.add(getDestCardKey(destCard, board.getDestCardMap()));
             }
 
             Result nextPlayer = new StartGameResult(player.getUsername(),
@@ -97,7 +97,7 @@ public class StartedGame {
         return allResults;
     }
 
-    private static int getDestCardInt(DestCard comparedDestCard, Map<Integer, DestCard> destCardMap) {
+    private static int getDestCardKey(DestCard comparedDestCard, Map<Integer, DestCard> destCardMap) {
 
         Set<DestCard> allDestCards = new HashSet<>(destCardMap.values());
         for(DestCard destCard : allDestCards) {
@@ -124,6 +124,8 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
+        String message = playerName + " drew 3 destination cards.";
+        setGameHistory(playerName, message, -1);
         return drawDestCardResults(playerName, drawnDestCards);
     }
 
@@ -132,7 +134,7 @@ public class StartedGame {
 
         List<Integer> drawnCardKeys = new ArrayList<>();
         for (DestCard destCard : drawnDestCards) {
-            drawnCardKeys.add(getDestCardInt(destCard, board.getDestCardMap()));
+            drawnCardKeys.add(getDestCardKey(destCard, board.getDestCardMap()));
         }
 
         return new DrawThreeDestCardsResult(playerName, drawnCardKeys);
@@ -161,6 +163,8 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
+        String message = playerName + " returned a destination card.";
+        setGameHistory(playerName, message, -1);
         return new ReturnFirstDestCardResult(playerName, returnedCardKey);
     }
 
@@ -183,6 +187,8 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
+        String message = playerName + " drew a train card from the deck.";
+        setGameHistory(playerName, message, -1);
         return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardInt(trainCard.get(0)));
     }
 
@@ -198,7 +204,6 @@ public class StartedGame {
             switchTurnState(CommandType.FACEUP_NON_LOCOMOTIVE);
         }
 
-        switchTurnState(CommandType.RETURN_DEST_CARD);
         Player currentPlayer = allPlayers.get(playerName);
         TrainCard drawnCard;
 
@@ -209,6 +214,8 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
+        String message = playerName + " drew a face-up train card.";
+        setGameHistory(playerName, message, -1);
         return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardInt(drawnCard));
     }
 
@@ -239,13 +246,22 @@ public class StartedGame {
             int sisterRouteKey = route.getSisterRouteKey();
             boolean sisterRouteClaimed = false;
 
-            if (sisterRouteKey > 0) {
-                sisterRouteClaimed = board.getRouteMap().get(route.getSisterRouteKey()).isClaimed();
+            if (sisterRouteKey > 0) { //If a double route
+                sisterRouteClaimed = board.getRouteMap().get(route.getSisterRouteKey()).isClaimed(); //
             }
 
-            if (route.claimRoute(currentPlayer.getPlayerColor(), allPlayers.size(), sisterRouteClaimed)){
+            if(sisterRouteClaimed){
+                String owner = board.getRouteMap().get(route.getSisterRouteKey()).getOwner();
+                if (owner.equals(playerName)){
+                    throw new GamePlayException("Same player cannot claim double route");
+                }
+            }
+            if (route.claimRoute(currentPlayer.getPlayerColor(), currentPlayer.getUsername(),
+                    allPlayers.size(), sisterRouteClaimed)){
                 board.discardTrainCards(returnedTrainCards);
                 currentPlayer.addScore(route.getPointValue());
+                currentPlayer.addNumOfRoutes();
+                currentPlayer.removeCars(returnedTrainCards.size());
             } else {
                 throw new GamePlayException("Cannot claim double route.");
             }
@@ -254,6 +270,8 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
+        String message = playerName + " claimed route " + Integer.toString(routeId);
+        setGameHistory(playerName, message, routeId);
         return new ClaimRouteResult(playerName, routeId);
     }
 
@@ -291,8 +309,18 @@ public class StartedGame {
 
         return false;
     }
-    /*************************************Getters**********************************************/
-    public List<Result> getGameHistory() {
+    //TODO: change ServerModel; Draw from face up gamehist?
+    //TODO; Advise client model on claimRoute -1; Advise client model on face up game hist + Replace Face UP
+    /*************************************Getters/Setters**********************************************/
+
+    public void setGameHistory(String playerName, String message, int routeNumber){
+        Player player = allPlayers.get(playerName);
+        gameHistory = new GameHistoryResult(playerName, message,
+                player.getNumOfCars(), player.getSizeOfTrainCardHand(),
+                player.getSizeOfDestCardHand(), player.getNumOfRoutesOwned(),
+                player.getPoints(), routeNumber);
+    }
+    public Result getGameHistory() {
         return gameHistory;
     }
 
@@ -340,6 +368,8 @@ public class StartedGame {
 
     private void switchTurnState(CommandType commandType) throws GamePlayException {
         switch (turnState) {
+            case FIRST_ROUND:
+                  switchFirstRound(commandType);
             case BEFORE_TURN:
                   switchBeforeTurn(commandType);
                   break;
@@ -354,6 +384,13 @@ public class StartedGame {
                  break;
             default:
                 throw new GamePlayException("What in the world");
+        }
+    }
+
+    private void switchFirstRound(CommandType commandType) {
+        advancePlayerTurn();
+        if (turnPointer == 0) {
+            turnState = TurnState.BEFORE_TURN;
         }
     }
 
@@ -431,6 +468,7 @@ public class StartedGame {
     }
 
     private enum TurnState {
+        FIRST_ROUND,
         BEFORE_TURN,
         DREW_DEST_CARDS,
         RETURNED_ONE_DEST_CARD,

@@ -221,9 +221,9 @@ public class ServerModel {
    /****************************************ROUND ONE*********************************************/
     public void returnDestCard(String gameName, String playerName, int destCard) {
         try {
-            Result result =
-                    this.getGame(gameName).returnDestCard(playerName, destCard);
-            sendToClients(playerName, gameName, result, "returnDestCard");
+            StartedGame game = this.getGame(gameName);
+            Result result = game.returnDestCard(playerName, destCard);
+            sendToClients(playerName, game, result);
         }
         catch (GamePlayException ex){
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
@@ -245,9 +245,9 @@ public class ServerModel {
 
     public void drawThreeDestCards(String gameName, String playerName) {
         try {
-            Result result =
-                    this.getGame(gameName).drawThreeDestCards(playerName);
-            sendToClients(playerName, gameName, result, "drawThreeDestCards");
+            StartedGame game = this.getGame(gameName);
+            Result result = game.drawThreeDestCards(playerName);
+            sendToClients(playerName, game, result);
         }
         catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
@@ -259,9 +259,9 @@ public class ServerModel {
     public void drawTrainCardFromDeck(String gameName, String playerName) {
 
         try {
-            Result result =
-                    this.getGame(gameName).drawTrainCardFromDeck(playerName);
-            sendToClients(playerName, gameName, result, "drawTrainCardFromDeck");
+            StartedGame game = this.getGame(gameName);
+            Result result = game.drawTrainCardFromDeck(playerName);
+            sendToClients(playerName, game, result);
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
@@ -270,8 +270,8 @@ public class ServerModel {
     public void drawTrainCardFromFaceUp(String gameName, String playerName, int index) {
         try {
             StartedGame game = this.getGame(gameName);
-            Result result =
-                game.drawTrainCardFromFaceUp(playerName, index);
+            Result result = game.drawTrainCardFromFaceUp(playerName, index);
+
             toClient.sendToGame(gameName, result);
             allCommandLists.get(gameName).add(result);
 
@@ -291,9 +291,9 @@ public class ServerModel {
 
     public void claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
         try {
-            Result result =
-                    this.getGame(gameName).claimRoute(playerName, routeId, trainCards);
-            sendToClients(playerName, gameName, result, "claimRoute");
+            StartedGame game = this.getGame(gameName);
+            Result result = game.claimRoute(playerName, routeId, trainCards);
+            sendToClients(playerName, game, result);
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
@@ -310,11 +310,10 @@ public class ServerModel {
         }
     }
 
-    public void sendToClients(String playerName, String gameName, Result result, String resultType) {
-        toClient.sendToUser(playerName, gameName, result);
-        allCommandLists.get(gameName).add(result);
-        //Result gameHistory = new GameHistoryResult(playerName, resultType, );
-        //toClient.sendToOthersInGame(playerName, gameName, gameHistory);
-       // allCommandLists.get(gameName).add(gameHistory);
+    public void sendToClients(String playerName, StartedGame game , Result result) {
+        toClient.sendToUser(playerName, game.getGameName(), result);
+        allCommandLists.get(game.getGameName()).add(result);
+        toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
+        allCommandLists.get(game.getGameName()).add(game.getGameHistory());
     }
 }

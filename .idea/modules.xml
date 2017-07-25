@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
       <module fileurl="file://$PROJECT_DIR$/ttr.iml" filepath="$PROJECT_DIR$/ttr.iml" />
       <module fileurl="file://$PROJECT_DIR$/ttr-master.iml" filepath="$PROJECT_DIR$/ttr-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttr2.iml" filepath="$PROJECT_DIR$/ttr2.iml" />
       <module fileurl="file://$PROJECT_DIR$/ttr3.iml" filepath="$PROJECT_DIR$/ttr3.iml" />
     </modules>
   </component>

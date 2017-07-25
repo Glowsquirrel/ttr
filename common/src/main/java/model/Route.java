@@ -26,7 +26,7 @@ public class Route {
     private int sisterRouteKey;
     private boolean claimed = false;
     private int pointValue;
-
+    private String owner;
 
     public Route(City startCity, City endCity, int length, TrainCard color, int sisterRouteKey) {
 
@@ -79,7 +79,12 @@ public class Route {
         return isClaimed();
     }
 
-    public boolean claimRoute(PlayerColor playerColor, int numOfPlayersInGame, boolean sisterRouteClaimed) {
+    public String getOwner() {
+        return owner;
+    }
+
+    public boolean claimRoute(PlayerColor playerColor, String playerName,
+                              int numOfPlayersInGame, boolean sisterRouteClaimed) {
 
         final int DOUBLE_ROUTE_LIMIT = 3;
         if (sisterRouteClaimed){
@@ -87,6 +92,7 @@ public class Route {
                 return false;
             }
         }
+        owner = playerName;
         claimedColor = playerColor;
         claimed = true;
         return true;
