@@ -150,41 +150,59 @@ public class MapHelper {
      * @param color the color to draw the route
      */
     public static void drawMapRoute(GoogleMap map, MapRoute route, Integer color) {
+        // if there already is a route there, remove all of the segments
         routePolyLineMap.put(route, new HashSet<Polyline>());
 
+        // get the color of the route
         if (color == null) {
             color = route.getColor();
         }
 
+        // get the cities at the ends of the route
         MapCity city1 = route.getCity1();
         MapCity city2 = route.getCity2();
+
+        // get the lat and long for the cities
         LatLng currPos = city1.getLatLng();
         LatLng destPos = city2.getLatLng();
 
+        // calculate the heading (direction, angle) between the points
         double heading = SphericalUtil.computeHeading(currPos, destPos);
 
+        // if the route is a double route (there are two routes between the cities), adjust the
+        // starting and ending positions
         if (route.getDir() != 0) {
             currPos = SphericalUtil.computeOffset(currPos, CITY_RADIUS, heading + 90.0 * route.getDir());
             destPos = SphericalUtil.computeOffset(destPos, CITY_RADIUS, heading + 90.0 * route.getDir());
         }
 
+        // adjust the starting and ending positions so that we aren't starting right at the center
+        // of the city but rather just outside
         currPos = SphericalUtil.computeOffset(currPos, CITY_RADIUS, heading);
         destPos = SphericalUtil.computeOffsetOrigin(destPos, CITY_RADIUS, heading);
 
+        // calculate the distance between the start and destination
         double distance = SphericalUtil.computeDistanceBetween(currPos, destPos);
 
+        // get the number of segments the path should be split up into
         int segments = route.getLength();
 
+        // calculate the number of gaps there will be (this will always be 1 less than the number of
+        // segments).
         int gaps = segments - 1;
 
-        double gap = ROUTE_GAP;
+        // adjust the distance but removing the distance that will be taken up by gaps
+        distance -= ROUTE_GAP * gaps;
 
-        distance -= gap * gaps;
-
+        // calculate the distance for each individual segment
         double segment = distance / segments;
 
+        // calculate the heading from the current position to the destination, since the initial
+        // start and destination positions have been adjusted (every time the positions are moved,
+        // the heading needs to be recalculated because the earth is spherical).
         heading = SphericalUtil.computeHeading(currPos, destPos);
 
+        // draw a polyline from the current position to the end of the next segment
         LatLng nextPos;
         for (int i = 0; i < segments; i++) {
             nextPos = SphericalUtil.computeOffset(currPos, segment, heading);
@@ -195,18 +213,35 @@ public class MapHelper {
                     .width(ROUTE_WIDTH)
                     .clickable(true));
             line.setTag(route);
-            currPos = SphericalUtil.computeOffset(nextPos, gap, heading);
+            currPos = SphericalUtil.computeOffset(nextPos, ROUTE_GAP, heading);
             heading = SphericalUtil.computeHeading(currPos, destPos);
             routePolyLineMap.get(route).add(line);
         }
     }
 
+    /**
+     * Changes the color of a route. Use when a player claims a route.
+     *
+     * @param route the route to change the color of
+     * @param color the color to change the route to
+     */
     public static void changeColor(MapRoute route, int color) {
         for (Polyline line : routePolyLineMap.get(route)) {
             line.setColor(color);
         }
     }
 
+    /**
+     * Adds text on the map. Use to add the city labels onto the map
+     *
+     * @param context  Android context. Probably use Activity hosting the map.
+     * @param map      the actual GoogleMap object to draw on
+     * @param location the location the text will be drawn
+     * @param text     the string that will drawn
+     * @param padding  the padding for the text
+     * @param fontSize the size of the text
+     * @return the Marker (the text) that was placed on the map
+     */
     private static Marker addText(final Context context, final GoogleMap map,
                                   final LatLng location, final String text, final int padding,
                                   final int fontSize) {
