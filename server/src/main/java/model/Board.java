@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static model.TrainCard.WILD;
+
 
 public class Board {
 
@@ -18,12 +20,14 @@ public class Board {
     private Map<Integer, DestCard> destCardMap = new HashMap<>();
     private boolean replaceFaceUpFlag = false;
 
-    Board(){
+
+
+    Board() {
         destCardMap = DestCard.getDestCardMap();
         routeMap = Route.createRouteMap();
 
         initializeTrainCardDeck();
-        shuffleTrainCardDeck(null);
+        shuffleTrainCardDeck(true);
         setFaceUpTrainCards(faceUpTrainCards);
 
         drawFaceUpCards();
@@ -36,7 +40,7 @@ public class Board {
         countLocomotives();
     }
 
- /***********************************BOARD SETUP/SHUFFLING*****************************************/
+    /***********************************BOARD SETUP/SHUFFLING*****************************************/
     private void initializeTrainCardDeck() {
 
         final int NUM_OF_EACH_COLOR = 12;
@@ -55,12 +59,12 @@ public class Board {
         }
     }
 
-    void shuffleTrainCardDeck(ArrayList<TrainCard> discardedTrainCards) {
+    private void shuffleTrainCardDeck(boolean setUp) {
 
         final int NUM_OF_SWITCHES = 1000;
         List<TrainCard> shuffledDeck;
 
-        if(discardedTrainCards != null) {
+        if (!setUp) {
             shuffledDeck = discardedTrainCards;
         } else {
             shuffledDeck = trainCardDeck;
@@ -77,11 +81,12 @@ public class Board {
             shuffledDeck.set(positionTwo, savedCard);
         }
         trainCardDeck = shuffledDeck;
+        discardedTrainCards.clear();
     }
 
     //Sublist takes from 0 to one below the second parameter.
     private void drawFaceUpCards() {
-        final int FIFTH_CARD =  5;
+        final int FIFTH_CARD = 5;
 
         faceUpTrainCards = new ArrayList<>(trainCardDeck.subList(0, FIFTH_CARD));
         for (int a = 0; a < FIFTH_CARD; a++) {
@@ -95,7 +100,7 @@ public class Board {
         destCardDeck.addAll(destCardMap.values());
     }
 
-    private void shuffleDestCarDeck(){
+    private void shuffleDestCarDeck() {
 
         final int NUM_OF_SWITCHES = 1000;
         List<DestCard> shuffledDeck = destCardDeck;
@@ -132,12 +137,13 @@ public class Board {
         }
 
     }
- /**********************************GAMEPLAY************************************************/
 
-    public ArrayList<TrainCard> drawTrainCardsFromDeck(int numberDrawn) {
+    /**********************************GAMEPLAY************************************************/
+
+    ArrayList<TrainCard> drawTrainCardsFromDeck(int numberDrawn) {
 
         final int TOP_CARD_INDEX = 0;
-        ArrayList<TrainCard> drawnTrainCards = new ArrayList<TrainCard>();
+        ArrayList<TrainCard> drawnTrainCards = new ArrayList<>();
 
         for (int a = 0; a < numberDrawn; a++) {
             TrainCard topCard = trainCardDeck.get(TOP_CARD_INDEX);
@@ -149,7 +155,7 @@ public class Board {
     }
 
 
-    public ArrayList<DestCard> drawDestCards() {
+    ArrayList<DestCard> drawDestCards() {
         final int SIZE_OF_DRAW = 3;
         final int TOP_CARD_INDEX = 0;
 
@@ -163,14 +169,13 @@ public class Board {
         return drawnDestCards;
     }
 
-
-    public void pushBackDestCards(DestCard cardOne) {
+    void pushBackDestCards(DestCard cardOne) {
         if (cardOne != null) {
             destCardDeck.add(cardOne);
         }
     }
 
-    public List<Integer> getFaceUpCardCodes() {
+    List<Integer> getFaceUpCardCodes() {
         List<Integer> faceUpCodes = new ArrayList<>();
 
         for (TrainCard trainCard : faceUpTrainCards) {
@@ -179,7 +184,7 @@ public class Board {
         return faceUpCodes;
     }
 
-    public TrainCard drawFaceUpCard(int index) {
+    TrainCard drawFaceUpCard(int index) {
 
         final int TOP_CARD_INDEX = 0;
 
@@ -191,7 +196,7 @@ public class Board {
         return returnedCard;
     }
 
-    public List<Integer> replaceFaceUpCards() {
+    List<Integer> replaceFaceUpCards() {
         trainCardDeck.addAll(faceUpTrainCards);
         faceUpTrainCards.clear();
         final int FIFTH_INDEX = 4;
@@ -205,10 +210,17 @@ public class Board {
         return getFaceUpCardCodes();
     }
 
-    public void discardTrainCards(List<TrainCard> discardedTrainCards) {
+    void discardTrainCards(List<TrainCard> discardedTrainCards) {
         this.discardedTrainCards.addAll(discardedTrainCards);
     }
-    public boolean getReplaceFaceUpFlag() {
+
+    void reshuffleIfEmpty() {
+        if (trainCardDeck.size() == 0){
+            shuffleTrainCardDeck(false);
+        }
+    }
+
+    boolean getReplaceFaceUpFlag() {
         return replaceFaceUpFlag;
     }
 
@@ -224,12 +236,96 @@ public class Board {
         this.faceUpTrainCards = faceUpTrainCards;
     }
 
-    public Map<Integer, DestCard> getDestCardMap() {
+    int getRoutePoints(int routeId) {
+        return routeMap.get(routeId).getPointValue();
+    }
+    Map<Integer, DestCard> getDestCardMap() {
         return destCardMap;
     }
 
-    public Map<Integer, Route> getRouteMap() {
+    Map<Integer, Route> getRouteMap() {
         return routeMap;
     }
-}
 
+    boolean incorrectCards(int routeId, List<TrainCard>returnedTrainCards) {
+
+        Route route =  routeMap.get(routeId);
+        if (route.getLength() != returnedTrainCards.size()){
+            return false;
+        }
+
+        TrainCard routeColor = route.getColor();
+        TrainCard firstTrainCard = returnedTrainCards.get(0);
+        for (TrainCard currentCard : returnedTrainCards) {
+            if (currentCard != firstTrainCard) {
+                return false;
+            }
+        }
+        if (routeColor == WILD) {
+            return true;
+        }
+        else if (routeColor == firstTrainCard){
+            return true;
+        }
+
+        return false;
+    }
+
+    boolean notEnoughCars(int routeId, int numOfCars) {
+        Route route = routeMap.get(routeId);
+        return (numOfCars < route.getLength());
+    }
+    //set owner, set color, set claimed.
+    //
+
+    boolean doubleRouteFailure(int routeId, int numOfPlayers, String playerName){
+        Route route = routeMap.get(routeId);
+        if (route.sisterRouteIsClaimed()){
+
+            int sisterRouteKey = route.getSisterRouteKey();
+            Route sisterRoute = routeMap.get(sisterRouteKey);
+            String sisterRouteOwner = sisterRoute.getOwner();
+
+            if (sisterRouteOwner.equals(playerName)){
+                return true;
+            }
+            if (numOfPlayers < 4){
+                return true;
+            }
+        }
+
+        return false;
+    }
+    boolean routeIsClaimed(int routeId){
+        return routeMap.get(routeId).isClaimed();
+    }
+    void claimRoute(int routeId, PlayerColor playerColor, String playerName){
+        Route route = routeMap.get(routeId);
+
+        route.setOwner(playerName);
+        route.setClaimedColor(playerColor);
+        route.claim();
+
+        if (route.isDoubleRoute()){
+            int sisterRouteKey = route.getSisterRouteKey();
+            Route sisterRoute = routeMap.get(sisterRouteKey);
+            sisterRoute.setSisterRouteClamed();
+        }
+    }
+    //GETTERS USED FOR TESTING
+    public List<TrainCard> getTrainCardDeck() {
+        return trainCardDeck;
+    }
+
+    public List<TrainCard> getFaceUpTrainCards() {
+        return faceUpTrainCards;
+    }
+
+    public List<TrainCard> getDiscardedTrainCards() {
+        return discardedTrainCards;
+    }
+
+    public List<DestCard> getDestCardDeck() {
+        return destCardDeck;
+    }
+}
