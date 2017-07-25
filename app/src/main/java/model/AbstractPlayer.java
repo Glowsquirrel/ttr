@@ -11,6 +11,8 @@ import static fysh340.ticket_to_ride.R.color.neon_yellow;
 /**
  * Contains all the information that a player would know about any other player in the game. Both Player
  * and VisiblePlayer extend this class.
+ *
+ * @author Kalan
  */
 public abstract class AbstractPlayer {
     private final int STARTING_NUMBER_OF_TRAINS = 45;

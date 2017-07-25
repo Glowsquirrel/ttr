@@ -6,7 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static model.TrainCard.BLACK;
+import static model.TrainCard.BLUE;
+import static model.TrainCard.GREEN;
+import static model.TrainCard.ORANGE;
+import static model.TrainCard.PURPLE;
+import static model.TrainCard.RED;
+import static model.TrainCard.WHITE;
 import static model.TrainCard.WILD;
+import static model.TrainCard.YELLOW;
 
 
 public class Board {
@@ -84,7 +92,6 @@ public class Board {
         discardedTrainCards.clear();
     }
 
-    //Sublist takes from 0 to one below the second parameter.
     private void drawFaceUpCards() {
         final int FIFTH_CARD = 5;
 
@@ -220,33 +227,6 @@ public class Board {
         }
     }
 
-    boolean getReplaceFaceUpFlag() {
-        return replaceFaceUpFlag;
-    }
-
-    void setDestCardDeck(List<DestCard> destCardDeck) {
-        this.destCardDeck = destCardDeck;
-    }
-
-    void setTrainCardDeck(List<TrainCard> trainCardDeck) {
-        this.trainCardDeck = trainCardDeck;
-    }
-
-    void setFaceUpTrainCards(List<TrainCard> faceUpTrainCards) {
-        this.faceUpTrainCards = faceUpTrainCards;
-    }
-
-    int getRoutePoints(int routeId) {
-        return routeMap.get(routeId).getPointValue();
-    }
-    Map<Integer, DestCard> getDestCardMap() {
-        return destCardMap;
-    }
-
-    Map<Integer, Route> getRouteMap() {
-        return routeMap;
-    }
-
     boolean incorrectCards(int routeId, List<TrainCard>returnedTrainCards) {
 
         Route route =  routeMap.get(routeId);
@@ -275,8 +255,6 @@ public class Board {
         Route route = routeMap.get(routeId);
         return (numOfCars < route.getLength());
     }
-    //set owner, set color, set claimed.
-    //
 
     boolean doubleRouteFailure(int routeId, int numOfPlayers, String playerName){
         Route route = routeMap.get(routeId);
@@ -296,9 +274,7 @@ public class Board {
 
         return false;
     }
-    boolean routeIsClaimed(int routeId){
-        return routeMap.get(routeId).isClaimed();
-    }
+
     void claimRoute(int routeId, PlayerColor playerColor, String playerName){
         Route route = routeMap.get(routeId);
 
@@ -309,10 +285,48 @@ public class Board {
         if (route.isDoubleRoute()){
             int sisterRouteKey = route.getSisterRouteKey();
             Route sisterRoute = routeMap.get(sisterRouteKey);
-            sisterRoute.setSisterRouteClamed();
+            sisterRoute.setSisterRouteClaimed();
         }
     }
-    //GETTERS USED FOR TESTING
+
+    boolean getReplaceFaceUpFlag() {
+        return replaceFaceUpFlag;
+    }
+
+    int getRoutePoints(int routeId) {
+        return routeMap.get(routeId).getPointValue();
+    }
+
+    Map<Integer, DestCard> getDestCardMap() {
+        return destCardMap;
+    }
+
+    Map<Integer, Route> getRouteMap() {
+        return routeMap;
+    }
+
+    private void setDestCardDeck(List<DestCard> destCardDeck) {
+        this.destCardDeck = destCardDeck;
+    }
+
+    private void setTrainCardDeck(List<TrainCard> trainCardDeck) {
+        this.trainCardDeck = trainCardDeck;
+    }
+
+    private void setFaceUpTrainCards(List<TrainCard> faceUpTrainCards) {
+        this.faceUpTrainCards = faceUpTrainCards;
+    }
+
+    int getTrainCardDeckSize() {
+        return trainCardDeck.size();
+    }
+
+    boolean routeIsClaimed(int routeId){
+        return routeMap.get(routeId).isClaimed();
+    }
+
+
+    //ONLY FOR TESTS BElOW HERE:
     public List<TrainCard> getTrainCardDeck() {
         return trainCardDeck;
     }
@@ -328,4 +342,88 @@ public class Board {
     public List<DestCard> getDestCardDeck() {
         return destCardDeck;
     }
+
+    public int getNumOfRedCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == RED) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+
+    public int getNumOfBlueCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == BLUE) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfGreenCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == GREEN) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfYellowCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == YELLOW) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfBlackCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == BLACK) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfPurpleCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == PURPLE) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfOrangeCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == ORANGE) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfWhiteCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == WHITE) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+    public int getNumOfWildCards() {
+        int numOfCards = 0;
+        for (int a = 0; a < trainCardDeck.size(); a++) {
+            if (trainCardDeck.get(a) == WILD) {
+                numOfCards++;
+            }
+        }
+        return numOfCards;
+    }
+
 }

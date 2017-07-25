@@ -1,12 +1,17 @@
 package fysh340.ticket_to_ride.game.fragments;
 
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.GameView;
@@ -15,6 +20,9 @@ import model.Game;
 import model.Route;
 import model.TrainCard;
 import serverproxy.ServerProxy;
+
+import static fysh340.ticket_to_ride.R.drawable.grad;
+import static model.TrainCard.RED;
 
 /**
  *  <h1>DeckFragment Fragment</h1>
@@ -29,6 +37,7 @@ public class DeckFragment extends Fragment implements Observer {
     private Game mGame = Game.getGameInstance();
 
     private TextView[] mFaceUpCards;
+    private List<Integer> mDrawnTrainCards;
     
     private TextView mSelectedRoute;
 
@@ -36,6 +45,7 @@ public class DeckFragment extends Fragment implements Observer {
         // Required empty public constructor
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void update() {
         if(mGame.iHaveDifferentFaceUpCards()) {
@@ -43,8 +53,8 @@ public class DeckFragment extends Fragment implements Observer {
         }
         if(mGame.routeIDHasChanged()) {
             Route currentlySelected = Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
-            String routeText = currentlySelected.getStartCity().getPrettyName() + " to " +
-                                       currentlySelected.getEndCity().getPrettyName();
+            String routeText = "Claim " + currentlySelected.getStartCity().getPrettyName() + " to "
+                                       + currentlySelected.getEndCity().getPrettyName() + " Route";
             mSelectedRoute.setText(routeText);
         }
         if (mGame.iHavePossibleDestCards()){
@@ -58,6 +68,7 @@ public class DeckFragment extends Fragment implements Observer {
         mGame.register(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,34 +89,62 @@ public class DeckFragment extends Fragment implements Observer {
         repopulateFaceUpCards();
         
         mSelectedRoute = (TextView)deckView.findViewById(R.id.selectedRoute);
-
-        //Set click listeners for each view
-        for(int i = 0; i < mFaceUpCards.length; ++i) {
-            mFaceUpCards[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ServerProxy toServer = new ServerProxy();
-                    //TODO: Find a way to get index within the inner class or don't use a loop
-                }
-            });
-        }
-
-        setUpDeckListeners(deckView);
-
-        Button myContinueButton = (Button) deckView.findViewById(R.id.continueButton);
-        myContinueButton.setOnClickListener(new View.OnClickListener() {
+    
+        mDrawnTrainCards = new ArrayList<>();
+        
+        mFaceUpCards[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                int index = 0;
+                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
+                                                        mGame.getMyGameName(), index);
             }
         });
-        
-        Button claimRouteButton = (Button)deckView.findViewById(R.id.chooseRouteButton);
-        claimRouteButton.setOnClickListener(new View.OnClickListener() {
+    
+        mFaceUpCards[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int index = 1;
+                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
+                                                        mGame.getMyGameName(), index);
+            }
+        });
+    
+        mFaceUpCards[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = 2;
+                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
+                                                        mGame.getMyGameName(), index);
+            }
+        });
+    
+        mFaceUpCards[3].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = 3;
+                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
+                                                        mGame.getMyGameName(), index);
+            }
+        });
+    
+        mFaceUpCards[4].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = 4;
+                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
+                                                        mGame.getMyGameName(), index);
+            }
+        });
+
+        setUpDeckListeners(deckView);
+        
+        mSelectedRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSelectedRoute.setText("");
                 mServerProxy.claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
-                                        mGame.getCurrentlySelectedRouteID(), mGame.getTrainCards());
+                        mGame.getCurrentlySelectedRouteID(), mGame.getTrainCards());
             }
         });
 
@@ -131,6 +170,7 @@ public class DeckFragment extends Fragment implements Observer {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void repopulateFaceUpCards() {
         //Get train cards that are up-for-grabs
         List<Integer> cardsByID = mGame.getFaceUpCards();
@@ -138,7 +178,43 @@ public class DeckFragment extends Fragment implements Observer {
         //For each view, set the view text to the train card color/type
         for(int i = 0; i < mFaceUpCards.length; ++i) {
             TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(i));
-            String cardTitle = nextCard.getPrettyname() + " Card";
+            switch(nextCard) {
+                case RED:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.red));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    break;
+                case BLUE:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.blue));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    break;
+                case GREEN:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.green));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    break;
+                case YELLOW:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.yellow));
+                    break;
+                case BLACK:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.black));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    break;
+                case PURPLE:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.purple));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    break;
+                case ORANGE:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.orange));
+                    break;
+                case WHITE:
+                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.white));
+                    break;
+                case WILD:
+                    mFaceUpCards[i].setBackgroundResource(R.drawable.grad);
+                    break;
+                default:
+                    break;
+            }
+            String cardTitle = "Draw " + nextCard.getPrettyname() + " Card";
             mFaceUpCards[i].setText(cardTitle);
         }
     }

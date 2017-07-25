@@ -2,7 +2,9 @@ package model;
 
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static model.City.ATLANTA;
 import static model.City.BOSTON;
@@ -76,6 +78,16 @@ public class DestCard {
         }
     }
 
+    public static int getDestCardKey(DestCard comparedDestCard) {
+
+        Set<DestCard> allDestCards = new HashSet<>(destCardMap.values());
+        for(DestCard destCard : allDestCards) {
+            if (destCard.equals(comparedDestCard)){
+                return destCard.getMapValue();
+            }
+        }
+        return -1;
+    }
     private static Map<Integer, DestCard> destCardMap = createDestCardMap();
 
     public static Map<Integer, DestCard> getDestCardMap(){
