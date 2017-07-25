@@ -18,8 +18,6 @@ import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
 
-import static model.TrainCard.WILD;
-
 /**
  *
  * Container class for started games.
@@ -187,7 +185,7 @@ public class StartedGame {
 
         String message = playerName + " drew a train card from the deck.";
         setGameHistory(playerName, message, -1);
-        return new DrawTrainCardFromDeckResult(playerName, TrainCard.getIntByTrainCard(trainCard.get(0)));
+        return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardKey(trainCard.get(0)));
     }
 
 
@@ -214,7 +212,7 @@ public class StartedGame {
 
         String message = playerName + " drew a face-up train card.";
         setGameHistory(playerName, message, -1);
-        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getIntByTrainCard(drawnCard));
+        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardKey(drawnCard));
     }
 
 
@@ -234,35 +232,25 @@ public class StartedGame {
 
         if (currentPlayer != null) {
             List<TrainCard> returnedTrainCards = convertKeysToTrainCards(trainCards);
-            Route route = board.getRouteMap().get(routeId);
 
-            if(!correctCards(route, returnedTrainCards)){
+            if(board.routeIsClaimed(routeId)) {
+                throw new GamePlayException("Route has already been claimed.");
+            }
+            if(board.incorrectCards(routeId, returnedTrainCards)){
                 throw new GamePlayException("Cannot claim route with cards given.");
             }
-
-
-            int sisterRouteKey = route.getSisterRouteKey();
-            boolean sisterRouteClaimed = false;
-
-            if (sisterRouteKey > 0) { //If a double route
-                sisterRouteClaimed = board.getRouteMap().get(route.getSisterRouteKey()).isClaimed(); //
+            if (board.notEnoughCars(routeId, currentPlayer.getNumOfCars())) {
+                throw new GamePlayException("Not enough cars to claim route.");
+            }
+            if (board.doubleRouteFailure(routeId, allPlayers.size(), playerName)) {
+                throw new GamePlayException("Can not claime double route.");
             }
 
-            if(sisterRouteClaimed){
-                String owner = board.getRouteMap().get(route.getSisterRouteKey()).getOwner();
-                if (owner.equals(playerName)){
-                    throw new GamePlayException("Same player cannot claim double route");
-                }
-            }
-            if (route.claimRoute(currentPlayer.getPlayerColor(), currentPlayer.getUsername(),
-                    allPlayers.size(), sisterRouteClaimed)){
-                board.discardTrainCards(returnedTrainCards);
-                currentPlayer.addScore(route.getPointValue());
-                currentPlayer.addNumOfRoutes();
-                currentPlayer.removeCars(returnedTrainCards.size());
-            } else {
-                throw new GamePlayException("Cannot claim double route.");
-            }
+            board.claimRoute(routeId, currentPlayer.getPlayerColor(), playerName);
+            currentPlayer.addNumOfRoutes();
+            currentPlayer.addScore(board.getRoutePoints(routeId));
+            currentPlayer.removeTrainCards(returnedTrainCards);
+            board.discardTrainCards(returnedTrainCards);
 
         } else {
             throw new GamePlayException("Invalid player name");
@@ -285,28 +273,7 @@ public class StartedGame {
         return returnTrainCards;
     }
 
-    private boolean correctCards(Route route, List<TrainCard>returnedTrainCards) {
 
-        if (route.getLength() != returnedTrainCards.size()){
-            return false;
-        }
-
-        TrainCard routeColor = route.getColor();
-        TrainCard firstTrainCard = returnedTrainCards.get(0);
-        for (TrainCard currentCard : returnedTrainCards) {
-            if (currentCard != firstTrainCard) {
-                return false;
-            }
-        }
-        if (routeColor == WILD) {
-           return true;
-        }
-        else if (routeColor == firstTrainCard){
-            return true;
-        }
-
-        return false;
-    }
     //TODO: change ServerModel; Draw from face up gamehist?
     //TODO; Advise client model on claimRoute -1; Advise client model on face up game hist + Replace Face UP
     /*************************************Getters/Setters**********************************************/
