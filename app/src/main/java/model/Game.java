@@ -37,10 +37,16 @@ public class Game implements Observable{
     private Player myself;
     private List<String> playerUserNames = new ArrayList<>();
     private Map<String, AbstractPlayer> playerMap = new HashMap<>();
-    private List<Integer> trainCards;
+    private List<Integer> trainCards = new ArrayList<>();
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
+<<<<<<< Updated upstream
+    private int trainCardDeckSize = 0;
+    private int destinationCardDeckSize = 0;
+=======
+    private ServerError serverError = new ServerError();
+>>>>>>> Stashed changes
 
     /**
      * retrieves the abstract player object associated with the username
@@ -143,6 +149,42 @@ public class Game implements Observable{
         iHaveDifferentFAceUpCards(false);
         return faceUpCards;
     }
+    
+    public void setTrainCardDeckSize(int newSize) {
+        trainCardDeckSize = newSize;
+    }
+    public int getTrainCardDeckSize() {
+        return trainCardDeckSize;
+    }
+    
+    //Begin trainCardDeckSize flag
+    private boolean newTrainCardDeckSize = false;
+    public boolean trainCardDeckSizeHasChanged() {
+        return newTrainCardDeckSize;
+    }
+    public void trainCardDeckSizeHasChanged(boolean hasChanged) {
+        newTrainCardDeckSize = hasChanged;
+        notifyObserver();
+    }
+    //end trainCardDeckSize flags
+    
+    public void setDestinationCardDeckSize(int newSize) {
+        trainCardDeckSize = newSize;
+    }
+    public int getDestinationCardDeckSize() {
+        return destinationCardDeckSize;
+    }
+    
+    //Begin destinationCardDeckSize flag
+    private boolean newDestinationCardDeckSize = false;
+    public boolean destinationCardDeckSizeHasChanged() {
+        return newDestinationCardDeckSize;
+    }
+    public void destinationCardDeckSizeHasChanged(boolean hasChanged) {
+        newDestinationCardDeckSize = hasChanged;
+        notifyObserver();
+    }
+    //end destinationCardDeckSize flags
     
     //begin CurrentlySelectedRouteID flags
     private boolean newRouteID = false;
@@ -330,5 +372,10 @@ public class Game implements Observable{
      */
     public List<DestCard> getPossibleDestCards(){
         return possibleDestCards;
+    }
+
+
+    public ServerError getServerError() {
+        return serverError;
     }
 }

@@ -23,7 +23,4 @@
     <string name="spaced_hyphen">\ -\ </string>
     <string name="confirm">Confirm</string>
 
-    <string name="deck_face_down">Draw from Face Down</string>
-    <string name="dest_deck">Draw Dest. Cards</string>
-
 </resources>
