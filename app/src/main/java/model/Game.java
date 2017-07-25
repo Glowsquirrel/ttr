@@ -36,10 +36,12 @@ public class Game implements Observable{
     private Player myself;
     private List<String> playerUserNames = new ArrayList<>();
     private Map<String, AbstractPlayer> playerMap = new HashMap<>();
-    private List<Integer> trainCards;
+    private List<Integer> trainCards = new ArrayList<>();
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
+    private int trainCardDeckSize = 0;
+    private int destinationCardDeckSize = 0;
 
     /**
      * @pre this method must be declared on the only instance of the game object
@@ -141,6 +143,42 @@ public class Game implements Observable{
         iHaveDifferentFAceUpCards(false);
         return faceUpCards;
     }
+    
+    public void setTrainCardDeckSize(int newSize) {
+        trainCardDeckSize = newSize;
+    }
+    public int getTrainCardDeckSize() {
+        return trainCardDeckSize;
+    }
+    
+    //Begin trainCardDeckSize flag
+    private boolean newTrainCardDeckSize = false;
+    public boolean trainCardDeckSizeHasChanged() {
+        return newTrainCardDeckSize;
+    }
+    public void trainCardDeckSizeHasChanged(boolean hasChanged) {
+        newTrainCardDeckSize = hasChanged;
+        notifyObserver();
+    }
+    //end trainCardDeckSize flags
+    
+    public void setDestinationCardDeckSize(int newSize) {
+        trainCardDeckSize = newSize;
+    }
+    public int getDestinationCardDeckSize() {
+        return destinationCardDeckSize;
+    }
+    
+    //Begin destinationCardDeckSize flag
+    private boolean newDestinationCardDeckSize = false;
+    public boolean destinationCardDeckSizeHasChanged() {
+        return newDestinationCardDeckSize;
+    }
+    public void destinationCardDeckSizeHasChanged(boolean hasChanged) {
+        newDestinationCardDeckSize = hasChanged;
+        notifyObserver();
+    }
+    //end destinationCardDeckSize flags
     
     //begin CurrentlySelectedRouteID flags
     private boolean newRouteID = false;
