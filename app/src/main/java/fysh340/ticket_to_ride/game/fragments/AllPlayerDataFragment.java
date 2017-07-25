@@ -112,41 +112,20 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             int myRoutes = myPlayer.getNumRoutes();
             int myScore = myPlayer.getScore();
             int color=myPlayer.getColor();
+            int colors=getResources().getColor(color);
 
             holder.itemUsername.setText(playerName);
             holder.itemTrains.setText(String.valueOf(myTrains));
             holder.itemCards.setText(String.valueOf(myCards));
             holder.itemRoutes.setText(String.valueOf(myRoutes));
             holder.itemScore.setText(String.valueOf(myScore));
-            holder.itemUsername.setBackgroundColor(getColor(color));
+            holder.itemUsername.setBackgroundColor(colors);
         }
 
         @Override
         public int getItemCount() {
             return allPlayers.size();
         }
-        private int getColor(int i)
-        {
-            int color=0;
-            switch(i) {
-                case(0):
-                    color=getResources().getColor(neon_yellow);
-                    break;
-                case(1):
-                    color=getResources().getColor(neon_orange);
-                    break;
-                case(2):
-                    color=getResources().getColor(neon_green);
-                    break;
-                case(3):
-                    color=getResources().getColor(neon_pink);
-                    break;
-                case(4):
-                    color=getResources().getColor(neon_grey);
-                    break;
 
-            }
-            return color;
-        }
     }
 }

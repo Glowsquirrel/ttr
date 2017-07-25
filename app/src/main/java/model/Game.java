@@ -66,6 +66,8 @@ public class Game implements Observable{
         for(String name : playerNames) {
             if (name.equals(myself.getMyUsername())){
                 playerMap.put(myself.getMyUsername(), this.myself);
+                myself.setColor(i);
+                i++;
                 continue;
             }
             VisiblePlayer myPlayer = new VisiblePlayer(name);
