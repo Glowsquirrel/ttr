@@ -281,6 +281,4 @@ public class ClientModel implements Observable{
     }
 
     public List<DestCard> myDestinationCards;
-
-
 }

@@ -17,6 +17,12 @@ import interfaces.Observer;
 import model.AbstractPlayer;
 import model.Game;
 
+import static fysh340.ticket_to_ride.R.color.neon_green;
+import static fysh340.ticket_to_ride.R.color.neon_grey;
+import static fysh340.ticket_to_ride.R.color.neon_orange;
+import static fysh340.ticket_to_ride.R.color.neon_pink;
+import static fysh340.ticket_to_ride.R.color.neon_yellow;
+
 public class AllPlayerDataFragment extends Fragment implements Observer {
     private Game mGame = Game.getGameInstance();
     private MyPlayerListAdapter mAdapter = new MyPlayerListAdapter(mGame.getVisiblePlayerInformation());
@@ -105,17 +111,21 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             int myCards = myPlayer.getNumCards();
             int myRoutes = myPlayer.getNumRoutes();
             int myScore = myPlayer.getScore();
+            int color=myPlayer.getColor();
+            int colors=getResources().getColor(color);
 
             holder.itemUsername.setText(playerName);
             holder.itemTrains.setText(String.valueOf(myTrains));
             holder.itemCards.setText(String.valueOf(myCards));
             holder.itemRoutes.setText(String.valueOf(myRoutes));
             holder.itemScore.setText(String.valueOf(myScore));
+            holder.itemUsername.setBackgroundColor(colors);
         }
 
         @Override
         public int getItemCount() {
             return allPlayers.size();
         }
+
     }
 }

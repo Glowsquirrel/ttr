@@ -16,5 +16,19 @@
     <string name="players">Players</string>
     <string name="dest_cards">Dest Cards</string>
     <string name="train_card">Train Cards</string>
+    <string name="select_your_dest_cards">Select Destination Cards to keep:</string>
+    <string name="dest_card_sample_city1">Sault St Marie</string>
+    <string name="dest_card_sample_city2">Oklahoma City</string>
+    <string name="dest_card_sample_score">15</string>
+    <string name="spaced_hyphen">\ -\ </string>
+    <string name="confirm">Confirm</string>
+
+    <string name="deck_face_down">Draw from Face Down</string>
+    <string name="dest_deck">Draw Dest. Cards</string>
+    <string name="choose_cards">Choose Selected Cards</string>
+    <string name="choose_route">Choose Route</string>
+    <string name="face_up_title">Face Up Cards</string>
+    <string name="selected_route_title">Selected Route</string>
+    <string name="claim_route">Claim Selected Route</string>
 
 </resources>

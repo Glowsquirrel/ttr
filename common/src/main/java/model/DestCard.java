@@ -97,6 +97,7 @@ public class DestCard {
     private static Map<Integer, DestCard> createDestCardMap() {
         Map<Integer, DestCard> destCardMap = new HashMap<>();
 
+
         destCardMap.put(0, new DestCard(0, BOSTON, MIAMI, 12));
         destCardMap.put(1, new DestCard(1, CALGARY, PHOENIX, 13));
         destCardMap.put(2, new DestCard(2, CALGARY, SALT_LAKE_CITY, 7));

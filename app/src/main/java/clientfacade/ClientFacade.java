@@ -9,6 +9,7 @@ import model.ChatHistoryModel;
 import model.ClientModel;
 import model.Deck;
 import model.Game;
+import model.MapModel;
 import model.Player;
 import model.RunningGame;
 import model.UnstartedGame;
@@ -21,6 +22,7 @@ public class ClientFacade implements IClient{
     private ClientModel clientModel = ClientModel.getMyClientModel();
     private Game game = Game.getGameInstance();
     private ChatHistoryModel chatModel = ChatHistoryModel.myChat;
+    private MapModel map=MapModel.getMapInstance();
 
     public void postMessage(String message){
         clientModel.setMessageToToast(message);
@@ -73,15 +75,16 @@ public class ClientFacade implements IClient{
 
     @Override
     public void claimRoute(String username, int routeID){
-
+        map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
     }
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
-        if(username.equals(game.getMyself().getMyUsername())) { //calling this method should always mean it is meant for this client in the first place
-            Deck.getInstance().setAvailableDestCards(destCards);
+        if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
+            game.setPossibleDestCards(destCards);
+            game.iHavePossibleDestCards(true);
+            game.notifyObserver();
         }
-
     }
 
     @Override
