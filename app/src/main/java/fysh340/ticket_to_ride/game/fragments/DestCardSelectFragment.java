@@ -45,7 +45,6 @@ public class DestCardSelectFragment extends Fragment implements Observer{
         possibleDestCards = mGame.getPossibleDestCards();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -167,8 +166,6 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                     }
                 }
             });
-
-
 
     }
 
