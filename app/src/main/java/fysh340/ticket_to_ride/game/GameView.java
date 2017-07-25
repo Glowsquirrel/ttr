@@ -17,11 +17,13 @@ public class GameView extends AppCompatActivity {
     private PlayerTrainCardsFragment playerTrainCardsFragment;
     private PlayerDestCardsFragment playerDestCardsFragment;
     private DeckFragment deckFragment;
+    private DestCardSelectFragment destCardSelectFragment;
     private ChatHistory chatHistory;
     private MapFragment mapFragment;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
     private boolean showingTrainCards = true;
+    private boolean showingDeck = true;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +43,19 @@ public class GameView extends AppCompatActivity {
         playerDestCardsFragment = new PlayerDestCardsFragment();
         allPlayerDataFragment = new AllPlayerDataFragment();
         deckFragment = new DeckFragment();
+        destCardSelectFragment = new DestCardSelectFragment();
 
+        transaction.add(R.id.players_fragment_container, allPlayerDataFragment);
         transaction.add(R.id.map_fragment_container, mapFragment);
+        transaction.add(R.id.left_drawer, chatHistory);
 
         transaction.add(R.id.cards_fragment_container, playerTrainCardsFragment);
         transaction.add(R.id.cards_fragment_container, playerDestCardsFragment);
         transaction.hide(playerDestCardsFragment);
-        transaction.add(R.id.players_fragment_container, allPlayerDataFragment);
+
         transaction.add(R.id.deck_fragment_container, deckFragment);
-        transaction.add(R.id.left_drawer, chatHistory);
+        transaction.add(R.id.deck_fragment_container, destCardSelectFragment);
+        transaction.hide(destCardSelectFragment);
 
         transaction.commit();
     }
@@ -73,6 +79,23 @@ public class GameView extends AppCompatActivity {
             ft.hide(playerDestCardsFragment);
             ft.show(playerTrainCardsFragment);
         }
+        ft.commit();
+    }
+
+    public void switchDeckFragment(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        if (showingDeck){
+            showingDeck = false;
+            ft.hide(deckFragment);
+            ft.show(destCardSelectFragment);
+        } else{
+            showingDeck = true;
+            ft.hide(destCardSelectFragment);
+            ft.show(deckFragment);
+        }
+
         ft.commit();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
@@ -56,11 +57,15 @@ public class DeckFragment extends Fragment implements Observer {
                                        + currentlySelected.getEndCity().getPrettyName() + " Route";
             mSelectedRoute.setText(routeText);
         }
+        if (mGame.iHavePossibleDestCards()){
+            mGame.iHavePossibleDestCards(false);
+            ((GameView)getActivity()).switchDeckFragment();
+        }
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mGame.register(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)

@@ -16,20 +16,20 @@
             android:id="@+id/dest_card_city_name_1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Sault_St_Marie"
+            android:text="@string/dest_card_sample_city1"
             android:textSize="14sp"
             android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text=" - "/>
+            android:text="@string/spaced_hyphen"/>
 
         <TextView
             android:id="@+id/dest_card_city_name_2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Oklahoma_City"
+            android:text="@string/dest_card_sample_city2"
             android:textSize="14sp"
             android:gravity="center" />
 
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dest_card_cities"
-        android:text="15"
+        android:text="@string/dest_card_sample_score"
         android:textSize="16sp"
         android:gravity="center"/>
 
