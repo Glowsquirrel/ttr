@@ -85,6 +85,10 @@ public class Player extends AbstractPlayer {
         return myDestCards;
     }
 
+    public void addDestCard(DestCard destCard){
+        this.myDestCards.add(destCard);
+    }
+
     public boolean addCards(List<TrainCard> allCards){
          for (TrainCard currentCard : allCards){
              if (currentCard == TrainCard.RED){

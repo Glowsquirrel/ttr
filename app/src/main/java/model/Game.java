@@ -141,4 +141,29 @@ public class Game implements Observable{
         uiHandler.post(runnable); //do the run() method in previously declared runnable on UI thread
     }
     //end Observerable
+
+    private boolean iHaveDifferentDestCards = false;
+    public boolean iHaveDifferentDestCards(){
+        return iHaveDifferentDestCards;
+    }
+    public void iHaveDifferentDestCards(boolean iHaveDifferentDestCards){
+        this.iHaveDifferentDestCards = iHaveDifferentDestCards;
+    }
+
+    private List<DestCard> possibleDestCards;
+    private boolean iHavePossibleDestCards = false;
+    public void addPossibleDestCards(List<Integer> possibleDestCards){
+        for (int i = 0; i < possibleDestCards.size(); i++){
+            this.possibleDestCards.add(DestCard.getDestCardByID(possibleDestCards.get(i)));
+        }
+    }
+    public boolean iHavePossibleDestCards(){
+        return iHavePossibleDestCards;
+    }
+    public void iHavePossibleDestCards(boolean iHavePossibleDestCards){
+        this.iHavePossibleDestCards = iHavePossibleDestCards;
+    }
+    public List<DestCard> getPossibleDestCards(){
+        return possibleDestCards;
+    }
 }
