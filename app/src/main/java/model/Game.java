@@ -31,18 +31,6 @@ public class Game implements Observable{
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
-    private boolean newRouteID = false;
-
-    public int getCurrentlySelectedRouteID() {
-        newRouteID = false;
-        return currentlySelectedRouteID;
-    }
-
-    public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
-        this.currentlySelectedRouteID = currentlySelectedRouteID;
-        newRouteID = true;
-        notifyObserver();
-    }
 
     public AbstractPlayer getPlayerByName(String username) {
         return playerMap.get(username);
@@ -92,9 +80,25 @@ public class Game implements Observable{
     }
 
     public List<Integer> getFaceUpCards() {
+        iHaveDifferentFAceUpCards(false);
         return faceUpCards;
     }
-
+    
+    public int getCurrentlySelectedRouteID() {
+        newRouteID = false;
+        return currentlySelectedRouteID;
+    }
+    public void setCurrentlySelectedRouteID(int currentlySelectedRouteID) {
+        this.currentlySelectedRouteID = currentlySelectedRouteID;
+        newRouteID = true;
+        notifyObserver();
+    }
+    //begin CurrentlySelectedRouteID flags
+    private boolean newRouteID = false;
+    public boolean routeIDHasChanged() {
+        return newRouteID;
+    }
+    
     //begin AllPlayerData flags
     private boolean playerHasChanged = false;
     public boolean aPlayerHasChanged() {

@@ -11,6 +11,7 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.Game;
+import model.Route;
 import model.TrainCard;
 import serverproxy.ServerProxy;
 
@@ -38,6 +39,12 @@ public class DeckFragment extends Fragment implements Observer {
     public void update() {
         if(mGame.iHaveDifferentFaceUpCards()) {
             repopulateFaceUpCards();
+        }
+        if(mGame.routeIDHasChanged()) {
+            Route currentlySelected = Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
+            String routeText = currentlySelected.getStartCity().getPrettyName() + " to " +
+                                       currentlySelected.getEndCity().getPrettyName();
+            mSelectedRoute.setText(routeText);
         }
     }
     @Override
@@ -81,7 +88,16 @@ public class DeckFragment extends Fragment implements Observer {
         myContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                
+            }
+        });
+        
+        Button claimRouteButton = (Button)deckView.findViewById(R.id.chooseRouteButton);
+        claimRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mServerProxy.claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
+                                        mGame.getCurrentlySelectedRouteID(), mGame.getTrainCards());
             }
         });
 
