@@ -33,6 +33,9 @@ import static model.TrainCard.RED;
  *  @since          7-22-17
  */
 public class DeckFragment extends Fragment implements Observer {
+    private static final String TRAIN_DECK = "Train Card Deck\n";
+    private static final String DEST_DECK = "Dest. Cards\n";
+    
     private ServerProxy mServerProxy = new ServerProxy();
     private Game mGame = Game.getGameInstance();
 
@@ -40,6 +43,9 @@ public class DeckFragment extends Fragment implements Observer {
     private List<Integer> mDrawnTrainCards;
     
     private TextView mSelectedRoute;
+    
+    private TextView mFaceDownCards;
+    private TextView mDestinationDeck;
 
     public DeckFragment() {
         // Required empty public constructor
@@ -61,6 +67,11 @@ public class DeckFragment extends Fragment implements Observer {
             mGame.iHavePossibleDestCards(false);
             ((GameView)getActivity()).switchDeckFragment();
         }
+        String deckDescription = TRAIN_DECK + mGame.getTrainCards().size();
+        mFaceDownCards.setText(deckDescription);
+    
+        deckDescription = DEST_DECK + mGame.getPossibleDestCards().size();
+        mDestinationDeck.setText(deckDescription);
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +147,14 @@ public class DeckFragment extends Fragment implements Observer {
                                                         mGame.getMyGameName(), index);
             }
         });
+        
+        mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
+        String deckDescription = TRAIN_DECK + mGame.getTrainCards().size();
+        mFaceDownCards.setText(deckDescription);
+        
+        mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
+        deckDescription = DEST_DECK + mGame.getPossibleDestCards().size();
+        mDestinationDeck.setText(deckDescription);
 
         setUpDeckListeners(deckView);
         
