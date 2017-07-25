@@ -6,12 +6,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.fragments.*;
+import interfaces.Observer;
 import model.ClientModel;
+import model.Game;
+import model.ServerError;
 
-public class GameView extends AppCompatActivity {
+public class GameView extends AppCompatActivity implements Observer {
     ClientModel clientModel = ClientModel.getMyClientModel();
     private AllPlayerDataFragment allPlayerDataFragment;
     private PlayerTrainCardsFragment playerTrainCardsFragment;
@@ -97,5 +101,24 @@ public class GameView extends AppCompatActivity {
         }
 
         ft.commit();
+    }
+
+    @Override
+    public void update() {
+        ServerError serverError = Game.getGameInstance().getServerError();
+        String message = serverError.getMessage();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Game.getGameInstance().getServerError().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Game.getGameInstance().getServerError().unregister(this);
     }
 }
