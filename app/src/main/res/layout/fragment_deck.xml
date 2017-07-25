@@ -10,54 +10,67 @@
 
 
     <TextView
+        android:id="@+id/faceUpTitle"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="@drawable/customborder"
         android:text="@string/face_up_title"
         android:textAlignment="center"
-        android:id="@+id/faceUpTitle"/>
+        android:textSize="10sp"/>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="10dp"/>
 
     <TextView
+        android:id="@+id/first"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="@drawable/customborder"
-        android:id="@+id/first"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:background="@drawable/customborder"
-        android:id="@+id/second"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:background="@drawable/customborder"
-        android:id="@+id/third"/>
+        android:textAlignment="center"
+        android:textSize="10sp"/>
 
     <TextView
+        android:id="@+id/second"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="@drawable/customborder"
-        android:id="@+id/fourth"/>
+        android:textAlignment="center"
+        android:textSize="10sp"/>
 
     <TextView
+        android:id="@+id/third"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="@drawable/customborder"
-        android:id="@+id/fifth"/>
+        android:textAlignment="center"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:id="@+id/fourth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/customborder"
+        android:textAlignment="center"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:id="@+id/fifth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/customborder"
+        android:textAlignment="center"
+        android:textSize="10sp"/>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="10dp"/>
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -68,75 +81,79 @@
 
         <TextView
             android:id="@+id/trainDeck"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_columnWeight="0"
             android:layout_row="0"
             android:background="@drawable/customborder"
             android:text="@string/deck_face_down"
             android:textAlignment="center"
-            android:textSize="12sp"
+            android:textSize="10sp"
             />
 
         <TextView
             android:id="@+id/destinationDeck"
-            android:layout_width="75dp"
-            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_columnWeight="0"
             android:layout_row="0"
             android:background="@drawable/customborder"
             android:text="@string/dest_deck"
             android:textAlignment="center"
-            android:textSize="12sp"/>
+            android:textSize="10sp"/>
 
     </GridLayout>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="12"
         android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/choose_cards"/>
+        android:layout_weight="0"
+        android:text="@string/choose_cards"
+        android:textSize="10sp"/>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
 
     <TextView
+        android:id="@+id/selectedRouteTitle"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="@drawable/customborder"
         android:text="@string/selected_route_title"
         android:textAlignment="center"
-        android:id="@+id/selectedRouteTitle"/>
+        android:textSize="10sp"/>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="10dp"/>
 
     <TextView
+        android:id="@+id/selectedRoute"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:background="@drawable/customborder"
         android:textAlignment="center"
-        android:id="@+id/selectedRoute"/>
+        android:textSize="10sp"/>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="10dp"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="12"
         android:id="@+id/chooseRouteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/claim_route"/>
+        android:layout_weight="0"
+        android:text="@string/claim_route"
+        android:textSize="10sp"/>
 
 
 
