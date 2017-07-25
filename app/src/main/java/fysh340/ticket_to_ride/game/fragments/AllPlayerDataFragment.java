@@ -18,8 +18,8 @@ import model.AbstractPlayer;
 import model.Game;
 
 public class AllPlayerDataFragment extends Fragment implements Observer {
-    private MyPlayerListAdapter mAdapter;
     private Game mGame = Game.getGameInstance();
+    private MyPlayerListAdapter mAdapter = new MyPlayerListAdapter(mGame.getVisiblePlayerInformation());
 
     public AllPlayerDataFragment(){
         mGame.register(this);
@@ -35,6 +35,8 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAdapter = new MyPlayerListAdapter( mGame.getVisiblePlayerInformation());
+        setRetainInstance(true);
     }
 
     @Override
@@ -53,9 +55,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
         RecyclerView mRV = (RecyclerView)  v.findViewById( R.id.player_list);
         mRV.setLayoutManager(layoutManager);
 
-        mAdapter = new MyPlayerListAdapter( mGame.getVisiblePlayerInformation());
         mRV.setAdapter( mAdapter);
-        mGame.register(this);
         return v;
     }
 
@@ -111,7 +111,6 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             holder.itemCards.setText(String.valueOf(myCards));
             holder.itemRoutes.setText(String.valueOf(myRoutes));
             holder.itemScore.setText(String.valueOf(myScore));
-
         }
 
         @Override

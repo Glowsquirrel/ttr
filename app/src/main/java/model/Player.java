@@ -22,7 +22,7 @@ public class Player extends AbstractPlayer {
 
     public void addTrainCardByInt(int myTrainCardInt){
         super.addTrainCard();
-        TrainCard myTrainCard = TrainCard.getTrainCardTypeByInt(myTrainCardInt);
+        TrainCard myTrainCard = TrainCard.getTrainCard(myTrainCardInt);
         switch (myTrainCard){
             case PURPLE:
                 this.numOfPurpleCards++;

@@ -21,7 +21,9 @@ import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
+import results.game.GameHistoryResult;
 import results.game.RejoinResult;
+import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnDestCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
@@ -188,7 +190,9 @@ public class ClientProxy implements IClient {
 
     public void rejectCommand(String identifier, String gameName, String message) {
         MessageResult messageResult = new MessageResult(identifier, message);
-        Session mySession = ServerWebSocket.getMyPlayerSessionInGame(identifier, gameName); //search by game first
+        Session mySession = null;
+        if (gameName != null)
+            mySession = ServerWebSocket.getMyPlayerSessionInGame(identifier, gameName); //search by game first
         if (mySession == null){ //search the menus
             mySession = ServerWebSocket.getMySession(identifier);
         }
@@ -306,6 +310,12 @@ public class ClientProxy implements IClient {
                 break;
             case Utils.CHAT_TYPE:
                 myJsonString = gson.toJson(result, ChatResult.class);
+                break;
+            case Utils.GAME_HISTORY_TYPE:
+                myJsonString = gson.toJson(result, GameHistoryResult.class);
+                break;
+            case Utils.REPLACE_ALL_FACEUP_TYPE:
+                myJsonString = gson.toJson(result, ReplaceFaceUpCardsResult.class);
                 break;
             default:
                 myJsonString = "Error parsing into Json. Check ClientProxy.";

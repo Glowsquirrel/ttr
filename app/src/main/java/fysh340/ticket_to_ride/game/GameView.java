@@ -1,7 +1,6 @@
 package fysh340.ticket_to_ride.game;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -9,12 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.fragments.AllPlayerDataFragment;
-import fysh340.ticket_to_ride.game.fragments.ChatHistory;
-import fysh340.ticket_to_ride.game.fragments.DeckFragment;
-import fysh340.ticket_to_ride.game.fragments.MapFragment;
-import fysh340.ticket_to_ride.game.fragments.PlayerDestCardsFragment;
-import fysh340.ticket_to_ride.game.fragments.PlayerTrainCardsFragment;
+import fysh340.ticket_to_ride.game.fragments.*;
 import model.ClientModel;
 
 public class GameView extends AppCompatActivity {
@@ -28,7 +22,6 @@ public class GameView extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
     private boolean showingTrainCards = true;
-    //private SupportMapFragment mapFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,27 +29,18 @@ public class GameView extends AppCompatActivity {
 
         this.playerTrainCardsFragment = new PlayerTrainCardsFragment();
         deckFragment = new DeckFragment();
-        chatHistory=new ChatHistory();
+        chatHistory = new ChatHistory();
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-<<<<<<< HEAD
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        MapFragment mapFragment = MapFragment.newInstance();
-        PlayerCardsFragment playerCardsFragment = new PlayerCardsFragment();
-        AllPlayerDataFragment playerDataFragment = new AllPlayerDataFragment();
-        DeckFragment deckFragment = new DeckFragment();
-        ChatHistory chatHistory=new ChatHistory();
-=======
+        ChatHistory chatHistory = new ChatHistory();
         mapFragment = MapFragment.newInstance();
         playerTrainCardsFragment = new PlayerTrainCardsFragment();
         playerDestCardsFragment = new PlayerDestCardsFragment();
         allPlayerDataFragment = new AllPlayerDataFragment();
         deckFragment = new DeckFragment();
->>>>>>> 48cc84b6ad261d2447dca8bc4ce4436407b884ea
 
         transaction.add(R.id.map_fragment_container, mapFragment);
 
@@ -67,9 +51,7 @@ public class GameView extends AppCompatActivity {
         transaction.add(R.id.deck_fragment_container, deckFragment);
         transaction.add(R.id.left_drawer, chatHistory);
 
-
         transaction.commit();
-
     }
 
     @Override

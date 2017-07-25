@@ -6,11 +6,10 @@ package model;
  */
 public abstract class AbstractPlayer {
     private final int STARTING_NUMBER_OF_TRAINS = 45;
-    private final int STARTING_NUMBER_OF_CARDS = 4;
 
     protected String username;
     private int numTrains = STARTING_NUMBER_OF_TRAINS;
-    private int numCards = STARTING_NUMBER_OF_CARDS;
+    private int numCards = 0;
     private int numRoutes = 0;
     private int score = 0;
 

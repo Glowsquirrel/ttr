@@ -78,8 +78,6 @@ public class Game implements Observable{
         return faceUpCards;
     }
 
-
-
     //begin AllPlayerData flags
     private boolean playerHasChanged = false;
     public boolean aPlayerHasChanged() {

@@ -1,12 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".game.fragments.PlayerTrainCardsFragment">
-
-    <LinearLayout
+ <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".game.fragments.PlayerTrainCardsFragment"
         android:orientation="horizontal"
         android:weightSum="100">
 
@@ -15,7 +12,6 @@
             android:layout_width="0dp"
             android:layout_weight="72"
             android:layout_height="match_parent">
-
         </android.support.v7.widget.RecyclerView>
 
         <Button
@@ -23,9 +19,6 @@
             android:layout_width="0dp"
             android:layout_weight="28"
             android:layout_height="match_parent"
-            android:text="Dest Cards"
-            />
+            android:text="@string/dest_cards" />
 
     </LinearLayout>
-
-</FrameLayout>

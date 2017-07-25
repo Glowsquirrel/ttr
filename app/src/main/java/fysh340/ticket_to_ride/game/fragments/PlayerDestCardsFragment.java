@@ -22,7 +22,6 @@ import model.Game;
 public class PlayerDestCardsFragment extends Fragment implements Observer{
     private MyDestCardAdapter mAdapter;
     private Game mGame = Game.getGameInstance();
-    private RecyclerView mRecyclerView;
 
     public PlayerDestCardsFragment(){
 
@@ -55,7 +54,7 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_player_dest_cards, container, false);
-        mRecyclerView = (RecyclerView)  v.findViewById( R.id.dest_card_recycler);
+        RecyclerView mRecyclerView = (RecyclerView)  v.findViewById( R.id.dest_card_recycler);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -116,7 +115,6 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
             holder.itemCity1.setText(city1);
             holder.itemCity2.setText(city2);
             holder.itemScore.setText(String.valueOf(score));
-
         }
 
         @Override

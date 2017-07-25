@@ -20,7 +20,6 @@ import results.game.StartGameResult;
 
 import static model.TrainCard.WILD;
 
-
 /**
  *
  * Container class for started games.
@@ -43,7 +42,6 @@ public class StartedGame {
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
     }
-
 
 /************************************START GAME************************************************/
     /**
@@ -189,7 +187,7 @@ public class StartedGame {
 
         String message = playerName + " drew a train card from the deck.";
         setGameHistory(playerName, message, -1);
-        return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardInt(trainCard.get(0)));
+        return new DrawTrainCardFromDeckResult(playerName, TrainCard.getIntByTrainCard(trainCard.get(0)));
     }
 
 
@@ -216,7 +214,7 @@ public class StartedGame {
 
         String message = playerName + " drew a face-up train card.";
         setGameHistory(playerName, message, -1);
-        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardInt(drawnCard));
+        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getIntByTrainCard(drawnCard));
     }
 
 

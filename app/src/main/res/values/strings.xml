@@ -14,5 +14,7 @@
     <string name="join_game">Join an existing game:</string>
     <string name="current_games">Games in Progress:</string>
     <string name="players">Players</string>
+    <string name="dest_cards">Dest Cards</string>
+    <string name="train_card">Train Cards</string>
 
 </resources>

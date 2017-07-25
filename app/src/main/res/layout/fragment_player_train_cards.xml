@@ -91,7 +91,7 @@
             android:layout_weight="28"
             android:textSize="13sp"
             android:layout_height="match_parent"
-            android:text="Train Cards"
+            android:text="@string/train_card"
             />
 
     </LinearLayout>
