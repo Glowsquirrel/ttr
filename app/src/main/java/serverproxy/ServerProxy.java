@@ -18,7 +18,6 @@ import commands.menu.LoginCommand;
 import commands.menu.PollGamesCommand;
 import commands.menu.RegisterCommand;
 import interfaces.IServer;
-import mockserver.MockServer;
 
 /**
  * The ServerProxy is the proxy on the client side that lets the server do the actual execution.

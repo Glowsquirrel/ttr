@@ -274,6 +274,8 @@ public class ServerModel {
 
             toClient.sendToGame(gameName, result);
             allCommandLists.get(gameName).add(result);
+            toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
+            allCommandLists.get(game.getGameName()).add(game.getGameHistory());
 
             while (game.getReplaceFaceUpFlag()) {
                 Result nextResult = game.replaceFaceUpCards();

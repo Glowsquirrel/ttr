@@ -116,6 +116,9 @@ import java.util.List;
     }
 
     public boolean invalidDestCard(DestCard destCard) {
+        if (destCard == null) {
+            return false;
+        }
         for (DestCard drawnDestCard : newlyDrawnDestCards) {
             if (destCard.equals(drawnDestCard)){
                 return false;

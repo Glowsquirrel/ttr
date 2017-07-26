@@ -139,7 +139,7 @@ class StartedGame {
             if (currentPlayer.invalidDestCard(DestCard.getDestCardByID(returnedCardKey))) {
                 throw new GamePlayException("You have not drawn that destination card.");
             }
-            if (returnedCardKey > 0) {
+            if (returnedCardKey < 30) {
                 switchTurnState(CommandType.RETURN_DEST_CARD);
             } else {
                 switchTurnState(CommandType.RETURN_NO_DEST_CARD);
@@ -365,10 +365,12 @@ class StartedGame {
         switch (commandType) {
             case RETURN_DEST_CARD: {
                 turnState = TurnState.RETURNED_ONE_DEST_CARD;
+                break;
             }
             case RETURN_NO_DEST_CARD: {
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
+                break;
             }
             default:{
                 throw new GamePlayException("Illegal move. You may only return dest cards.");
@@ -397,10 +399,12 @@ class StartedGame {
             case DRAW_TRAIN_CARD_FROM_DECK: {
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
+                break;
             }
             case FACEUP_NON_LOCOMOTIVE: {
                 advancePlayerTurn();
                 turnState = TurnState.BEFORE_TURN;
+                break;
             }
             default:
                 throw new GamePlayException("Illegal move. You may only draw train cards.");
