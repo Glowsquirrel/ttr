@@ -22,7 +22,7 @@ import interfaces.Observer;
 import model.DestCard;
 import model.Game;
 import serverproxy.ServerProxy;
-
+//fragment shown when the user needs to select a destination card
 public class DestCardSelectFragment extends Fragment implements Observer{
     private Game mGame = Game.getGameInstance();
     private List<DestCard> possibleDestCards = new ArrayList<>();

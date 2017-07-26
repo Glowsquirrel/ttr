@@ -34,7 +34,6 @@ public class ChatHistoryModel implements Observable{
             observers.remove(observerIndex);
         }
     }
-
     @Override
     public void notifyObserver() {
 
@@ -50,6 +49,7 @@ public class ChatHistoryModel implements Observable{
         uiHandler.post(runnable); //do the run() method in previously declared runnable on UI thread
 
     }
+    //boolean flag to let the view know if there is a chat message
     private boolean chat;
 
     public boolean isChat() {
@@ -59,6 +59,7 @@ public class ChatHistoryModel implements Observable{
     public void setChat(boolean chat) {
         this.chat = chat;
     }
+    //switches the chat flag to false if true and true if false
     public void switchChat(){
         if(chat)
         {
@@ -69,23 +70,26 @@ public class ChatHistoryModel implements Observable{
             chat=true;
         }
     };
+    //adds a chat message to the chatlist
     public void addChat(String username, String message)
     {
         chatList.add(username+": "+message);
         notifyObserver();
     }
 
-
+//add a history message to the history list
     public void addHistory(String username, String message)
     {
 
         historyList.add(username+": "+message);
         notifyObserver();
     }
+    //returns all chat messages
     public List<String> getChatStrings()
     {
         return chatList;
     }
+    //returns all history messages
     public List<String> getHistoryStrings()
     {
         return historyList;

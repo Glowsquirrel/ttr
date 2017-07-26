@@ -165,11 +165,10 @@ public class ClientFacade implements IClient{
         String message = "Returned destination card";
         chatModel.addHistory(username, message);
     }
-
+//if the server sends back any non zero results that given usernames info will be updated to the results
     public void addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
         chatModel.addHistory(username,message);
-        //TODO:
         AbstractPlayer player = game.getPlayerByName(username);
         if(score>0)
         {

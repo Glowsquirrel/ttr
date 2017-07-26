@@ -24,7 +24,7 @@ public class PlayerTrainCardsFragment extends Fragment implements Observer{
     private ClientModel mClientModel = ClientModel.getMyClientModel();
     private Game mGame = Game.getGameInstance();
     private List<TextView> trainCardTextViews;
-
+//if the players train cards have changed the view is updated
     @Override
     public void update() {
 

@@ -26,7 +26,7 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
     public PlayerDestCardsFragment(){
 
     }
-
+//if destination cards have changed the fragment is updated
     @Override
     public void update() {
         if (mGame.iHaveDifferentDestCards()) {

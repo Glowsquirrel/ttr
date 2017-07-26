@@ -44,6 +44,7 @@ public class DeckFragment extends Fragment implements Observer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    //updates the deck fragment to the current game state
     @Override
     public void update() {
         if(mGame.iHaveDifferentFaceUpCards()) {

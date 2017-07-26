@@ -39,6 +39,7 @@ public class ChatHistory extends Fragment implements Observer {
     {
         updateRV();
     }
+    //changes the recycler view when a new history or chat is added
     private void updateRV() {
         mRV.removeAllViewsInLayout();
         mRV.setLayoutManager( new LinearLayoutManager( getActivity()));
@@ -75,6 +76,7 @@ public class ChatHistory extends Fragment implements Observer {
         chatModel.register(this);
         return v;
     }
+    //sets the button to switch from chat recycler view to history
     private void setButton() {
         mToDisplay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +109,7 @@ public class ChatHistory extends Fragment implements Observer {
         mSend.setEnabled(false);
 
     }
+    //View holder for Recyclerview
     private class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         public itemHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -129,6 +132,7 @@ public class ChatHistory extends Fragment implements Observer {
         }
 
     }
+    //adapter for recycler view
     private class adapter extends RecyclerView.Adapter <itemHolder>
     {
         private List<String> itemlist;

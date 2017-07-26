@@ -178,14 +178,7 @@ public class Game implements Observable{
     
     //Begin destinationCardDeckSize flag
     private boolean newDestinationCardDeckSize = false;
-    public boolean destinationCardDeckSizeHasChanged() {
-        return newDestinationCardDeckSize;
-    }
-    public void destinationCardDeckSizeHasChanged(boolean hasChanged) {
-        newDestinationCardDeckSize = hasChanged;
-        notifyObserver();
-    }
-    //end destinationCardDeckSize flags
+
     
     //begin CurrentlySelectedRouteID flags
     private boolean newRouteID = false;

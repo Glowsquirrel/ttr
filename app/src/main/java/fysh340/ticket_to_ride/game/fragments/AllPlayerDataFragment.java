@@ -38,6 +38,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
     public AllPlayerDataFragment(){
         mGame.register(this);
     }
+    //if a player has changed the player data will update
     @Override
     public void update() {
         if (mGame.aPlayerHasChanged()) {
