@@ -127,8 +127,35 @@ public class ClientFacade implements IClient{
         chatModel.addHistory(username,message);
         //TODO:
         AbstractPlayer player = game.getPlayerByName(username);
-        player.addToScore(score);
-        player.addMultipleTrainCards(numTrainCardsHeld);
+        if(score>0)
+        {
+            player.setScore(score);
+        }
+        if(numTrainCars>0)
+        {
+            player.setNumTrains(numTrainCars);
+        }
+        if(numTrainCars>0)
+        {
+            player.setNumTrains(numTrainCars);
+        }
+        if(numTrainCardsHeld>0)
+        {
+            player.setNumCards(numTrainCardsHeld);
+        }
+        if(numDestCardsHeld>0)
+        {
+            player.setNumCards(numDestCardsHeld);
+        }
+        if(numRoutesOwned>0)
+        {
+            player.setNumRoutes(numRoutesOwned);
+        }
+        if(claimedRouteNumber>0)
+        {
+            map.claimRoute(game.getPlayerByName(username).getColor(),claimedRouteNumber);
+        }
+        player.notify();
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {

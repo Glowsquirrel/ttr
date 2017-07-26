@@ -21,12 +21,36 @@ public abstract class AbstractPlayer {
     private int numTrains = STARTING_NUMBER_OF_TRAINS;
     protected int numCards = 0;
     private int numRoutes = 0;
+    private int destCardNum=0;
     private int score = 0;
+
+    public void setNumCards(int numCards) {
+        this.numCards = numCards;
+    }
+
+    public void setNumRoutes(int numRoutes) {
+        this.numRoutes = numRoutes;
+    }
+
+    public int getDestCardNum() {
+        return destCardNum;
+
+    }
+
+    public void setDestCardNum(int destCardNum) {
+        this.destCardNum = destCardNum;
+    }
+
     private int color;
 
 
+    public void setNumTrains(int numTrains) {
+        this.numTrains = numTrains;
+    }
+
     public void setColor(int col) {
         int i=col;
+
         switch(i) {
             case(0):
                 color=R.color.neon_yellow;
@@ -99,6 +123,11 @@ public abstract class AbstractPlayer {
     public void addToScore(int scoreToAdd){
         this.score += scoreToAdd;
     }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     //end score updates
     public int getColor()
     {

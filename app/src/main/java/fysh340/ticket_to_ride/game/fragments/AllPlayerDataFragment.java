@@ -79,6 +79,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             TextView itemTrains;
             TextView itemScore;
             View myView;
+            TextView itemDCards;
 
             ViewHolder(View view){
                 super(view);
@@ -87,6 +88,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                 itemCards = (TextView) view.findViewById(R.id.cardsNum);
                 itemTrains = (TextView) view.findViewById(R.id.trainsNum);
                 itemScore = (TextView) view.findViewById(R.id.scoreNum);
+                itemDCards = (TextView) view.findViewById(R.id.cardsNum);
                 myView = view;
             }
         }
@@ -113,6 +115,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             int myScore = myPlayer.getScore();
             int color=myPlayer.getColor();
             int colors=getResources().getColor(color);
+            int myDCards=myPlayer.getDestCardNum();
 
             holder.itemUsername.setText(playerName);
             holder.itemTrains.setText(String.valueOf(myTrains));
@@ -120,6 +123,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             holder.itemRoutes.setText(String.valueOf(myRoutes));
             holder.itemScore.setText(String.valueOf(myScore));
             holder.itemUsername.setBackgroundColor(colors);
+            holder.itemDCards.setText(String.valueOf(myDCards));
         }
 
         @Override
