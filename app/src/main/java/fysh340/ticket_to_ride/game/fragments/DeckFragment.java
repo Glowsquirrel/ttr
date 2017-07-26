@@ -211,6 +211,7 @@ public class DeckFragment extends Fragment implements Observer {
                     break;
                 case YELLOW:
                     mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.yellow));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case BLACK:
                     mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.black));
@@ -222,12 +223,15 @@ public class DeckFragment extends Fragment implements Observer {
                     break;
                 case ORANGE:
                     mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.orange));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WHITE:
                     mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.white));
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WILD:
                     mFaceUpCards[i].setBackgroundResource(R.drawable.grad);
+                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 default:
                     break;
