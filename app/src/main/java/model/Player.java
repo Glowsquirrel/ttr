@@ -67,6 +67,38 @@ public class Player extends AbstractPlayer {
     private int numOfGreenCards = 0;
     private int numOfWildCards = 0;
 
+    public void removeMultipleCardsOfType(TrainCard myTrainCard, int numToRemove){
+        switch (myTrainCard){
+            case PURPLE:
+                this.numOfPurpleCards -=numToRemove;
+                break;
+            case WHITE:
+                this.numOfWhiteCards -= numToRemove;
+                break;
+            case BLUE:
+                this.numOfBlueCards -= numToRemove;
+                break;
+            case YELLOW:
+                this.numOfYellowCards -= numToRemove;
+                break;
+            case ORANGE:
+                this.numOfOrangeCards -= numToRemove;
+                break;
+            case BLACK:
+                this.numOfBlackCards -= numToRemove;
+                break;
+            case RED:
+                this.numOfRedCards -= numToRemove;
+                break;
+            case GREEN:
+                this.numOfGreenCards -= numToRemove;
+                break;
+            case WILD:
+                this.numOfWildCards -= numToRemove;
+                break;
+        }
+    }
+
     public int getNumOfPurpleCards() {
         return numOfPurpleCards;
     }

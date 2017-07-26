@@ -14,6 +14,7 @@ import model.MapModel;
 import model.Player;
 import model.Route;
 import model.RunningGame;
+import model.TrainCard;
 import model.UnstartedGame;
 
 /**
@@ -84,7 +85,12 @@ public class ClientFacade implements IClient{
         map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
         game.getMyself().incrementNumRoutesClaimed();
         Route myRoute = Route.getRouteByID(routeID);
+        TrainCard myTrainCardType = myRoute.getOriginalColor();
+        int routeSize = myRoute.getLength();
+        game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
         game.getMyself().addToScore(myRoute.getPointValue());
+        game.getMyself().removeTrains(routeSize);
+        game.iHaveDifferentTrainCards(true);
         game.aPlayerHasChanged(true);
         game.notifyObserver();
         String message = "Claimed route " + routeID;

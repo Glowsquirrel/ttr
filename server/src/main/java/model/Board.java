@@ -251,7 +251,7 @@ public class Board {
             return false;
         }
 
-        TrainCard routeColor = route.getColor();
+        TrainCard routeColor = route.getOriginalColor();
         TrainCard firstTrainCard = returnedTrainCards.get(0);
         for (TrainCard currentCard : returnedTrainCards) {
             if (currentCard != firstTrainCard) {
