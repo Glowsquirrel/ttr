@@ -82,25 +82,32 @@ public class ClientFacade implements IClient{
 
     @Override
     public void claimRoute(String username, int routeID){
-        map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
-        game.getMyself().incrementNumRoutesClaimed();
         Route myRoute = Route.getRouteByID(routeID);
         TrainCard myTrainCardType = myRoute.getOriginalColor();
         int routeSize = myRoute.getLength();
-        game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
-        game.getMyself().addToScore(myRoute.getPointValue());
-        game.getMyself().removeTrains(routeSize);
-        game.iHaveDifferentTrainCards(true);
-        game.aPlayerHasChanged(true);
-        game.notifyObserver();
-        String message = "Claimed route " + routeID;
-        chatModel.addHistory(username, message);
+        if (game.getMyself().getNumOfTypeCards(myTrainCardType) >= routeSize
+                && game.getMyself().getNumTrains() >= routeSize) {
+            map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
+            game.getMyself().incrementNumRoutesClaimed();
+            game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
+            game.getMyself().addToScore(myRoute.getPointValue());
+            game.getMyself().removeTrains(routeSize);
+            game.getMyself().removeMultipleTrainCards(routeSize);
+            game.iHaveDifferentTrainCards(true);
+            game.aPlayerHasChanged(true);
+            game.notifyObserver();
+            String message = "Claimed route " + routeID;
+            chatModel.addHistory(username, message);
+        } else {
+            showRejectMessage("You don't have the cards for that");
+        }
     }
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
         if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
             game.setPossibleDestCards(destCards);
+            game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
             game.notifyObserver();
             String message = "Drew " + destCards.size() + " destination cards";

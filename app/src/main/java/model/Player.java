@@ -99,6 +99,31 @@ public class Player extends AbstractPlayer {
         }
     }
 
+    public int getNumOfTypeCards(TrainCard myTrainCardType){
+        switch (myTrainCardType){
+            case PURPLE:
+                return this.numOfPurpleCards;
+            case WHITE:
+                return this.numOfWhiteCards;
+            case BLUE:
+                return this.numOfBlueCards;
+            case YELLOW:
+                return this.numOfYellowCards;
+            case ORANGE:
+                return this.numOfOrangeCards;
+            case BLACK:
+                return this.numOfBlackCards;
+            case RED:
+                return this.numOfRedCards;
+            case GREEN:
+                return this.numOfGreenCards;
+            case WILD:
+                return this.numOfWildCards;
+            default:
+                return -1;
+        }
+    }
+
     public int getNumOfPurpleCards() {
         return numOfPurpleCards;
     }
