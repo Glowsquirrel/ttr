@@ -184,11 +184,14 @@ public class ClientFacade implements IClient{
         if(numTrainCardsHeld>0)
         {
             game.aPlayerHasChanged(true);
+            game.notifyObserver();
             player.setNumCards(numTrainCardsHeld);
         }
         if(numDestCardsHeld>0)
         {
+
             game.aPlayerHasChanged(true);
+            game.notifyObserver();
             player.setDestCardNum(numDestCardsHeld);
         }
         if(numRoutesOwned>0)

@@ -85,22 +85,22 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
 
                     case (1):
                         //add points
-                        Toast.makeText(getActivity(), "Add points to "+mGame.getVisiblePlayerInformation().get(0).getMyUsername(), Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Scored 5 points", 0, 0, 0, 0, 5, 0);
+                        Toast.makeText(getActivity(), "Add points to "+mGame.getVisiblePlayerInformation().get(1).getMyUsername(), Toast.LENGTH_SHORT).show();
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Scored 5 points", 0, 0, 0, 0, 5, 0);
                         break;
                     case (2):
                         //claim a route
-                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(0).getMyUsername()+" claims route 50", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "claimed route", 0, 0, 0, 1, 0, 50);
+                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername()+" claims route 50", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "claimed route", 0, 0, 0, 1, 0, 50);
                         break;
                     case (3):
                         //add destination cards
-                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(0).getMyUsername()+" claims gets destination cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Gest destination cards", 0, 0, 3, 0, 0, 0);
+                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername()+" claims gets destination cards", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Gest destination cards", 0, 0, 3, 0, 0, 0);
                         break;
                     case (4)://add train cards
-                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(0).getMyUsername()+" gets train cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Gets train cards", 0, 4, 0, 0, 0, 0);
+                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername()+" gets train cards", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Gets train cards", 0, 4, 0, 0, 0, 0);
                         break;
                     case(5):
                         //Add/remove train cards for this player
