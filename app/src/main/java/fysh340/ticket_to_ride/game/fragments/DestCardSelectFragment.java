@@ -64,9 +64,14 @@ public class DestCardSelectFragment extends Fragment implements Observer{
             @Override
             public void onClick(View v) {
                 ServerProxy serverProxy = new ServerProxy();
-                for (DestCard destCard : possibleDestCards){
+                for (DestCard destCard : selectedDestCards){
                     mGame.getMyself().addDestCard(destCard);
+                    mGame.getMyself().incrementDestCards();
                 }
+                mGame.aPlayerHasChanged(true);
+                mGame.iHaveDifferentDestCards(true);
+                mGame.iHavePossibleDestCards(false);
+                mGame.notifyObserver();
                 possibleDestCards.removeAll(selectedDestCards);
                 for (DestCard destCard : possibleDestCards){
                     serverProxy.returnDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName(), destCard.getMapValue());

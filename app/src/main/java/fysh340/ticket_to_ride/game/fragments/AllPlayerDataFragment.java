@@ -88,7 +88,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                 itemCards = (TextView) view.findViewById(R.id.cardsNum);
                 itemTrains = (TextView) view.findViewById(R.id.trainsNum);
                 itemScore = (TextView) view.findViewById(R.id.scoreNum);
-                itemDCards = (TextView) view.findViewById(R.id.cardsNum);
+                itemDCards = (TextView) view.findViewById(R.id.dcardsNum);
                 myView = view;
             }
         }

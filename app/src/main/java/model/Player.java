@@ -6,17 +6,14 @@ import java.util.List;
 
 public class Player extends AbstractPlayer {
 
-    public Player(String userName, List<Integer> trainCardInts, List<Integer> destCardInts){
+    public Player(String userName, List<Integer> trainCardInts){
         super.username = userName;
-        initializeMyCards(trainCardInts, destCardInts);
+        initializeMyCards(trainCardInts);
     }
 
-    private void initializeMyCards(List<Integer> trainCardInts, List<Integer> destCardInts){
+    private void initializeMyCards(List<Integer> trainCardInts){
         for (int myTrainCardID : trainCardInts){
             addTrainCardByInt(myTrainCardID);
-        }
-        for (int myDestCardID : destCardInts){
-            myDestCards.add(DestCard.getDestCardByID(myDestCardID));
         }
     }
 

@@ -21,7 +21,7 @@ public abstract class AbstractPlayer {
     private int numTrains = STARTING_NUMBER_OF_TRAINS;
     protected int numCards = 0;
     private int numRoutes = 0;
-    private int destCardNum=0;
+    private int destCardNum = 0;
     private int score = 0;
 
     public void setNumCards(int numCards) {
@@ -34,11 +34,10 @@ public abstract class AbstractPlayer {
 
     public int getDestCardNum() {
         return destCardNum;
-
     }
 
-    public void setDestCardNum(int destCardNum) {
-        this.destCardNum = destCardNum;
+    public void incrementDestCards(){
+        this.destCardNum++;
     }
 
     private int color;

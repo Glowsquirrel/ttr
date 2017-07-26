@@ -51,10 +51,11 @@ public class DeckFragment extends Fragment implements Observer {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void update() {
-        if(mGame.iHaveDifferentFaceUpCards()) {
+        if (mGame.iHaveDifferentFaceUpCards()) {
+            mGame.iHaveDifferentFaceUpCards(false);
             repopulateFaceUpCards();
         }
-        if(mGame.routeIDHasChanged()) {
+        if (mGame.routeIDHasChanged()) {
             Route currentlySelected = Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
             String routeText = "Claim " + currentlySelected.getStartCity().getPrettyName() + " to "
                                        + currentlySelected.getEndCity().getPrettyName() + " Route";
@@ -80,8 +81,6 @@ public class DeckFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        
-        mGame.register(this);
         
         //Get the view
         View deckView = inflater.inflate(R.layout.fragment_deck, container, false);

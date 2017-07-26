@@ -12,6 +12,7 @@ import model.Deck;
 import model.Game;
 import model.MapModel;
 import model.Player;
+import model.Route;
 import model.RunningGame;
 import model.UnstartedGame;
 
@@ -43,8 +44,12 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
-        Player myself = new Player(username, trainCards, destCards);
+        Player myself = new Player(username, trainCards);
         game.initializeMyGame(myself, gameName, playerNames, faceUpCards);
+        game.setPossibleDestCards(destCards);
+        game.iHavePossibleDestCards(true);
+        game.notifyObserver();
+
         Deck.getInstance().setAvailableDestCards(destCards);
         Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
     }
@@ -77,6 +82,11 @@ public class ClientFacade implements IClient{
     @Override
     public void claimRoute(String username, int routeID){
         map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
+        game.getMyself().incrementNumRoutesClaimed();
+        Route myRoute = Route.getRouteByID(routeID);
+        game.getMyself().addToScore(myRoute.getPointValue());
+        game.aPlayerHasChanged(true);
+        game.notifyObserver();
         String message = "Claimed route " + routeID;
         chatModel.addHistory(username, message);
     }
@@ -106,6 +116,11 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawTrainCardFaceUp(String username, int trainCard){
+        Player myself = game.getMyself();
+        myself.addTrainCardByInt(trainCard);
+        game.aPlayerHasChanged(true);
+        game.iHaveDifferentTrainCards(true);
+        game.notifyObserver();
         String message = "Drew train card face up";
         chatModel.addHistory(username, message);
     }
@@ -159,7 +174,9 @@ public class ClientFacade implements IClient{
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
-        Deck.getInstance().setAvailableFaceUpCards(trainCards);
+        game.setFaceUpCards(trainCards);
+        game.iHaveDifferentFaceUpCards(true);
+        game.notifyObserver();
     }
 
 

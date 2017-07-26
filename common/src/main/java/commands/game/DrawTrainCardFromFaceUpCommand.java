@@ -14,4 +14,8 @@ public class DrawTrainCardFromFaceUpCommand extends Command {
         this.gameName = gameName;
         this.index = index;
     }
+
+    public int getIndex() {
+        return index;
+    }
 }
