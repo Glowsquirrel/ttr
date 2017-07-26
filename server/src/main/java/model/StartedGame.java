@@ -139,7 +139,7 @@ class StartedGame {
             if (currentPlayer.invalidDestCard(DestCard.getDestCardByID(returnedCardKey))) {
                 throw new GamePlayException("You have not drawn that destination card.");
             }
-            if (returnedCardKey > 0) {
+            if (returnedCardKey < 30) {
                 switchTurnState(CommandType.RETURN_DEST_CARD);
             } else {
                 switchTurnState(CommandType.RETURN_NO_DEST_CARD);
