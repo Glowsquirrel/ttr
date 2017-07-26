@@ -86,21 +86,21 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                     case (1):
                         //add points
                         Toast.makeText(getActivity(), "Add points to player 2", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Scored 5 points", 0, 0, 0, 0, 5, 0);
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Scored 5 points", 0, 0, 0, 0, 5, 0);
                         break;
                     case (2):
                         //claim a route
                         Toast.makeText(getActivity(), "Player 2 claims route 50", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "claimed route", 0, 0, 0, 1, 0, 50);
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "claimed route", 0, 0, 0, 1, 0, 50);
                         break;
                     case (3):
                         //add destination cards
                         Toast.makeText(getActivity(), "Player 2 claims gets destination cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Gest destination cards", 0, 0, 3, 0, 0, 0);
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Gest destination cards", 0, 0, 3, 0, 0, 0);
                         break;
                     case (4)://add train cards
                         Toast.makeText(getActivity(), "Player 2 claims gets train cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Gets train cards", 0, 4, 0, 0, 0, 0);
+                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Gets train cards", 0, 4, 0, 0, 0, 0);
                         break;
                     case(5):
                         //Add/remove train cards for this player
@@ -111,15 +111,19 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                         TrainCard tc2=TrainCard.getTrainCardTypeByInt(80);
                         card.add(tc2);
                         mGame.getMyself().addCards(card);
+                        mGame.iHaveDifferentDestCards(true);
 
                         //add destination card
                         mGame.getMyself().addDestCard(DestCard.getDestCardByID(5));
+                        mGame.iHaveDifferentTrainCards(true);
                         mGame.notifyObserver();
                         break;
                     case(6):
                         Toast.makeText(getActivity(), "Remove train card and a destination card", Toast.LENGTH_SHORT).show();
                         mGame.getMyself().setNumOfPurpleCards(  mGame.getMyself().getNumOfPurpleCards()-1);
                         mGame.getMyself().removeDestCard(DestCard.getDestCardByID(5));
+                        mGame.iHaveDifferentTrainCards(true);
+                        mGame.iHaveDifferentDestCards(true);
                         mGame.notifyObserver();
 
                         //Add/remove player destination cards for this player
@@ -127,14 +131,14 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                     case(7):
                         Toast.makeText(getActivity(), "Train card deck size changed", Toast.LENGTH_SHORT).show();
                         mGame.setTrainCardDeckSize(30);
-                        mGame.trainCardDeckSizeHasChanged(true);
+                        mGame.iHaveDifferentTrainDeckSize(true);
                         mGame.notifyObserver();
                         //Update visible cards and number of invisible cards in train card deck
                         break;
                     case(8):
                         Toast.makeText(getActivity(), "Destination card deck size has changed", Toast.LENGTH_SHORT).show();
                         mGame.setDestinationCardDeckSize(30);
-                        mGame.destinationCardDeckSizeHasChanged(true);
+                        mGame.iHaveDifferentDestDeckSize(true);
                         mGame.notifyObserver();
                         //Update number of cards in destination card deck
                         break;
