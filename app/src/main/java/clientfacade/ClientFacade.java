@@ -14,6 +14,7 @@ import model.MapModel;
 import model.Player;
 import model.Route;
 import model.RunningGame;
+import model.TrainCard;
 import model.UnstartedGame;
 
 /**
@@ -81,21 +82,39 @@ public class ClientFacade implements IClient{
 
     @Override
     public void claimRoute(String username, int routeID){
-        map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
-        game.getMyself().incrementNumRoutesClaimed();
         Route myRoute = Route.getRouteByID(routeID);
-        game.getMyself().addToScore(myRoute.getPointValue());
-        game.aPlayerHasChanged(true);
-        game.notifyObserver();
-        String message = "Claimed route " + routeID;
-        chatModel.addHistory(username, message);
+        TrainCard myTrainCardType = myRoute.getOriginalColor();
+        int routeSize = myRoute.getLength();
+        if (game.getMyself().getNumOfTypeCards(myTrainCardType) >= routeSize
+                && game.getMyself().getNumTrains() >= routeSize) {
+            map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
+            game.getMyself().incrementNumRoutesClaimed();
+            game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
+            game.getMyself().addToScore(myRoute.getPointValue());
+            game.getMyself().removeTrains(routeSize);
+            game.getMyself().removeMultipleTrainCards(routeSize);
+            game.iHaveDifferentTrainCards(true);
+            game.aPlayerHasChanged(true);
+            game.notifyObserver();
+            String message = "Claimed route " + routeID;
+            chatModel.addHistory(username, message);
+        } else {
+            showRejectMessage("You don't have the cards for that");
+        }
     }
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
         if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
             game.setPossibleDestCards(destCards);
+            game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
+    
+            //TODO: Remove this once the model is properly updated from the server
+            game.setDestinationCardDeckSize(game.getDestinationCardDeckSize() - 3);
+            game.iHaveDifferentDestDeckSize(true);
+            
+            
             game.notifyObserver();
             String message = "Drew " + destCards.size() + " destination cards";
             chatModel.addHistory(username, message);
@@ -109,6 +128,11 @@ public class ClientFacade implements IClient{
         myself.addTrainCardByInt(trainCard);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
+    
+        //TODO: Remove this once the model is properly updated from the server
+        game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
+        game.iHaveDifferentTrainDeckSize(true);
+        
         game.notifyObserver();
         String message = "Drew train card";
         chatModel.addHistory(username, message);
@@ -123,6 +147,11 @@ public class ClientFacade implements IClient{
         game.notifyObserver();
         String message = "Drew train card face up";
         chatModel.addHistory(username, message);
+    
+        //TODO: Remove this once the model is properly updated from the server
+        game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
+        game.iHaveDifferentTrainDeckSize(true);
+        
     }
 
     @Override

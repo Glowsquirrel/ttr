@@ -62,7 +62,7 @@ public class Route {
         return length;
     }
 
-    public TrainCard getColor() {
+    public TrainCard getOriginalColor() {
         return originalColor;
     }
 
