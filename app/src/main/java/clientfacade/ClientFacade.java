@@ -144,33 +144,34 @@ public class ClientFacade implements IClient{
         AbstractPlayer player = game.getPlayerByName(username);
         if(score>0)
         {
+            game.aPlayerHasChanged(true);
             player.setScore(score);
         }
         if(numTrainCars>0)
         {
-            player.setNumTrains(numTrainCars);
-        }
-        if(numTrainCars>0)
-        {
+            game.aPlayerHasChanged(true);
             player.setNumTrains(numTrainCars);
         }
         if(numTrainCardsHeld>0)
         {
+            game.aPlayerHasChanged(true);
             player.setNumCards(numTrainCardsHeld);
         }
         if(numDestCardsHeld>0)
         {
-            player.setNumCards(numDestCardsHeld);
+            game.aPlayerHasChanged(true);
+            player.setDestCardNum(numDestCardsHeld);
         }
         if(numRoutesOwned>0)
         {
+            game.aPlayerHasChanged(true);
             player.setNumRoutes(numRoutesOwned);
         }
         if(claimedRouteNumber>0)
         {
+            game.aPlayerHasChanged(true);
             map.claimRoute(game.getPlayerByName(username).getColor(),claimedRouteNumber);
         }
-        player.notify();
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {

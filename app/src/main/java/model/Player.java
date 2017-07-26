@@ -171,6 +171,10 @@ public class Player extends AbstractPlayer {
     public List<DestCard> getMyDestCards() {
         return myDestCards;
     }
+    public void removeDestCard(DestCard destCard)
+    {
+        myDestCards.remove(destCard);
+    }
 
     public void addDestCard(DestCard destCard){
         this.myDestCards.add(destCard);

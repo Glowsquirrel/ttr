@@ -16,7 +16,7 @@ import static fysh340.ticket_to_ride.R.color.neon_yellow;
  */
 public abstract class AbstractPlayer {
     private final int STARTING_NUMBER_OF_TRAINS = 45;
-
+    Game mGame=Game.getGameInstance();
     protected String username;
     private int numTrains = STARTING_NUMBER_OF_TRAINS;
     protected int numCards = 0;
@@ -24,12 +24,20 @@ public abstract class AbstractPlayer {
     private int destCardNum = 0;
     private int score = 0;
 
+    public void setDestCardNum(int destCardNum) {
+        this.destCardNum = destCardNum;
+        mGame.notifyObserver();
+    }
+
     public void setNumCards(int numCards) {
         this.numCards = numCards;
+        mGame.notifyObserver();
+
     }
 
     public void setNumRoutes(int numRoutes) {
         this.numRoutes = numRoutes;
+        mGame.notifyObserver();
     }
 
     public int getDestCardNum() {
@@ -45,6 +53,7 @@ public abstract class AbstractPlayer {
 
     public void setNumTrains(int numTrains) {
         this.numTrains = numTrains;
+        mGame.notifyObserver();
     }
 
     public void setColor(int col) {
@@ -125,6 +134,7 @@ public abstract class AbstractPlayer {
 
     public void setScore(int score) {
         this.score = score;
+        mGame.notifyObserver();
     }
 
     //end score updates
