@@ -13,6 +13,7 @@ import commands.game.ChatCommand;
 import commands.game.ClaimRouteCommand;
 import commands.game.DrawThreeDestCardsCommand;
 import commands.game.DrawTrainCardFromDeckCommand;
+import commands.game.DrawTrainCardFromFaceUpCommand;
 import commands.game.ReturnDestCardsCommand;
 import commands.game.ReturnFirstDestCardCommand;
 import commands.game.StartGameCommand;
@@ -21,7 +22,9 @@ import commands.menu.JoinGameCommand;
 import commands.menu.LeaveGameCommand;
 import commands.menu.LoginCommand;
 import commands.menu.RegisterCommand;
+import model.Game;
 import model.RunningGame;
+import model.TrainCard;
 import model.UnstartedGame;
 import utils.Utils;
 
@@ -29,6 +32,7 @@ public class MockServer {
     private static List<UnstartedGame> unstartedGameList = new ArrayList<>();
     private static List<RunningGame> runningGameList = new ArrayList<>();
     private static Map<String, String> loginMap = new HashMap<>();
+    private static Game game = Game.getGameInstance();
 
     static{
         loginMap.put("username", "password");
@@ -185,7 +189,14 @@ public class MockServer {
                 break;
             }
             case Utils.DRAW_TRAIN_CARD_FACEUP_TYPE: {
-
+                DrawTrainCardFromFaceUpCommand mycommand = (DrawTrainCardFromFaceUpCommand)command;
+                List<Integer> faceUpCards = game.getFaceUpCards();
+                TrainCard myTrainCard = TrainCard.getTrainCard(faceUpCards.get(mycommand.getIndex()));
+                clientFacade.drawTrainCardFaceUp(mycommand.getUsername(), TrainCard.getTrainCardKey(myTrainCard));
+                Random rand = new Random();
+                int card = rand.nextInt(9);
+                faceUpCards.set(mycommand.getIndex(), card);
+                clientFacade.replaceFaceUpCards(faceUpCards);
                 break;
             }
             case Utils.CLAIM_ROUTE_TYPE: {

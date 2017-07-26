@@ -6,17 +6,14 @@ import java.util.List;
 
 public class Player extends AbstractPlayer {
 
-    public Player(String userName, List<Integer> trainCardInts, List<Integer> destCardInts){
+    public Player(String userName, List<Integer> trainCardInts){
         super.username = userName;
-        initializeMyCards(trainCardInts, destCardInts);
+        initializeMyCards(trainCardInts);
     }
 
-    private void initializeMyCards(List<Integer> trainCardInts, List<Integer> destCardInts){
+    private void initializeMyCards(List<Integer> trainCardInts){
         for (int myTrainCardID : trainCardInts){
             addTrainCardByInt(myTrainCardID);
-        }
-        for (int myDestCardID : destCardInts){
-            myDestCards.add(DestCard.getDestCardByID(myDestCardID));
         }
     }
 
@@ -69,6 +66,63 @@ public class Player extends AbstractPlayer {
     private int numOfRedCards = 0;
     private int numOfGreenCards = 0;
     private int numOfWildCards = 0;
+
+    public void removeMultipleCardsOfType(TrainCard myTrainCard, int numToRemove){
+        switch (myTrainCard){
+            case PURPLE:
+                this.numOfPurpleCards -=numToRemove;
+                break;
+            case WHITE:
+                this.numOfWhiteCards -= numToRemove;
+                break;
+            case BLUE:
+                this.numOfBlueCards -= numToRemove;
+                break;
+            case YELLOW:
+                this.numOfYellowCards -= numToRemove;
+                break;
+            case ORANGE:
+                this.numOfOrangeCards -= numToRemove;
+                break;
+            case BLACK:
+                this.numOfBlackCards -= numToRemove;
+                break;
+            case RED:
+                this.numOfRedCards -= numToRemove;
+                break;
+            case GREEN:
+                this.numOfGreenCards -= numToRemove;
+                break;
+            case WILD:
+                this.numOfWildCards -= numToRemove;
+                break;
+        }
+    }
+
+    public int getNumOfTypeCards(TrainCard myTrainCardType){
+        switch (myTrainCardType){
+            case PURPLE:
+                return this.numOfPurpleCards;
+            case WHITE:
+                return this.numOfWhiteCards;
+            case BLUE:
+                return this.numOfBlueCards;
+            case YELLOW:
+                return this.numOfYellowCards;
+            case ORANGE:
+                return this.numOfOrangeCards;
+            case BLACK:
+                return this.numOfBlackCards;
+            case RED:
+                return this.numOfRedCards;
+            case GREEN:
+                return this.numOfGreenCards;
+            case WILD:
+                return this.numOfWildCards;
+            default:
+                return -1;
+        }
+    }
 
     public int getNumOfPurpleCards() {
         return numOfPurpleCards;

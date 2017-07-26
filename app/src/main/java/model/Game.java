@@ -144,8 +144,11 @@ public class Game implements Observable{
      *  @post nothing else in the game will be modified
      */
     public List<Integer> getFaceUpCards() {
-        iHaveDifferentFAceUpCards(false);
         return faceUpCards;
+    }
+
+    public void setFaceUpCards(List<Integer> newFaceUpCards){
+        this.faceUpCards = newFaceUpCards;
     }
     
     public void setTrainCardDeckSize(int newSize) {
@@ -267,7 +270,7 @@ public class Game implements Observable{
      * @param faceUpCardChange boolean value to be used as a flag, set to true if a train card has changed, set to false if a train card has not changed.
      * @post  sets the iHaveDifferentFaceUpCards flag to the playerHasChanged boolean value given
      */
-    public void iHaveDifferentFAceUpCards(boolean faceUpCardChange) {
+    public void iHaveDifferentFaceUpCards(boolean faceUpCardChange) {
         iHaveDifferentFaceUpCards = faceUpCardChange;
         notifyObserver();
     }

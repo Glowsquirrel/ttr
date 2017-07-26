@@ -47,7 +47,6 @@ public class ServerModel {
     }
 
    /***********************************BEFORE GAME*******************************************/
-
     /**
      *  <h1>Add Unstarted Game</h1>
      *  Checks to see if a game exists, rejecting the creation command if so, and adds the game
@@ -277,8 +276,7 @@ public class ServerModel {
             allCommandLists.get(gameName).add(result);
 
             while (game.getReplaceFaceUpFlag()) {
-                Result nextResult =
-                        game.replaceFaceUpCards();
+                Result nextResult = game.replaceFaceUpCards();
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }

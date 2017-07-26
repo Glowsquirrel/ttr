@@ -98,19 +98,22 @@ class StartedGame {
      Result drawThreeDestCards(String playerName) throws GamePlayException {
 
         throwIfNotPlayersTurn(playerName);
-        switchTurnState(CommandType.DRAW_THREE_DEST_CARDS);
 
         Player currentPlayer = allPlayers.get(playerName);
         ArrayList<DestCard> drawnDestCards;
 
         if (currentPlayer != null) {
+            if(board.emptyDestCardDeck()) {
+                throw new GamePlayException("No destination cards to draw.");
+            }
+            switchTurnState(CommandType.DRAW_THREE_DEST_CARDS);
             drawnDestCards = board.drawDestCards();
             currentPlayer.addDestCards(drawnDestCards);
         } else {
             throw new GamePlayException("Invalid player name");
         }
 
-        String message = playerName + " drew 3 destination cards.";
+        String message = playerName + " drew destination cards.";
         setGameHistory(playerName, message, -1);
         return drawDestCardResults(playerName, drawnDestCards);
     }
@@ -128,16 +131,14 @@ class StartedGame {
 
     Result returnDestCard(String playerName, int returnedCardKey)
             throws GamePlayException {
-
+        throwIfNotPlayersTurn(playerName);
         Player currentPlayer = allPlayers.get(playerName);
 
         if (currentPlayer != null) {
 
-            throwIfNotPlayersTurn(playerName);
             if (currentPlayer.invalidDestCard(DestCard.getDestCardByID(returnedCardKey))) {
                 throw new GamePlayException("You have not drawn that destination card.");
             }
-
             if (returnedCardKey > 0) {
                 switchTurnState(CommandType.RETURN_DEST_CARD);
             } else {
@@ -161,15 +162,16 @@ class StartedGame {
 
 /**********************************DrawTrainCards************************************************/
     Result drawTrainCardFromDeck(String playerName) throws GamePlayException {
-
+        throwIfNotPlayersTurn(playerName);
         final int TRAIN_CARD_DRAW = 1;
         Player currentPlayer = allPlayers.get(playerName);
         List<TrainCard> trainCard;
 
         if (currentPlayer != null) {
-            throwIfNotPlayersTurn(playerName);
+            if (board.emptyTrainCardDeck()) {
+                throw new GamePlayException("No train cards to draw.");
+            }
             switchTurnState(CommandType.DRAW_TRAIN_CARD_FROM_DECK);
-
             trainCard = board.drawTrainCardsFromDeck(TRAIN_CARD_DRAW);
             currentPlayer.addTrainCards(trainCard);
         } else {
@@ -182,22 +184,27 @@ class StartedGame {
         return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardKey(trainCard.get(0)));
     }
 
-
+    //How does player whose turn it is get trainCard deck update after reshuffle?
+    //Draw one card, and there are none left, including discard?
+    //Replace all face up cards and need to reshuffle mid replacement?
     Result drawTrainCardFromFaceUp(String playerName, int index) throws GamePlayException{
-
+        throwIfNotPlayersTurn(playerName);
         Player currentPlayer = allPlayers.get(playerName);
         TrainCard drawnCard;
 
         if (currentPlayer != null) {
-            throwIfNotPlayersTurn(playerName);
-            final int LOCOMOTIVE_INDEX = 8;
 
+            final int LOCOMOTIVE_INDEX = 8;
+            if (board.noFaceUpCards()) {
+                throw new GamePlayException("No train cards to draw.");
+            }
             if (index == LOCOMOTIVE_INDEX) {
                 switchTurnState(CommandType.FACEUP_LOCOMOTIVE);
             } else {
                 switchTurnState(CommandType.FACEUP_NON_LOCOMOTIVE);
             }
             drawnCard = board.drawFaceUpCard(index);
+            board.reshuffleIfEmpty();
             replaceFaceUpFlag = board.getReplaceFaceUpFlag();
 
         } else {
@@ -223,7 +230,6 @@ class StartedGame {
         if (currentPlayer != null) {
             List<TrainCard> returnedTrainCards = convertKeysToTrainCards(trainCards);
             throwIfNotPlayersTurn(playerName);
-
 
             if(board.routeIsClaimed(routeId)) {
                 throw new GamePlayException("Route has already been claimed.");

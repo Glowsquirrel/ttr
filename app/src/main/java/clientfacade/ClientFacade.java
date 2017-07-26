@@ -12,7 +12,9 @@ import model.Deck;
 import model.Game;
 import model.MapModel;
 import model.Player;
+import model.Route;
 import model.RunningGame;
+import model.TrainCard;
 import model.UnstartedGame;
 
 /**
@@ -43,8 +45,12 @@ public class ClientFacade implements IClient{
     public void startGame(String username, String gameName, List<String> playerNames, List<Integer> destCards,
                           List<Integer> trainCards, List<Integer> faceUpCards) {
         clientModel.startGame();
-        Player myself = new Player(username, trainCards, destCards);
+        Player myself = new Player(username, trainCards);
         game.initializeMyGame(myself, gameName, playerNames, faceUpCards);
+        game.setPossibleDestCards(destCards);
+        game.iHavePossibleDestCards(true);
+        game.notifyObserver();
+
         Deck.getInstance().setAvailableDestCards(destCards);
         Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
     }
@@ -76,15 +82,32 @@ public class ClientFacade implements IClient{
 
     @Override
     public void claimRoute(String username, int routeID){
-        map.claimRoute(game.getPlayerByName(username).getColor(),routeID);
-        String message = "Claimed route " + routeID;
-        chatModel.addHistory(username, message);
+        Route myRoute = Route.getRouteByID(routeID);
+        TrainCard myTrainCardType = myRoute.getOriginalColor();
+        int routeSize = myRoute.getLength();
+        if (game.getMyself().getNumOfTypeCards(myTrainCardType) >= routeSize
+                && game.getMyself().getNumTrains() >= routeSize) {
+            map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
+            game.getMyself().incrementNumRoutesClaimed();
+            game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
+            game.getMyself().addToScore(myRoute.getPointValue());
+            game.getMyself().removeTrains(routeSize);
+            game.getMyself().removeMultipleTrainCards(routeSize);
+            game.iHaveDifferentTrainCards(true);
+            game.aPlayerHasChanged(true);
+            game.notifyObserver();
+            String message = "Claimed route " + routeID;
+            chatModel.addHistory(username, message);
+        } else {
+            showRejectMessage("You don't have the cards for that");
+        }
     }
 
     @Override
     public void drawDestCards(String username, List<Integer> destCards){
         if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
             game.setPossibleDestCards(destCards);
+            game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
     
             //TODO: Remove this once the model is properly updated from the server
@@ -117,6 +140,11 @@ public class ClientFacade implements IClient{
 
     @Override
     public void drawTrainCardFaceUp(String username, int trainCard){
+        Player myself = game.getMyself();
+        myself.addTrainCardByInt(trainCard);
+        game.aPlayerHasChanged(true);
+        game.iHaveDifferentTrainCards(true);
+        game.notifyObserver();
         String message = "Drew train card face up";
         chatModel.addHistory(username, message);
     
@@ -143,12 +171,41 @@ public class ClientFacade implements IClient{
         chatModel.addHistory(username,message);
         //TODO:
         AbstractPlayer player = game.getPlayerByName(username);
-        player.addToScore(score);
-        player.addMultipleTrainCards(numTrainCardsHeld);
+        if(score>0)
+        {
+            player.setScore(score);
+        }
+        if(numTrainCars>0)
+        {
+            player.setNumTrains(numTrainCars);
+        }
+        if(numTrainCars>0)
+        {
+            player.setNumTrains(numTrainCars);
+        }
+        if(numTrainCardsHeld>0)
+        {
+            player.setNumCards(numTrainCardsHeld);
+        }
+        if(numDestCardsHeld>0)
+        {
+            player.setNumCards(numDestCardsHeld);
+        }
+        if(numRoutesOwned>0)
+        {
+            player.setNumRoutes(numRoutesOwned);
+        }
+        if(claimedRouteNumber>0)
+        {
+            map.claimRoute(game.getPlayerByName(username).getColor(),claimedRouteNumber);
+        }
+        player.notify();
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
-        Deck.getInstance().setAvailableFaceUpCards(trainCards);
+        game.setFaceUpCards(trainCards);
+        game.iHaveDifferentFaceUpCards(true);
+        game.notifyObserver();
     }
 
 

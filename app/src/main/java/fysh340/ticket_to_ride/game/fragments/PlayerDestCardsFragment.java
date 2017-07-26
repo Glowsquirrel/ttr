@@ -29,8 +29,8 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
 
     @Override
     public void update() {
-        if (mGame.aPlayerHasChanged()) {
-            mGame.aPlayerHasChanged(false);
+        if (mGame.iHaveDifferentDestCards()) {
+            mGame.iHaveDifferentDestCards(false);
             mAdapter.swapData(mGame.getMyself().getMyDestCards());
         }
     }

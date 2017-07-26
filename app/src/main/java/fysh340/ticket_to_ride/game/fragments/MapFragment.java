@@ -107,7 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void update() {
-        //int color = getResources().getColor(mMapModel.getColor());
+        //int color = getResources().getOriginalColor(mMapModel.getOriginalColor());
         int color = ContextCompat.getColor(getContext(), mMapModel.getColor());
         int routeID = mMapModel.getLastRoute();
         MapRoute route = MapRoute.getRoute(routeID);

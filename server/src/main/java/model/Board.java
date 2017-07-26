@@ -161,18 +161,26 @@ public class Board {
         return drawnTrainCards;
     }
 
-
+    boolean emptyTrainCardDeck() {
+        return trainCardDeck.size() == 0;
+    }
     ArrayList<DestCard> drawDestCards() {
-        final int SIZE_OF_DRAW = 3;
+
+        int sizeOfDraw;
+        if (destCardDeck.size() > 3) {
+            sizeOfDraw = 3;
+        } else{
+            sizeOfDraw = destCardDeck.size();
+        }
+
         final int TOP_CARD_INDEX = 0;
 
         ArrayList<DestCard> drawnDestCards = new ArrayList<>();
-        for (int a = 0; a < SIZE_OF_DRAW; a++) {
+        for (int a = 0; a < sizeOfDraw; a++) {
             DestCard topCard = destCardDeck.get(TOP_CARD_INDEX);
             drawnDestCards.add(topCard);
             destCardDeck.remove(TOP_CARD_INDEX);
         }
-
         return drawnDestCards;
     }
 
@@ -196,13 +204,18 @@ public class Board {
         final int TOP_CARD_INDEX = 0;
 
         TrainCard returnedCard = faceUpTrainCards.get(index);
-        faceUpTrainCards.set(index, trainCardDeck.get(TOP_CARD_INDEX));
-        trainCardDeck.remove(TOP_CARD_INDEX);
+        if(!emptyTrainCardDeck()){
+            faceUpTrainCards.set(index, trainCardDeck.get(TOP_CARD_INDEX));
+            trainCardDeck.remove(TOP_CARD_INDEX);
+            countLocomotives();
+        }
 
-        countLocomotives();
         return returnedCard;
     }
 
+    boolean noFaceUpCards() {
+        return faceUpTrainCards.size() == 0;
+    }
     List<Integer> replaceFaceUpCards() {
         trainCardDeck.addAll(faceUpTrainCards);
         faceUpTrainCards.clear();
@@ -221,6 +234,10 @@ public class Board {
         this.discardedTrainCards.addAll(discardedTrainCards);
     }
 
+    boolean emptyDestCardDeck(){
+        return (destCardDeck.size() == 0);
+    }
+
     void reshuffleIfEmpty() {
         if (trainCardDeck.size() == 0){
             shuffleTrainCardDeck(false);
@@ -234,7 +251,7 @@ public class Board {
             return false;
         }
 
-        TrainCard routeColor = route.getColor();
+        TrainCard routeColor = route.getOriginalColor();
         TrainCard firstTrainCard = returnedTrainCards.get(0);
         for (TrainCard currentCard : returnedTrainCards) {
             if (currentCard != firstTrainCard) {

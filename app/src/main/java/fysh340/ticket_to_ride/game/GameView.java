@@ -121,4 +121,10 @@ public class GameView extends AppCompatActivity implements Observer {
         super.onPause();
         Game.getGameInstance().getServerError().unregister(this);
     }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Game.getGameInstance().notifyObserver();
+    }
 }
