@@ -138,8 +138,8 @@ public class ServerWebSocket
                 }
                 if (this.gameName != null) {
                     //if the client was in a game, call ServerFacade.leaveGame();
-                    LeaveGameCommandX kickDC = new LeaveGameCommandX(this.username, this.gameName);
-                    kickDC.execute();
+                    //LeaveGameCommandX kickDC = new LeaveGameCommandX(this.username, this.gameName);
+                    //kickDC.execute();
                     ConcurrentHashMap<String, Session> myGameSession = gameSessions.get(gameName);
                     if (myGameSession.containsKey(this.username)) {
                         myGameSession.remove(this.username);
