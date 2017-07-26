@@ -32,7 +32,6 @@ public class Game implements Observable{
         return myGame;
     }
 
-    private int numOfPlayers = 0;
     private String gameName;
     private Player myself;
     private List<String> playerUserNames = new ArrayList<>();
@@ -41,8 +40,8 @@ public class Game implements Observable{
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
-    private int trainCardDeckSize = 0;
-    private int destinationCardDeckSize = 0;
+    private int trainCardDeckSize;
+    private int destinationCardDeckSize;
     private ServerError serverError = new ServerError();
 
     /**
@@ -105,7 +104,8 @@ public class Game implements Observable{
             i++;
             playerMap.put(name, myPlayer);
         }
-
+        trainCardDeckSize = 106;
+        destinationCardDeckSize = 30;
     }
 
     /**
@@ -167,7 +167,7 @@ public class Game implements Observable{
     //end trainCardDeckSize flags
     
     public void setDestinationCardDeckSize(int newSize) {
-        trainCardDeckSize = newSize;
+        destinationCardDeckSize = newSize;
     }
     public int getDestinationCardDeckSize() {
         return destinationCardDeckSize;
@@ -269,6 +269,7 @@ public class Game implements Observable{
      */
     public void iHaveDifferentFAceUpCards(boolean faceUpCardChange) {
         iHaveDifferentFaceUpCards = faceUpCardChange;
+        notifyObserver();
     }
     //end trainCard flags
 
@@ -319,21 +320,29 @@ public class Game implements Observable{
     }
     //end Observerable
 
-    private boolean iHaveDifferentDestCards = false;
+    private boolean iHaveDifferentDestDeckSize = false;
     /**
      *@pre the flag must be properly set upon change to the destination cards
      *@return boolean value to be used as a flag, returns true if a change has been made to the player's destination cards, false otherwise
      *@post no values in the game object have changed
      */
-    public boolean iHaveDifferentDestCards(){
-        return iHaveDifferentDestCards;
+    public boolean iHaveDifferentDestDeckSize(){
+        return iHaveDifferentDestDeckSize;
     }
     /**
      * @param iHaveDifferentDestCards boolean value to be used as a flag, set to true if a destination card has changed, set to false if a destination card has not changed.
      * @post  sets the iHaveDifferentDestCards flag to the iHaveDifferentDestCards boolean value given
      */
-    public void iHaveDifferentDestCards(boolean iHaveDifferentDestCards){
-        this.iHaveDifferentDestCards = iHaveDifferentDestCards;
+    public void iHaveDifferentDestDeckSize(boolean iHaveDifferentDestCards){
+        this.iHaveDifferentDestDeckSize = iHaveDifferentDestCards;
+    }
+    
+    private boolean iHaveDifferentTrainDeckSize = false;
+    public boolean iHaveDifferentTrainDeckSize() {
+        return iHaveDifferentTrainDeckSize;
+    }
+    public void iHaveDifferentTrainDeckSize(boolean hasChanged) {
+        iHaveDifferentTrainDeckSize = hasChanged;
     }
 
     private List<DestCard> possibleDestCards = new ArrayList<>();

@@ -86,6 +86,12 @@ public class ClientFacade implements IClient{
         if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
             game.setPossibleDestCards(destCards);
             game.iHavePossibleDestCards(true);
+    
+            //TODO: Remove this once the model is properly updated from the server
+            game.setDestinationCardDeckSize(game.getDestinationCardDeckSize() - 3);
+            game.iHaveDifferentDestDeckSize(true);
+            
+            
             game.notifyObserver();
             String message = "Drew " + destCards.size() + " destination cards";
             chatModel.addHistory(username, message);
@@ -99,6 +105,11 @@ public class ClientFacade implements IClient{
         myself.addTrainCardByInt(trainCard);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
+    
+        //TODO: Remove this once the model is properly updated from the server
+        game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
+        game.iHaveDifferentTrainDeckSize(true);
+        
         game.notifyObserver();
         String message = "Drew train card";
         chatModel.addHistory(username, message);
@@ -108,6 +119,11 @@ public class ClientFacade implements IClient{
     public void drawTrainCardFaceUp(String username, int trainCard){
         String message = "Drew train card face up";
         chatModel.addHistory(username, message);
+    
+        //TODO: Remove this once the model is properly updated from the server
+        game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
+        game.iHaveDifferentTrainDeckSize(true);
+        
     }
 
     @Override

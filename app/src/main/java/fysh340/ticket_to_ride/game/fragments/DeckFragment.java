@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.GameView;
@@ -17,9 +16,6 @@ import model.Game;
 import model.Route;
 import model.TrainCard;
 import serverproxy.ServerProxy;
-
-import static fysh340.ticket_to_ride.R.drawable.grad;
-import static model.TrainCard.RED;
 
 /**
  *  <h1>DeckFragment Fragment</h1>
@@ -37,7 +33,6 @@ public class DeckFragment extends Fragment implements Observer {
     private Game mGame = Game.getGameInstance();
 
     private TextView[] mFaceUpCards;
-    private List<Integer> mDrawnTrainCards;
     
     private TextView mSelectedRoute;
     
@@ -52,6 +47,7 @@ public class DeckFragment extends Fragment implements Observer {
     @Override
     public void update() {
         if(mGame.iHaveDifferentFaceUpCards()) {
+            mGame.iHaveDifferentFAceUpCards(false);
             repopulateFaceUpCards();
         }
         if(mGame.routeIDHasChanged()) {
@@ -64,11 +60,19 @@ public class DeckFragment extends Fragment implements Observer {
             mGame.iHavePossibleDestCards(false);
             ((GameView)getActivity()).switchDeckFragment();
         }
-        String deckDescription = TRAIN_DECK + mGame.getTrainCards().size();
-        mFaceDownCards.setText(deckDescription);
     
-        deckDescription = DEST_DECK + mGame.getPossibleDestCards().size();
-        mDestinationDeck.setText(deckDescription);
+        String deckDescription;
+        if(mGame.iHaveDifferentTrainDeckSize()) {
+            mGame.iHaveDifferentTrainDeckSize(false);
+            deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+            mFaceDownCards.setText(deckDescription);
+        }
+        if(mGame.iHaveDifferentDestDeckSize()) {
+            mGame.iHaveDifferentDestDeckSize(false);
+            deckDescription = DEST_DECK + mGame.getDestinationCardDeckSize();
+            mDestinationDeck.setText(deckDescription);
+        }
+        
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,8 +101,6 @@ public class DeckFragment extends Fragment implements Observer {
         repopulateFaceUpCards();
         
         mSelectedRoute = (TextView)deckView.findViewById(R.id.selectedRoute);
-    
-        mDrawnTrainCards = new ArrayList<>();
         
         mFaceUpCards[0].setOnClickListener(new View.OnClickListener() {
             @Override
