@@ -47,7 +47,7 @@ public class DeckFragment extends Fragment implements Observer {
     @Override
     public void update() {
         if(mGame.iHaveDifferentFaceUpCards()) {
-            mGame.iHaveDifferentFAceUpCards(false);
+            mGame.iHaveDifferentFaceUpCards(false);
             repopulateFaceUpCards();
         }
         if(mGame.routeIDHasChanged()) {
