@@ -170,22 +170,26 @@ public class ClientFacade implements IClient{
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
         chatModel.addHistory(username,message);
         AbstractPlayer player = game.getPlayerByName(username);
+        //updates the players score
         if(score>0)
         {
             game.aPlayerHasChanged(true);
             player.setScore(score);
         }
+        //updates the players number of train cars
         if(numTrainCars>0)
         {
             game.aPlayerHasChanged(true);
             player.setNumTrains(numTrainCars);
         }
+        //updates the number of trains cards held by a player
         if(numTrainCardsHeld>0)
         {
             game.aPlayerHasChanged(true);
             game.notifyObserver();
             player.setNumCards(numTrainCardsHeld);
         }
+        //updates destination cards held by a player
         if(numDestCardsHeld>0)
         {
 
@@ -193,11 +197,13 @@ public class ClientFacade implements IClient{
             game.notifyObserver();
             player.setDestCardNum(numDestCardsHeld);
         }
+        //update routes owned by a player
         if(numRoutesOwned>0)
         {
             game.aPlayerHasChanged(true);
             player.setNumRoutes(numRoutesOwned);
         }
+        //claims a route by a player
         if(claimedRouteNumber>0)
         {
             game.aPlayerHasChanged(true);
