@@ -105,7 +105,7 @@ public class Game implements Observable{
             playerMap.put(name, myPlayer);
         }
         trainCardDeckSize = 106;
-        destinationCardDeckSize = 30;
+        destinationCardDeckSize = 27;
     }
 
     /**
