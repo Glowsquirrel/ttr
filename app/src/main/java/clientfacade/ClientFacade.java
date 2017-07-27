@@ -168,7 +168,8 @@ public class ClientFacade implements IClient{
         String message = "Returned destination card";
         chatModel.addHistory(username, message);
     }
-//if the server sends back any non zero results that given usernames info will be updated to the results
+
+    //TODO: remove the final parameter for this method when real server is working
     public void addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber,
                            int faceUpIndex){
@@ -183,8 +184,9 @@ public class ClientFacade implements IClient{
         if(player.getNumTrains() > numTrainCars) { //server says a player has fewer trains
             player.setNumTrains(numTrainCars);
         }
-        //updates the number of trains cards held by a player
-        if(player.getNumCards() < numTrainCardsHeld ) { //server says a player has more train cards
+
+        //if the number of cards held by a player has increased, update that player
+        if(player.getNumCards() < numTrainCardsHeld ) {
             player.setNumCards(numTrainCardsHeld);
             Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
             game.iHaveDifferentDestDeckSize(true);
@@ -192,24 +194,26 @@ public class ClientFacade implements IClient{
         } else if (player.getNumCards() > numTrainCardsHeld) { //server says a player has less train cards
             player.setNumCards(numTrainCardsHeld);
         }
-        //updates destination cards held by a player
-        if(player.getNumDestCard() != numDestCardsHeld) { //server says a player has more dest cards
+
+        //if the number of dest cards held by this player has changed, update that player
+        if(player.getNumDestCard() != numDestCardsHeld) {
             int destCardNumDifference = player.getNumDestCard() - numDestCardsHeld;
             player.setDestCardNum(numDestCardsHeld);
             Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() + destCardNumDifference);
             game.iHaveDifferentDestDeckSize(true);
         }
-        //claims a route by a player
-        if(player.getNumRoutes() < numRoutesOwned) { //server says the player has more routes
+
+        //if the number of routes for this player has increased, update that player
+        if(player.getNumRoutes() < numRoutesOwned) {
             map.claimRoute(game.getPlayerByName(username).getColor(), claimedRouteNumber);
             player.setNumRoutes(numRoutesOwned);
             player.setScore(score);
         }
+
+        //TODO: remove this block when real server is working
         if (faceUpIndex > -1){
-            //Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
             player.addTrainCard();
 
-            //TODO remove when have a real server and put the newTrainCardInt into the spot
             List<Integer> faceUpCards = game.getFaceUpCards();
             Random rand = new Random();
             int card = rand.nextInt(9);

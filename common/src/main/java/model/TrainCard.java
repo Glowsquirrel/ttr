@@ -19,27 +19,6 @@ public enum TrainCard {
         mPrettyName = prettyName;
     }
 
-    public static TrainCard getTrainCardTypeByInt(int trainCardID){
-        if (trainCardID < 12)
-            return PURPLE;
-        else if (trainCardID < 24)
-            return WHITE;
-        else if (trainCardID < 36)
-            return BLUE;
-        else if (trainCardID < 48)
-            return YELLOW;
-        else if (trainCardID < 60)
-            return ORANGE;
-        else if (trainCardID < 72)
-            return BLACK;
-        else if (trainCardID < 84)
-            return RED;
-        else if (trainCardID < 96)
-            return GREEN;
-        else
-            return WILD;
-    }
-
     public static int getTrainCardKey(TrainCard trainCard) {
         switch (trainCard) {
             case RED:

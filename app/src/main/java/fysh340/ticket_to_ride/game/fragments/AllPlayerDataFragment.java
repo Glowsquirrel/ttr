@@ -22,6 +22,7 @@ import model.AbstractPlayer;
 import model.Deck;
 import model.DestCard;
 import model.Game;
+import model.TrainCard;
 
 
 public class AllPlayerDataFragment extends Fragment implements Observer {
@@ -102,14 +103,18 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                         break;
                     case(5):
                         //Other player draws a train card from the face up
+                        List<Integer> trainCardInt0 = mGame.getFaceUpCards();
+                        TrainCard trainCard0 = TrainCard.getTrainCard(trainCardInt0.get(0));
                         Toast.makeText(getActivity(), otherPlayerUsername + " draws a train card from face up", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a train card from the deck", otherPlayer.getNumTrains(),
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a " + trainCard0.getPrettyname() + " card from face up", otherPlayer.getNumTrains(),
                                 otherPlayer.getNumCards() + 1, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, 0);
                         break;
                     case(6):
                         //Other player draws a train card from the face up
+                        List<Integer> trainCardInt3 = mGame.getFaceUpCards();
+                        TrainCard trainCard3 = TrainCard.getTrainCard(trainCardInt3.get(3));
                         Toast.makeText(getActivity(), otherPlayerUsername + " draws a train card from face up", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a train card from the deck", otherPlayer.getNumTrains(),
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a " + trainCard3.getPrettyname() + " card from face up", otherPlayer.getNumTrains(),
                                 otherPlayer.getNumCards() + 1, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, 3);
                         break;
                     case(7):
