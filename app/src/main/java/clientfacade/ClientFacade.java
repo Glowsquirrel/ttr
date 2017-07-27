@@ -212,8 +212,6 @@ public class ClientFacade implements IClient{
 
         //TODO: remove this block when real server is working
         if (faceUpIndex > -1){
-            player.addTrainCard();
-
             List<Integer> faceUpCards = game.getFaceUpCards();
             Random rand = new Random();
             int card = rand.nextInt(9);
