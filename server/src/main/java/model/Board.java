@@ -28,8 +28,6 @@ public class Board {
     private Map<Integer, DestCard> destCardMap = new HashMap<>();
     private boolean replaceFaceUpFlag = false;
 
-
-
     Board() {
         destCardMap = DestCard.getDestCardMap();
         routeMap = Route.createRouteMap();
@@ -49,6 +47,11 @@ public class Board {
     }
 
     /***********************************BOARD SETUP/SHUFFLING*****************************************/
+
+    /**
+     * Initializes train card deck by adding them in order of their keys; ie, RED is key 0, GREEN
+     * is key 1, so the first 12 cards are red, second 12 cards are green, etc.
+     */
     private void initializeTrainCardDeck() {
 
         final int NUM_OF_EACH_COLOR = 12;
@@ -67,6 +70,10 @@ public class Board {
         }
     }
 
+    /**
+     * Shuffles the train card deck by randomly switching cards within the deck.
+     * @param setUp True if called when board is initialized; false otherwise
+     */
     private void shuffleTrainCardDeck(boolean setUp) {
 
         final int NUM_OF_SWITCHES = 1000;
@@ -92,6 +99,9 @@ public class Board {
         discardedTrainCards.clear();
     }
 
+    /**
+     * Draws the first five face up cards.
+     */
     private void drawFaceUpCards() {
         final int FIFTH_CARD = 5;
 
@@ -102,11 +112,17 @@ public class Board {
         countLocomotives();
     }
 
+    /**
+     * Gets a destCardDeck from the values in destCardMap.
+     */
     private void initializeDestCardDeck() {
         destCardDeck.clear();
         destCardDeck.addAll(destCardMap.values());
     }
 
+    /**
+     * Shuffles destination card deck by randomly switching cards in the deck.
+     */
     private void shuffleDestCarDeck() {
 
         final int NUM_OF_SWITCHES = 1000;
