@@ -177,7 +177,7 @@ public class ServerModel {
         }
     }
 
-   /****************************************STARTING GAME****************************************/
+   /*************************************STARTING GAME*********************************************/
     public void startGame(String gameName, String username) {
         try {
             activateGame(gameName);
@@ -207,8 +207,7 @@ public class ServerModel {
                 allCommandLists.get(gameName).add(result);
             }
             while (newlyStartedGame.getReplaceFaceUpFlag()) {
-                Result nextResult =
-                        newlyStartedGame.replaceFaceUpCards();
+                Result nextResult = newlyStartedGame.replaceFaceUpCards();
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
@@ -241,7 +240,7 @@ public class ServerModel {
         }
     }
 
-    /*************************************DrawDestCard*******************************************/
+    /**************************************DrawDestCard*******************************************/
 
     public void drawThreeDestCards(String gameName, String playerName) {
         try {
@@ -254,7 +253,7 @@ public class ServerModel {
         }
     }
 
-    /************************************DrawTrainCard****************************************/
+    /*************************************DrawTrainCard********************************************/
 
     public void drawTrainCardFromDeck(String gameName, String playerName) {
 
@@ -287,7 +286,7 @@ public class ServerModel {
         }
     }
 
-    /*************************************Claim Route*************************************/
+    /************************************Claim Route***********************************************/
 
     public void claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
         try {

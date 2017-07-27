@@ -13,19 +13,10 @@ public enum TrainCard {
     WILD ("Wild");
 
     private String mPrettyName;
+    private static TrainCard[] values = TrainCard.values();
 
     TrainCard(String prettyName) {
         mPrettyName = prettyName;
-    }
-
-    public String getPrettyname() {
-        return mPrettyName;
-    }
-
-    private static TrainCard[] values = TrainCard.values();
-
-    public static TrainCard getTrainCard(int trainCard) {
-        return values[trainCard];
     }
 
     public static TrainCard getTrainCardTypeByInt(int trainCardID){
@@ -71,5 +62,13 @@ public enum TrainCard {
                     return 8;
         }
         return -1;
+    }
+
+    public String getPrettyname() {
+        return mPrettyName;
+    }
+
+    public static TrainCard getTrainCard(int trainCard) {
+        return values[trainCard];
     }
 }

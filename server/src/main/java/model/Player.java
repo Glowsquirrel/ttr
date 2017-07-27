@@ -1,10 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
- class Player {
+class Player {
 
     private String userName;
     private List<TrainCard> trainCardHand = new ArrayList<>();
@@ -25,12 +28,16 @@ import java.util.List;
     private int points;
     private int numOfRoutes;
     private int numOfCars = 45;
-
+    private List<ContinuousRoute> allContRoutes = new ArrayList<>();
      Player(String userName) {
         this.userName = userName;
     }
 
-      void addTrainCards(List<TrainCard> drawnCards){
+    /**
+     * Adds to exact number of train cards in each player's hand.
+     * @param drawnCards List of drawn drawn TrainCards.
+     */
+    void addTrainCards(List<TrainCard> drawnCards){
 
          for (TrainCard currentCard : drawnCards){
              trainCardHand.add(currentCard);
@@ -72,9 +79,16 @@ import java.util.List;
         for (DestCard currentCard : drawnCards) {
             newlyDrawnDestCards.add(currentCard);
         }
-    }
+     }
 
-
+    /**
+     * Removes the cards selected from player's newlyDrawnDestCards; adds remaining newlyDrawnDestCards
+     * to player's destCard hand; clears newlyDrawnDestCards.
+     * @param cardOne First card returned by player
+     * @param cardTwo Second card returned by player
+     * @return True if cards removed
+     * @throws GamePlayException Thrown if player has not drawn cards they are trying to remove.
+     */
      boolean removeDestCards(DestCard cardOne, DestCard cardTwo) throws GamePlayException {
         boolean success = false;
 
@@ -115,7 +129,12 @@ import java.util.List;
         return true;
     }
 
-    public boolean invalidDestCard(DestCard destCard) {
+    /**
+     * Checks if cards returned have been drawn.
+     * @param destCard DestCard being returned.
+     * @return True if valid; false otherwise
+     */
+     boolean invalidDestCard(DestCard destCard) {
         if (destCard == null) {
             return false;
         }
@@ -127,33 +146,6 @@ import java.util.List;
         return true;
     }
 
-    public String getUsername() {
-        return userName;
-    }
-
-    int getNumOfCars() {
-        return numOfCars;
-    }
-
-    int getSizeOfTrainCardHand() {
-        return trainCardHand.size();
-    }
-
-    int getSizeOfDestCardHand() {
-        return destCardHand.size();
-    }
-
-    int getPoints() {
-        return points;
-    }
-
-    int getNumOfRoutesOwned() {
-        return numOfRoutes;
-    }
-    public List<DestCard> getDestCards() {
-        return destCardHand;
-    }
-
     List<Integer> getTrainCardCodes() {
         List<Integer> trainCardCodes = new ArrayList<>();
         for (TrainCard trainCard : trainCardHand) {
@@ -162,13 +154,6 @@ import java.util.List;
         return trainCardCodes;
     }
 
-    /**
-     * For error testing
-     */
-    public int getTotalNumberOfCards(){
-         return numOfBlackCards + numOfYellowCards + numOfRedCards
-                + numOfBlueCards + numOfGreenCards;
-    }
 
     boolean removeCars(int numOfCars) {
         if (numOfCars < 0 || numOfCars > 6){
@@ -178,19 +163,10 @@ import java.util.List;
         return true;
     }
 
-    PlayerColor getPlayerColor() {
-        return playerColor;
-    }
-    void setPlayerColor(int position) {
-        playerColor = PlayerColor.getPlayerColor(position);
-    }
-    List<DestCard> getNewlyDrawnDestCards() {
-        return newlyDrawnDestCards;
-    }
-
     void addScore(int points) {
         this.points += points;
     }
+
     void addNumOfRoutes() {
         numOfRoutes++;
     }
@@ -230,6 +206,33 @@ import java.util.List;
             }
         }
     }
+
+    void calculateContRoute(City startCity, City endCity, int size) {
+
+        int startCityIndex = -1;
+        int endCityIndex = -1;
+
+        for (int a = 0; a < allContRoutes.size(); a++) {
+            ContinuousRoute currentRoute = allContRoutes.get(a);
+            if (currentRoute.contains(startCity)){
+                currentRoute.addToRoute(endCity, size);
+                startCityIndex = a;
+            } else if (currentRoute.contains(endCity)) {
+                currentRoute.addToRoute(startCity, size);
+                endCityIndex = a;
+            }
+        }
+
+        if (startCityIndex > -1 && endCityIndex > -1) {
+            ContinuousRoute startCityRoute = allContRoutes.get(startCityIndex);
+            ContinuousRoute endCityRoute = allContRoutes.get(endCityIndex);
+            startCityRoute.uniteRoutes(endCityRoute);
+            allContRoutes.remove(endCityIndex);
+        } else if (startCityIndex < 0 && endCityIndex < 0){
+            allContRoutes.add(new ContinuousRoute(startCity, endCity, size));
+        }
+    }
+
      int getNumOfPurpleCards() {
          return numOfPurpleCards;
      }
@@ -266,4 +269,69 @@ import java.util.List;
          return numOfWildCards;
      }
 
+    public String getUsername() {
+        return userName;
+    }
+
+    int getNumOfCars() {
+        return numOfCars;
+    }
+
+    int getSizeOfTrainCardHand() {
+        return trainCardHand.size();
+    }
+
+    int getSizeOfDestCardHand() {
+        return destCardHand.size();
+    }
+
+    int getPoints() {
+        return points;
+    }
+
+    int getNumOfRoutesOwned() {
+        return numOfRoutes;
+    }
+
+    public List<DestCard> getDestCards() {
+        return destCardHand;
+    }
+
+    PlayerColor getPlayerColor() {
+        return playerColor;
+    }
+
+    void setPlayerColor(int position) {
+        playerColor = PlayerColor.getPlayerColor(position);
+    }
+
+    List<DestCard> getNewlyDrawnDestCards() {
+        return newlyDrawnDestCards;
+    }
+
+
+    private class ContinuousRoute {
+         Set<City> cities = Collections.synchronizedSet(new HashSet<City>());
+         int size = 0;
+
+         ContinuousRoute (City startCity, City endCity, int size) {
+             cities.add(startCity);
+             cities.add(endCity);
+             this.size = size;
+         }
+
+         boolean contains(City city) {
+            return cities.contains(city);
+         }
+
+         void addToRoute(City cityToAdd, int sizeToAdd) {
+             cities.add(cityToAdd);
+             size += sizeToAdd;
+         }
+
+         void uniteRoutes(ContinuousRoute endCityRoute) {
+             this.cities.addAll(endCityRoute.cities);
+             this.size += endCityRoute.size;
+         }
+     }
 }

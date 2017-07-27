@@ -23,7 +23,6 @@ import results.game.StartGameResult;
  * @author Stephen Richins
  */
 
-//QUESTION: Do we add an index for the players in the startGame Result?
 // TODO: continuous routes; check for low card amount; end game; check for low car amount;
 class StartedGame {
 
@@ -40,7 +39,7 @@ class StartedGame {
         this.gameName = unstartedGame.getGameName();
     }
 
-/************************************START GAME************************************************/
+/*****************************************START GAME***********************************************/
     /**
      * Must deal cards before setting up deck for correct error handling.
      * @return True if successful, false otherwise.
@@ -62,6 +61,10 @@ class StartedGame {
         return startGameResults();
     }
 
+    /**
+     * Creates a list of results for the startGame command.
+     * @return
+     */
     private List<Result> startGameResults() {
 
         Set<Player> playerSet = new HashSet<>();
@@ -92,9 +95,15 @@ class StartedGame {
         return allResults;
     }
 
+/******************************************DrawDestCards*******************************************/
 
-
-/********************************DrawDestCards*****************************************************/
+    /**
+     * Controls drawThreeDestCard command from the game. Passes information necessary to to the
+     * board and the players.
+     * @param playerName The player drawing the destination cards.
+     * @return Result to send to the client
+     * @throws GamePlayException For bad commands
+     */
      Result drawThreeDestCards(String playerName) throws GamePlayException {
 
         throwIfNotPlayersTurn(playerName);
@@ -118,6 +127,12 @@ class StartedGame {
         return drawDestCardResults(playerName, drawnDestCards);
     }
 
+    /**
+     * Creates the result to send to the client after calling drawThreeDestCards.
+     * @param playerName Player making the command.
+     * @param drawnDestCards List of destination cards the player drew.
+     * @return The Result object to send to the client.
+     */
     private Result drawDestCardResults(String playerName, List<DestCard> drawnDestCards) {
 
         List<Integer> drawnCardKeys = new ArrayList<>();
@@ -128,7 +143,13 @@ class StartedGame {
         return new DrawThreeDestCardsResult(playerName, drawnCardKeys);
     }
 
-
+    /**
+     *
+     * @param playerName
+     * @param returnedCardKey
+     * @return
+     * @throws GamePlayException
+     */
     Result returnDestCard(String playerName, int returnedCardKey)
             throws GamePlayException {
         throwIfNotPlayersTurn(playerName);
@@ -244,12 +265,15 @@ class StartedGame {
                 throw new GamePlayException("Can not claim double route.");
             }
 
+            Route route = board.getRouteMap().get(routeId);
             switchTurnState(CommandType.CLAIM_ROUTE);
             board.claimRoute(routeId, currentPlayer.getPlayerColor(), playerName);
             currentPlayer.addNumOfRoutes();
-            currentPlayer.addScore(board.getRoutePoints(routeId));
+            currentPlayer.removeCars(route.getLength());
+            currentPlayer.addScore(route.getPointValue());
             currentPlayer.removeTrainCards(returnedTrainCards);
             board.discardTrainCards(returnedTrainCards);
+            //currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
 
         } else {
             throw new GamePlayException("Invalid player name");
@@ -260,10 +284,6 @@ class StartedGame {
         return new ClaimRouteResult(playerName, routeId);
     }
 
-    public PlayerColor retrievePlayerColor(String playerName) {
-        return allPlayers.get(playerName).getPlayerColor();
-    }
-
     private List<TrainCard> convertKeysToTrainCards(List<Integer> trainCards) {
         List<TrainCard> returnTrainCards =  new ArrayList<>();
         for(Integer a : trainCards) {
@@ -272,9 +292,10 @@ class StartedGame {
         return returnTrainCards;
     }
 
+    /*******************************ENDGAME***************************************/
+
 
     /***********************************CHAT*************************************/
-
 
     Result addChat(String playerName, String message) {
         allChats.add(new Chat(playerName, message));

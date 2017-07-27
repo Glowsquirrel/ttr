@@ -127,6 +127,11 @@ public class Board {
 
     }
 
+    /**
+     * Counts the locomotives in the face-up cards. If three, sets the replaceFaceUpFlag.
+     * This flag will let the ServerModel send an extra Result object to notify clients of a
+     * replacement set of TrainCards.
+     */
     private void countLocomotives() {
         replaceFaceUpFlag = false;
 
@@ -145,7 +150,7 @@ public class Board {
 
     }
 
-    /**********************************GAMEPLAY************************************************/
+    /**************************************GAMEPLAY************************************************/
 
     ArrayList<TrainCard> drawTrainCardsFromDeck(int numberDrawn) {
 
@@ -164,6 +169,7 @@ public class Board {
     boolean emptyTrainCardDeck() {
         return trainCardDeck.size() == 0;
     }
+
     ArrayList<DestCard> drawDestCards() {
 
         int sizeOfDraw;
@@ -306,22 +312,6 @@ public class Board {
         }
     }
 
-    boolean getReplaceFaceUpFlag() {
-        return replaceFaceUpFlag;
-    }
-
-    int getRoutePoints(int routeId) {
-        return routeMap.get(routeId).getPointValue();
-    }
-
-    Map<Integer, DestCard> getDestCardMap() {
-        return destCardMap;
-    }
-
-    Map<Integer, Route> getRouteMap() {
-        return routeMap;
-    }
-
     private void setDestCardDeck(List<DestCard> destCardDeck) {
         this.destCardDeck = destCardDeck;
     }
@@ -332,6 +322,18 @@ public class Board {
 
     private void setFaceUpTrainCards(List<TrainCard> faceUpTrainCards) {
         this.faceUpTrainCards = faceUpTrainCards;
+    }
+
+    boolean getReplaceFaceUpFlag() {
+        return replaceFaceUpFlag;
+    }
+
+    Map<Integer, DestCard> getDestCardMap() {
+        return destCardMap;
+    }
+
+    Map<Integer, Route> getRouteMap() {
+        return routeMap;
     }
 
     int getTrainCardDeckSize() {

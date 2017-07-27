@@ -5,6 +5,7 @@ package model;
  */
 
 public enum City {
+
     ATLANTA ("Atlanta"),
     BOSTON ("Boston"),
     CALGARY ("Calgary"),
