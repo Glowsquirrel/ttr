@@ -19,6 +19,7 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
+import model.Deck;
 import model.DestCard;
 import model.Game;
 import serverproxy.ServerProxy;
@@ -69,7 +70,7 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                     mGame.getMyself().incrementDestCards();
                 }
                 mGame.aPlayerHasChanged(true);
-                mGame.iHaveDifferentDestCards(true);
+                mGame.getMyself().iHaveDifferentDestCards(true);
                 mGame.iHavePossibleDestCards(false);
                 mGame.notifyObserver();
                 possibleDestCards.removeAll(selectedDestCards);

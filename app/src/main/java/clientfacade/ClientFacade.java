@@ -111,7 +111,7 @@ public class ClientFacade implements IClient{
             game.iHavePossibleDestCards(true);
     
             //TODO: Remove this once the model is properly updated from the server
-            game.setDestinationCardDeckSize(game.getDestinationCardDeckSize() - 3);
+            Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() - 3);
             game.iHaveDifferentDestDeckSize(true);
             
             
@@ -130,8 +130,8 @@ public class ClientFacade implements IClient{
         game.iHaveDifferentTrainCards(true);
     
         //TODO: Remove this once the model is properly updated from the server
-        game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
-        game.iHaveDifferentTrainDeckSize(true);
+        Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
+        Deck.getInstance().iHaveDifferentTrainDeckSize(true);
         
         game.notifyObserver();
         String message = "Drew train card";
@@ -149,8 +149,8 @@ public class ClientFacade implements IClient{
         chatModel.addHistory(username, message);
     
         //TODO: Remove this once the model is properly updated from the server
-        game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
-        game.iHaveDifferentTrainDeckSize(true);
+        Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
+        Deck.getInstance().iHaveDifferentTrainDeckSize(true);
         
     }
 

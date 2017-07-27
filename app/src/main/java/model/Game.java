@@ -40,8 +40,6 @@ public class Game implements Observable{
     private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
-    private int trainCardDeckSize;
-    private int destinationCardDeckSize;
     private ServerError serverError = new ServerError();
 
     /**
@@ -104,8 +102,8 @@ public class Game implements Observable{
             i++;
             playerMap.put(name, myPlayer);
         }
-        trainCardDeckSize = 106;
-        destinationCardDeckSize = 27;
+        Deck.getInstance().setTrainCardDeckSize(106);
+        Deck.getInstance().setDestinationCardDeckSize(27);
     }
 
     /**
@@ -150,34 +148,6 @@ public class Game implements Observable{
     public void setFaceUpCards(List<Integer> newFaceUpCards){
         this.faceUpCards = newFaceUpCards;
     }
-    
-    public void setTrainCardDeckSize(int newSize) {
-        trainCardDeckSize = newSize;
-    }
-    public int getTrainCardDeckSize() {
-        return trainCardDeckSize;
-    }
-    
-    //Begin trainCardDeckSize flag
-    private boolean newTrainCardDeckSize = false;
-    public boolean trainCardDeckSizeHasChanged() {
-        return newTrainCardDeckSize;
-    }
-    public void trainCardDeckSizeHasChanged(boolean hasChanged) {
-        newTrainCardDeckSize = hasChanged;
-        notifyObserver();
-    }
-    //end trainCardDeckSize flags
-    
-    public void setDestinationCardDeckSize(int newSize) {
-        destinationCardDeckSize = newSize;
-    }
-    public int getDestinationCardDeckSize() {
-        return destinationCardDeckSize;
-    }
-    
-    //Begin destinationCardDeckSize flag
-    private boolean newDestinationCardDeckSize = false;
 
     
     //begin CurrentlySelectedRouteID flags
@@ -269,13 +239,7 @@ public class Game implements Observable{
     }
     //end trainCard flags
     
-    private boolean iHaveDifferentDestCards = false;
-    public boolean iHaveDifferentDestCards() {
-        return iHaveDifferentDestCards;
-    }
-    public void iHaveDifferentDestCards(boolean hasChanged) {
-        iHaveDifferentDestCards = hasChanged;
-    }
+
 
     //begin Observable
     /**
@@ -340,14 +304,7 @@ public class Game implements Observable{
     public void iHaveDifferentDestDeckSize(boolean iHaveDifferentDestCards){
         this.iHaveDifferentDestDeckSize = iHaveDifferentDestCards;
     }
-    
-    private boolean iHaveDifferentTrainDeckSize = false;
-    public boolean iHaveDifferentTrainDeckSize() {
-        return iHaveDifferentTrainDeckSize;
-    }
-    public void iHaveDifferentTrainDeckSize(boolean hasChanged) {
-        iHaveDifferentTrainDeckSize = hasChanged;
-    }
+
 
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private boolean iHavePossibleDestCards = false;
@@ -385,7 +342,11 @@ public class Game implements Observable{
         return possibleDestCards;
     }
 
-
+    /**
+     *@pre the list of objects must be set for the game object by calling setPossibleDestCards() with a valid list pf possible destination cards
+     * @return List of DestCard objects for the user to choose from
+     * @post will return an empty list if possible destination cards weren't set correctly
+     */
     public ServerError getServerError() {
         return serverError;
     }

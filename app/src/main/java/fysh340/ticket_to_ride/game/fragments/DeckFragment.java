@@ -12,6 +12,7 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.GameView;
 import interfaces.Observer;
+import model.Deck;
 import model.Game;
 import model.Route;
 import model.TrainCard;
@@ -63,14 +64,14 @@ public class DeckFragment extends Fragment implements Observer {
         }
     
         String deckDescription;
-        if(mGame.iHaveDifferentTrainDeckSize()) {
-            mGame.iHaveDifferentTrainDeckSize(false);
-            deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+        if(Deck.getInstance().iHaveDifferentTrainDeckSize()) {
+            Deck.getInstance().iHaveDifferentTrainDeckSize(false);
+            deckDescription = TRAIN_DECK + Deck.getInstance().getTrainCardDeckSize();
             mFaceDownCards.setText(deckDescription);
         }
         if(mGame.iHaveDifferentDestDeckSize()) {
             mGame.iHaveDifferentDestDeckSize(false);
-            deckDescription = DEST_DECK + mGame.getDestinationCardDeckSize();
+            deckDescription = DEST_DECK + Deck.getInstance().getDestinationCardDeckSize();
             mDestinationDeck.setText(deckDescription);
         }
         
@@ -149,11 +150,11 @@ public class DeckFragment extends Fragment implements Observer {
         });
         
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
-        String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+        String deckDescription = TRAIN_DECK + Deck.getInstance().getTrainCardDeckSize();
         mFaceDownCards.setText(deckDescription);
         
         mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
-        deckDescription = DEST_DECK + mGame.getDestinationCardDeckSize();
+        deckDescription = DEST_DECK + Deck.getInstance().getDestinationCardDeckSize();
         mDestinationDeck.setText(deckDescription);
 
         setUpDeckListeners(deckView);

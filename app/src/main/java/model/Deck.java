@@ -81,5 +81,38 @@ public class Deck implements Observable{
 
             uiHandler.post(runnable);
     }
+    private boolean iHaveDifferentTrainDeckSize = false;
+    public boolean iHaveDifferentTrainDeckSize() {
+        return iHaveDifferentTrainDeckSize;
+    }
+    public void iHaveDifferentTrainDeckSize(boolean hasChanged) {
+        iHaveDifferentTrainDeckSize = hasChanged;
+    }
+
+    public void setTrainCardDeckSize(int newSize) {
+        trainCardDeckSize = newSize;
+    }
+    public int getTrainCardDeckSize() {
+        return trainCardDeckSize;
+    }
+
+    //Begin trainCardDeckSize flag
+    private boolean newTrainCardDeckSize = false;
+    public boolean trainCardDeckSizeHasChanged() {
+        return newTrainCardDeckSize;
+    }
+    public void trainCardDeckSizeHasChanged(boolean hasChanged) {
+        newTrainCardDeckSize = hasChanged;
+        Game.getGameInstance().notifyObserver();
+    }
+    //end trainCardDeckSize flags
+    private int trainCardDeckSize;
+    private int destinationCardDeckSize;
+    public void setDestinationCardDeckSize(int newSize) {
+        destinationCardDeckSize = newSize;
+    }
+    public int getDestinationCardDeckSize() {
+        return destinationCardDeckSize;
+    }
 
 }

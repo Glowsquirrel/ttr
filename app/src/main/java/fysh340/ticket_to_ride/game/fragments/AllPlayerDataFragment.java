@@ -18,6 +18,7 @@ import clientfacade.ClientFacade;
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.AbstractPlayer;
+import model.Deck;
 import model.DestCard;
 import model.Game;
 import model.Player;
@@ -112,7 +113,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                         TrainCard tc2=TrainCard.getTrainCardTypeByInt(80);
                         card.add(tc2);
                         mGame.getMyself().addCards(card);
-                        mGame.iHaveDifferentDestCards(true);
+                        mGame.getMyself().iHaveDifferentDestCards(true);
 
                         //add destination card
                         mGame.getMyself().addDestCard(DestCard.getDestCardByID(5));
@@ -124,21 +125,21 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
                         mGame.getMyself().setNumOfPurpleCards(  mGame.getMyself().getNumOfPurpleCards()-1);
                         mGame.getMyself().removeDestCard(DestCard.getDestCardByID(5));
                         mGame.iHaveDifferentTrainCards(true);
-                        mGame.iHaveDifferentDestCards(true);
+                        mGame.getMyself().iHaveDifferentDestCards(true);
                         mGame.notifyObserver();
 
                         //Add/remove player destination cards for this player
                         break;
                     case(7):
                         Toast.makeText(getActivity(), "Train card deck size changed", Toast.LENGTH_SHORT).show();
-                        mGame.setTrainCardDeckSize(30);
-                        mGame.iHaveDifferentTrainDeckSize(true);
-                        mGame.notifyObserver();
+                        Deck.getInstance().setTrainCardDeckSize(30);
+                        Deck.getInstance().iHaveDifferentTrainDeckSize(true);
+                        Deck.getInstance().notifyObserver();
                         //Update visible cards and number of invisible cards in train card deck
                         break;
                     case(8):
                         Toast.makeText(getActivity(), "Destination card deck size has changed", Toast.LENGTH_SHORT).show();
-                        mGame.setDestinationCardDeckSize(30);
+                        Deck.getInstance().setDestinationCardDeckSize(30);
                         mGame.iHaveDifferentDestDeckSize(true);
                         mGame.notifyObserver();
                         //Update number of cards in destination card deck

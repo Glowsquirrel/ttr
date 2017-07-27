@@ -142,4 +142,11 @@ public abstract class AbstractPlayer {
     {
        return color;
     }
+    private boolean iHaveDifferentDestCards = false;
+    public boolean iHaveDifferentDestCards() {
+        return iHaveDifferentDestCards;
+    }
+    public void iHaveDifferentDestCards(boolean hasChanged) {
+        iHaveDifferentDestCards = hasChanged;
+    }
 }
