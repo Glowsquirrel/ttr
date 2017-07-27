@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.GameViewMasterPresenter;
+import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import interfaces.Observer;
 import model.DestCard;
 import model.Game;
@@ -64,7 +64,7 @@ public class DestCardPresenter extends Fragment implements Observer{
         playerCardSwitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameViewMasterPresenter)getActivity()).switchPlayerCards();
+                ((MasterGamePresenter)getActivity()).switchPlayerCards();
             }
         });
 

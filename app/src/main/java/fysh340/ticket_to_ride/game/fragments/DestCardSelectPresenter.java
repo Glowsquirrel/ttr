@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.GameViewMasterPresenter;
+import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import interfaces.Observer;
 import model.DestCard;
 import model.Game;
@@ -75,7 +75,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                 }
                 selectedDestCards.clear();
                 checkSelectedSize(destCardSelectView);
-                ((GameViewMasterPresenter)getActivity()).switchDeckFragment();
+                ((MasterGamePresenter)getActivity()).switchDeckFragment();
             }
         });
 

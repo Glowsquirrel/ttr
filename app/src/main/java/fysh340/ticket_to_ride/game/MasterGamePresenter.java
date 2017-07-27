@@ -15,7 +15,7 @@ import model.ClientModel;
 import model.Game;
 import model.ServerError;
 
-public class GameViewMasterPresenter extends AppCompatActivity implements Observer {
+public class MasterGamePresenter extends AppCompatActivity implements Observer {
     ClientModel clientModel = ClientModel.getMyClientModel();
     private AllPlayersPresenter allPlayersPresenter;
     private TrainCardPresenter trainCardPresenter;

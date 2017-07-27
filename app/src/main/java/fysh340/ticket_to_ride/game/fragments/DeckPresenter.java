@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.GameViewMasterPresenter;
+import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import interfaces.Observer;
 import model.Deck;
 import model.Game;
@@ -60,7 +60,7 @@ public class DeckPresenter extends Fragment implements Observer {
         }
         if (mGame.iHavePossibleDestCards()){
             mGame.iHavePossibleDestCards(false);
-            ((GameViewMasterPresenter)getActivity()).switchDeckFragment();
+            ((MasterGamePresenter)getActivity()).switchDeckFragment();
         }
     
         String deckDescription;
