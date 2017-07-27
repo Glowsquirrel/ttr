@@ -22,4 +22,8 @@ public class ClaimRouteCommand extends Command {
     public int getRouteID() {
         return routeID;
     }
+
+    public List<Integer> getTrainCards() {
+        return trainCards;
+    }
 }

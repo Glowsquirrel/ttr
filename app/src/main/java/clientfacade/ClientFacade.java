@@ -1,10 +1,10 @@
 package clientfacade;
 
-import android.graphics.Color;
-
 import java.util.List;
+import java.util.Random;
 
 import interfaces.IClient;
+import mockserver.MockServer;
 import model.AbstractPlayer;
 import model.ChatHistoryModel;
 import model.ClientModel;
@@ -85,22 +85,25 @@ public class ClientFacade implements IClient{
         Route myRoute = Route.getRouteByID(routeID);
         TrainCard myTrainCardType = myRoute.getOriginalColor();
         int routeSize = myRoute.getLength();
-        if (game.getMyself().getNumOfTypeCards(myTrainCardType) >= routeSize
-                && game.getMyself().getNumTrains() >= routeSize) {
-            map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
-            game.getMyself().incrementNumRoutesClaimed();
-            game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
-            game.getMyself().addToScore(myRoute.getPointValue());
-            game.getMyself().removeTrains(routeSize);
-            game.getMyself().removeMultipleTrainCards(routeSize);
-            game.iHaveDifferentTrainCards(true);
-            game.aPlayerHasChanged(true);
-            game.notifyObserver();
-            String message = "Claimed route " + routeID;
-            chatModel.addHistory(username, message);
-        } else {
-            showRejectMessage("You don't have the cards for that");
-        }
+
+        //change GUI elements
+        map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
+        game.getMyself().incrementNumRoutesClaimed();
+        game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
+        game.getMyself().addToScore(myRoute.getPointValue());
+        game.getMyself().removeTrains(routeSize);
+        game.getMyself().removeMultipleTrainCards(routeSize);
+
+        //raise GUI change flags
+        game.iHaveDifferentTrainCards(true);
+        game.aPlayerHasChanged(true);
+
+        //add history
+        String message = "Claimed route " + routeID;
+        chatModel.addHistory(username, message);
+
+        //notify of changes
+        game.notifyObserver();
     }
 
     @Override
@@ -167,48 +170,56 @@ public class ClientFacade implements IClient{
     }
 //if the server sends back any non zero results that given usernames info will be updated to the results
     public void addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
-                           int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber){
+                           int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber,
+                           int faceUpIndex){
         chatModel.addHistory(username,message);
         AbstractPlayer player = game.getPlayerByName(username);
+
         //updates the players score
-        if(score>0)
-        {
-            game.aPlayerHasChanged(true);
+        if(player.getScore() < score) { //server says a player has a higher score
             player.setScore(score);
         }
         //updates the players number of train cars
-        if(numTrainCars>0)
-        {
-            game.aPlayerHasChanged(true);
+        if(player.getNumTrains() > numTrainCars) { //server says a player has fewer trains
             player.setNumTrains(numTrainCars);
         }
         //updates the number of trains cards held by a player
-        if(numTrainCardsHeld>0)
-        {
-            game.aPlayerHasChanged(true);
-            game.notifyObserver();
+        if(player.getNumCards() < numTrainCardsHeld ) { //server says a player has more train cards
+            player.setNumCards(numTrainCardsHeld);
+            Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
+            game.iHaveDifferentDestDeckSize(true);
+            Deck.getInstance().iHaveDifferentTrainDeckSize(true);
+        } else if (player.getNumCards() > numTrainCardsHeld) { //server says a player has less train cards
             player.setNumCards(numTrainCardsHeld);
         }
         //updates destination cards held by a player
-        if(numDestCardsHeld>0)
-        {
-
-            game.aPlayerHasChanged(true);
-            game.notifyObserver();
+        if(player.getNumDestCard() != numDestCardsHeld) { //server says a player has more dest cards
+            int destCardNumDifference = player.getNumDestCard() - numDestCardsHeld;
             player.setDestCardNum(numDestCardsHeld);
-        }
-        //update routes owned by a player
-        if(numRoutesOwned>0)
-        {
-            game.aPlayerHasChanged(true);
-            player.setNumRoutes(numRoutesOwned);
+            Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() + destCardNumDifference);
+            game.iHaveDifferentDestDeckSize(true);
         }
         //claims a route by a player
-        if(claimedRouteNumber>0)
-        {
-            game.aPlayerHasChanged(true);
-            map.claimRoute(game.getPlayerByName(username).getColor(),claimedRouteNumber);
+        if(player.getNumRoutes() < numRoutesOwned) { //server says the player has more routes
+            map.claimRoute(game.getPlayerByName(username).getColor(), claimedRouteNumber);
+            player.setNumRoutes(numRoutesOwned);
+            player.setScore(score);
         }
+        if (faceUpIndex > -1){
+            //Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
+            player.addTrainCard();
+
+            //TODO remove when have a real server and put the newTrainCardInt into the spot
+            List<Integer> faceUpCards = game.getFaceUpCards();
+            Random rand = new Random();
+            int card = rand.nextInt(9);
+            faceUpCards.set(faceUpIndex, card);
+            game.setFaceUpCards(faceUpCards);
+            game.iHaveDifferentFaceUpCards(true);
+        }
+
+        game.aPlayerHasChanged(true);
+        game.notifyObserver();
     }
 
     public void replaceFaceUpCards(List<Integer> trainCards) {
@@ -217,16 +228,6 @@ public class ClientFacade implements IClient{
         game.notifyObserver();
     }
 
-
-    public void updateAllPlayerInformation(List<String> usernames, List<Integer> numRoutesOwned, List<Integer> numTrainCardsHeld,
-                                           List<Integer> numDestCardsHeld, List<Integer> numTrainCars, List<Integer> score){
-
-    }
-    //use a username to get the players color. might go into game?
-    private Color getPlayerColor(String username){
-
-        return null;
-    }
 
     public void showRejectMessage(String message) {
         Game.getGameInstance().getServerError().setMessage(message);

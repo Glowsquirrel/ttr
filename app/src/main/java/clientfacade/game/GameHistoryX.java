@@ -10,6 +10,6 @@ public class GameHistoryX extends GameHistoryResult implements ICommand {
     public void execute() {
         ClientFacade clientFacade = new ClientFacade();
         clientFacade.addHistory(super.username, super.message, super.numTrainCars, super.numTrainCardsHeld,
-                super.numDestCardsHeld, super.numRoutesOwned, super.score, super.claimedRouteNumber);
+                super.numDestCardsHeld, super.numRoutesOwned, super.score, super.claimedRouteNumber, -1);
     }
 }

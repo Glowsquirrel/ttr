@@ -80,7 +80,6 @@ public class ChatHistoryModel implements Observable{
 //add a history message to the history list
     public void addHistory(String username, String message)
     {
-
         historyList.add(username+": "+message);
         notifyObserver();
     }

@@ -16,7 +16,6 @@ import static fysh340.ticket_to_ride.R.color.neon_yellow;
  */
 public abstract class AbstractPlayer {
     private final int STARTING_NUMBER_OF_TRAINS = 45;
-    Game mGame=Game.getGameInstance();
     protected String username;
     private int numTrains = STARTING_NUMBER_OF_TRAINS;
     protected int numCards = 0;
@@ -26,21 +25,18 @@ public abstract class AbstractPlayer {
 
     public void setDestCardNum(int destCardNum) {
         this.destCardNum = destCardNum;
-        mGame.notifyObserver();
     }
 
     public void setNumCards(int numCards) {
         this.numCards = numCards;
-        mGame.notifyObserver();
 
     }
 
     public void setNumRoutes(int numRoutes) {
         this.numRoutes = numRoutes;
-        mGame.notifyObserver();
     }
 
-    public int getDestCardNum() {
+    public int getNumDestCard() {
         return destCardNum;
     }
 
@@ -53,31 +49,26 @@ public abstract class AbstractPlayer {
 
     public void setNumTrains(int numTrains) {
         this.numTrains = numTrains;
-        mGame.notifyObserver();
     }
 
-    public void setColor(int col) {
-        int i=col;
-
-        switch(i) {
+    public void setColor(int myColor) {
+        switch(myColor) {
             case(0):
-                color=R.color.neon_yellow;
+                color = R.color.neon_yellow;
                 break;
             case(1):
-                color=R.color.neon_orange;
+                color = R.color.neon_pink;
                 break;
             case(2):
-                color=R.color.neon_green;
+                color = R.color.neon_green;
                 break;
             case(3):
-                color=R.color.neon_pink;
+                color = R.color.neon_orange;
                 break;
             case(4):
-                color=R.color.neon_grey;
+                color = R.color.neon_grey;
                 break;
-
         }
-
     }
 
     public String getMyUsername(){
@@ -134,12 +125,10 @@ public abstract class AbstractPlayer {
 
     public void setScore(int score) {
         this.score = score;
-        mGame.notifyObserver();
     }
 
     //end score updates
-    public int getColor()
-    {
+    public int getColor() {
        return color;
     }
     private boolean iHaveDifferentDestCards = false;

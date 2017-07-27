@@ -23,6 +23,7 @@ import commands.menu.LeaveGameCommand;
 import commands.menu.LoginCommand;
 import commands.menu.RegisterCommand;
 import model.Game;
+import model.Route;
 import model.RunningGame;
 import model.TrainCard;
 import model.UnstartedGame;
@@ -36,12 +37,12 @@ public class MockServer {
 
     static{
         loginMap.put("username", "password");
-        UnstartedGame mockGame = new UnstartedGame("mockGame", 1);
+        UnstartedGame mockGame = new UnstartedGame("mockGame", 2);
+        mockGame.addPlayer("Timmy");
         unstartedGameList.add(mockGame);
     }
 
     public void doCommand(Command command) {
-        String myJsonString;
         ClientFacade clientFacade = new ClientFacade();
         switch (command.getType()) {
             case Utils.LOGIN_TYPE: {
@@ -70,7 +71,8 @@ public class MockServer {
             }
             case Utils.CREATE_TYPE: {
                 CreateGameCommand mycommand = (CreateGameCommand) command;
-                UnstartedGame mygame = new UnstartedGame(mycommand.getGameName(), 1);
+                UnstartedGame mygame = new UnstartedGame(mycommand.getGameName(), 2);
+                mygame.addPlayer("Timmy");
                 for (int i = 0; i < unstartedGameList.size(); i++) {
                     if (unstartedGameList.get(i).getGameName().equals(mycommand.getGameName())) {
                         clientFacade.postMessage("game already exists");
@@ -118,8 +120,11 @@ public class MockServer {
                 StartGameCommand mycommand = (StartGameCommand) command;
                 for (int i = 0; i < unstartedGameList.size(); i++) {
                     if (mycommand.getGameName().equals(unstartedGameList.get(i).getGameName())) {
+                        UnstartedGame myGame = unstartedGameList.get(0);
                         List<String> playerNames = new ArrayList<>();
-                        playerNames.add(mycommand.getUsername());
+                        for (String username : myGame.getUsernamesInGame()){
+                            playerNames.add(username);
+                        }
                         List<Integer> destCards = new ArrayList<>();
                         Random rand = new Random();
                         int c1 = rand.nextInt(29) + 1;
@@ -146,6 +151,7 @@ public class MockServer {
                         faceUpCards.add(fc3);
                         faceUpCards.add(fc4);
                         faceUpCards.add(fc4);
+                        faceUpCards.add(fc5);
                         clientFacade.startGame(mycommand.getUsername(), mycommand.getGameName(), playerNames, destCards, trainCards, faceUpCards);
                     }
                 }
@@ -201,7 +207,16 @@ public class MockServer {
             }
             case Utils.CLAIM_ROUTE_TYPE: {
                 ClaimRouteCommand mycommand = (ClaimRouteCommand)command;
-                clientFacade.claimRoute(mycommand.getUsername(), mycommand.getRouteID());
+                Route myRoute = Route.getRouteByID(mycommand.getRouteID());
+                TrainCard myTrainCardType = myRoute.getOriginalColor();
+                int routeSize = myRoute.getLength();
+
+                if (game.getMyself().getNumOfTypeCards(myTrainCardType) >= routeSize
+                        && game.getMyself().getNumTrains() >= routeSize) {
+                    clientFacade.claimRoute(mycommand.getUsername(), mycommand.getRouteID());
+                } else {
+                    clientFacade.showRejectMessage("You can't claim that route");
+                }
                 break;
             }
             case Utils.CHAT_TYPE: {
@@ -210,7 +225,7 @@ public class MockServer {
                 break;
             }
             default:
-                myJsonString = "Error parsing Json String. Check ClientCommunicator";
+                break;
         }
 
     }

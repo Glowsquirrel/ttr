@@ -2,6 +2,7 @@ package fysh340.ticket_to_ride.game.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,20 +22,11 @@ import model.AbstractPlayer;
 import model.Deck;
 import model.DestCard;
 import model.Game;
-import model.Player;
-import model.PlayerCardsModel;
-import model.TrainCard;
 
-import static fysh340.ticket_to_ride.R.color.neon_green;
-import static fysh340.ticket_to_ride.R.color.neon_grey;
-import static fysh340.ticket_to_ride.R.color.neon_orange;
-import static fysh340.ticket_to_ride.R.color.neon_pink;
-import static fysh340.ticket_to_ride.R.color.neon_yellow;
 
 public class AllPlayerDataFragment extends Fragment implements Observer {
     private Game mGame = Game.getGameInstance();
     private MyPlayerListAdapter mAdapter = new MyPlayerListAdapter(mGame.getVisiblePlayerInformation());
-    private Button routine;
 
     public AllPlayerDataFragment(){
         mGame.register(this);
@@ -77,120 +69,63 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
 
             @Override
             public void onClick(View view) {
-               /* addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
-                int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber)
-            }*/
                 final ClientFacade cf=new ClientFacade();
 
                 i++;
+                AbstractPlayer otherPlayer = mGame.getVisiblePlayerInformation().get(1);
+                String otherPlayerUsername = otherPlayer.getMyUsername();
                 switch (i) {
 
                     case (1):
-                        //add points
-                        Toast.makeText(getActivity(), "Add points to "+mGame.getVisiblePlayerInformation().get(1).getMyUsername(), Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Scored 5 points", 0, 0, 0, 0, 5, 0);
+                        //other player draws dest cards
+                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername() + " draws 3 destination cards", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws 3 destination cards", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards(), otherPlayer.getNumDestCard() + 3, otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, -1);
                         break;
                     case (2):
-                        //claim a route
-                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername()+" claims route 50", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "claimed route", 0, 0, 0, 1, 0, 50);
+                        //other player returns a dest card
+                        Toast.makeText(getActivity(), otherPlayerUsername + " returns a destination card", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " returns a destination card", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards(), otherPlayer.getNumDestCard() - 1, otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, -1);
                         break;
                     case (3):
-                        //add destination cards
-                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername()+" claims gets destination cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Gest destination cards", 0, 0, 3, 0, 0, 0);
+                        //Other player draws a train card from the deck
+                        Toast.makeText(getActivity(), otherPlayerUsername + " draws a train card from deck", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a train card from the deck", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards() + 1, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, -1);
                         break;
-                    case (4)://add train cards
-                        Toast.makeText(getActivity(), mGame.getVisiblePlayerInformation().get(1).getMyUsername()+" gets train cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(1).getMyUsername(), "Gets train cards", 0, 4, 0, 0, 0, 0);
+                    case(4):
+                        //Other player draws another train card from the deck
+                        Toast.makeText(getActivity(), otherPlayerUsername + " draws a train card from deck", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a train card from the deck", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards() + 1, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, -1);
                         break;
                     case(5):
-                        //Add/remove train cards for this player
-                        Toast.makeText(getActivity(), "Add train cards and a destination card", Toast.LENGTH_SHORT).show();
-                        List<TrainCard> card=new ArrayList<TrainCard>();
-                        TrainCard tc=TrainCard.getTrainCardTypeByInt(5);
-                        card.add(tc);
-                        TrainCard tc2=TrainCard.getTrainCardTypeByInt(80);
-                        card.add(tc2);
-                        mGame.getMyself().addCards(card);
-                        mGame.getMyself().iHaveDifferentDestCards(true);
-
-                        //add destination card
-                        mGame.getMyself().addDestCard(DestCard.getDestCardByID(5));
-                        mGame.iHaveDifferentTrainCards(true);
-                        mGame.notifyObserver();
+                        //Other player draws a train card from the face up
+                        Toast.makeText(getActivity(), otherPlayerUsername + " draws a train card from face up", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a train card from the deck", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards() + 1, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, 0);
                         break;
                     case(6):
-                        Toast.makeText(getActivity(), "Remove train card and a destination card", Toast.LENGTH_SHORT).show();
-                        mGame.getMyself().setNumOfPurpleCards(  mGame.getMyself().getNumOfPurpleCards()-1);
-                        mGame.getMyself().removeDestCard(DestCard.getDestCardByID(5));
-                        mGame.iHaveDifferentTrainCards(true);
-                        mGame.getMyself().iHaveDifferentDestCards(true);
-                        mGame.notifyObserver();
-
-                        //Add/remove player destination cards for this player
+                        //Other player draws a train card from the face up
+                        Toast.makeText(getActivity(), otherPlayerUsername + " draws a train card from face up", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " draws a train card from the deck", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards() + 1, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes(), otherPlayer.getScore(), 0, 3);
                         break;
                     case(7):
-                        Toast.makeText(getActivity(), "Train card deck size changed", Toast.LENGTH_SHORT).show();
-                        Deck.getInstance().setTrainCardDeckSize(30);
-                        Deck.getInstance().iHaveDifferentTrainDeckSize(true);
-                        Deck.getInstance().notifyObserver();
-                        //Update visible cards and number of invisible cards in train card deck
+                        //Other player claim a route 50
+                        Toast.makeText(getActivity(), otherPlayerUsername +" claims route 50", Toast.LENGTH_SHORT).show();
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " claimed route 50", otherPlayer.getNumTrains(),
+                                otherPlayer.getNumCards() - 5, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes() + 1, otherPlayer.getScore() + 10, 50, -1);
                         break;
-                    case(8):
-                        Toast.makeText(getActivity(), "Destination card deck size has changed", Toast.LENGTH_SHORT).show();
-                        Deck.getInstance().setDestinationCardDeckSize(30);
-                        mGame.iHaveDifferentDestDeckSize(true);
-                        mGame.notifyObserver();
-                        //Update number of cards in destination card deck
+                    default:
+                        i = 0;
                         break;
                 }
-
-
             }
         });
         return v;
     }
-/*    public void setButton()
-    {
-
-        final ClientFacade cf=new ClientFacade();
-        routine.setOnClickListener(new View.OnClickListener() {
-            private int i = 0;
-
-            @Override
-            public void onClick(View view) {
-               /* addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
-                int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber)
-            }
-                i++;
-                switch (i) {
-
-                    case (1):
-                        //add points
-                        Toast.makeText(getActivity(), "Add points to player 2", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Scored 5 points", 0, 0, 0, 0, 5, 0);
-                        break;
-                    case (2):
-                        //claim a route
-                        Toast.makeText(getActivity(), "Player 2 claims route 50", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "claimed route", 0, 0, 0, 1, 0, 50);
-                        break;
-                    case (3):
-                        //add destination cards
-                        Toast.makeText(getActivity(), "Player 2 claims gets destination cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Gest destination cards", 0, 4, 0, 0, 0, 0);
-                        break;
-                    case (4)://add train cards
-                        Toast.makeText(getActivity(), "Player 2 claims gets train cards", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(mGame.getVisiblePlayerInformation().get(0).getMyUsername(), "Gets train cards", 0, 4, 3, 0, 0, 0);
-                        break;
-                }
-
-
-            }
-        });
-    }*/
 
     private class MyPlayerListAdapter extends RecyclerView.Adapter<AllPlayerDataFragment.MyPlayerListAdapter.ViewHolder> {
         private List<AbstractPlayer> allPlayers = new ArrayList<>();
@@ -240,9 +175,9 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
             int myCards = myPlayer.getNumCards();
             int myRoutes = myPlayer.getNumRoutes();
             int myScore = myPlayer.getScore();
-            int color=myPlayer.getColor();
-            int colors=getResources().getColor(color);
-            int myDCards=myPlayer.getDestCardNum();
+            int color = myPlayer.getColor();
+            int colors = ContextCompat.getColor(getContext(), color);
+            int myDCards = myPlayer.getNumDestCard();
 
             holder.itemUsername.setText(playerName);
             holder.itemTrains.setText(String.valueOf(myTrains));
