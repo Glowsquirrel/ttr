@@ -21,7 +21,7 @@ import model.ChatHistoryModel;
 import model.ClientModel;
 import serverproxy.ServerProxy;
 
-public class ChatHistory extends Fragment implements Observer {
+public class ChatPresenter extends Fragment implements Observer {
 
     private adapter mAdapter;
     private RecyclerView mRV;

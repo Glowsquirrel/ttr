@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.GameView;
+import fysh340.ticket_to_ride.game.GameViewMasterPresenter;
 import interfaces.Observer;
 import model.DestCard;
 import model.Game;
 
-public class PlayerDestCardsFragment extends Fragment implements Observer{
+public class DestCardPresenter extends Fragment implements Observer{
     private MyDestCardAdapter mAdapter;
     private Game mGame = Game.getGameInstance();
 
-    public PlayerDestCardsFragment(){
+    public DestCardPresenter(){
 
     }
 //if destination cards have changed the fragment is updated
@@ -64,7 +64,7 @@ public class PlayerDestCardsFragment extends Fragment implements Observer{
         playerCardSwitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((GameView)getActivity()).switchPlayerCards();
+                ((GameViewMasterPresenter)getActivity()).switchPlayerCards();
             }
         });
 

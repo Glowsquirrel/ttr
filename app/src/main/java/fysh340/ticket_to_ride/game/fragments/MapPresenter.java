@@ -29,7 +29,7 @@ import model.MapModel;
 import serverproxy.ServerProxy;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback,
+public class MapPresenter extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnPolylineClickListener, Observer {
 
     @Override
@@ -45,7 +45,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private Game mGame = Game.getGameInstance();
     private ClientModel mClientModel = ClientModel.getMyClientModel();
 
-    public MapFragment() {
+    public MapPresenter() {
         // Required empty public constructor
     }
 
@@ -88,8 +88,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-    public static MapFragment newInstance() {
-        MapFragment fragment = new MapFragment();
+    public static MapPresenter newInstance() {
+        MapPresenter fragment = new MapPresenter();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

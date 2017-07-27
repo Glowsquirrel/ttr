@@ -10,21 +10,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.GameView;
+import fysh340.ticket_to_ride.game.GameViewMasterPresenter;
 import interfaces.Observer;
-import model.Deck;
 import model.DestCard;
 import model.Game;
 import serverproxy.ServerProxy;
 //fragment shown when the user needs to select a destination card
-public class DestCardSelectFragment extends Fragment implements Observer{
+public class DestCardSelectPresenter extends Fragment implements Observer{
     private Game mGame = Game.getGameInstance();
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private List<DestCard> selectedDestCards = new ArrayList<>();
@@ -32,7 +28,7 @@ public class DestCardSelectFragment extends Fragment implements Observer{
     private LinearLayout destCard2;
     private LinearLayout destCard3;
 
-    public DestCardSelectFragment() {
+    public DestCardSelectPresenter() {
         // Required empty public constructor
     }
 
@@ -79,7 +75,7 @@ public class DestCardSelectFragment extends Fragment implements Observer{
                 }
                 selectedDestCards.clear();
                 checkSelectedSize(destCardSelectView);
-                ((GameView)getActivity()).switchDeckFragment();
+                ((GameViewMasterPresenter)getActivity()).switchDeckFragment();
             }
         });
 

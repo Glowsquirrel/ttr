@@ -15,15 +15,15 @@ import model.ClientModel;
 import model.Game;
 import model.ServerError;
 
-public class GameView extends AppCompatActivity implements Observer {
+public class GameViewMasterPresenter extends AppCompatActivity implements Observer {
     ClientModel clientModel = ClientModel.getMyClientModel();
-    private AllPlayerDataFragment allPlayerDataFragment;
-    private PlayerTrainCardsFragment playerTrainCardsFragment;
-    private PlayerDestCardsFragment playerDestCardsFragment;
-    private DeckFragment deckFragment;
-    private DestCardSelectFragment destCardSelectFragment;
-    private ChatHistory chatHistory;
-    private MapFragment mapFragment;
+    private AllPlayersPresenter allPlayersPresenter;
+    private TrainCardPresenter trainCardPresenter;
+    private DestCardPresenter destCardPresenter;
+    private DeckPresenter deckPresenter;
+    private DestCardSelectPresenter destCardSelectPresenter;
+    private ChatPresenter chatPresenter;
+    private MapPresenter mapPresenter;
     private DrawerLayout mDrawerLayout;
     private FrameLayout mDrawerList;
     private boolean showingTrainCards = true;
@@ -33,33 +33,33 @@ public class GameView extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
 
-        this.playerTrainCardsFragment = new PlayerTrainCardsFragment();
-        deckFragment = new DeckFragment();
-        chatHistory = new ChatHistory();
+        this.trainCardPresenter = new TrainCardPresenter();
+        deckPresenter = new DeckPresenter();
+        this.chatPresenter = new ChatPresenter();
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        ChatHistory chatHistory = new ChatHistory();
-        mapFragment = MapFragment.newInstance();
-        playerTrainCardsFragment = new PlayerTrainCardsFragment();
-        playerDestCardsFragment = new PlayerDestCardsFragment();
-        allPlayerDataFragment = new AllPlayerDataFragment();
-        deckFragment = new DeckFragment();
-        destCardSelectFragment = new DestCardSelectFragment();
+        ChatPresenter chatPresenter = new ChatPresenter();
+        mapPresenter = MapPresenter.newInstance();
+        trainCardPresenter = new TrainCardPresenter();
+        destCardPresenter = new DestCardPresenter();
+        allPlayersPresenter = new AllPlayersPresenter();
+        deckPresenter = new DeckPresenter();
+        destCardSelectPresenter = new DestCardSelectPresenter();
 
-        transaction.add(R.id.players_fragment_container, allPlayerDataFragment);
-        transaction.add(R.id.map_fragment_container, mapFragment);
-        transaction.add(R.id.left_drawer, chatHistory);
+        transaction.add(R.id.players_fragment_container, allPlayersPresenter);
+        transaction.add(R.id.map_fragment_container, mapPresenter);
+        transaction.add(R.id.left_drawer, chatPresenter);
 
-        transaction.add(R.id.cards_fragment_container, playerTrainCardsFragment);
-        transaction.add(R.id.cards_fragment_container, playerDestCardsFragment);
-        transaction.hide(playerDestCardsFragment);
+        transaction.add(R.id.cards_fragment_container, trainCardPresenter);
+        transaction.add(R.id.cards_fragment_container, destCardPresenter);
+        transaction.hide(destCardPresenter);
 
-        transaction.add(R.id.deck_fragment_container, deckFragment);
-        transaction.add(R.id.deck_fragment_container, destCardSelectFragment);
-        transaction.hide(destCardSelectFragment);
+        transaction.add(R.id.deck_fragment_container, deckPresenter);
+        transaction.add(R.id.deck_fragment_container, destCardSelectPresenter);
+        transaction.hide(destCardSelectPresenter);
 
         transaction.commit();
     }
@@ -76,12 +76,12 @@ public class GameView extends AppCompatActivity implements Observer {
 
         if (showingTrainCards){
             showingTrainCards = false;
-            ft.hide(playerTrainCardsFragment);
-            ft.show(playerDestCardsFragment);
+            ft.hide(trainCardPresenter);
+            ft.show(destCardPresenter);
         } else {
             showingTrainCards = true;
-            ft.hide(playerDestCardsFragment);
-            ft.show(playerTrainCardsFragment);
+            ft.hide(destCardPresenter);
+            ft.show(trainCardPresenter);
         }
         ft.commit();
     }
@@ -92,12 +92,12 @@ public class GameView extends AppCompatActivity implements Observer {
         ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         if (showingDeck){
             showingDeck = false;
-            ft.hide(deckFragment);
-            ft.show(destCardSelectFragment);
+            ft.hide(deckPresenter);
+            ft.show(destCardSelectPresenter);
         } else{
             showingDeck = true;
-            ft.hide(destCardSelectFragment);
-            ft.show(deckFragment);
+            ft.hide(destCardSelectPresenter);
+            ft.show(deckPresenter);
         }
 
         ft.commit();

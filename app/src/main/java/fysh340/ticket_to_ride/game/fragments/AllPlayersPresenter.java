@@ -19,17 +19,15 @@ import clientfacade.ClientFacade;
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.AbstractPlayer;
-import model.Deck;
-import model.DestCard;
 import model.Game;
 import model.TrainCard;
 
 
-public class AllPlayerDataFragment extends Fragment implements Observer {
+public class AllPlayersPresenter extends Fragment implements Observer {
     private Game mGame = Game.getGameInstance();
     private MyPlayerListAdapter mAdapter = new MyPlayerListAdapter(mGame.getVisiblePlayerInformation());
 
-    public AllPlayerDataFragment(){
+    public AllPlayersPresenter(){
         mGame.register(this);
     }
     //if a player has changed the player data will update
@@ -132,7 +130,7 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
         return v;
     }
 
-    private class MyPlayerListAdapter extends RecyclerView.Adapter<AllPlayerDataFragment.MyPlayerListAdapter.ViewHolder> {
+    private class MyPlayerListAdapter extends RecyclerView.Adapter<AllPlayersPresenter.MyPlayerListAdapter.ViewHolder> {
         private List<AbstractPlayer> allPlayers = new ArrayList<>();
 
         private MyPlayerListAdapter(List<AbstractPlayer> newList){
@@ -166,13 +164,13 @@ public class AllPlayerDataFragment extends Fragment implements Observer {
         }
 
         @Override
-        public AllPlayerDataFragment.MyPlayerListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public AllPlayersPresenter.MyPlayerListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_player_item_view, parent, false);
-            return new AllPlayerDataFragment.MyPlayerListAdapter.ViewHolder(itemView);
+            return new AllPlayersPresenter.MyPlayerListAdapter.ViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(final AllPlayerDataFragment.MyPlayerListAdapter.ViewHolder holder, final int position) {
+        public void onBindViewHolder(final AllPlayersPresenter.MyPlayerListAdapter.ViewHolder holder, final int position) {
             AbstractPlayer myPlayer = allPlayers.get(position);
 
             String playerName = myPlayer.getMyUsername();

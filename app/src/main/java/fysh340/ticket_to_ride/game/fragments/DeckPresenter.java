@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.game.GameView;
+import fysh340.ticket_to_ride.game.GameViewMasterPresenter;
 import interfaces.Observer;
 import model.Deck;
 import model.Game;
@@ -19,14 +19,14 @@ import model.TrainCard;
 import serverproxy.ServerProxy;
 
 /**
- *  <h1>DeckFragment Fragment</h1>
+ *  <h1>DeckPresenter Fragment</h1>
  *  Creates a view, which shows face-up deck cards and available destination cards when drawing
  *  from that deck, for the in-game activity.
  *
  *  @author         Nathan Finch
  *  @since          7-22-17
  */
-public class DeckFragment extends Fragment implements Observer {
+public class DeckPresenter extends Fragment implements Observer {
     private static final String TRAIN_DECK = "Train Card Deck\n";
     private static final String DEST_DECK = "Dest. Cards\n";
     
@@ -40,7 +40,7 @@ public class DeckFragment extends Fragment implements Observer {
     private TextView mFaceDownCards;
     private TextView mDestinationDeck;
 
-    public DeckFragment() {
+    public DeckPresenter() {
         // Required empty public constructor
     }
 
@@ -60,7 +60,7 @@ public class DeckFragment extends Fragment implements Observer {
         }
         if (mGame.iHavePossibleDestCards()){
             mGame.iHavePossibleDestCards(false);
-            ((GameView)getActivity()).switchDeckFragment();
+            ((GameViewMasterPresenter)getActivity()).switchDeckFragment();
         }
     
         String deckDescription;
