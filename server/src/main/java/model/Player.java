@@ -146,6 +146,10 @@ class Player {
         return true;
     }
 
+    /***
+     * Iterates the train card hand to to get a list of keys for the TrainCards in the hand.
+     * @return A list of integers representing the train cards in Player's hand.
+     */
     List<Integer> getTrainCardCodes() {
         List<Integer> trainCardCodes = new ArrayList<>();
         for (TrainCard trainCard : trainCardHand) {
@@ -155,6 +159,11 @@ class Player {
     }
 
 
+    /**
+     * Subtracts cars from player's number of cards.
+     * @param numOfCars Number of cars to be placed on the board.
+     * @return true if valid parameter; false otherwise.
+     */
     boolean removeCars(int numOfCars) {
         if (numOfCars < 0 || numOfCars > 6){
             return false;

@@ -144,11 +144,11 @@ class StartedGame {
     }
 
     /**
-     *
-     * @param playerName
-     * @param returnedCardKey
-     * @return
-     * @throws GamePlayException
+     * Controls returnDestCard command in game.
+     * @param playerName Player that is returning destination cards.
+     * @param returnedCardKey Key of the card that is being returned
+     * @return The Result of the action given.
+     * @throws GamePlayException For bad commands
      */
     Result returnDestCard(String playerName, int returnedCardKey)
             throws GamePlayException {
@@ -181,7 +181,7 @@ class StartedGame {
 
 
 
-/**********************************DrawTrainCards************************************************/
+/******************************************DrawTrainCards******************************************/
     Result drawTrainCardFromDeck(String playerName) throws GamePlayException {
         throwIfNotPlayersTurn(playerName);
         final int TRAIN_CARD_DRAW = 1;
@@ -244,7 +244,7 @@ class StartedGame {
         return new ReplaceFaceUpCardsResult(newFaceUpCards);
     }
 
-    /************************************ClaimRoute*******************************************/
+    /*****************************************ClaimRoute*******************************************/
     Result claimRoute(String playerName, int routeId, List<Integer> trainCards) throws GamePlayException {
 
         Player currentPlayer = allPlayers.get(playerName);
@@ -292,17 +292,17 @@ class StartedGame {
         return returnTrainCards;
     }
 
-    /*******************************ENDGAME***************************************/
+    /*****************************************ENDGAME**********************************************/
 
 
-    /***********************************CHAT*************************************/
+    /******************************************CHAT************************************************/
 
     Result addChat(String playerName, String message) {
         allChats.add(new Chat(playerName, message));
         return new ChatResult(playerName, message);
     }
 
-    /**********************************TURN STATE***************************************/
+    /****************************************TURN STATE********************************************/
     private boolean throwIfNotPlayersTurn(String playerName) throws GamePlayException {
         if(playerOrder.get(turnPointer).equals(playerName)) {
             return true;
