@@ -70,6 +70,7 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         //do nothing on back pressed
     }
 
+    //toggle between the TrainCardPresenter view and the DestCardPresenter view
     public void switchPlayerCards(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -86,6 +87,7 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         ft.commit();
     }
 
+    //toggle between the DeckPresenter view and the DestCardSelectPresenter view
     public void switchDeckFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
