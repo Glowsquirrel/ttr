@@ -118,7 +118,7 @@ public class AllPlayersPresenter extends Fragment implements Observer {
                     case(7):
                         //Other player claim a route 50
                         Toast.makeText(getActivity(), otherPlayerUsername +" claims route 50", Toast.LENGTH_SHORT).show();
-                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " claimed route 50", otherPlayer.getNumTrains(),
+                        cf.addHistory(otherPlayerUsername, otherPlayerUsername + " claimed route 50", otherPlayer.getNumTrains() - 5,
                                 otherPlayer.getNumCards() - 5, otherPlayer.getNumDestCard(), otherPlayer.getNumRoutes() + 1, otherPlayer.getScore() + 10, 50, -1);
                         break;
                     default:
