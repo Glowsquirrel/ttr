@@ -307,7 +307,7 @@ public class ClientFacade implements IClient{
         chatModel.addHistory(username, message);
     }
 
-    //TODO: remove the final parameter for this method when real server is working
+    //TODO: remove the final parameter for this method when real server is working; add deck size parameters
 
     /**
      * Called by the server anytime a client other than this client has made an action that this client
@@ -405,4 +405,18 @@ public class ClientFacade implements IClient{
     public void showRejectMessage(String message) {
         Game.getGameInstance().getServerError().setMessage(message);
     }
+
+    public void endGame(List<String> playerNames, List<String> destCardPtsAdded,
+                        List<String> destCardPtsSubtracted, List<Integer> totalPoints, String ownsLongestRoute) {
+
+    }
+
+    public void finalRound(String message) {
+
+    }
+
+    public void turn(String username) {
+
+    }
+
 }

@@ -208,6 +208,14 @@ class StartedGame {
     //How does player whose turn it is get trainCard deck update after reshuffle?
     //Draw one card, and there are none left, including discard?
     //Replace all face up cards and need to reshuffle mid replacement?
+
+    /**
+     *
+     * @param playerName
+     * @param index
+     * @return
+     * @throws GamePlayException
+     */
     Result drawTrainCardFromFaceUp(String playerName, int index) throws GamePlayException{
         throwIfNotPlayersTurn(playerName);
         Player currentPlayer = allPlayers.get(playerName);

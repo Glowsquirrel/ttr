@@ -6,6 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The Player class contains all information pertinent to a player in the game; the number of each
+ * TrainCard type, all destination cards, the player's color, their points, their continuous routes,
+ * etc. and reevaluates the value of these data when a player's decision necessitates it.
+ * INVARIANTS: Each numOf[Color]Cards > 0; Number of cars > 0;  0>= newlyDrawnDestCars.size() >= 3;
+ *              destCardHand.size() > 2; points >= 0; numOfRoutes>= 0; playerColor != null;
+ *
+ */
 
 class Player {
 
@@ -35,6 +43,10 @@ class Player {
 
     /**
      * Adds to exact number of train cards in each player's hand.
+     * PRE: The drawnCards are actually cards the player has drawn;
+     *      These cards have been removed from the Board.
+     * POST:Each drawn card will be added to the list of cards in the player's trainCardHand;
+     *
      * @param drawnCards List of drawn drawn TrainCards.
      */
     void addTrainCards(List<TrainCard> drawnCards){
@@ -72,7 +84,10 @@ class Player {
      }
 
     /**
-     * Places drawn cards in newlyDrawnDestCards member. Does not add them to hand.
+     * Places drawn cards in newlyDrawnDestCards member. Does not add them to their destCardHand.
+     * PRE: DrawnCards are cards the player has actually drawn.
+     * POST: All cards will be added to the newlyDrawnDestCards. The newly drawn destination cards list
+     *         will only contain the cards the player has drawn, in whatever order.
      * @param drawnCards Cards drawn from board's DestCardDeck
      */
      void addDestCards(List<DestCard> drawnCards) {
@@ -84,6 +99,11 @@ class Player {
     /**
      * Removes the cards selected from player's newlyDrawnDestCards; adds remaining newlyDrawnDestCards
      * to player's destCard hand; clears newlyDrawnDestCards.
+     * PRE: Destination cards are cards the player has already drawn, and are located in newlyDrawnDest
+     *      Cards.
+     * POST: All cards that are in the newlyDrawnDestCard list, and have also not been passed to the
+     *        method, are added to the destCardHand, in whatever order.
+     *        NewlyDrawnDestCards list is cleared. Returns true if this process completes.
      * @param cardOne First card returned by player
      * @param cardTwo Second card returned by player
      * @return True if cards removed
@@ -131,6 +151,9 @@ class Player {
 
     /**
      * Checks if cards returned have been drawn.
+     * PRE: Passes any destination card to the method.
+     * POST: No state changed; returns true if the card is contained in newlyDrawnDestCards,
+     *          false otherwise.
      * @param destCard DestCard being returned.
      * @return True if valid; false otherwise
      */
@@ -161,25 +184,49 @@ class Player {
 
     /**
      * Subtracts cars from player's number of cards.
+     * PRE: Passes an int the represents a valid route size
+     * POST: Decrements the value numOfCards by the size of
      * @param numOfCars Number of cars to be placed on the board.
      * @return true if valid parameter; false otherwise.
      */
     boolean removeCars(int numOfCars) {
-        if (numOfCars < 0 || numOfCars > 6){
+        if (numOfCars < 2 || numOfCars > 6){
             return false;
         }
         this.numOfCars -= numOfCars;
         return true;
     }
 
+    /**
+     * Adds to the score.
+     * PRE: Valid point value;
+     * POST: Player's point value is incremented by the parameter value.
+     * @param points The number of points that will be added.
+     */
     void addScore(int points) {
         this.points += points;
     }
 
+    /**
+     * Adds to the number of routes the player owns.
+     * PRE: None
+     * POST: Increments numOfRoutes by one.
+     */
     void addNumOfRoutes() {
         numOfRoutes++;
     }
 
+    /**
+     * For every TrainCard passed to the method, will:
+     *  Evaluate the color of said TrainCard;
+     *  Decrement the number of cards with this color, and
+     *  Calls a private function to remove a card with this color from the player's hand.
+     *  PRE: A list of discarded cards train cards that the player already has in their hand.
+     *  POST: For each card evalauted in the list passed:
+     *          Evaluates type of evaluated train card; decrements the amount of this type by one.
+     *          Removes a card that matches the type of the evaluated card in the trainCardHand list.
+     * @param discardedCards A list of traincards that will be removed frm the player's hand.
+     */
     void removeTrainCards(List<TrainCard> discardedCards) {
         for (int a = 0; a  < discardedCards.size(); a++) {
             TrainCard trainCard = discardedCards.get(a);
@@ -207,6 +254,14 @@ class Player {
         }
     }
 
+    /**
+     * PRE: There exists a TrainCard in the player's trainCardHand list that matches the type
+     *      of the TrainCard passed.
+     * POST: One card in the player's hand, that matches the type of the TrainCard passed, is
+     *          removed from the hand.
+     * Removes a card with the same color as the passed TrainCard from the player's hand.
+     * @param trainCard The card to be removed from the player's hand.
+     */
     private void removeCardFromHand(TrainCard trainCard) {
         for(int a = 0; a < trainCardHand.size(); a++){
             if (trainCard == trainCardHand.get(a)) {
