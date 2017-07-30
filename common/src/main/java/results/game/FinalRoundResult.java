@@ -8,12 +8,12 @@ import utils.Utils;
  */
 
 public class FinalRoundResult extends Result {
-    protected String message;
+    protected String playerToEndOn;
 
     protected FinalRoundResult(){}
-    public FinalRoundResult(String message){
+    public FinalRoundResult(String playerToEndOn){
         super.type = Utils.FINAL_ROUND_TYPE;
-        this.message = message;
+        this.playerToEndOn = playerToEndOn;
     }
 }
 

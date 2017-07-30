@@ -13,10 +13,13 @@ import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
+import results.game.EndGameResult;
+import results.game.FinalRoundResult;
 import results.game.GameHistoryResult;
 import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
+import results.game.TurnResult;
 
 /**
  * Container class for started games.
@@ -35,6 +38,10 @@ class StartedGame {
     private int turnPointer = 0;
     private TurnState turnState = TurnState.FIRST_ROUND;
     private Result gameHistory;
+    private Result turnResult = null;
+    private Result endGameResult = null;
+    private Result finalRoundResult = null;
+    private String finalTurnPlayer = null;
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
     }
@@ -91,7 +98,7 @@ class StartedGame {
                                                     board.getFaceUpCardCodes());
             allResults.add(nextPlayer);
         }
-
+        setTurnResult();
         return allResults;
     }
 
@@ -123,7 +130,8 @@ class StartedGame {
         }
 
         String message = playerName + " drew destination cards.";
-        setGameHistory(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1);
+         setEndGameResult(playerName);
         return drawDestCardResults(playerName, drawnDestCards);
     }
 
@@ -175,7 +183,8 @@ class StartedGame {
         }
 
         String message = playerName + " returned a destination card.";
-        setGameHistory(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1);
+        setEndGameResult(playerName);
         return new ReturnFirstDestCardResult(playerName, returnedCardKey);
     }
 
@@ -201,7 +210,8 @@ class StartedGame {
         board.reshuffleIfEmpty();
 
         String message = playerName + " drew a train card from the deck.";
-        setGameHistory(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1);
+        setEndGameResult(playerName);
         return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardKey(trainCard.get(0)));
     }
 
@@ -241,7 +251,8 @@ class StartedGame {
         }
 
         String message = playerName + " drew a face-up train card.";
-        setGameHistory(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1);
+        setEndGameResult(playerName);
         return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardKey(drawnCard));
     }
 
@@ -281,14 +292,18 @@ class StartedGame {
             currentPlayer.addScore(route.getPointValue());
             currentPlayer.removeTrainCards(returnedTrainCards);
             board.discardTrainCards(returnedTrainCards);
-            //currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
+            currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
+
+            finalTurnPlayer = currentPlayer.setFinalTurnFlag();
+            setFinalRoundResult();
 
         } else {
             throw new GamePlayException("Invalid player name");
         }
 
         String message = playerName + " claimed route " + Integer.toString(routeId);
-        setGameHistory(playerName, message, routeId);
+        setGameHistoryResult(playerName, message, routeId);
+        setEndGameResult(playerName);
         return new ClaimRouteResult(playerName, routeId);
     }
 
@@ -300,9 +315,63 @@ class StartedGame {
         return returnTrainCards;
     }
 
-    /*****************************************ENDGAME**********************************************/
+    /**********************************RESULT SETTERS**********************************************/
 
+    private void setEndGameResult(String playerName) {
+        if (!lastPlayerPlayed(playerName)) {
+            return;
+        }
 
+        List<Integer> pointsFromRoutes = new ArrayList<>();
+        List<Integer> pointsAdded = new ArrayList<>();
+        List<Integer> pointsSubtracted = new ArrayList<>();
+        List<Integer> totalPoints = new ArrayList<>();
+
+        int largestSize = 0;
+        String largestSizeOwner = null;
+
+        for (int a = 0; a < playerOrder.size(); a++) {
+            Player player = allPlayers.get(playerOrder.get(a));
+            pointsFromRoutes.add(player.getPoints());
+            pointsAdded.add(player.addDestCardPoints());
+            pointsSubtracted.add(player.subtractDestCardPoints());
+
+            if (player.getLargestContRouteSize() > largestSize) {
+                largestSize = player.getLargestContRouteSize();
+                largestSizeOwner = player.getUsername();
+            }
+        }
+
+        Player largestContRouteOwner = allPlayers.get(largestSizeOwner);
+        largestContRouteOwner.addScore(10);
+
+        for (int a = 0 ; a < playerOrder.size(); a++) {
+            Player player = allPlayers.get(playerOrder.get(a));
+            totalPoints.add(player.getPoints());
+        }
+        endGameResult = new EndGameResult(pointsFromRoutes, pointsAdded,
+                pointsSubtracted, totalPoints, largestSizeOwner);
+    }
+
+    private boolean lastPlayerPlayed(String playerName) {
+         return (playerName.equals(finalTurnPlayer));
+    }
+    private void setFinalRoundResult() {
+        if (finalTurnPlayer != null) {
+            finalRoundResult = new FinalRoundResult(finalTurnPlayer);
+        }
+    }
+    private void setTurnResult() {
+        turnResult = new TurnResult(playerOrder.get(turnPointer));
+    }
+
+    private void setGameHistoryResult(String playerName, String message, int routeNumber){
+        Player player = allPlayers.get(playerName);
+        gameHistory = new GameHistoryResult(playerName, message,
+                player.getNumOfCars(), player.getSizeOfTrainCardHand(),
+                player.getSizeOfDestCardHand(), player.getNumOfRoutesOwned(),
+                player.getPoints(), routeNumber, board.getTrainCardDeckSize(), board.getDestCardDeck().size());
+    }
     /******************************************CHAT************************************************/
 
     Result addChat(String playerName, String message) {
@@ -325,6 +394,7 @@ class StartedGame {
             turnPointer++;
         }
         turnState = TurnState.BEFORE_TURN;
+        setTurnResult();
     }
 
 
@@ -363,6 +433,7 @@ class StartedGame {
         if (turnPointer == 0) {
             turnState = TurnState.BEFORE_TURN;
         }
+        setTurnResult();
     }
 
     private void switchBeforeTurn(CommandType commandType) throws GamePlayException {
@@ -465,17 +536,22 @@ class StartedGame {
           CLAIM_ROUTE,
     }
 
-    //TODO: change ServerModel; Draw from face up gamehist?
-    //TODO; Advise client model on destCard -1; Advise client model on face up game hist + Replace Face UP
-    /*************************************Getters/Setters**********************************************/
+    /*****************************************Getters**********************************************/
 
-    private void setGameHistory(String playerName, String message, int routeNumber){
-        Player player = allPlayers.get(playerName);
-        gameHistory = new GameHistoryResult(playerName, message,
-                player.getNumOfCars(), player.getSizeOfTrainCardHand(),
-                player.getSizeOfDestCardHand(), player.getNumOfRoutesOwned(),
-                player.getPoints(), routeNumber, board.getTrainCardDeckSize(), board.getDestCardDeck().size());
+    Result getFinalTurnResult() {
+        return finalRoundResult;
     }
+
+    Result getEndGameResult() {
+        return endGameResult;
+    }
+
+    Result getThenNullifyTurnResult() {
+        Result turn = turnResult;
+        turnResult = null;
+        return turn;
+    }
+
     Result getGameHistory() {
         return gameHistory;
     }
@@ -492,6 +568,9 @@ class StartedGame {
         return replaceFaceUpFlag;
     }
 
+    String getFinalTurnPlayer() {
+        return finalTurnPlayer;
+    }
     void printBoardState() {
          List<Boolean> destCardSeen = new ArrayList<>();
          for (int a = 0; a < 30; a++) {

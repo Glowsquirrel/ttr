@@ -406,12 +406,13 @@ public class ClientFacade implements IClient{
         Game.getGameInstance().getServerError().setMessage(message);
     }
 
-    public void endGame(List<String> playerNames, List<String> destCardPtsAdded,
-                        List<String> destCardPtsSubtracted, List<Integer> totalPoints, String ownsLongestRoute) {
+    public void endGame(List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
+                        List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
+                        String ownsLongestRoute) {
 
     }
 
-    public void finalRound(String message) {
+    public void finalRound(String playerToEndOn) {
 
     }
 

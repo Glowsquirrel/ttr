@@ -10,6 +10,6 @@ public class FinalRoundResultX extends FinalRoundResult implements ICommand {
     @Override
     public void execute(){
         ClientFacade clientFacade = new ClientFacade();
-        clientFacade.finalRound(message);
+        clientFacade.finalRound(playerToEndOn);
     }
 }

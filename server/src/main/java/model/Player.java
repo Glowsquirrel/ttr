@@ -271,6 +271,50 @@ class Player {
         }
     }
 
+    String setFinalTurnFlag() {
+        if (numOfCars < 3) {
+            return userName;
+        }
+        return null;
+    }
+
+    int addDestCardPoints() {
+        int pointsToAdd = 0;
+        for (int a = 0 ; a < destCardHand.size(); a++){
+            DestCard destCard = destCardHand.get(a);
+            if(contRouteContains(destCard)){
+                pointsToAdd += destCard.getPointValue();
+            }
+        }
+        points += pointsToAdd;
+        return pointsToAdd;
+    }
+
+    int subtractDestCardPoints() {
+        int pointsToSubtract = 0;
+        for (int a = 0 ; a < destCardHand.size(); a++){
+            DestCard destCard = destCardHand.get(a);
+            if(!contRouteContains(destCard)){
+                pointsToSubtract += destCard.getPointValue();
+            }
+        }
+        points -= pointsToSubtract;
+        return pointsToSubtract;
+    }
+
+    private boolean contRouteContains (DestCard destCard) {
+        City startCity = destCard.getStartCity();
+        City endCity = destCard.getEndCity();
+
+        for (int a = 0; a < allContRoutes.size(); a++) {
+            Set<City> contRoute = allContRoutes.get(a).cities;
+            if(contRoute.contains(startCity) && contRoute.contains(endCity)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void calculateContRoute(City startCity, City endCity, int size) {
 
         int startCityIndex = -1;
@@ -297,6 +341,16 @@ class Player {
         }
     }
 
+    int getLargestContRouteSize() {
+        int largestSize = 0;
+
+        for (int a = 0; a < allContRoutes.size(); a++) {
+            if (allContRoutes.get(a).size > largestSize) {
+                largestSize = allContRoutes.get(a).size;
+            }
+        }
+        return largestSize;
+    }
      int getNumOfPurpleCards() {
          return numOfPurpleCards;
      }

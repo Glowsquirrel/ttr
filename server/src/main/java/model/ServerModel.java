@@ -179,16 +179,6 @@ public class ServerModel {
 
    /*************************************STARTING GAME*********************************************/
     public void startGame(String gameName, String username) {
-        try {
-            activateGame(gameName);
-        }
-        catch (GamePlayException ex){
-           toClient.rejectCommand(username, gameName, ex.getMessage());
-        }
-    }
-
-    private void activateGame(String gameName) throws GamePlayException {
-
         if (allUnstartedGames.containsKey(gameName)){
 
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
@@ -196,7 +186,7 @@ public class ServerModel {
 
             allUnstartedGames.remove(gameName);
             List<Result> startResults =
-                newlyStartedGame.preGameSetup(myUnstartedGame.getUsernamesInGame());
+                    newlyStartedGame.preGameSetup(myUnstartedGame.getUsernamesInGame());
 
             allStartedGames.put(gameName, newlyStartedGame);
             allCommandLists.put(gameName, new ArrayList<Result>());
@@ -211,10 +201,16 @@ public class ServerModel {
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
-        } else {
-            throw new GamePlayException("Game " + gameName +  " does not exist, or has started.");
-        }
 
+            Result turnResult = newlyStartedGame.getThenNullifyTurnResult();
+            if (turnResult != null) {
+                toClient.sendToGame(gameName, turnResult);
+                allCommandLists.get(gameName).add(turnResult);
+            }
+        } else {
+            String message = "Game " + gameName +  " does not exist, or has started.";
+            toClient.rejectCommand(username, gameName, message);
+        }
     }
 
    /****************************************ROUND ONE*********************************************/
@@ -281,6 +277,17 @@ public class ServerModel {
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
+
+            Result turnResult = game.getThenNullifyTurnResult();
+            if (turnResult != null) {
+                toClient.sendToGame(game.getGameName(), turnResult);
+                allCommandLists.get(game.getGameName()).add(turnResult);
+            }
+            Result endGameResult  = game.getEndGameResult();
+            if (endGameResult !=  null) {
+                toClient.sendToGame(game.getGameName(), endGameResult);
+                allCommandLists.get(game.getGameName()).add(endGameResult);
+            }
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
@@ -293,6 +300,13 @@ public class ServerModel {
             StartedGame game = this.getGame(gameName);
             Result result = game.claimRoute(playerName, routeId, trainCards);
             sendToClients(playerName, game, result);
+            String finalTurnFlag = game.getFinalTurnPlayer();
+
+            if (finalTurnFlag != null) {
+                Result finalRoundResult = game.getFinalTurnResult();
+                toClient.sendToGame(gameName, finalRoundResult);
+                allCommandLists.get(game.getGameName()).add(finalRoundResult);
+            }
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
@@ -310,10 +324,22 @@ public class ServerModel {
     }
 
     private void sendToClients(String playerName, StartedGame game , Result result) {
+
         toClient.sendToUser(playerName, game.getGameName(), result);
         allCommandLists.get(game.getGameName()).add(result);
         toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
         allCommandLists.get(game.getGameName()).add(game.getGameHistory());
+        Result turnResult = game.getThenNullifyTurnResult();
+
+        if (turnResult != null) {
+            toClient.sendToGame(game.getGameName(), turnResult);
+            allCommandLists.get(game.getGameName()).add(turnResult);
+        }
+        Result endGameResult  = game.getEndGameResult();
+        if (endGameResult !=  null) {
+            toClient.sendToGame(game.getGameName(), endGameResult);
+            allCommandLists.get(game.getGameName()).add(endGameResult);
+        }
         game.printBoardState();
     }
 }
