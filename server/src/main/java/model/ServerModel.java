@@ -277,17 +277,8 @@ public class ServerModel {
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
+            checkTurnAndEndGame(game);
 
-            Result turnResult = game.getThenNullifyTurnResult();
-            if (turnResult != null) {
-                toClient.sendToGame(game.getGameName(), turnResult);
-                allCommandLists.get(game.getGameName()).add(turnResult);
-            }
-            Result endGameResult  = game.getEndGameResult();
-            if (endGameResult !=  null) {
-                toClient.sendToGame(game.getGameName(), endGameResult);
-                allCommandLists.get(game.getGameName()).add(endGameResult);
-            }
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
         }
@@ -329,8 +320,12 @@ public class ServerModel {
         allCommandLists.get(game.getGameName()).add(result);
         toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
         allCommandLists.get(game.getGameName()).add(game.getGameHistory());
-        Result turnResult = game.getThenNullifyTurnResult();
+        checkTurnAndEndGame(game);
+        game.printBoardState();
+    }
 
+    private void checkTurnAndEndGame(StartedGame game) {
+        Result turnResult = game.getThenNullifyTurnResult();
         if (turnResult != null) {
             toClient.sendToGame(game.getGameName(), turnResult);
             allCommandLists.get(game.getGameName()).add(turnResult);
@@ -340,6 +335,5 @@ public class ServerModel {
             toClient.sendToGame(game.getGameName(), endGameResult);
             allCommandLists.get(game.getGameName()).add(endGameResult);
         }
-        game.printBoardState();
     }
 }

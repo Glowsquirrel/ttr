@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.State.CommandType;
+import model.State.FirstRound;
+import model.State.TurnState;
 import results.Result;
 import results.game.ChatResult;
 import results.game.ClaimRouteResult;
@@ -27,7 +30,7 @@ import results.game.TurnResult;
  */
 
 // TODO: continuous routes; check for low card amount; end game; check for low car amount;
-class StartedGame {
+public class StartedGame {
 
     private String gameName;
     private Map<String, Player> allPlayers = new HashMap<>();
@@ -36,7 +39,7 @@ class StartedGame {
     private List<Chat> allChats = new ArrayList<>();
     private boolean replaceFaceUpFlag = false;
     private int turnPointer = 0;
-    private TurnState turnState = TurnState.FIRST_ROUND;
+    private TurnState turnState = new FirstRound(this);
     private Result gameHistory;
     private Result turnResult = null;
     private Result endGameResult = null;
@@ -122,7 +125,7 @@ class StartedGame {
             if(board.emptyDestCardDeck()) {
                 throw new GamePlayException("No destination cards to draw.");
             }
-            switchTurnState(CommandType.DRAW_THREE_DEST_CARDS);
+            turnState.switchState(CommandType.DRAW_THREE_DEST_CARDS);
             drawnDestCards = board.drawDestCards();
             currentPlayer.addDestCards(drawnDestCards);
         } else {
@@ -169,9 +172,9 @@ class StartedGame {
                 throw new GamePlayException("You have not drawn that destination card.");
             }
             if (returnedCardKey < 30) {
-                switchTurnState(CommandType.RETURN_DEST_CARD);
+                turnState.switchState(CommandType.RETURN_DEST_CARD);
             } else {
-                switchTurnState(CommandType.RETURN_NO_DEST_CARD);
+                turnState.switchState(CommandType.RETURN_NO_DEST_CARD);
             }
 
             DestCard returnedCard = board.getDestCardMap().get(returnedCardKey);
@@ -201,7 +204,8 @@ class StartedGame {
             if (board.emptyTrainCardDeck()) {
                 throw new GamePlayException("No train cards to draw.");
             }
-            switchTurnState(CommandType.DRAW_TRAIN_CARD_FROM_DECK);
+            turnState.switchState(CommandType.DRAW_TRAIN_CARD_FROM_DECK);
+
             trainCard = board.drawTrainCardsFromDeck(TRAIN_CARD_DRAW);
             currentPlayer.addTrainCards(trainCard);
         } else {
@@ -238,9 +242,9 @@ class StartedGame {
                 throw new GamePlayException("No train cards to draw.");
             }
             if (index == LOCOMOTIVE_INDEX) {
-                switchTurnState(CommandType.FACEUP_LOCOMOTIVE);
+                turnState.switchState(CommandType.FACEUP_LOCOMOTIVE);
             } else {
-                switchTurnState(CommandType.FACEUP_NON_LOCOMOTIVE);
+                turnState.switchState(CommandType.FACEUP_NON_LOCOMOTIVE);
             }
             drawnCard = board.drawFaceUpCard(index);
             board.reshuffleIfEmpty();
@@ -285,7 +289,7 @@ class StartedGame {
             }
 
             Route route = board.getRouteMap().get(routeId);
-            switchTurnState(CommandType.CLAIM_ROUTE);
+            turnState.switchState(CommandType.CLAIM_ROUTE);
             board.claimRoute(routeId, currentPlayer.getPlayerColor(), playerName);
             currentPlayer.addNumOfRoutes();
             currentPlayer.removeCars(route.getLength());
@@ -361,7 +365,7 @@ class StartedGame {
             finalRoundResult = new FinalRoundResult(finalTurnPlayer);
         }
     }
-    private void setTurnResult() {
+    public void setTurnResult() {
         turnResult = new TurnResult(playerOrder.get(turnPointer));
     }
 
@@ -387,154 +391,19 @@ class StartedGame {
         throw new GamePlayException("Not your turn!");
     }
 
-    private void advancePlayerTurn() {
+    public void advancePlayerTurn() {
         if (playerOrder.size()-1 == turnPointer){
             turnPointer = 0;
         } else {
             turnPointer++;
         }
-        turnState = TurnState.BEFORE_TURN;
         setTurnResult();
     }
 
-
-    private void switchTurnState(CommandType commandType) throws GamePlayException {
-        switch (turnState) {
-            case FIRST_ROUND:
-                  switchFirstRound(commandType);
-                  break;
-            case BEFORE_TURN:
-                  switchBeforeTurn(commandType);
-                  break;
-            case DREW_DEST_CARDS:
-                 switchDrawDest(commandType);
-                 break;
-            case RETURNED_ONE_DEST_CARD:
-                 switchReturnedOneDestCard(commandType);
-                 break;
-            case DREW_ONE_TRAIN_CARD:
-                 switchDrawTrainCard(commandType);
-                 break;
-            default:
-                throw new GamePlayException("What in the world");
-        }
+    public void setTurnState(TurnState turnState) {
+        this.turnState = turnState;
     }
 
-    private void switchFirstRound(CommandType commandType) throws GamePlayException {
-        if (commandType != CommandType.RETURN_DEST_CARD && commandType != CommandType.RETURN_NO_DEST_CARD) {
-            throw new GamePlayException("Illegal move. You may only return dest cards.");
-        }
-
-        if (playerOrder.size()-1 == turnPointer){
-            turnPointer = 0;
-        } else {
-            turnPointer++;
-        }
-        if (turnPointer == 0) {
-            turnState = TurnState.BEFORE_TURN;
-        }
-        setTurnResult();
-    }
-
-    private void switchBeforeTurn(CommandType commandType) throws GamePlayException {
-        switch (commandType) {
-            case DRAW_THREE_DEST_CARDS:
-                turnState = TurnState.DREW_DEST_CARDS;
-                break;
-            case DRAW_TRAIN_CARD_FROM_DECK:
-                turnState = TurnState.DREW_ONE_TRAIN_CARD;
-                break;
-            case FACEUP_NON_LOCOMOTIVE:
-                turnState = TurnState.DREW_ONE_TRAIN_CARD;
-                break;
-            case FACEUP_LOCOMOTIVE:
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            case CLAIM_ROUTE:
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            default:
-                throw new GamePlayException("Illegal move. Cannot return cards before any are drawn.");
-        }
-    }
-
-
-    private void switchDrawDest(CommandType commandType) throws GamePlayException {
-        switch (commandType) {
-            case RETURN_DEST_CARD: {
-                turnState = TurnState.RETURNED_ONE_DEST_CARD;
-                break;
-            }
-            case RETURN_NO_DEST_CARD: {
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            }
-            default:{
-                throw new GamePlayException("Illegal move. You may only return dest cards.");
-            }
-        }
-    }
-
-    private void switchReturnedOneDestCard(CommandType commandType) throws GamePlayException {
-        switch (commandType) {
-
-            case RETURN_DEST_CARD:
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            case RETURN_NO_DEST_CARD:
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            default:
-                throw new GamePlayException("Illegal Move. You may only return dest cards.");
-        }
-    }
-
-    private void switchDrawTrainCard(CommandType commandType) throws GamePlayException {
-        switch (commandType) {
-            case DRAW_TRAIN_CARD_FROM_DECK: {
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            }
-            case FACEUP_NON_LOCOMOTIVE: {
-                advancePlayerTurn();
-                turnState = TurnState.BEFORE_TURN;
-                break;
-            }
-            default:
-                throw new GamePlayException("Illegal move. You may only draw train cards.");
-        }
-    }
-
-
-    private enum TurnState {
-        FIRST_ROUND("First Round"),
-        BEFORE_TURN("Before turn"),
-        DREW_DEST_CARDS("Drew Dest Cards"),
-        RETURNED_ONE_DEST_CARD("Returned One Dest Card"),
-        DREW_ONE_TRAIN_CARD("Drew One Train Card");
-
-        String prettyName;
-        TurnState(String prettyName) {
-            this.prettyName = prettyName;
-        }
-
-    }
-
-    private enum CommandType {
-          DRAW_THREE_DEST_CARDS,
-          RETURN_DEST_CARD,
-          RETURN_NO_DEST_CARD,
-          DRAW_TRAIN_CARD_FROM_DECK,
-          FACEUP_NON_LOCOMOTIVE,
-          FACEUP_LOCOMOTIVE,
-          CLAIM_ROUTE,
-    }
 
     /*****************************************Getters**********************************************/
 
@@ -571,6 +440,14 @@ class StartedGame {
     String getFinalTurnPlayer() {
         return finalTurnPlayer;
     }
+
+    public List<String> getPlayerOrder() {
+        return playerOrder;
+    }
+
+    public int getTurnPointer() {
+        return turnPointer;
+    }
     void printBoardState() {
          List<Boolean> destCardSeen = new ArrayList<>();
          for (int a = 0; a < 30; a++) {
@@ -590,7 +467,7 @@ class StartedGame {
         System.out.println("BOARD");
         System.out.println("Num of train cards in deck: " + board.getTrainCardDeck().size());
         System.out.println("Num of dest cards in deck: " + board.getDestCardDeck().size() + "\n");
-        System.out.println("Turn state for next turn: " + turnState.prettyName);
+        System.out.println("Turn state for next turn: " + turnState.getPrettyName());
         System.out.println("Next person's turn" + playerOrder.get(turnPointer));
 
         for (int a = 0; a < allPlayers.size(); a++) {
