@@ -350,4 +350,20 @@ public class Game implements Observable{
     public ServerError getServerError() {
         return serverError;
     }
+
+    //GAME OVER DATA
+    private boolean gameOver=false;
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        notifyObserver();
+        this.gameOver = gameOver;
+    }
+    public void reset()
+    {
+        myGame = new Game();
+    }
 }

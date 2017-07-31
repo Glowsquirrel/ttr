@@ -11,7 +11,7 @@ import interfaces.Observer;
 
 public class ClientModel implements Observable{
     //singleton pattern:
-    private static final ClientModel myClientModel = new ClientModel();
+    private static ClientModel myClientModel = new ClientModel();
     private ClientModel(){}
     public static ClientModel getMyClientModel() {
         return myClientModel;
@@ -281,4 +281,8 @@ public class ClientModel implements Observable{
     }
 
     public List<DestCard> myDestinationCards;
+    public void reset()
+    {
+        myClientModel = new ClientModel();
+    }
 }

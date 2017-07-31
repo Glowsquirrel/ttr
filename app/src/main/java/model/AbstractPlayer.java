@@ -138,4 +138,42 @@ public abstract class AbstractPlayer {
     public void iHaveDifferentDestCards(boolean hasChanged) {
         iHaveDifferentDestCards = hasChanged;
     }
+    //END OF GAME
+    private int claimedRoutePoints;
+    private int destinationPoints;
+    private int destinationPointsLost;
+
+    public int getClaimedRoutePoints() {
+        return claimedRoutePoints;
+    }
+
+    public void setClaimedRoutePoints(int claimedRoutePoints) {
+        this.claimedRoutePoints = claimedRoutePoints;
+    }
+
+    public int getDestinationPoints() {
+        return destinationPoints;
+    }
+
+    public void setDestinationPoints(int destinationPoints) {
+        this.destinationPoints = destinationPoints;
+    }
+
+    public int getDestinationPointsLost() {
+        return destinationPointsLost;
+    }
+
+    public void setDestinationPointsLost(int destinationPointsLost) {
+        this.destinationPointsLost = destinationPointsLost;
+    }
+
+    public int getLongestRoutePoints() {
+        return longestRoutePoints;
+    }
+
+    public void setLongestRoutePoints(int longestRoutePoints) {
+        this.longestRoutePoints = longestRoutePoints;
+    }
+
+    private int longestRoutePoints;
 }
