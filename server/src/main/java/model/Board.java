@@ -274,24 +274,23 @@ public class Board {
 
         Route route =  routeMap.get(routeId);
         if (route.getLength() != returnedTrainCards.size()){
-            return false;
+            return true;
         }
 
         TrainCard routeColor = route.getOriginalColor();
         TrainCard firstTrainCard = returnedTrainCards.get(0);
+
         for (TrainCard currentCard : returnedTrainCards) {
             if (currentCard != firstTrainCard) {
-                return false;
+                return true;
             }
         }
         if (routeColor == WILD) {
-            return true;
+            return false;
+        } else if (routeColor == firstTrainCard){
+            return false;
         }
-        else if (routeColor == firstTrainCard){
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     boolean notEnoughCars(int routeId, int numOfCars) {

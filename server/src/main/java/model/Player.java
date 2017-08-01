@@ -124,24 +124,13 @@ class Player {
             }
         }
 
-        success = false;
-        if (cardTwo != null) {
+        if (cardOne == null || newlyDrawnDestCards.size() == 1) {
             for (DestCard currentCard : newlyDrawnDestCards) {
-                if (cardTwo.equals(currentCard)) {
-                    success = true;
-                    newlyDrawnDestCards.remove(cardTwo);
-                }
+                destCardHand.add(currentCard);
             }
-            if (!success) {
-                throw new GamePlayException("Invalid card returned");
-            }
+            newlyDrawnDestCards.clear();
         }
 
-        for (DestCard currentCard : newlyDrawnDestCards) {
-            destCardHand.add(currentCard);
-        }
-
-        newlyDrawnDestCards.clear();
 
         ArrayList<DestCard> returnList = new ArrayList<>();
         returnList.add(cardOne);
