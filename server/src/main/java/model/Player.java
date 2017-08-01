@@ -222,22 +222,31 @@ class Player {
             switch (trainCard){
                 case RED:
                     numOfRedCards--;
+                    break;
                 case GREEN:
                     numOfGreenCards--;
+                    break;
                 case BLUE:
                     numOfBlueCards--;
+                    break;
                 case YELLOW:
                     numOfYellowCards--;
+                    break;
                 case BLACK:
                     numOfBlackCards--;
+                    break;
                 case PURPLE:
                     numOfPurpleCards--;
+                    break;
                 case ORANGE:
                     numOfOrangeCards--;
+                    break;
                 case WHITE:
                     numOfWhiteCards--;
+                    break;
                 case WILD:
                     numOfWildCards--;
+                    break;
             }
             removeCardFromHand(trainCard);
         }

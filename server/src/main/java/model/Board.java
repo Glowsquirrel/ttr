@@ -400,6 +400,7 @@ public class Board {
         }
         return numOfCards;
     }
+
     public int getNumOfGreenCards() {
         int numOfCards = 0;
         for (int a = 0; a < trainCardDeck.size(); a++) {
