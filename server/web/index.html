@@ -40,12 +40,21 @@
           ws.onerror = function(err) {
               alert("Fatal Error: " + err);
           };
+
+          var myUsername = "";
+          var myGameName = "";
+
             function submit()
             {
                 var handle = document.getElementById("handleBox").value;
                 var requestBody = document.getElementById("requestBox").value;
                 var token = document.getElementById("authToken").value;
 
+                var myJSON = JSON.parse(requestBody);
+                myUsername = myJSON.username;
+                if (myJSON.hasOwnProperty('gameName')){
+                  myGameName = myJSON.gameName;
+                }
                 var method = "post";
                 /*
                 if(handle.includes("person") || handle.includes("event"))
@@ -66,6 +75,7 @@
                 {
                     var response = obj.responseText;
                     var responseJson = JSON.parse(response);
+
                     if (responseJson.authToken) {
                         document.getElementById("authToken").value = responseJson.authToken;
                     }
@@ -75,6 +85,7 @@
                 obj.setRequestHeader("Content-Type", "application/json");
                 obj.setRequestHeader("Authorization", token);
                 obj.send(params);
+
             }
 
             function formatJson(inputText)
@@ -124,61 +135,62 @@
                 return temp;
             }
 
+
             function clear()
             {
-                document.getElementById("requestBox").value = formatJson("{\"type\":\"cleardb\",\"username\":\"username\"}");
+                document.getElementById("requestBox").value = formatJson("{\"type\":\"cleardb\",\"username\":\"" + myUsername + "\"}");
             }
             function login()
             {
-                document.getElementById("requestBox").value = formatJson("{\"type\":\"login\",\"username\":\"username\",\"password\":\"password\"}");
+                document.getElementById("requestBox").value = formatJson("{\"type\":\"login\",\"username\":\"" + myUsername + "\",\"password\":\"password\"}");
             }
             function register()
             {
-                document.getElementById("requestBox").value = formatJson("{\"type\":\"register\",\"username\":\"username\",\"password\":\"password\"}");
+                document.getElementById("requestBox").value = formatJson("{\"type\":\"register\",\"username\":\"" + myUsername + "\",\"password\":\"password\"}");
             }
             function poll()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"pollgames\",\"username\":\"username\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"pollgames\",\"username\":\"" + myUsername + "\"}");
             }
             function creategame()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"creategame\",\"username\":\"username\",\"gameName\":\"gameName\",\"numPlayers\":\"0\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"creategame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\",\"numPlayers\":\"0\"}");
             }
             function joingame()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"joingame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"joingame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
             }
             function leavegame()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"leavegame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"leavegame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
             }
             function startgame()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
             }
             function drawtraindeck()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincarddeck\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincarddeck\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
             }
             function drawtrainface()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincardfaceup\",\"username\":\"username\",\"gameName\":\"gameName\",\"index\":\"0\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincardfaceup\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\",\"index\":\"0\"}");
             }
             function drawdestcard()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawthreedestcards\",\"username\":\"username\",\"gameName\":\"gameName\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"drawthreedestcards\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
             }
             function returndestcard()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"returndestcards\",\"username\":\"username\",\"gameName\":\"gameName\",\"destCard\":30\t}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"returndestcards\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\",\"destCard\":30\t}");
             }
             function claimroute()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"username\",\"gameName\":\"gameName\",\"routeID\":\"0\",\"trainCards\":[\t]}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\",\"routeID\":\"0\",\"trainCards\":[\t]}");
             }
             function sendchat()
             {
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"chatmessage\",\"username\":\"username\",\"gameName\":\"gameName\",\"message\":\"message\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"chatmessage\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\",\"message\":\"message\"}");
             }
         </script>
     </head>
