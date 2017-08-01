@@ -126,72 +126,58 @@
 
             function clear()
             {
-                window.scrollTo(0,document.body.scrollHeight);
                 document.getElementById("requestBox").value = formatJson("{\"type\":\"cleardb\",\"username\":\"username\"}");
             }
             function login()
             {
-                window.scrollTo(0,document.body.scrollHeight);
                 document.getElementById("requestBox").value = formatJson("{\"type\":\"login\",\"username\":\"username\",\"password\":\"password\"}");
             }
             function register()
             {
-                window.scrollTo(0,document.body.scrollHeight);
                 document.getElementById("requestBox").value = formatJson("{\"type\":\"register\",\"username\":\"username\",\"password\":\"password\"}");
             }
             function poll()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"pollgames\",\"username\":\"username\"}");
             }
             function creategame()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"creategame\",\"username\":\"username\",\"gameName\":\"gameName\",\"numPlayers\":\"0\"}");
             }
             function joingame()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"joingame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function leavegame()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"leavegame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function startgame()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"startgame\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function drawtraindeck()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincarddeck\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function drawtrainface()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"drawtraincardfaceup\",\"username\":\"username\",\"gameName\":\"gameName\",\"index\":\"0\"}");
             }
             function drawdestcard()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"drawthreedestcards\",\"username\":\"username\",\"gameName\":\"gameName\"}");
             }
             function returndestcard()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"returndestcards\",\"username\":\"username\",\"gameName\":\"gameName\",\"destCard\":30\t}");
             }
             function claimroute()
             {
-              window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"username\",\"gameName\":\"gameName\",\"routeID\":\"0\",\"trainCards\":\"[\t]\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"username\",\"gameName\":\"gameName\",\"routeID\":\"0\",\"trainCards\":[\t]}");
             }
             function sendchat()
             {
-              window.scrollTo(0,document.body.scrollHeight);
               document.getElementById("requestBox").value = formatJson("{\"type\":\"chatmessage\",\"username\":\"username\",\"gameName\":\"gameName\",\"message\":\"message\"}");
             }
         </script>
