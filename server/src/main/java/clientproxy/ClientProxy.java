@@ -209,8 +209,17 @@ public class ClientProxy implements IClient {
         }
     }
 
-    public void rejoinGame(String username, String gameName){
-
+    @Override
+    public void reJoinGame(String username, String gameName){
+        Result result = new RejoinResult(username, gameName);
+        Session mySession = ServerWebSocket.getMySession(username);
+        String resultJson = gson.toJson(result);
+        
+        try {
+            mySession.getRemote().sendString(resultJson);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
     }
 

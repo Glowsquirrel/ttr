@@ -144,6 +144,11 @@ public class ClientFacade implements IClient{
         //clientModel.setInGameLobby(false);
     }
 
+    @Override
+    public void reJoinGame(String username, String gameName) {
+        clientModel.setMyGame(gameName);
+    }
+    
     /**
      * Called by the server after it has received a chat message by any other client in the same game
      * as this client.

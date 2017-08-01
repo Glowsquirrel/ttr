@@ -189,7 +189,7 @@ public class ServerModel {
         if(allStartedGames.containsKey(gameName)) {
             StartedGame gameToReJoin = allStartedGames.get(gameName);
             if(gameToReJoin.getAllPlayers().containsKey(username)) {
-                toClient.rejoinGame(username, gameName);
+                toClient.reJoinGame(username, gameName);
             } else {
                 toClient.rejectCommand(username, gameName, message);
             }
