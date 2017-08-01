@@ -217,8 +217,8 @@ public class ServerModel {
                 toClient.startGame(result, result.getUsername());
                 allCommandLists.get(gameName).add(result);
             }
-            while (newlyStartedGame.getReplaceFaceUpFlag()) {
-                Result nextResult = newlyStartedGame.replaceFaceUpCards();
+            while (newlyStartedGame.getReplaceFaceUpFlag()) { //If three face-up locomotives
+                Result nextResult = newlyStartedGame.replaceFaceUpCards(username);
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
@@ -290,14 +290,16 @@ public class ServerModel {
 
             toClient.sendToGame(gameName, result);
             allCommandLists.get(gameName).add(result);
-            toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
-            allCommandLists.get(game.getGameName()).add(game.getGameHistory());
 
             while (game.getReplaceFaceUpFlag()) {
-                Result nextResult = game.replaceFaceUpCards();
+                Result nextResult = game.replaceFaceUpCards(playerName);
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
+
+            toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
+            allCommandLists.get(game.getGameName()).add(game.getGameHistory());
+
             checkTurnAndEndGame(game);
 
         } catch (GamePlayException ex) {

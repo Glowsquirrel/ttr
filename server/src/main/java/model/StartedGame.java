@@ -261,9 +261,10 @@ public class StartedGame {
     }
 
 
-    Result replaceFaceUpCards() {
+    Result replaceFaceUpCards(String playerName) {
         List<Integer> newFaceUpCards = board.replaceFaceUpCards();
         replaceFaceUpFlag = board.getReplaceFaceUpFlag();
+        setGameHistoryResult(playerName, "All faceup cards have been replaced", -1);
         return new ReplaceFaceUpCardsResult(newFaceUpCards);
     }
 
