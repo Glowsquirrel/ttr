@@ -21,7 +21,6 @@ import results.Result;
  * @version 1.0
  */
 
-//TODO: Call ClientProxy
 public class ServerModel {
 
     private Map<String, UnstartedGame> allUnstartedGames;
@@ -176,7 +175,29 @@ public class ServerModel {
             toClient.rejectCommand(username, gameName, message);
         }
     }
-
+    
+    /**
+     *  <h1>reJoinGame</h1>
+     *  Checks to see if a user is a player in a started game, confirming that player can re-join
+     *  the game if so, or a rejection is sent to the client if not.
+     *
+     *  @param          username            The player trying to re-join.
+     *  @param          gameName            The game the player is trying to re-join
+     */
+    public void reJoinGame(String username, String gameName) {
+        String message = "You were not in that game.";
+        if(allStartedGames.containsKey(gameName)) {
+            StartedGame gameToReJoin = allStartedGames.get(gameName);
+            if(gameToReJoin.getAllPlayers().containsKey(username)) {
+                toClient.rejoinGame(username, gameName);
+            } else {
+                toClient.rejectCommand(username, gameName, message);
+            }
+        } else {
+            toClient.rejectCommand(username, gameName,message);
+        }
+    }
+    
    /*************************************STARTING GAME*********************************************/
     public void startGame(String gameName, String username) {
         if (allUnstartedGames.containsKey(gameName)){
