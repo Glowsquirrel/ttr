@@ -36,7 +36,7 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         this.trainCardPresenter = new TrainCardPresenter();
         deckPresenter = new DeckPresenter();
         this.chatPresenter = new ChatPresenter();
-        
+
         FragmentManager fragmentManager = this.getSupportFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
