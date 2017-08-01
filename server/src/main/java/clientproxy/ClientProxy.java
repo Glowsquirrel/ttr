@@ -21,6 +21,8 @@ import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
 import results.game.DrawTrainCardFromFaceUpResult;
+import results.game.EndGameResult;
+import results.game.FinalRoundResult;
 import results.game.GameHistoryResult;
 import results.game.RejectResult;
 import results.game.RejoinResult;
@@ -28,6 +30,7 @@ import results.game.ReplaceFaceUpCardsResult;
 import results.game.ReturnDestCardsResult;
 import results.game.ReturnFirstDestCardResult;
 import results.game.StartGameResult;
+import results.game.TurnResult;
 import results.menu.CreateGameResult;
 import results.menu.JoinGameResult;
 import results.menu.LeaveGameResult;
@@ -118,6 +121,7 @@ public class ClientProxy implements IClient {
 
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Sent a: " + result.getType() + " command to :" + username + " game.");
         } catch (IOException ex){
             ex.printStackTrace();
         }
@@ -329,6 +333,15 @@ public class ClientProxy implements IClient {
                 break;
             case Utils.REJECT_TYPE:
                 myJsonString = gson.toJson(result, RejectResult.class);
+                break;
+            case Utils.END_GAME_TYPE:
+                myJsonString = gson.toJson(result, EndGameResult.class);
+                break;
+            case Utils.FINAL_ROUND_TYPE:
+                myJsonString = gson.toJson(result, FinalRoundResult.class);
+                break;
+            case Utils.TURN_TYPE:
+                myJsonString = gson.toJson(result, TurnResult.class);
                 break;
             default:
                 myJsonString = "Error parsing into Json. Check ClientProxy.";

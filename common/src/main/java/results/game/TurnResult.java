@@ -9,11 +9,9 @@ import utils.Utils;
 
 public class TurnResult extends Result{
 
-    protected String username;
-
     protected TurnResult(){}
     public TurnResult(String username){
         super.type = Utils.TURN_TYPE;
-        this.username = username;
+        super.username = username;
     }
 }

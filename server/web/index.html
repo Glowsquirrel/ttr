@@ -182,12 +182,12 @@
             function returndestcard()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"returndestcards\",\"username\":\"username\",\"gameName\":\"gameName\",\"destCards\":[\t]}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"returndestcards\",\"username\":\"username\",\"gameName\":\"gameName\",\"destCard\":30\t}");
             }
             function claimroute()
             {
               window.scrollTo(0,document.body.scrollHeight);
-              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"username\",\"gameName\":\"gameName\",\"routeID\":\"0\"}");
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"claimroute\",\"username\":\"username\",\"gameName\":\"gameName\",\"routeID\":\"0\",\"trainCards\":\"[\t]\"}");
             }
             function sendchat()
             {
