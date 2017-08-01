@@ -1,5 +1,6 @@
 package fysh340.ticket_to_ride.game;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.fragments.*;
+import fysh340.ticket_to_ride.menus.MenuGameList;
 import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
@@ -62,6 +64,7 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         transaction.hide(destCardSelectPresenter);
 
         transaction.commit();
+        Game.getGameInstance().register(this);
     }
 
     @Override
@@ -110,12 +113,16 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         ServerError serverError = Game.getGameInstance().getServerError();
         String message = serverError.getMessage();
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(Game.getGameInstance().isGameOver())
+        {
+            Intent intent = new Intent(this, GameOverPresenter.class);
+            startActivity(intent); //proceed to game list screen
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Game.getGameInstance().getServerError().register(this);
     }
 
     @Override

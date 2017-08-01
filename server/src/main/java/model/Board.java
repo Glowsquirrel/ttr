@@ -238,11 +238,15 @@ public class Board {
     boolean noFaceUpCards() {
         return faceUpTrainCards.size() == 0;
     }
-    List<Integer> replaceFaceUpCards() {
-        trainCardDeck.addAll(faceUpTrainCards);
-        faceUpTrainCards.clear();
-        final int FIFTH_INDEX = 4;
 
+    List<Integer> replaceFaceUpCards() {
+        discardedTrainCards.addAll(faceUpTrainCards);
+        faceUpTrainCards.clear();
+        final int FIFTH_INDEX = 5;
+
+        if (trainCardDeck.size() < FIFTH_INDEX) {
+
+        }
         for (int a = 0; a < FIFTH_INDEX; a++) {
             faceUpTrainCards.add(trainCardDeck.get(0));
             trainCardDeck.remove(0);

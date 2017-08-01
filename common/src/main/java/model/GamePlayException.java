@@ -6,7 +6,7 @@ package model;
 
 public class GamePlayException extends Exception {
 
-    GamePlayException(String message){
+    public GamePlayException(String message){
         super(message);
     }
 }

@@ -16,6 +16,7 @@ public interface IClient {
     void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList);
     void joinGame(String username, String gameName);
     void leaveGame(String username, String gameName);
+    void reJoinGame(String username, String gameName);
     void createGame(String username, String gameName);
 
     //in-game

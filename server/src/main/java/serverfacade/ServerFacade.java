@@ -102,7 +102,7 @@ public class ServerFacade implements IServer {
 
     @Override
     public void rejoinGame(String username, String gameName) {
-
+        mSingletonModel.reJoinGame(username, gameName);
     }
 
     @Override
