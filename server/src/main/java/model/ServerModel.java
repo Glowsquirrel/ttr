@@ -314,7 +314,7 @@ public class ServerModel {
             StartedGame game = this.getGame(gameName);
             Result result = game.claimRoute(playerName, routeId, trainCards);
             sendToClients(playerName, game, result);
-            String finalTurnFlag = game.getFinalTurnPlayer();
+            String finalTurnFlag = game.getAfterFinalTurnPlayer();
 
             if (finalTurnFlag != null) {
                 Result finalRoundResult = game.getFinalTurnResult();

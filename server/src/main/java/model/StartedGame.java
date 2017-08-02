@@ -44,7 +44,7 @@ public class StartedGame {
     private Result turnResult = null;
     private Result endGameResult = null;
     private Result finalRoundResult = null;
-    private String finalTurnPlayer = null;
+    private String afterFinalTurnPlayer = null;
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
     }
@@ -133,7 +133,7 @@ public class StartedGame {
         }
 
         String message = playerName + " drew destination cards.";
-        setGameHistoryResult(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1, -1);
          setEndGameResult(playerName);
         return drawDestCardResults(playerName, drawnDestCards);
     }
@@ -186,7 +186,7 @@ public class StartedGame {
         }
 
         String message = playerName + " returned a destination card.";
-        setGameHistoryResult(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1, -1);
         setEndGameResult(playerName);
         return new ReturnFirstDestCardResult(playerName, returnedCardKey);
     }
@@ -214,7 +214,7 @@ public class StartedGame {
         board.reshuffleIfEmpty();
 
         String message = playerName + " drew a train card from the deck.";
-        setGameHistoryResult(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1, -1);
         setEndGameResult(playerName);
         return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardKey(trainCard.get(0)));
     }
@@ -255,7 +255,7 @@ public class StartedGame {
         }
 
         String message = playerName + " drew a face-up train card.";
-        setGameHistoryResult(playerName, message, -1);
+        setGameHistoryResult(playerName, message, -1, index);
         setEndGameResult(playerName);
         return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardKey(drawnCard));
     }
@@ -264,7 +264,7 @@ public class StartedGame {
     Result replaceFaceUpCards(String playerName) {
         List<Integer> newFaceUpCards = board.replaceFaceUpCards();
         replaceFaceUpFlag = board.getReplaceFaceUpFlag();
-        setGameHistoryResult(playerName, "All faceup cards have been replaced", -1);
+        setGameHistoryResult(playerName, "All faceup cards have been replaced", -1, -1);
         return new ReplaceFaceUpCardsResult(newFaceUpCards);
     }
 
@@ -273,8 +273,8 @@ public class StartedGame {
 
         Player currentPlayer = allPlayers.get(playerName);
         if (currentPlayer != null) {
-            List<TrainCard> returnedTrainCards = convertKeysToTrainCards(trainCards);
             throwIfNotPlayersTurn(playerName);
+            List<TrainCard> returnedTrainCards = convertKeysToTrainCards(trainCards);
 
             if(board.routeIsClaimed(routeId)) {
                 throw new GamePlayException("Route has already been claimed.");
@@ -299,15 +299,18 @@ public class StartedGame {
             board.discardTrainCards(returnedTrainCards);
             currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
 
-            finalTurnPlayer = currentPlayer.setFinalTurnFlag();
-            setFinalRoundResult();
+            if(currentPlayer.finalTurn()){
+                afterFinalTurnPlayer = playerOrder.get(turnPointer);
+                setFinalRoundResult();
+            }
+
 
         } else {
             throw new GamePlayException("Invalid player name");
         }
 
         String message = playerName + " claimed route " + Integer.toString(routeId);
-        setGameHistoryResult(playerName, message, routeId);
+        setGameHistoryResult(playerName, message, routeId, -1);
         setEndGameResult(playerName);
         return new ClaimRouteResult(playerName, routeId);
     }
@@ -323,7 +326,8 @@ public class StartedGame {
     /**********************************RESULT SETTERS**********************************************/
 
     private void setEndGameResult(String playerName) {
-        if (!lastPlayerPlayed(playerName)) {
+
+        if (!playerOrder.get(turnPointer).equals(afterFinalTurnPlayer)) {
             return;
         }
 
@@ -358,24 +362,21 @@ public class StartedGame {
                 pointsSubtracted, totalPoints, largestSizeOwner);
     }
 
-    private boolean lastPlayerPlayed(String playerName) {
-         return (playerName.equals(finalTurnPlayer));
-    }
     private void setFinalRoundResult() {
-        if (finalTurnPlayer != null) {
-            finalRoundResult = new FinalRoundResult(finalTurnPlayer);
-        }
+            finalRoundResult = new FinalRoundResult(afterFinalTurnPlayer);
     }
+
     public void setTurnResult() {
         turnResult = new TurnResult(playerOrder.get(turnPointer));
     }
 
-    private void setGameHistoryResult(String playerName, String message, int routeNumber){
+    private void setGameHistoryResult(String playerName, String message, int routeNumber, int faceUpIndex){
         Player player = allPlayers.get(playerName);
         gameHistory = new GameHistoryResult(playerName, message,
                 player.getNumOfCars(), player.getSizeOfTrainCardHand(),
                 player.getSizeOfDestCardHand(), player.getNumOfRoutesOwned(),
-                player.getPoints(), routeNumber, board.getTrainCardDeckSize(), board.getDestCardDeck().size());
+                player.getPoints(), routeNumber, board.getTrainCardDeckSize(), board.getDestCardDeck().size(),
+                faceUpIndex);
     }
     /******************************************CHAT************************************************/
 
@@ -438,8 +439,8 @@ public class StartedGame {
         return replaceFaceUpFlag;
     }
 
-    String getFinalTurnPlayer() {
-        return finalTurnPlayer;
+    String getAfterFinalTurnPlayer() {
+        return afterFinalTurnPlayer;
     }
 
     public List<String> getPlayerOrder() {

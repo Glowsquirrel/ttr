@@ -252,6 +252,49 @@ class Player {
         }
     }
 
+    boolean ownsCards(List<TrainCard> chosenCards) {
+         int numOfPurpleCardsSent = 0;
+         int numOfWhiteCardsSent = 0;
+         int numOfBlueCardsSent = 0;
+         int numOfYellowCardsSent = 0;
+         int numOfOrangeCardsSent = 0;
+         int numOfBlackCardsSent = 0;
+         int numOfRedCardsSent = 0;
+         int numOfGreenCardsSent = 0;
+         int numOfWildCardsSent = 0;
+
+        for (int a = 0; a < chosenCards.size(); a++){
+            TrainCard currentCard = chosenCards.get(a);
+            if (currentCard == TrainCard.PURPLE){
+                numOfPurpleCardsSent++;
+            }
+            else if (currentCard == TrainCard.WHITE) {
+                numOfWhiteCardsSent++;
+            }
+            else if (currentCard == TrainCard.BLUE){
+                numOfBlueCardsSent++;
+            }
+            else if (currentCard == TrainCard.YELLOW){
+                numOfYellowCardsSent++;
+            }
+            else if (currentCard == TrainCard.ORANGE){
+                numOfOrangeCardsSent++;
+            }
+            else if (currentCard == TrainCard.BLACK){
+                numOfBlackCardsSent++;
+            }
+            else if (currentCard == TrainCard.RED){
+                numOfRedCardsSent++;
+            }
+            else if (currentCard == TrainCard.GREEN){
+                numOfGreenCardsSent++;
+            }
+            else {
+                numOfWildCardsSent++;
+            }
+        }
+        return false;
+    }
     /**
      * PRE: There exists a TrainCard in the player's trainCardHand list that matches the type
      *      of the TrainCard passed.
@@ -269,11 +312,8 @@ class Player {
         }
     }
 
-    String setFinalTurnFlag() {
-        if (numOfCars < 3) {
-            return userName;
-        }
-        return null;
+    boolean finalTurn() {
+        return (numOfCars < 3);
     }
 
     int addDestCardPoints() {

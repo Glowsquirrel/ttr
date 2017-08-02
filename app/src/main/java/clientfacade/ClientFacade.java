@@ -335,7 +335,7 @@ public class ClientFacade implements IClient{
      */
     public void addHistory(String username, String message, int numTrainCars, int numTrainCardsHeld,
                            int numDestCardsHeld, int numRoutesOwned, int score, int claimedRouteNumber,
-                           int faceUpIndex){
+                           int trainCardDeckSize, int destCardDeckSize, int faceUpIndex){
         chatModel.addHistory(username,message);
         AbstractPlayer player = game.getPlayerByName(username);
 
