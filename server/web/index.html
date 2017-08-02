@@ -27,7 +27,13 @@
 
           ws.onmessage = function (evt) {
               //alert("Message: " + evt.data);
-              document.getElementById("response").textContent = formatJson(evt.data)
+              var myResponseText = document.getElementById("response").textContent;
+              myResponseText = myResponseText + formatJson(evt.data);
+
+              document.getElementById("response").textContent = myResponseText;
+
+              var scroll = document.getElementById("response");
+              scroll.scrollTop = scroll.scrollHeight;
               //var x = document.createElement("span");
               //document.getElementById("span").innerHTML = formatJson(evt)
               //document.getElementById("response").textContent = formatJson(evt)
