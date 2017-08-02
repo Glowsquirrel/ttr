@@ -134,7 +134,7 @@ public class StartedGame {
 
         String message = playerName + " drew destination cards.";
         setGameHistoryResult(playerName, message, -1, -1);
-         setEndGameResult(playerName);
+         setEndGameResult();
         return drawDestCardResults(playerName, drawnDestCards);
     }
 
@@ -187,7 +187,7 @@ public class StartedGame {
 
         String message = playerName + " returned a destination card.";
         setGameHistoryResult(playerName, message, -1, -1);
-        setEndGameResult(playerName);
+        setEndGameResult();
         return new ReturnFirstDestCardResult(playerName, returnedCardKey);
     }
 
@@ -215,7 +215,7 @@ public class StartedGame {
 
         String message = playerName + " drew a train card from the deck.";
         setGameHistoryResult(playerName, message, -1, -1);
-        setEndGameResult(playerName);
+        setEndGameResult();
         return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardKey(trainCard.get(0)));
     }
 
@@ -254,9 +254,9 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
-        String message = playerName + " drew a face-up train card.";
+        String message = playerName + " drew a " + drawnCard.getPrettyname() + " face-up train card.";
         setGameHistoryResult(playerName, message, -1, index);
-        setEndGameResult(playerName);
+        setEndGameResult();
         return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardKey(drawnCard));
     }
 
@@ -311,7 +311,7 @@ public class StartedGame {
 
         String message = playerName + " claimed route " + Integer.toString(routeId);
         setGameHistoryResult(playerName, message, routeId, -1);
-        setEndGameResult(playerName);
+        setEndGameResult();
         return new ClaimRouteResult(playerName, routeId);
     }
 
@@ -325,7 +325,7 @@ public class StartedGame {
 
     /**********************************RESULT SETTERS**********************************************/
 
-    private void setEndGameResult(String playerName) {
+    private void setEndGameResult() {
 
         if (!playerOrder.get(turnPointer).equals(afterFinalTurnPlayer)) {
             return;
