@@ -146,7 +146,7 @@ public class ClientFacade implements IClient{
 
     @Override
     public void reJoinGame(String username, String gameName) {
-        clientModel.setMyGame(gameName);
+        clientModel.setHasGame(gameName);
     }
     
     /**
