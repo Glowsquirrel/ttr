@@ -281,8 +281,8 @@ public class Board {
         TrainCard firstTrainCard = returnedTrainCards.get(0);
 
         for (TrainCard currentCard : returnedTrainCards) {
-            if (currentCard != firstTrainCard) {
-                return true;
+            if (currentCard != firstTrainCard && currentCard != WILD) {
+               return true;
             }
         }
         if (routeColor == WILD) {
