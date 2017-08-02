@@ -11,7 +11,8 @@
     <string name="enter_game_name">Enter the gameName of the game you would like to create:</string>
     <string name="number_players">Choose the Number of Players:</string>
     <string name="create_game">Create Game</string>
-    <string name="join_game">Join an existing game:</string>
+    <string name="join_unstarted">Join an unstarted game:</string>
+    <string name="join_started">Join a started game:</string>
     <string name="current_games">Games in Progress:</string>
     <string name="players">Players</string>
     <string name="dest_cards">Dest Cards</string>

@@ -24,13 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ClientModel;
+import model.RunningGame;
 import model.UnstartedGame;
 import serverproxy.ServerProxy;
 
@@ -38,7 +37,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
     private ClientModel mClientModel = ClientModel.getMyClientModel();
     private ServerProxy mServerProxy = new ServerProxy();
-    private MyGameListAdapter mAdapter;
+    private MyUnstartedGameListAdapter mUnstartedGamesAdapter;
+    private MyRunningGameListAdapter mRunningGamesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         });
 
         //recyclerview adapter
-        mAdapter = new MyGameListAdapter(mClientModel.getUnstartedGameList()); //create the search adapter once, update its data later
-        mRecyclerView.setAdapter(mAdapter);
+        mUnstartedGamesAdapter = new MyUnstartedGameListAdapter(mClientModel.getUnstartedGameList()); //create the search adapter once, update its data later
+        mRecyclerView.setAdapter(mUnstartedGamesAdapter);
 
         mServerProxy.pollGameList(mClientModel.getMyUsername());
 
@@ -156,15 +156,17 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             startActivity(intent); //proceed to game list screen
         } else if (mClientModel.hasNewGameLists()){
             mClientModel.receivedNewGameLists();
-            mAdapter.swapData(mClientModel.getUnstartedGameList());
+            mUnstartedGamesAdapter.swapData(mClientModel.getUnstartedGameList());
             //swap with startedgamelist also
         }
     }
 
-    private class MyGameListAdapter extends RecyclerView.Adapter<MyGameListAdapter.ViewHolder> {
+    private class MyUnstartedGameListAdapter extends RecyclerView
+                                                             .Adapter<MyUnstartedGameListAdapter
+                                                                              .ViewHolder> {
         private List<UnstartedGame> allGames = new ArrayList<>();
 
-        private MyGameListAdapter(List<UnstartedGame> newList){
+        private MyUnstartedGameListAdapter(List<UnstartedGame> newList){
             allGames = newList;
         }
 
@@ -187,7 +189,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         }
 
         @Override
-        public MyGameListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MyUnstartedGameListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                        int viewType) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.unstarted_game_list_item_view, parent, false);
             return new ViewHolder(itemView);
         }
@@ -231,6 +234,86 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             return allGames.size();
         }
 
+    }
+    
+    private class MyRunningGameListAdapter extends RecyclerView.Adapter<MyRunningGameListAdapter
+                                                                               .ViewHolder> {
+        private List<RunningGame> mAllStartedGames;
+        
+        public MyRunningGameListAdapter() {
+            mAllStartedGames = new ArrayList<>();
+        }
+        
+        public MyRunningGameListAdapter(List<RunningGame> allGames) {
+            mAllStartedGames = allGames;
+        }
+    
+        void swapData(List<RunningGame> newGamesList){
+            mAllStartedGames = newGamesList;
+            notifyDataSetChanged();
+        }
+    
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView mGameName;
+            TextView mPlayers;
+            View mCurrentView;
+            
+            public ViewHolder(View itemView) {
+                super(itemView);
+                mGameName = (TextView) itemView.findViewById(R.id.item_game_name);
+                mPlayers = (TextView) itemView.findViewById(R.id.item_players);
+                mCurrentView = itemView;
+            }
+        }
+    
+        @Override
+        public MyRunningGameListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                      int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                                                .inflate(R.layout.started_game_list_item_view,
+                                                        parent, false);
+            return new ViewHolder(itemView);
+        }
+    
+        @Override
+        public void onBindViewHolder(final MyRunningGameListAdapter.ViewHolder holder,
+                                     int position) {
+            RunningGame currentGame = mAllStartedGames.get(position);
+    
+            final String currentGameName = currentGame.getGameName();
+            
+            int currentNumberOfPlayers = currentGame.getGameSize();
+            String playersLabel = currentNumberOfPlayers + "/" + currentNumberOfPlayers + " "
+                                          + getString(R.string.players);
+    
+            holder.mGameName.setText(currentGameName);
+            holder.mPlayers.setText(playersLabel);
+            holder.mCurrentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setVisibility(View.VISIBLE);
+                    Animation myAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_item);
+                    myAnimation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+                
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            mServerProxy.reJoinGame(mClientModel.getMyUsername(), currentGameName);
+                        }
+                
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+                    });
+                    holder.mCurrentView.startAnimation(myAnimation);
+                }
+            });
+        }
+    
+        @Override
+        public int getItemCount() {
+            return mAllStartedGames.size();
+        }
     }
 
     public void setupUI(View view) { //Modifies onClick of view to check type of widget clicked.

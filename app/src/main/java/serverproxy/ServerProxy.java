@@ -70,7 +70,7 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public void rejoinGame(String username, String gameName) {
+    public void reJoinGame(String username, String gameName) {
         RejoinCommand command = new RejoinCommand(username, gameName);
         clientCommunicator.doCommand(command);
     }
