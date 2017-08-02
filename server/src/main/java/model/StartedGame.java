@@ -122,10 +122,17 @@ public class StartedGame {
         ArrayList<DestCard> drawnDestCards;
 
         if (currentPlayer != null) {
+
             if(board.emptyDestCardDeck()) {
                 throw new GamePlayException("No destination cards to draw.");
+            } else if (board.getDestCardDeck().size() > 2 ) {
+                turnState.switchState(CommandType.DRAW_THREE_DEST_CARDS);
+            } else if (board.getDestCardDeck().size() == 2 ){
+                turnState.switchState(CommandType.DRAW_TWO_DEST_CARDS);
+            } else {
+                turnState.switchState(CommandType.DRAW_ONE_DEST_CARD);
             }
-            turnState.switchState(CommandType.DRAW_THREE_DEST_CARDS);
+
             drawnDestCards = board.drawDestCards();
             currentPlayer.addDestCards(drawnDestCards);
         } else {
