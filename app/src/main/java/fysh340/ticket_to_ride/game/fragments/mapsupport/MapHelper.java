@@ -35,6 +35,8 @@ import fysh340.ticket_to_ride.R;
  *
  * @author Shun Sambongi
  * @version 1.0
+ * @invariant none (since all of the methods in this class are static, there are no class
+ * invariants)
  * @since 2017-07-22
  */
 public class MapHelper {
@@ -96,6 +98,15 @@ public class MapHelper {
      * @param context The Android context. Can just pass in an instance of the Activity hosting the
      *                map fragment
      * @param map     the GoogleMap object which will be initialized
+     *
+     * @pre context != null
+     * @pre map != null
+     * @pre map has to be "ready"; this means this method has to be called in or after the
+     *      onMapReady() method in the OnMapReadyCallback for Google maps.
+     * @pre map_style.json exists in the resources folder using the styling format defined at
+     *      https://developers.google.com/maps/documentation/android-api/style-reference
+     *
+     * @post the map will show the cities and the lines for ticket to ride
      */
     public static void initMap(final Context context, final GoogleMap map) {
 
@@ -106,7 +117,7 @@ public class MapHelper {
         LatLng usa = new LatLng(39.8283, -98.5795);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(usa, 4.6f));
 
-        // gets the bounds for all of the cities in the game
+        // gets the bounds for all of the cities in the game to restrict the scrollable area
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (MapCity city : MapCity.values())
             builder.include(city.getLatLng());
@@ -115,9 +126,9 @@ public class MapHelper {
         // disable all of the settings besides zooming and scrolling
         UiSettings settings = map.getUiSettings();
         settings.setAllGesturesEnabled(false);
+        settings.setMapToolbarEnabled(false);
         settings.setZoomGesturesEnabled(true);
         settings.setScrollGesturesEnabled(true);
-        settings.setMapToolbarEnabled(false);
 
         // restrict the area for zooming and scrolling
         map.setMaxZoomPreference(MAX_ZOOM);
@@ -143,11 +154,20 @@ public class MapHelper {
     }
 
     /**
-     * Draws a route on the map
+     * Draws a route on the map using polylines
      *
      * @param map   the map that will be drawn on
      * @param route the route to draw
      * @param color the color to draw the route
+     *
+     * @pre map != null
+     * @pre route != null
+     * @pre map has to be "ready"; this means this method has to be called in or after the
+     *      onMapReady() method in the OnMapReadyCallback for Google maps.
+     *
+     * @post map will have a new route drawn on it
+     * @post routePolylineMap will have a new entry in it with route as the key and a set of the
+     *       polylines representing the segments in the route as the value
      */
     public static void drawMapRoute(GoogleMap map, MapRoute route, Integer color) {
         // if there already is a route there, remove all of the segments
@@ -224,6 +244,13 @@ public class MapHelper {
      *
      * @param route the route to change the color of
      * @param color the color to change the route to
+     *
+     * @pre route != null
+     * @pre color is a valid integer representation of a color.
+     *      See https://developer.android.com/reference/android/graphics/Color.html
+     * @pre routePolylineMap has a entry with route as a key
+     *
+     * @post the route on the map will be changed to the new color
      */
     public static void changeColor(MapRoute route, int color) {
         for (Polyline line : routePolyLineMap.get(route)) {
@@ -232,7 +259,7 @@ public class MapHelper {
     }
 
     /**
-     * Adds text on the map. Use to add the city labels onto the map
+     * Adds text on the map. Use to add the city labels onto the map.
      *
      * @param context  Android context. Probably use Activity hosting the map.
      * @param map      the actual GoogleMap object to draw on
@@ -240,6 +267,18 @@ public class MapHelper {
      * @param text     the string that will drawn
      * @param padding  the padding for the text
      * @param fontSize the size of the text
+     *
+     * @pre context != null
+     * @pre map != null
+     * @pre location != null
+     * @pre text != null
+     * @pre padding > 0
+     * @pre fontSize > 0
+     * @pre map has to be "ready"; this means this method has to be called in or after the
+     *      onMapReady() method in the OnMapReadyCallback for Google maps.
+     *
+     * @post the map will have a new marker placed at location with the text
+     *
      * @return the Marker (the text) that was placed on the map
      */
     private static Marker addText(final Context context, final GoogleMap map,
@@ -247,11 +286,13 @@ public class MapHelper {
                                   final int fontSize) {
         Marker marker = null;
 
+        // check for null values
         if (context == null || map == null || location == null || text == null
                 || fontSize <= 0) {
             return marker;
         }
 
+        // create a text view
         final TextView textView = new TextView(context);
         textView.setText(text);
         textView.setTextSize(fontSize);
@@ -263,8 +304,8 @@ public class MapHelper {
         paintText.setTextAlign(Paint.Align.CENTER);
 
         final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        final Bitmap bmpText = Bitmap.createBitmap(boundsText.width() + 2
-                * padding, boundsText.height() + 2 * padding, conf);
+        final Bitmap bmpText = Bitmap.createBitmap(boundsText.width() + 2 * padding,
+                boundsText.height() + 2 * padding, conf);
 
         final Canvas canvasText = new Canvas(bmpText);
         paintText.setColor(Color.WHITE);
@@ -273,12 +314,14 @@ public class MapHelper {
         canvasText.drawText(text, canvasText.getWidth() / 2,
                 canvasText.getHeight() - padding - boundsText.bottom, paintText);
 
+        // create options to make the marker
         final MarkerOptions markerOptions = new MarkerOptions()
                 .position(location)
                 .icon(BitmapDescriptorFactory.fromBitmap(bmpText))
                 .zIndex(2)
                 .anchor(0f, 0.75f);
 
+        // add the marker to the map
         marker = map.addMarker(markerOptions);
 
         return marker;
