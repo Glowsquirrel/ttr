@@ -181,7 +181,12 @@ public class ClientFacade implements IClient{
         //change GUI elements
         map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
         game.getMyself().incrementNumRoutesClaimed();
-        game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
+        List<Integer> toRemove=game.getCardsToDiscard();
+        for(int i=0;i<toRemove.size();i++)
+        {
+            game.getMyself().removeTrainCardByInt(toRemove.get(i));
+        }
+//        game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
         game.getMyself().addToScore(myRoute.getPointValue());
         game.getMyself().removeTrains(routeSize);
         game.getMyself().removeMultipleTrainCards(routeSize);
@@ -414,10 +419,24 @@ public class ClientFacade implements IClient{
     public void endGame(List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
                         List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
                         String ownsLongestRoute) {
+        game.setGameOver(true);
+        List<AbstractPlayer> players=game.getVisiblePlayerInformation();
+        for(int i=0;i<players.size();i++)
+        {
+            players.get(i).setDestinationPoints(destCardPtsAdded.get(i));
+            players.get(i).setClaimedRoutePoints(pointsFromRoutes.get(i));
+            players.get(i).setDestinationPointsLost(destCardPtsSubtracted.get(i));
+            players.get(i).setScore(totalPoints.get(i));
+            if(ownsLongestRoute==players.get(i).getMyUsername())
+            {
+                players.get(i).setLongestRoutePoints(10);
+            }
+        }
 
     }
 
     public void finalRound(String playerToEndOn) {
+
 
     }
 

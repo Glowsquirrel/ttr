@@ -101,7 +101,7 @@ public class ServerProxy implements IServer{
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
-        ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID, null);
+        ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID, trainCards);
         clientCommunicator.doCommand(command);
     }
 
