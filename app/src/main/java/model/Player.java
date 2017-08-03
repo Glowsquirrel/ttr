@@ -246,14 +246,14 @@ public class Player extends AbstractPlayer {
 
     public int[] getMyTrainCardsAsIntArray(){
         int myTrainCards[] = new int[9];
-        myTrainCards[0] = this.numOfPurpleCards;
-        myTrainCards[1] = this.numOfWhiteCards;
-        myTrainCards[2] = this.numOfBlueCards;
+        myTrainCards[0] = this.numOfRedCards;
+        myTrainCards[1] = this.numOfBlueCards;
+        myTrainCards[2] = this.numOfGreenCards;
         myTrainCards[3] = this.numOfYellowCards;
-        myTrainCards[4] = this.numOfOrangeCards;
-        myTrainCards[5] = this.numOfBlackCards;
-        myTrainCards[6] = this.numOfRedCards;
-        myTrainCards[7] = this.numOfGreenCards;
+        myTrainCards[4] = this.numOfBlackCards;
+        myTrainCards[5] = this.numOfPurpleCards;
+        myTrainCards[6] = this.numOfOrangeCards;
+        myTrainCards[7] = this.numOfWhiteCards;
         myTrainCards[8] = this.numOfWildCards;
         return myTrainCards;
     }
