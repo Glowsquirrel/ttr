@@ -18,9 +18,13 @@ import interfaces.Observer;
  * that can only be constructed on the first call of getGameInstance()
  */
 public class Game implements Observable{
+    private static final int STARTING_HAND_SIZE = 4;
+    private static final int FACE_UP_SIZE = 5;
+    private static final int DEST_CARD_CHOICES = 3;
+    
     private static Game myGame;
     private Game(){}
-
+    
     /**
      * If instance of the game is currently null a new instance will be created
      *@return The only instance of the game
@@ -31,17 +35,17 @@ public class Game implements Observable{
         
         return myGame;
     }
-
+    
     private String gameName;
     private Player myself;
     private List<String> playerUserNames = new ArrayList<>();
     private Map<String, AbstractPlayer> playerMap = new HashMap<>();
     private List<Integer> trainCards = new ArrayList<>();
-    private List<Integer> faceUpCards;
     private ArrayList<Observer> observers = new ArrayList<>();
     private int currentlySelectedRouteID;
     private ServerError serverError = new ServerError();
-
+    private Deck gameDecks = Deck.getInstance();
+    
     /**
      * retrieves the abstract player object associated with the username
      * @pre this method must be declared on the only instance of the game object
@@ -54,7 +58,7 @@ public class Game implements Observable{
     public AbstractPlayer getPlayerByName(String username) {
         return playerMap.get(username);
     }
-
+    
     /**
      * retrieves the players in the game
      * @pre game must be initialized before calling this method
@@ -70,7 +74,7 @@ public class Game implements Observable{
         }
         return playerListToDisplay;
     }
-
+    
     /**
      * initializes the game instance
      * @pre must be called on the game instance
@@ -86,7 +90,7 @@ public class Game implements Observable{
     public void initializeMyGame(Player myself, String gameName, List<String> playerNames, List<Integer> faceUpCards){
         this.myself = myself;
         this.gameName = gameName;
-        this.faceUpCards = faceUpCards;
+        gameDecks.setAvailableFaceUpCards(faceUpCards);
         this.playerUserNames = playerNames;
         int i=0;
         for(String name : playerNames) {
@@ -97,15 +101,20 @@ public class Game implements Observable{
                 continue;
             }
             VisiblePlayer myPlayer = new VisiblePlayer(name, myself.getNumOfCards());
-
+            
             myPlayer.setColor(i);
             i++;
             playerMap.put(name, myPlayer);
         }
-        Deck.getInstance().setTrainCardDeckSize(106);
-        Deck.getInstance().setDestinationCardDeckSize(27);
+        
+        gameDecks.setTrainCardDeckSize(gameDecks.getTrainCardDeckSize()
+                                               - (playerNames.size() * STARTING_HAND_SIZE)
+                                               - FACE_UP_SIZE);
+        gameDecks.setDestinationCardDeckSize(gameDecks.getDestinationCardDeckSize()
+                                                - (playerNames.size() * DEST_CARD_CHOICES));
+        
     }
-
+    
     /**
      * @pre game must be initialized with a nonnull string value for game name
      * @return returns the game name given upon initialization, otherwise null if the game has not been initialized
@@ -114,7 +123,7 @@ public class Game implements Observable{
     public String getMyGameName(){
         return this.gameName;
     }
-
+    
     /**
      * @pre game must be initialized with a nonnull player value for myself
      * @return Player object that was given as the player object myself up game initialization with any changes made for duration of game
@@ -130,11 +139,11 @@ public class Game implements Observable{
      *  The list will not include cards that currently belong to players or are face up.
      * @post no modification made to any part of the game object
      */
-
+    
     public List<Integer> getTrainCards() {
         return trainCards;
     }
-
+    
     /**
      * @pre game must be initialized with a nonnull faceup cards list
      * @return List of integers representing the cards that are currently face up in the game.
@@ -142,17 +151,17 @@ public class Game implements Observable{
      *  @post nothing else in the game will be modified
      */
     public List<Integer> getFaceUpCards() {
-        return faceUpCards;
+        return gameDecks.getFaceUpCards();
     }
-
+    
     public void setFaceUpCards(List<Integer> newFaceUpCards){
-        this.faceUpCards = newFaceUpCards;
+        gameDecks.setAvailableFaceUpCards(newFaceUpCards);
     }
-
+    
     
     //begin CurrentlySelectedRouteID flags
     private boolean newRouteID = false;
-
+    
     /**
      * records whether or not a route has been selected
      * @pre the getCurrentlySelectedRouteId() and the setCurrentlySelectedRouteId() must be properly implementd by the game fragment
@@ -201,7 +210,7 @@ public class Game implements Observable{
         this.playerHasChanged = playerHasChanged;
     }
     //end AllPlayerData flags
-
+    
     //begin trainCard flags
     private boolean iHaveDifferentTrainCards = false;
     /**
@@ -239,8 +248,6 @@ public class Game implements Observable{
     }
     //end trainCard flags
     
-
-
     //begin Observable
     /**
      * Overrides the register() method on the Observable interface
@@ -251,7 +258,7 @@ public class Game implements Observable{
     public void register(Observer o) {
         observers.add(o);
     }
-
+    
     /**
      * Overrides the unregister() method on the Observable interface
      * @param deleteObserver Object that implements the observor interface that is currently registered to
@@ -266,13 +273,13 @@ public class Game implements Observable{
             observers.remove(observerIndex);
         }
     }
-
+    
     /**
      * Overrides the notifyObservor() method on the Observable interfaces
      * @pre must have observer objects that have been registered to this observer
      * @post calls the update method on any objects currently registered as observers
      */
-
+    
     @Override
     public void notifyObserver() {
         Handler uiHandler = new Handler(Looper.getMainLooper()); //gets the UI thread
@@ -287,24 +294,30 @@ public class Game implements Observable{
         uiHandler.post(runnable); //do the run() method in previously declared runnable on UI thread
     }
     //end Observerable
-
-    private boolean iHaveDifferentDestDeckSize = false;
+    
     /**
      *@pre the flag must be properly set upon change to the destination cards
      *@return boolean value to be used as a flag, returns true if a change has been made to the player's destination cards, false otherwise
      *@post no values in the game object have changed
      */
     public boolean iHaveDifferentDestDeckSize(){
-        return iHaveDifferentDestDeckSize;
+        return gameDecks.destinationCardDeckSizeHasChanged();
     }
     /**
      * @param iHaveDifferentDestCards boolean value to be used as a flag, set to true if a destination card has changed, set to false if a destination card has not changed.
      * @post  sets the iHaveDifferentDestCards flag to the iHaveDifferentDestCards boolean value given
      */
     public void iHaveDifferentDestDeckSize(boolean iHaveDifferentDestCards){
-        this.iHaveDifferentDestDeckSize = iHaveDifferentDestCards;
+        gameDecks.destinationCardDeckSizeHasChanged(iHaveDifferentDestCards);
     }
-
+    
+    public boolean iHaveDifferentTrainDeckSize() {
+        return gameDecks.trainCardDeckSizeHasChanged();
+    }
+    public void iHaveDifferentTrainDeckSize(boolean iHaveDifferentTrainCards) {
+        gameDecks.trainCardDeckSizeHasChanged(iHaveDifferentTrainCards);
+    }
+    
     private boolean iHaveReturnedDestCards = false;
     public void iHaveReturnedDestCards(boolean iHaveReturnedDestCards){
         this.iHaveReturnedDestCards = iHaveReturnedDestCards;
@@ -312,7 +325,7 @@ public class Game implements Observable{
     public boolean iHaveReturnedDestCards(){
         return this.iHaveReturnedDestCards;
     }
-
+    
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private boolean iHavePossibleDestCards = false;
     /**@pre the destination card associated with the integers in the list must not belong in the deck or to another player
@@ -348,7 +361,27 @@ public class Game implements Observable{
     public List<DestCard> getPossibleDestCards(){
         return possibleDestCards;
     }
-
+    
+    public void setDestCardDeckSize(int newSize) {
+        gameDecks.setDestinationCardDeckSize(newSize);
+        iHaveDifferentDestDeckSize(true);
+        notifyObserver();
+    }
+    
+    public int getDestCardDeckSize() {
+        return gameDecks.getDestinationCardDeckSize();
+    }
+    
+    public void setTrainCardDeckSize(int newSize) {
+        gameDecks.setTrainCardDeckSize(newSize);
+        iHaveDifferentTrainDeckSize(true);
+        notifyObserver();
+    }
+    
+    public int getTrainCardDeckSize() {
+        return gameDecks.getTrainCardDeckSize();
+    }
+    
     /**
      *@pre the list of objects must be set for the game object by calling setPossibleDestCards() with a valid list pf possible destination cards
      * @return List of DestCard objects for the user to choose from
@@ -357,14 +390,14 @@ public class Game implements Observable{
     public ServerError getServerError() {
         return serverError;
     }
-
+    
     //GAME OVER DATA
     private boolean gameOver=false;
-
+    
     public boolean isGameOver() {
         return gameOver;
     }
-
+    
     public void setGameOver(boolean gameOver) {
         notifyObserver();
         this.gameOver = gameOver;
@@ -374,11 +407,11 @@ public class Game implements Observable{
         myGame = new Game();
     }
     private List<Integer> cardsToDiscard;
-
+    
     public List<Integer> getCardsToDiscard() {
         return cardsToDiscard;
     }
-
+    
     public void setCardsToDiscard(List<Integer> cardsToDiscard) {
         this.cardsToDiscard = cardsToDiscard;
     }

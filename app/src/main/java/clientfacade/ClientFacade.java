@@ -98,8 +98,8 @@ public class ClientFacade implements IClient{
         game.iHavePossibleDestCards(true);
         game.notifyObserver();
 
-        Deck.getInstance().setAvailableDestCards(destCards);
-        Deck.getInstance().setAvailableFaceUpCards(faceUpCards);
+        game.setPossibleDestCards(destCards);
+        game.setFaceUpCards(faceUpCards);
     }
 
     /**
@@ -228,11 +228,6 @@ public class ClientFacade implements IClient{
             game.setPossibleDestCards(destCards);
             game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
-    
-            //TODO: Remove this once the model is properly updated from the server
-            Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() - 3);
-            game.iHaveDifferentDestDeckSize(true);
-            
             
             game.notifyObserver();
             String message = "Drew " + destCards.size() + " destination cards";
@@ -259,10 +254,6 @@ public class ClientFacade implements IClient{
         myself.addTrainCardByInt(trainCard);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
-    
-        //TODO: Remove this once the model is properly updated from the server
-        Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
-        Deck.getInstance().iHaveDifferentTrainDeckSize(true);
         
         game.notifyObserver();
         String message = "Drew train card";
@@ -294,10 +285,6 @@ public class ClientFacade implements IClient{
         game.notifyObserver();
         String message = "Drew train card face up";
         chatModel.addHistory(username, message);
-    
-        //TODO: Remove this once the model is properly updated from the server
-        Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
-        Deck.getInstance().iHaveDifferentTrainDeckSize(true);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState &&
                 TrainCard.getTrainCard(trainCard) != TrainCard.WILD) {
@@ -319,7 +306,6 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnDestCards(String username, int destCard){
-        Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() + 1);
         String message = "Returned destination card";
         chatModel.addHistory(username, message);
         game.aPlayerHasChanged(true);
@@ -390,9 +376,6 @@ public class ClientFacade implements IClient{
         //if the number of cards held by a player has increased, update that player
         if(player.getNumCards() < numTrainCardsHeld ) {
             player.setNumCards(numTrainCardsHeld);
-            Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
-            game.iHaveDifferentDestDeckSize(true);
-            Deck.getInstance().iHaveDifferentTrainDeckSize(true);
         } else if (player.getNumCards() > numTrainCardsHeld) { //server says a player has less train cards
             player.setNumCards(numTrainCardsHeld);
         }
@@ -401,8 +384,6 @@ public class ClientFacade implements IClient{
         if(player.getNumDestCard() != numDestCardsHeld) {
             int destCardNumDifference = player.getNumDestCard() - numDestCardsHeld;
             player.setDestCardNum(numDestCardsHeld);
-            Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() + destCardNumDifference);
-            game.iHaveDifferentDestDeckSize(true);
         }
 
         //if the number of routes for this player has increased, update that player
@@ -411,16 +392,9 @@ public class ClientFacade implements IClient{
             player.setNumRoutes(numRoutesOwned);
             player.setScore(score);
         }
-
-        //TODO: remove this block when real server is working
-        if (faceUpIndex > -1){
-            List<Integer> faceUpCards = game.getFaceUpCards();
-            Random rand = new Random();
-            int card = rand.nextInt(9);
-            faceUpCards.set(faceUpIndex, card);
-            game.setFaceUpCards(faceUpCards);
-            game.iHaveDifferentFaceUpCards(true);
-        }
+        
+        game.setDestCardDeckSize(destCardDeckSize);
+        game.setTrainCardDeckSize(trainCardDeckSize);
 
         game.aPlayerHasChanged(true);
         game.notifyObserver();

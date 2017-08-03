@@ -21,43 +21,55 @@ public class Deck implements Observable{
     private static class LazyDeckHelper {
         private static final Deck DECK_INSTANCE = new Deck();
     }
-
+    
     public static Deck getInstance() {
         return LazyDeckHelper.DECK_INSTANCE;
     }
-
+    
     private List<Integer> mFaceUpCards;
     private List<Integer> mDestinationCards;
-
+    
     private List<Observer> mObservers;
-
+    
+    private boolean iHaveDifferentTrainDeckSize;
+    private boolean newTrainCardDeckSize;
+    
+    private int trainCardDeckSize;
+    private int destinationCardDeckSize;
+    
     private Deck() {
         mFaceUpCards = new ArrayList<>();
         mDestinationCards = new ArrayList<>();
         mObservers = new ArrayList<>();
+        
+        iHaveDifferentTrainDeckSize = false;
+        newTrainCardDeckSize = false;
+        
+        trainCardDeckSize = 110;
+        destinationCardDeckSize = 30;
     }
-
+    
     public void setAvailableDestCards(List<Integer> newCards) {
         mDestinationCards = newCards;
     }
-
+    
     public void setAvailableFaceUpCards(List<Integer> newCards) {
         mFaceUpCards = newCards;
     }
-
+    
     public List<Integer> getFaceUpCards() {
         return mFaceUpCards;
     }
-
+    
     public List<Integer> getDestinationCards() {
         return mDestinationCards;
     }
-
+    
     @Override
     public void register(Observer o) {
         mObservers.add(o);
     }
-
+    
     @Override
     public void unregister(Observer o) {
         int observerIndex = mObservers.indexOf(o);
@@ -65,54 +77,61 @@ public class Deck implements Observable{
             mObservers.remove(observerIndex);
         }
     }
-
+    
     @Override
     public void notifyObserver() {
-            Handler uiHandler = new Handler(Looper.getMainLooper());
-
-            Runnable runnable = new Runnable() { //
-                @Override
-                public void run() {
-                    for (int i = 0; i < mObservers.size(); i++){
-                        mObservers.get(i).update();
-                    }
+        Handler uiHandler = new Handler(Looper.getMainLooper());
+        
+        Runnable runnable = new Runnable() { //
+            @Override
+            public void run() {
+                for (int i = 0; i < mObservers.size(); i++){
+                    mObservers.get(i).update();
                 }
-            };
-
-            uiHandler.post(runnable);
+            }
+        };
+        
+        uiHandler.post(runnable);
     }
-    private boolean iHaveDifferentTrainDeckSize = false;
+    
     public boolean iHaveDifferentTrainDeckSize() {
         return iHaveDifferentTrainDeckSize;
     }
     public void iHaveDifferentTrainDeckSize(boolean hasChanged) {
         iHaveDifferentTrainDeckSize = hasChanged;
     }
-
+    
     public void setTrainCardDeckSize(int newSize) {
         trainCardDeckSize = newSize;
     }
     public int getTrainCardDeckSize() {
         return trainCardDeckSize;
     }
-
+    
     //Begin trainCardDeckSize flag
-    private boolean newTrainCardDeckSize = false;
     public boolean trainCardDeckSizeHasChanged() {
         return newTrainCardDeckSize;
     }
     public void trainCardDeckSizeHasChanged(boolean hasChanged) {
         newTrainCardDeckSize = hasChanged;
-        Game.getGameInstance().notifyObserver();
     }
     //end trainCardDeckSize flags
-    private int trainCardDeckSize;
-    private int destinationCardDeckSize;
+    
+    //Begin destinationCardDeckSize flag
+    private boolean newDestinationCardDeckSize = false;
+    public boolean destinationCardDeckSizeHasChanged() {
+        return newDestinationCardDeckSize;
+    }
+    public void destinationCardDeckSizeHasChanged(boolean hasChanged) {
+        newDestinationCardDeckSize = hasChanged;
+    }
+    //end destinationCardDeckSize flags
+    
     public void setDestinationCardDeckSize(int newSize) {
         destinationCardDeckSize = newSize;
     }
     public int getDestinationCardDeckSize() {
         return destinationCardDeckSize;
     }
-
+    
 }

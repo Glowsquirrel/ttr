@@ -4,12 +4,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
@@ -100,14 +100,14 @@ public class DeckPresenter extends Fragment implements Observer {
     
         //Check deck sizes
         String deckDescription;
-        if(Deck.getInstance().iHaveDifferentTrainDeckSize()) {
-            Deck.getInstance().iHaveDifferentTrainDeckSize(false);
-            deckDescription = TRAIN_DECK + Deck.getInstance().getTrainCardDeckSize();
+        if(mGame.iHaveDifferentTrainDeckSize()) {
+            mGame.iHaveDifferentTrainDeckSize(false);
+            deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
             mFaceDownCards.setText(deckDescription);
         }
         if(mGame.iHaveDifferentDestDeckSize()) {
             mGame.iHaveDifferentDestDeckSize(false);
-            deckDescription = DEST_DECK + Deck.getInstance().getDestinationCardDeckSize();
+            deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
             mDestinationDeck.setText(deckDescription);
         }
         
@@ -186,7 +186,7 @@ public class DeckPresenter extends Fragment implements Observer {
         
         //Set the face-down card deck and make it clickable
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
-        String deckDescription = TRAIN_DECK + Deck.getInstance().getTrainCardDeckSize();
+        String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
         mFaceDownCards.setText(deckDescription);
     
         mFaceDownCards.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +198,7 @@ public class DeckPresenter extends Fragment implements Observer {
     
         //Set the destination card deck and make it clickable
         mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
-        deckDescription = DEST_DECK + Deck.getInstance().getDestinationCardDeckSize();
+        deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
         mDestinationDeck.setText(deckDescription);
     
         mDestinationDeck.setOnClickListener(new View.OnClickListener() {
@@ -282,39 +282,39 @@ public class DeckPresenter extends Fragment implements Observer {
             TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(i));
             switch(nextCard) {
                 case RED:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.red));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.red, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case BLUE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.blue));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.blue, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case GREEN:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.green));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.green, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case YELLOW:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.yellow));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.yellow, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case BLACK:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.black));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.black, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case PURPLE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.purple));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.purple, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case ORANGE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.orange));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.orange, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WHITE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.white));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.white, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WILD:
-                    mFaceUpCards[i].setBackgroundResource(R.drawable.rainbow);
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.wild, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 default:
