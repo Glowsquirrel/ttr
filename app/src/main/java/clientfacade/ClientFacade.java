@@ -466,6 +466,6 @@ public class ClientFacade implements IClient{
                 players.get(i).setMyTurn(false);
             }
         }
-
+        game.notifyObserver();
     }
 }
