@@ -15,6 +15,8 @@
             android:layout_height="match_parent"
             android:background="@color/red"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_red"/>
         <TextView
             android:layout_width="0dp"
@@ -22,6 +24,8 @@
             android:layout_height="match_parent"
             android:background="@color/blue"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_blue"/>
         <TextView
             android:layout_width="0dp"
@@ -29,6 +33,8 @@
             android:layout_height="match_parent"
             android:background="@color/green"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_green"/>
         <TextView
             android:layout_width="0dp"
@@ -36,6 +42,8 @@
             android:layout_height="match_parent"
             android:background="@color/yellow"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_yellow"/>
 
         <TextView
@@ -45,6 +53,8 @@
             android:textColor="@color/white"
             android:background="@color/black"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_black"/>
 
 
@@ -54,6 +64,8 @@
             android:layout_height="match_parent"
             android:background="@color/purple"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_purple"/>
         <TextView
             android:layout_width="0dp"
@@ -61,6 +73,8 @@
             android:layout_height="match_parent"
             android:background="@color/orange"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_orange"/>
 
         <TextView
@@ -69,6 +83,8 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_white"/>
 
 
@@ -81,6 +97,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/rainbow"
             android:text="0"
+            android:textSize="20dp"
+            android:gravity="center"
             android:id="@+id/cards_wild"/>
 
         <Button
