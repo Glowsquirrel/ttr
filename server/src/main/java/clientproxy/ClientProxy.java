@@ -214,6 +214,7 @@ public class ClientProxy implements IClient {
         String resultJson = gson.toJson(messageResult);
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Rejected a command from: " + identifier);
         } catch (IOException ex) {
             logger.warning("Client: " + identifier + " has already disconnected");
         }
@@ -249,6 +250,7 @@ public class ClientProxy implements IClient {
                     if(resultType.equals(Utils.START_TYPE)){
                         Thread.sleep(3000);
                     }
+                    Thread.sleep(100);
                 } catch (IOException | InterruptedException ex) {
                     logger.severe("Client disconnecting while rejoining game!");
                     break;

@@ -49,7 +49,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        possibleDestCards = mGame.getPossibleDestCards();
+        //possibleDestCards = mGame.getPossibleDestCards();
         mGame.register(this);
     }
 
@@ -83,7 +83,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                         continue;
                     serverProxy.returnDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName(), destCard.getMapValue());
                 }
-
+                serverProxy.returnDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName(), 30);
             }
         });
 
@@ -92,10 +92,12 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
 
     @Override
     public void onHiddenChanged(boolean hidden){
-        if (this.possibleDestCards.size() == 0)
-            return;
         if (!hidden && getView() != null){
             this.possibleDestCards = mGame.getPossibleDestCards();
+            mGame.setPossibleDestCards(new ArrayList<Integer>());
+            if (this.possibleDestCards.size() == 0)
+                return;
+            //this.possibleDestCards = mGame.getPossibleDestCards();
             destCard1.setBackgroundResource(R.drawable.customborder);
             destCard2.setBackgroundResource(R.drawable.customborder);
             destCard3.setBackgroundResource(R.drawable.customborder);
@@ -128,6 +130,9 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
             card3city2.setText(destCard3.getEndCity().getPrettyName());
             card3score.setText(String.valueOf(destCard3.getPointValue()));
 
+        }
+        if (hidden && getView() != null){
+            getView().findViewById(R.id.confirmButton).setEnabled(false);
         }
     }
 
