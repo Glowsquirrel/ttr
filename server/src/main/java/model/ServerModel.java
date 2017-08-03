@@ -290,14 +290,16 @@ public class ServerModel {
     public void drawTrainCardFromFaceUp(String gameName, String playerName, int index) {
         try {
             StartedGame game = this.getGame(gameName);
-            Result result = game.drawTrainCardFromFaceUp(playerName, index);
+            List<Result> results = game.drawTrainCardFromFaceUp(playerName, index);
 
             while (game.getReplaceFaceUpFlag()) {
                 Result nextResult = game.replaceFaceUpCards(playerName);
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
-            toClient.sendToGame(gameName, result);
+
+            toClient.sendToUser(playerName, gameName, results.get(0));
+            toClient.sendToGame(gameName, results.get(1));
             toClient.sendToOthersInGame(playerName,gameName, game.getGameHistory());
 
             Result turnResult = game.getThenNullifyTurnResult();

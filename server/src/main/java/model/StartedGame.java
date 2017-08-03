@@ -15,6 +15,7 @@ import results.game.ChatResult;
 import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
+import results.game.DrawTrainCardFromFaceUpResult;
 import results.game.EndGameResult;
 import results.game.FinalRoundResult;
 import results.game.GameHistoryResult;
@@ -236,7 +237,7 @@ public class StartedGame {
      * @return
      * @throws GamePlayException
      */
-    Result drawTrainCardFromFaceUp(String playerName, int index) throws GamePlayException{
+    List<Result> drawTrainCardFromFaceUp(String playerName, int index) throws GamePlayException{
         throwIfNotPlayersTurn(playerName);
         Player currentPlayer = allPlayers.get(playerName);
         TrainCard drawnCard;
@@ -267,7 +268,10 @@ public class StartedGame {
         String message = playerName + " drew a " + drawnCard.getPrettyname() + " face-up train card.";
         setGameHistoryResult(playerName, message, -1, index);
         setEndGameResult();
-        return new ReplaceFaceUpCardsResult(board.getFaceUpCardCodes());
+        List<Result> returnResults = new ArrayList<>();
+        returnResults.add(new DrawTrainCardFromFaceUpResult(playerName, index));
+        returnResults.add(new ReplaceFaceUpCardsResult(board.getFaceUpCardCodes()));
+        return returnResults;
     }
 
 
