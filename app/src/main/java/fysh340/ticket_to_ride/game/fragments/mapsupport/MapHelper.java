@@ -44,7 +44,7 @@ public class MapHelper {
     /**
      * The width of the routes drawn on the screen
      */
-    private static final int ROUTE_WIDTH = 25;
+    private static final int ROUTE_WIDTH = 30;
 
     /**
      * The gap between the segments of a route
@@ -64,7 +64,7 @@ public class MapHelper {
     /**
      * The radius for the circles drawn at the city locations
      */
-    private static final int CITY_RADIUS = 30000;
+    private static final int CITY_RADIUS = 40000;
 
     /**
      * The color of the cities
