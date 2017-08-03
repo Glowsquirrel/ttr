@@ -278,6 +278,9 @@ public class Board {
         }
     }
 
+    void refillFaceUpFromDiscard() {
+
+    }
     boolean incorrectCards(int routeId, List<TrainCard>returnedTrainCards) {
 
         Route route =  routeMap.get(routeId);

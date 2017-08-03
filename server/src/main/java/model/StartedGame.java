@@ -211,6 +211,7 @@ public class StartedGame {
             if (board.emptyTrainCardDeck()) {
                 throw new GamePlayException("No train cards to draw.");
             }
+
             turnState.switchState(CommandType.DRAW_TRAIN_CARD_FROM_DECK);
 
             trainCard = board.drawTrainCardsFromDeck(TRAIN_CARD_DRAW);
@@ -375,7 +376,7 @@ public class StartedGame {
             Player player = allPlayers.get(playerOrder.get(a));
             totalPoints.add(player.getPoints());
         }
-        endGameResult = new EndGameResult(pointsFromRoutes, pointsAdded,
+        endGameResult = new EndGameResult(playerOrder, pointsFromRoutes, pointsAdded,
                 pointsSubtracted, totalPoints, largestSizeOwner);
     }
 
