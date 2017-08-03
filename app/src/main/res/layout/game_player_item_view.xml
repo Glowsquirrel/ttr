@@ -6,7 +6,8 @@
     android:paddingRight="1dp"
     android:paddingLeft="1dp"
     android:layout_centerHorizontal="true"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/playerView">
 
     <TextView
         android:id="@+id/username"

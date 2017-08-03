@@ -253,7 +253,11 @@ public class StartedGame {
             } else {
                 turnState.switchState(CommandType.FACEUP_NON_LOCOMOTIVE);
             }
+
             drawnCard = board.drawFaceUpCard(index);
+            List<TrainCard> passToPlayer = new ArrayList<>();
+            passToPlayer.add(drawnCard);
+            currentPlayer.addTrainCards(passToPlayer);
             board.reshuffleIfEmpty();
             replaceFaceUpFlag = board.getReplaceFaceUpFlag();
 
@@ -482,6 +486,7 @@ public class StartedGame {
         for (int a = 0; a < allPlayers.size(); a++) {
             Player player = allPlayers.get(playerOrder.get(a));
             System.out.println("Player: " + player.getUsername());
+            System.out.println("Number of cars: " + player.getNumOfCars());
             System.out.println("  Size of train card hand: " + player.getSizeOfTrainCardHand());
 
             numOfRedCards += player.getNumOfRedCards();

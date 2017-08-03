@@ -480,5 +480,18 @@ public class ClientFacade implements IClient{
         } else {
             ClientState.INSTANCE.setState(new NotMyTurnState());
         }
+        List<AbstractPlayer> players=game.getVisiblePlayerInformation();
+        for(int i=0;i<players.size();i++)
+        {
+            if(players.get(i).getMyUsername().equals(username))
+            {
+                players.get(i).setMyTurn(true);
+            }
+            else
+            {
+                players.get(i).setMyTurn(false);
+            }
+        }
+
     }
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -148,6 +149,7 @@ public class AllPlayersPresenter extends Fragment implements Observer {
             TextView itemScore;
             View myView;
             TextView itemDCards;
+            RelativeLayout player;
 
             ViewHolder(View view){
                 super(view);
@@ -157,6 +159,7 @@ public class AllPlayersPresenter extends Fragment implements Observer {
                 itemTrains = (TextView) view.findViewById(R.id.trainsNum);
                 itemScore = (TextView) view.findViewById(R.id.scoreNum);
                 itemDCards = (TextView) view.findViewById(R.id.dcardsNum);
+                player=(RelativeLayout) view.findViewById((R.id.playerView));
                 myView = view;
             }
         }
@@ -192,6 +195,15 @@ public class AllPlayersPresenter extends Fragment implements Observer {
             holder.itemScore.setText(String.valueOf(myScore));
             holder.itemUsername.setBackgroundColor(colors);
             holder.itemDCards.setText(String.valueOf(myDCards));
+            if(myPlayer.isMyTurn())
+            {
+                holder.player.setBackgroundResource(R.drawable.highlight_border);
+            }
+            else
+            {
+                holder.player.setBackgroundResource(R.drawable.customborder);
+            }
+
         }
 
         @Override
