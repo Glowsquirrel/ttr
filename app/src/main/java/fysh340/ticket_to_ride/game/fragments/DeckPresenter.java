@@ -20,7 +20,6 @@ import fysh340.ticket_to_ride.game.fragments.gameplaystate.GamePlayState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.Observer;
-import model.Deck;
 import model.Game;
 import model.Route;
 import model.TrainCard;
