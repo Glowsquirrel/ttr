@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.DrawSecondTrainCardState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.GamePlayState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.Observer;
 import model.Deck;
 import model.Game;
@@ -168,50 +173,16 @@ public class DeckPresenter extends Fragment implements Observer {
         repopulateFaceUpCards();
         
         //Make the face-up cards clickable
-        mFaceUpCards[0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 0;
-                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
-                                                        mGame.getMyGameName(), index);
-            }
-        });
-    
-        mFaceUpCards[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 1;
-                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
-                                                        mGame.getMyGameName(), index);
-            }
-        });
-    
-        mFaceUpCards[2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 2;
-                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
-                                                        mGame.getMyGameName(), index);
-            }
-        });
-    
-        mFaceUpCards[3].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 3;
-                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
-                                                        mGame.getMyGameName(), index);
-            }
-        });
-    
-        mFaceUpCards[4].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 4;
-                mServerProxy.drawTrainCardFromFaceUp(mGame.getMyself().getMyUsername(),
-                                                        mGame.getMyGameName(), index);
-            }
-        });
+        for (int i = 0; i < mFaceUpCards.length; i++) {
+            final int index = i;
+            mFaceUpCards[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClientState.INSTANCE.getState().drawTrainCardFaceUp(mGame.getMyself().getMyUsername(),
+                            mGame.getMyGameName(), index);
+                }
+            });
+        }
         
         //Set the face-down card deck and make it clickable
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
@@ -221,7 +192,7 @@ public class DeckPresenter extends Fragment implements Observer {
         mFaceDownCards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mServerProxy.drawTrainCardFromDeck(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
+                ClientState.INSTANCE.getState().drawTrainCardFromDeck(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
             }
         });
     
@@ -233,7 +204,7 @@ public class DeckPresenter extends Fragment implements Observer {
         mDestinationDeck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mServerProxy.drawThreeDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
+                ClientState.INSTANCE.getState().drawThreeDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
             }
         });
     
@@ -275,7 +246,7 @@ public class DeckPresenter extends Fragment implements Observer {
                             cardsLeft--;
                         }
                         mGame.setCardsToDiscard(cards);
-                        mServerProxy.claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
+                        ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
                                 mGame.getCurrentlySelectedRouteID(), cards);
 //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
                     }
@@ -343,7 +314,7 @@ public class DeckPresenter extends Fragment implements Observer {
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WILD:
-                    mFaceUpCards[i].setBackgroundResource(R.drawable.grad);
+                    mFaceUpCards[i].setBackgroundResource(R.drawable.rainbow);
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 default:

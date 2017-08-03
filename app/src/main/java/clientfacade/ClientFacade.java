@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Random;
 
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.DrawSecondTrainCardState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.MyTurnState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.IClient;
 import model.AbstractPlayer;
 import model.ChatHistoryModel;
@@ -28,6 +33,7 @@ public class ClientFacade implements IClient{
     private Game game = Game.getGameInstance();
     private ChatHistoryModel chatModel = ChatHistoryModel.myChat;
     private MapModel map = MapModel.getMapInstance();
+    private ClientState mClientState = ClientState.INSTANCE;
 
     /**
      * Displays a message to the user visually on the screen in the format of a toast.
@@ -202,6 +208,8 @@ public class ClientFacade implements IClient{
 
         //notify of changes
         game.notifyObserver();
+
+        ClientState.INSTANCE.setState(new NotMyTurnState());
     }
 
     /**
@@ -229,6 +237,8 @@ public class ClientFacade implements IClient{
             game.notifyObserver();
             String message = "Drew " + destCards.size() + " destination cards";
             chatModel.addHistory(username, message);
+
+            ClientState.INSTANCE.setState(new ReturnDestCardState());
         }
 
     }
@@ -257,6 +267,12 @@ public class ClientFacade implements IClient{
         game.notifyObserver();
         String message = "Drew train card";
         chatModel.addHistory(username, message);
+
+        if (ClientState.INSTANCE.getState() instanceof MyTurnState) {
+            ClientState.INSTANCE.setState(new DrawSecondTrainCardState());
+        } else {
+            ClientState.INSTANCE.setState(new NotMyTurnState());
+        }
     }
 
     /**
@@ -282,7 +298,13 @@ public class ClientFacade implements IClient{
         //TODO: Remove this once the model is properly updated from the server
         Deck.getInstance().setTrainCardDeckSize(Deck.getInstance().getTrainCardDeckSize() - 1);
         Deck.getInstance().iHaveDifferentTrainDeckSize(true);
-        
+
+        if (ClientState.INSTANCE.getState() instanceof MyTurnState &&
+                TrainCard.getTrainCard(trainCard) != TrainCard.WILD) {
+            ClientState.INSTANCE.setState(new DrawSecondTrainCardState());
+        } else {
+            ClientState.INSTANCE.setState(new NotMyTurnState());
+        }
     }
 
     /**
@@ -305,6 +327,8 @@ public class ClientFacade implements IClient{
         game.getMyself().iHaveDifferentDestCards(true);
         game.iHaveReturnedDestCards(true);
         game.notifyObserver();
+
+        ClientState.INSTANCE.setState(new NotMyTurnState());
     }
 
     /**
@@ -451,7 +475,10 @@ public class ClientFacade implements IClient{
     }
 
     public void turn(String username) {
-
+        if (username.equals(Game.getGameInstance().getMyself().getMyUsername())) {
+            ClientState.INSTANCE.setState(new MyTurnState());
+        } else {
+            ClientState.INSTANCE.setState(new NotMyTurnState());
+        }
     }
-
 }

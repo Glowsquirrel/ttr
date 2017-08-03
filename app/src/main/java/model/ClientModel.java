@@ -131,7 +131,6 @@ public class ClientModel implements Observable{
     }
 
 
-
     private boolean gameIsStarted = false;
 
     public void startGame(){
