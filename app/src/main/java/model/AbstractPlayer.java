@@ -22,6 +22,15 @@ public abstract class AbstractPlayer {
     private int numRoutes = 0;
     private int destCardNum = 0;
     private int score = 0;
+    private boolean myTurn=false;
+
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+
+    public void setMyTurn(boolean myTurn) {
+        this.myTurn = myTurn;
+    }
 
     public void setDestCardNum(int destCardNum) {
         this.destCardNum = destCardNum;
