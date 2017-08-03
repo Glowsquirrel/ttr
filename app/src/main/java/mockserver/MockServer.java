@@ -211,12 +211,7 @@ public class MockServer {
                 TrainCard myTrainCardType = myRoute.getOriginalColor();
                 int routeSize = myRoute.getLength();
 
-                if (game.getMyself().getNumOfTypeCards(myTrainCardType) >= routeSize
-                        && game.getMyself().getNumTrains() >= routeSize) {
                     clientFacade.claimRoute(mycommand.getUsername(), mycommand.getRouteID());
-                } else {
-                    clientFacade.showRejectMessage("You can't claim that route");
-                }
                 break;
             }
             case Utils.CHAT_TYPE: {

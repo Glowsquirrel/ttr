@@ -56,6 +56,39 @@ public class Player extends AbstractPlayer {
                 break;
         }
     }
+    public void removeTrainCardByInt(int myTrainCardInt){
+        super.addTrainCard();
+        TrainCard myTrainCard = TrainCard.getTrainCard(myTrainCardInt);
+        switch (myTrainCard){
+            case PURPLE:
+                this.numOfPurpleCards--;
+                break;
+            case WHITE:
+                this.numOfWhiteCards--;
+                break;
+            case BLUE:
+                this.numOfBlueCards--;
+                break;
+            case YELLOW:
+                this.numOfYellowCards--;
+                break;
+            case ORANGE:
+                this.numOfOrangeCards--;
+                break;
+            case BLACK:
+                this.numOfBlackCards--;
+                break;
+            case RED:
+                this.numOfRedCards--;
+                break;
+            case GREEN:
+                this.numOfGreenCards--;
+                break;
+            case WILD:
+                this.numOfWildCards--;
+                break;
+        }
+    }
 
     private int numOfPurpleCards = 0;
     private int numOfWhiteCards = 0;

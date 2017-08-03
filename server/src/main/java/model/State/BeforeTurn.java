@@ -19,8 +19,14 @@ public class BeforeTurn implements TurnState {
     public void switchState(CommandType commandType) throws GamePlayException {
         switch (commandType) {
             case DRAW_THREE_DEST_CARDS:
-                game.setTurnState(new DrewDestCards(game));
+                game.setTurnState(new DrewThreeDestCards(game));
                 break;
+            case DRAW_TWO_DEST_CARDS:
+                game.setTurnState(new DrewTwoDestCards(game));
+                break;
+            case DRAW_ONE_DEST_CARD:
+                game.advancePlayerTurn();
+                game.setTurnState(new BeforeTurn(game));
             case DRAW_TRAIN_CARD_FROM_DECK:
                 game.setTurnState(new DrewOneTrainCard(game));
                 break;
@@ -42,7 +48,7 @@ public class BeforeTurn implements TurnState {
 
     @Override
     public String getPrettyName(){
-        return null;
+        return "BeforeTurn";
     }
 
 }

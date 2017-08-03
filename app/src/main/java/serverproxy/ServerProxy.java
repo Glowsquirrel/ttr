@@ -70,7 +70,7 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public void rejoinGame(String username, String gameName) {
+    public void reJoinGame(String username, String gameName) {
         RejoinCommand command = new RejoinCommand(username, gameName);
         clientCommunicator.doCommand(command);
     }
@@ -101,7 +101,7 @@ public class ServerProxy implements IServer{
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
-        ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID, null);
+        ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID, trainCards);
         clientCommunicator.doCommand(command);
     }
 

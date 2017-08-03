@@ -32,6 +32,7 @@ public class TrainCardPresenter extends Fragment implements Observer{
             mGame.iHaveDifferentTrainCards(false);
             updateMyTrainCards(mGame.getMyself().getMyTrainCardsAsIntArray());
         }
+
     }
 
     @Override
@@ -58,6 +59,7 @@ public class TrainCardPresenter extends Fragment implements Observer{
             }
         });
         updateMyTrainCards(mGame.getMyself().getMyTrainCardsAsIntArray());
+        setButtons();
         return v;
     }
 
@@ -75,6 +77,10 @@ public class TrainCardPresenter extends Fragment implements Observer{
             if (myView.getClass() == AppCompatTextView.class)
                 this.trainCardTextViews.add((TextView) myLinearLayout.getChildAt(i));
         }
+    }
+    public void setButtons()
+    {
+
     }
 
 }

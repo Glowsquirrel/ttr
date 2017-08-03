@@ -84,7 +84,9 @@ public class Board {
         } else {
             shuffledDeck = trainCardDeck;
         }
-
+        if (shuffledDeck.size() == 0) {
+            return;
+        }
         Random randomNumGenerator = new Random();
         for (int a = 0; a < NUM_OF_SWITCHES; a++) {
 

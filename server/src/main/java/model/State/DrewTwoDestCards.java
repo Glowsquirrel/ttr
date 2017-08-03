@@ -4,14 +4,14 @@ import model.GamePlayException;
 import model.StartedGame;
 
 /**
- * Created by sjrme on 7/29/17.
+ * Created by sjrme on 8/1/17.
  */
 
-public class DrewDestCards implements TurnState {
+public class DrewTwoDestCards implements TurnState {
+
 
     private StartedGame game;
-
-    public DrewDestCards(StartedGame game) {
+    public DrewTwoDestCards(StartedGame game) {
         this.game = game;
     }
 
@@ -19,7 +19,8 @@ public class DrewDestCards implements TurnState {
     public void switchState(CommandType commandType) throws GamePlayException {
         switch (commandType) {
             case RETURN_DEST_CARD: {
-                game.setTurnState(new ReturnedOneDestCard(game));
+                game.advancePlayerTurn();
+                game.setTurnState(new BeforeTurn(game));
                 break;
             }
             case RETURN_NO_DEST_CARD: {
@@ -34,8 +35,7 @@ public class DrewDestCards implements TurnState {
     }
 
     @Override
-    public String getPrettyName(){
-        return null;
+    public String getPrettyName() {
+        return "DrewTwoDestCards";
     }
-
 }

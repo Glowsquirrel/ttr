@@ -24,6 +24,11 @@ public class Route {
     private TrainCard originalColor;
     private PlayerColor claimedColor;
     private int sisterRouteKey;
+
+    public void setClaimed(boolean claimed) {
+        this.claimed = claimed;
+    }
+
     private boolean claimed = false;
     private int pointValue;
     private String owner;
@@ -238,7 +243,7 @@ public class Route {
         return sisterRouteKey;
     }
 
-    boolean isClaimed(){
+    public boolean isClaimed(){
         return claimed;
     }
 

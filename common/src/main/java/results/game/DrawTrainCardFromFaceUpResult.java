@@ -12,5 +12,4 @@ public class DrawTrainCardFromFaceUpResult extends Result {
         super.username = username;
         this.trainCard = trainCard;
     }
-
 }

@@ -12,12 +12,13 @@ public class GameHistoryResult extends Result{
     protected int score;
     protected int claimedRouteNumber;
     protected int trainCardDeckSize;
-    protected int destCardDeck;
-
+    protected int destCardDeckSize;
+    protected int faceUpIndex;
     protected GameHistoryResult(){}
     public GameHistoryResult(String username, String message, int numTrainCars, int numTrainCardsHeld,
                              int numDestCardsHeld, int numRoutesOwned, int score,
-                             int claimedRouteNumber, int trainCardDeckSize, int destCardDeck){
+                             int claimedRouteNumber, int trainCardDeckSize, int destCardDeckSize,
+                             int faceUpIndex){
         super.type = Utils.GAME_HISTORY_TYPE;
         super.username = username;
         this.message = message;
@@ -28,6 +29,7 @@ public class GameHistoryResult extends Result{
         this.score = score;
         this.claimedRouteNumber = claimedRouteNumber;
         this.trainCardDeckSize = trainCardDeckSize;
-        this.destCardDeck = destCardDeck;
+        this.destCardDeckSize = destCardDeckSize;
+        this.faceUpIndex = faceUpIndex;
     }
 }

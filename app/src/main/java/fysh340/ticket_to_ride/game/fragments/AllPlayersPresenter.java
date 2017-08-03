@@ -56,17 +56,19 @@ public class AllPlayersPresenter extends Fragment implements Observer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_player_data, container, false);
+        View v = inflater.inflate(R.layout.fragment_player_data, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
-        RecyclerView mRV = (RecyclerView)  v.findViewById( R.id.player_list);
+        RecyclerView mRV = (RecyclerView) v.findViewById(R.id.player_list);
         mRV.setLayoutManager(layoutManager);
-        Button routine=(Button)  v.findViewById( R.id.routine);
-        mRV.setAdapter( mAdapter);
-        routine.setOnClickListener(new View.OnClickListener() {
+        Button routine = (Button) v.findViewById(R.id.routine);
+        mRV.setAdapter(mAdapter);
+        return v;
+    }
+  /*      routine.setOnClickListener(new View.OnClickListener() {
             private int i = 0;
 
-            @Override
+ /*           @Override
             public void onClick(View view) {
                 final ClientFacade cf=new ClientFacade();
 
@@ -129,6 +131,7 @@ public class AllPlayersPresenter extends Fragment implements Observer {
         });
         return v;
     }
+*/
 
     private class MyPlayerListAdapter extends RecyclerView.Adapter<AllPlayersPresenter.MyPlayerListAdapter.ViewHolder> {
         private List<AbstractPlayer> allPlayers = new ArrayList<>();

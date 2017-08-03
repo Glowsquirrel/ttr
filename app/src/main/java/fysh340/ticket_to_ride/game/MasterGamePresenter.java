@@ -110,9 +110,9 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
 
     @Override
     public void update() {
-        ServerError serverError = Game.getGameInstance().getServerError();
-        String message = serverError.getMessage();
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+      //  ServerError serverError = Game.getGameInstance().getServerError();
+      //  String message = serverError.getMessage();
+     //   Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         if(Game.getGameInstance().isGameOver())
         {
             Intent intent = new Intent(this, GameOverPresenter.class);
@@ -135,5 +135,10 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
     protected void onStart(){
         super.onStart();
         Game.getGameInstance().notifyObserver();
+    }
+    public void showDialog()
+    {
+        ColorChoiceDialog cd=new ColorChoiceDialog();
+        cd.show(getSupportFragmentManager(), "NoticeDialogFragment");
     }
 }

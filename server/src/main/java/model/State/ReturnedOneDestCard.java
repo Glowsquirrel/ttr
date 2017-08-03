@@ -33,7 +33,7 @@ public class ReturnedOneDestCard implements TurnState {
 
     @Override
     public String getPrettyName(){
-        return null;
+        return "ReturnedOneDestCard";
     }
 
 }

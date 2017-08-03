@@ -29,7 +29,7 @@ public class FirstRound implements TurnState {
 
     @Override
     public String getPrettyName(){
-        return null;
+        return "FirstRound";
     }
 
 }

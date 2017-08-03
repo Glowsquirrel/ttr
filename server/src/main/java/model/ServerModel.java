@@ -292,19 +292,12 @@ public class ServerModel {
             StartedGame game = this.getGame(gameName);
             Result result = game.drawTrainCardFromFaceUp(playerName, index);
 
-            toClient.sendToGame(gameName, result);
-            allCommandLists.get(gameName).add(result);
-
             while (game.getReplaceFaceUpFlag()) {
                 Result nextResult = game.replaceFaceUpCards(playerName);
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
-
-            toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
-            allCommandLists.get(game.getGameName()).add(game.getGameHistory());
-
-            checkTurnAndEndGame(game);
+            sendToClients(playerName, game, result);
 
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
@@ -318,7 +311,7 @@ public class ServerModel {
             StartedGame game = this.getGame(gameName);
             Result result = game.claimRoute(playerName, routeId, trainCards);
             sendToClients(playerName, game, result);
-            String finalTurnFlag = game.getFinalTurnPlayer();
+            String finalTurnFlag = game.getAfterFinalTurnPlayer();
 
             if (finalTurnFlag != null) {
                 Result finalRoundResult = game.getFinalTurnResult();
@@ -342,16 +335,11 @@ public class ServerModel {
     }
 
     private void sendToClients(String playerName, StartedGame game , Result result) {
-
         toClient.sendToUser(playerName, game.getGameName(), result);
         allCommandLists.get(game.getGameName()).add(result);
         toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
         allCommandLists.get(game.getGameName()).add(game.getGameHistory());
-        checkTurnAndEndGame(game);
-        game.printBoardState();
-    }
 
-    private void checkTurnAndEndGame(StartedGame game) {
         Result turnResult = game.getThenNullifyTurnResult();
         if (turnResult != null) {
             toClient.sendToGame(game.getGameName(), turnResult);
@@ -362,5 +350,7 @@ public class ServerModel {
             toClient.sendToGame(game.getGameName(), endGameResult);
             allCommandLists.get(game.getGameName()).add(endGameResult);
         }
+        game.printBoardState();
     }
+
 }
