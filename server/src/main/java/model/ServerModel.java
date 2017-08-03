@@ -297,7 +297,20 @@ public class ServerModel {
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
-            sendToClients(playerName, game, result);
+            toClient.sendToGame(gameName, result);
+            toClient.sendToOthersInGame(playerName,gameName, game.getGameHistory());
+
+            Result turnResult = game.getThenNullifyTurnResult();
+            if (turnResult != null) {
+                toClient.sendToGame(game.getGameName(), turnResult);
+                allCommandLists.get(game.getGameName()).add(turnResult);
+            }
+            Result endGameResult  = game.getEndGameResult();
+            if (endGameResult !=  null) {
+                toClient.sendToGame(game.getGameName(), endGameResult);
+                allCommandLists.get(game.getGameName()).add(endGameResult);
+            }
+            game.printBoardState();
 
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
@@ -305,7 +318,6 @@ public class ServerModel {
     }
 
     /************************************Claim Route***********************************************/
-
     public void claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
         try {
             StartedGame game = this.getGame(gameName);
