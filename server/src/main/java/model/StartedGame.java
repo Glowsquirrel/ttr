@@ -245,10 +245,13 @@ public class StartedGame {
         if (currentPlayer != null) {
 
             final int LOCOMOTIVE_INDEX = 8;
+
             if (board.noFaceUpCards()) {
                 throw new GamePlayException("No train cards to draw.");
             }
-            if (index == LOCOMOTIVE_INDEX) {
+
+            int trainCardDrawn = board.getFaceUpCardCodes().get(index);
+            if (trainCardDrawn == LOCOMOTIVE_INDEX) {
                 turnState.switchState(CommandType.FACEUP_LOCOMOTIVE);
             } else {
                 turnState.switchState(CommandType.FACEUP_NON_LOCOMOTIVE);
