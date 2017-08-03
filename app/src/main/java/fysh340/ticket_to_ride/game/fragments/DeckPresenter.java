@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
@@ -100,14 +99,14 @@ public class DeckPresenter extends Fragment implements Observer {
     
         //Check deck sizes
         String deckDescription;
-        if(Deck.getInstance().iHaveDifferentTrainDeckSize()) {
-            Deck.getInstance().iHaveDifferentTrainDeckSize(false);
-            deckDescription = TRAIN_DECK + Deck.getInstance().getTrainCardDeckSize();
+        if(mGame.iHaveDifferentTrainDeckSize()) {
+            mGame.iHaveDifferentTrainDeckSize(false);
+            deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
             mFaceDownCards.setText(deckDescription);
         }
         if(mGame.iHaveDifferentDestDeckSize()) {
             mGame.iHaveDifferentDestDeckSize(false);
-            deckDescription = DEST_DECK + Deck.getInstance().getDestinationCardDeckSize();
+            deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
             mDestinationDeck.setText(deckDescription);
         }
         
@@ -186,7 +185,7 @@ public class DeckPresenter extends Fragment implements Observer {
         
         //Set the face-down card deck and make it clickable
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
-        String deckDescription = TRAIN_DECK + Deck.getInstance().getTrainCardDeckSize();
+        String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
         mFaceDownCards.setText(deckDescription);
     
         mFaceDownCards.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +197,7 @@ public class DeckPresenter extends Fragment implements Observer {
     
         //Set the destination card deck and make it clickable
         mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
-        deckDescription = DEST_DECK + Deck.getInstance().getDestinationCardDeckSize();
+        deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
         mDestinationDeck.setText(deckDescription);
     
         mDestinationDeck.setOnClickListener(new View.OnClickListener() {
