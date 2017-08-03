@@ -513,7 +513,7 @@ public class StartedGame {
             numOfWhiteCards += player.getNumOfWhiteCards();
             System.out.println("    White: " + player.getNumOfWhiteCards());
 
-            numOfWhiteCards += player.getNumOfWhiteCards();
+            numOfWildCards += player.getNumOfWildCards();
             System.out.println("    Wild: " + player.getNumOfWildCards());
 
             System.out.println("  Size of dest card hand:  " + player.getSizeOfDestCardHand());

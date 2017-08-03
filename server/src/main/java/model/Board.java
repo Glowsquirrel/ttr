@@ -286,7 +286,17 @@ public class Board {
         }
 
         TrainCard routeColor = route.getOriginalColor();
-        TrainCard firstTrainCard = returnedTrainCards.get(0);
+        TrainCard firstTrainCard = null;
+
+        for (int a = 0; a < returnedTrainCards.size(); a++) {
+            if (returnedTrainCards.get(a) != WILD) {
+                firstTrainCard = returnedTrainCards.get(a);
+                break;
+            }
+        }
+        if (firstTrainCard == null) {
+            return false;
+        }
 
         for (TrainCard currentCard : returnedTrainCards) {
             if (currentCard != firstTrainCard && currentCard != WILD) {
