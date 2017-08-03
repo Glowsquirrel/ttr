@@ -66,7 +66,7 @@ public class ColorChoiceDialog extends DialogFragment {
                         int colored=mGame.getMyself().getNumOfTypeCards(myColor);
                         int wild=mGame.getMyself().getNumOfTypeCards(WILD);
                         int cardsLeft=route.getLength();
-                        if((colored+wild>=route.getLength()&&myColor!=WILD)||(wild>route.getLength())) {
+                        if((colored+wild>=route.getLength()&&myColor!=WILD)||(wild>=route.getLength())) {
                             for(int i=0;i<colored;i++)
                             {
                                 if(cardsLeft>0) {
