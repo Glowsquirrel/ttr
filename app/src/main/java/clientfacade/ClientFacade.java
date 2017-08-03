@@ -331,7 +331,7 @@ public class ClientFacade implements IClient{
         String message = "Returned destination card";
         chatModel.addHistory(username, message);
         game.aPlayerHasChanged(true);
-        game.iHaveDifferentDestDeckSize(true);
+        game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
         game.getMyself().iHaveDifferentDestCards(true);
         game.iHaveReturnedDestCards(true);
         game.notifyObserver();

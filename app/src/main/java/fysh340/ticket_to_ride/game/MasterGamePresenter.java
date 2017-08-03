@@ -108,6 +108,17 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         ft.commit();
     }
 
+    public void showDeckPresenter(){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        showingDeck = true;
+        ft.hide(destCardSelectPresenter);
+        ft.show(deckPresenter);
+
+        ft.commit();
+    }
+
     @Override
     public void update() {
       ServerError serverError = Game.getGameInstance().getServerError();

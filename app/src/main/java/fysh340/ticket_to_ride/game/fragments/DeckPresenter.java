@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import fysh340.ticket_to_ride.game.fragments.gameplaystate.GamePlayState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.Observer;
-import model.Deck;
 import model.Game;
 import model.Route;
 import model.TrainCard;
@@ -281,39 +281,39 @@ public class DeckPresenter extends Fragment implements Observer {
             TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(i));
             switch(nextCard) {
                 case RED:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.red));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.red, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case BLUE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.blue));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.blue, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case GREEN:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.green));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.green, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case YELLOW:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.yellow));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.yellow, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case BLACK:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.black));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.black, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case PURPLE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.purple));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.purple, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case ORANGE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.orange));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.orange, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WHITE:
-                    mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.white));
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.white, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WILD:
-                    mFaceUpCards[i].setBackgroundResource(R.drawable.rainbow);
+                    mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.wild, null));
                     mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 default:

@@ -250,7 +250,7 @@ public class ClientProxy implements IClient {
                     if(resultType.equals(Utils.START_TYPE)){
                         Thread.sleep(3000);
                     }
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                 } catch (IOException | InterruptedException ex) {
                     logger.severe("Client disconnecting while rejoining game!");
                     break;
