@@ -53,10 +53,15 @@ public class MenuGameList extends AppCompatActivity implements Observer{
 
         setupUI(findViewById(android.R.id.content));
 
-        RecyclerView mRecyclerView = (RecyclerView)  findViewById( R.id.unstarted_game_recycler);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setAutoMeasureEnabled(true);
-        mRecyclerView.setLayoutManager(llm);
+        RecyclerView unstartedRecyclerView = (RecyclerView)findViewById(R.id.unstarted_game_recycler);
+        LinearLayoutManager unstartedLayoutManager = new LinearLayoutManager(this);
+        unstartedLayoutManager.setAutoMeasureEnabled(true);
+        unstartedRecyclerView.setLayoutManager(unstartedLayoutManager);
+        
+        RecyclerView startedRecyclerView = (RecyclerView)findViewById(R.id.started_game_recycler);
+        LinearLayoutManager startedLayoutManager = new LinearLayoutManager(this);
+        startedLayoutManager.setAutoMeasureEnabled(true);
+        startedRecyclerView.setLayoutManager(startedLayoutManager);
 
         //text watcher for create game button
         EditText gameName = (EditText) findViewById(R.id.gamename);
@@ -79,8 +84,13 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         });
 
         //recyclerview adapter
-        mUnstartedGamesAdapter = new MyUnstartedGameListAdapter(mClientModel.getUnstartedGameList()); //create the search adapter once, update its data later
-        mRecyclerView.setAdapter(mUnstartedGamesAdapter);
+        //create the search adapter once, update its data later
+        mUnstartedGamesAdapter = new MyUnstartedGameListAdapter(mClientModel
+                                                                        .getUnstartedGameList());
+        unstartedRecyclerView.setAdapter(mUnstartedGamesAdapter);
+        
+        mRunningGamesAdapter = new MyRunningGameListAdapter(mClientModel.getRunningGameList());
+        startedRecyclerView.setAdapter(mRunningGamesAdapter);
 
         mServerProxy.pollGameList(mClientModel.getMyUsername());
 
@@ -157,7 +167,7 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         } else if (mClientModel.hasNewGameLists()){
             mClientModel.receivedNewGameLists();
             mUnstartedGamesAdapter.swapData(mClientModel.getUnstartedGameList());
-            //swap with startedgamelist also
+            mRunningGamesAdapter.swapData(mClientModel.getRunningGameList());
         }
     }
 
