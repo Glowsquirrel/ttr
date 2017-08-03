@@ -223,15 +223,21 @@ public class Board {
         return faceUpCodes;
     }
 
-    TrainCard drawFaceUpCard(int index) {
+    TrainCard drawFaceUpCard(int index) throws GamePlayException {
 
         final int TOP_CARD_INDEX = 0;
+
+        if(index < 0 || index >= faceUpTrainCards.size()) {
+            throw new GamePlayException("Bad index given");
+        }
 
         TrainCard returnedCard = faceUpTrainCards.get(index);
         if(!emptyTrainCardDeck()){
             faceUpTrainCards.set(index, trainCardDeck.get(TOP_CARD_INDEX));
             trainCardDeck.remove(TOP_CARD_INDEX);
             countLocomotives();
+        } else {
+            faceUpTrainCards.remove(index);
         }
 
         return returnedCard;
