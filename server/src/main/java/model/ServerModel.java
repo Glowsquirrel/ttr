@@ -45,6 +45,10 @@ public class ServerModel {
         toClient = new ClientProxy();
     }
 
+    public List<Result> getGameResultList(String gameName){
+        return allCommandLists.get(gameName);
+    }
+
    /***********************************BEFORE GAME*******************************************/
     /**
      *  <h1>Add Unstarted Game</h1>

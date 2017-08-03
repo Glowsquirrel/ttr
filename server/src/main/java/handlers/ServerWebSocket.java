@@ -36,6 +36,14 @@ public class ServerWebSocket
     //for referencing the ServerWebSocket by using a session
     private static ConcurrentHashMap<Session, ServerWebSocket> myServerWebSockets = new ConcurrentHashMap<>();
 
+    public static boolean userAlreadyLoggedIn(String username){
+        for (ServerWebSocket mySocket : myServerWebSockets.values()){
+            if (username.equals(mySocket.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
     public static Session getMySessionID(String sessionID)
     {
         return allSessions.get(sessionID);
@@ -190,10 +198,11 @@ public class ServerWebSocket
         Gson gson = gsonBuilder.create();
 
         synchronized (ServerFacade.class) {
+            Command command = gson.fromJson(message, Command.class);
+            command.setSessionID(this.sessionID);
+            ((ICommand) command).execute();
+            /*
             try {
-                Command command = gson.fromJson(message, Command.class);
-                command.setSessionID(this.sessionID);
-                ((ICommand) command).execute();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 try {
@@ -205,6 +214,7 @@ public class ServerWebSocket
                     ioex.printStackTrace();
                 }
             }
+            */
         }
     }
 }

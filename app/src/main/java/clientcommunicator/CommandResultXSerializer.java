@@ -14,6 +14,8 @@ import clientfacade.game.ClaimRouteResultX;
 import clientfacade.game.DrawThreeDestCardsResultX;
 import clientfacade.game.DrawTrainCardFromDeckResultX;
 import clientfacade.game.DrawTrainCardFromFaceUpResultX;
+import clientfacade.game.EndGameResultX;
+import clientfacade.game.FinalRoundResultX;
 import clientfacade.game.GameHistoryX;
 import clientfacade.game.RejectResultX;
 import clientfacade.game.RejoinResultX;
@@ -21,6 +23,7 @@ import clientfacade.game.ReplaceFaceUpCardsResultX;
 import clientfacade.game.ReturnDestCardsResultX;
 import clientfacade.game.ReturnFirstDestCardResultX;
 import clientfacade.game.StartGameResultX;
+import clientfacade.game.TurnResultX;
 import clientfacade.menu.CreateGameResultX;
 import clientfacade.menu.JoinGameResultX;
 import clientfacade.menu.LeaveGameResultX;
@@ -105,6 +108,15 @@ public class CommandResultXSerializer implements JsonDeserializer<Result> {
                 break;
             case Utils.REJECT_TYPE:
                 typeModel = gson.fromJson(jsonObject, RejectResultX.class);
+                break;
+            case Utils.FINAL_ROUND_TYPE:
+                typeModel = gson.fromJson(jsonObject, FinalRoundResultX.class);
+                break;
+            case Utils.END_GAME_TYPE:
+                typeModel = gson.fromJson(jsonObject, EndGameResultX.class);
+                break;
+            case Utils.TURN_TYPE:
+                typeModel = gson.fromJson(jsonObject, TurnResultX.class);
                 break;
 
         }

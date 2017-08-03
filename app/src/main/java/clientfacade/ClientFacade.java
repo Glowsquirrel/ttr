@@ -3,6 +3,7 @@ package clientfacade;
 import java.util.List;
 import java.util.Random;
 
+import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import interfaces.IClient;
 import model.AbstractPlayer;
 import model.ChatHistoryModel;
@@ -292,9 +293,13 @@ public class ClientFacade implements IClient{
     @Override
     public void returnDestCards(String username, int destCard){
         Deck.getInstance().setDestinationCardDeckSize( Deck.getInstance().getDestinationCardDeckSize() + 1);
-        game.iHaveDifferentDestDeckSize(true);
         String message = "Returned destination card";
         chatModel.addHistory(username, message);
+        game.aPlayerHasChanged(true);
+        game.iHaveDifferentDestDeckSize(true);
+        game.getMyself().iHaveDifferentDestCards(true);
+        game.iHaveReturnedDestCards(true);
+        game.notifyObserver();
     }
 
     /**
@@ -310,6 +315,11 @@ public class ClientFacade implements IClient{
     public void returnFirstDestCards(String username, int cardReturned){
         String message = "Returned destination card";
         chatModel.addHistory(username, message);
+        game.aPlayerHasChanged(true);
+        game.iHaveDifferentDestDeckSize(true);
+        game.getMyself().iHaveDifferentDestCards(true);
+        game.iHaveReturnedDestCards(true);
+        game.notifyObserver();
     }
 
     //TODO: remove the final parameter for this method when real server is working; add deck size parameters

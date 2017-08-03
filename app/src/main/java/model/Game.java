@@ -305,6 +305,13 @@ public class Game implements Observable{
         this.iHaveDifferentDestDeckSize = iHaveDifferentDestCards;
     }
 
+    private boolean iHaveReturnedDestCards = false;
+    public void iHaveReturnedDestCards(boolean iHaveReturnedDestCards){
+        this.iHaveReturnedDestCards = iHaveReturnedDestCards;
+    }
+    public boolean iHaveReturnedDestCards(){
+        return this.iHaveReturnedDestCards;
+    }
 
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private boolean iHavePossibleDestCards = false;

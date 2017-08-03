@@ -166,6 +166,10 @@
             {
               document.getElementById("requestBox").value = formatJson("{\"type\":\"joingame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
             }
+            function rejoingame()
+            {
+              document.getElementById("requestBox").value = formatJson("{\"type\":\"rejoingame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
+            }
             function leavegame()
             {
               document.getElementById("requestBox").value = formatJson("{\"type\":\"leavegame\",\"username\":\"" + myUsername + "\",\"gameName\":\"" + myGameName + "\"}");
@@ -232,6 +236,9 @@
                   </li>
                   <li>
                     <a href="javascript:joingame()" >Join Game</a> Join a currently existing game.
+                  </li>
+                  <li>
+                    <a href="javascript:rejoingame()" >Rejoin Game</a> Rejoing a game you were previously in.
                   </li>
                   <li>
                     <a href="javascript:leavegame()" >Leave Game</a> Remove the user from game.

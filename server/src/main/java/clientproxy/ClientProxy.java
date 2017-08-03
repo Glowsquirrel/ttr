@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import handlers.ServerWebSocket;
 import interfaces.IClient;
 import model.RunningGame;
+import model.ServerModel;
 import model.UnstartedGame;
 import results.Result;
 import results.game.ChatResult;
@@ -68,7 +69,7 @@ public class ClientProxy implements IClient {
      */
     @Override
     public void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList) {
-        Result result = new PollGamesResult(unstartedGameList, runningGameList);
+        PollGamesResult result = new PollGamesResult(unstartedGameList, runningGameList);
         Session mySession = ServerWebSocket.getMySession(username);
         String resultJson = gson.toJson(result);
         try {
@@ -80,8 +81,13 @@ public class ClientProxy implements IClient {
 
     @Override
     public void loginUser(String username, String password, String sessionID) {
-        Result result = new LoginResult(username);
+        LoginResult result = new LoginResult(username);
         String resultJson = gson.toJson(result);
+
+        if (ServerWebSocket.userAlreadyLoggedIn(username)){
+            rejectCommand(sessionID, null, "User is already logged in");
+            return;
+        }
 
         //Update Websocket information with the server accepted login information
         Session mySession = ServerWebSocket.getMySessionID(sessionID);
@@ -98,7 +104,7 @@ public class ClientProxy implements IClient {
     @Override
     public void registerUser(String username, String password, String message, String sessionID)
     {
-        Result result = new RegisterResult(username, message);
+        RegisterResult result = new RegisterResult(username, message);
         Session mySession = ServerWebSocket.getMySessionID(sessionID);
         String resultJson = gson.toJson(result);
 
@@ -137,7 +143,7 @@ public class ClientProxy implements IClient {
 
     @Override
     public void joinGame(String username, String gameName) {
-        Result result = new JoinGameResult(username, gameName);
+        JoinGameResult result = new JoinGameResult(username, gameName);
         String resultJson = gson.toJson(result);
 
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
@@ -153,7 +159,7 @@ public class ClientProxy implements IClient {
 
     @Override
     public void leaveGame(String username, String gameName) {
-        Result result = new LeaveGameResult(username, gameName);
+        LeaveGameResult result = new LeaveGameResult(username, gameName);
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
         String resultJson = gson.toJson(result);
 
@@ -169,7 +175,7 @@ public class ClientProxy implements IClient {
 
     @Override
     public void createGame(String username, String gameName) {
-        Result result = new CreateGameResult(username, gameName);
+        CreateGameResult result = new CreateGameResult(username, gameName);
         Session mySession = ServerWebSocket.getMySession(result.getUsername());
         String resultJson = gson.toJson(result);
 
@@ -215,12 +221,33 @@ public class ClientProxy implements IClient {
 
     @Override
     public void reJoinGame(String username, String gameName){
-        Result result = new RejoinResult(username, gameName);
+        RejoinResult result = new RejoinResult(username, gameName);
         Session mySession = ServerWebSocket.getMySession(username);
         String resultJson = gson.toJson(result);
+        ServerModel serverModel = ServerModel.getInstance();
+        ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
+        myGameSession.put(username, mySession);
         
         try {
             mySession.getRemote().sendString(resultJson);
+            List<Result> masterResultList = serverModel.getGameResultList(gameName);
+            for (Result myResult : masterResultList){
+                String resultType = myResult.getType();
+                String resultUsername = myResult.getUsername();
+                if ((resultType.equals(Utils.GAME_HISTORY_TYPE) && !resultUsername.equals(username)) //game history that isn't mine
+                        || (!resultType.equals(Utils.GAME_HISTORY_TYPE) && resultUsername.equals(username)) //non history result that is mine
+                        || resultType.equals(Utils.TURN_TYPE) || resultType.equals(Utils.CHAT_TYPE)
+                        || resultType.equals(Utils.REPLACE_ALL_FACEUP_TYPE) || resultType.equals(Utils.FINAL_ROUND_TYPE)
+                        || resultType.equals(Utils.END_GAME_TYPE)
+                        )
+                try {
+                    String myResultJson = getResultTypeAsJson(myResult);
+                    mySession.getRemote().sendString(myResultJson);
+                } catch (IOException ex) {
+                    logger.severe("Client disconnecting while rejoining game!");
+                    break;
+                }
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -235,7 +262,7 @@ public class ClientProxy implements IClient {
             Session myUserSession = sessionEntry.getValue();
             try {
                 myUserSession.getRemote().sendString(resultJson);
-            } catch (IOException ex){
+            } catch (IOException | WebSocketException ex){
                 logger.warning("Failed to send a: " + result.getType() + " command to the player: " + sessionEntry.getKey() + "in the: " + gameName + " game.");
             }
         }
@@ -249,7 +276,7 @@ public class ClientProxy implements IClient {
         try {
             myUserSession.getRemote().sendString(resultJson);
             logger.fine("Sent a: " + result.getType() + " command to " + username + ".");
-        } catch (IOException ex){
+        } catch (IOException | WebSocketException ex){
             logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
         }
 
@@ -263,12 +290,12 @@ public class ClientProxy implements IClient {
             Session myUserSession = sessionEntry.getValue();
 
             ServerWebSocket myUserWebSocket = ServerWebSocket.getMySocket(myUserSession);
-            if (myUserWebSocket.getUsername().equals(username))
+            if (myUserWebSocket != null && myUserWebSocket.getUsername().equals(username))
                 continue;
 
             try {
                 myUserSession.getRemote().sendString(resultJson);
-            } catch (IOException ex) {
+            } catch (IOException | WebSocketException ex) {
                 logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
             }
         }

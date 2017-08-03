@@ -34,12 +34,23 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
 
     @Override
     public void update() {
-
+        if (mGame.iHaveReturnedDestCards()){
+            mGame.iHaveReturnedDestCards(false);
+            for (DestCard destCard : selectedDestCards){
+                mGame.getMyself().addDestCard(destCard);
+                mGame.getMyself().incrementDestCards();
+            }
+            mGame.iHavePossibleDestCards(false);
+            possibleDestCards.clear();
+            selectedDestCards.clear();
+            ((MasterGamePresenter)getActivity()).switchDeckFragment();
+        }
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         possibleDestCards = mGame.getPossibleDestCards();
+        mGame.register(this);
     }
 
     @Override
@@ -61,21 +72,18 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
             @Override
             public void onClick(View v) {
                 ServerProxy serverProxy = new ServerProxy();
-                for (DestCard destCard : selectedDestCards){
-                    mGame.getMyself().addDestCard(destCard);
-                    mGame.getMyself().incrementDestCards();
+
+                if (selectedDestCards.size() == possibleDestCards.size()){
+                    serverProxy.returnDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName(), 30);
+                    return;
                 }
-                mGame.aPlayerHasChanged(true);
-                mGame.getMyself().iHaveDifferentDestCards(true);
-                mGame.iHavePossibleDestCards(false);
-                mGame.notifyObserver();
-                possibleDestCards.removeAll(selectedDestCards);
+
                 for (DestCard destCard : possibleDestCards){
+                    if (selectedDestCards.contains(destCard))
+                        continue;
                     serverProxy.returnDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName(), destCard.getMapValue());
                 }
-                selectedDestCards.clear();
-                checkSelectedSize(destCardSelectView);
-                ((MasterGamePresenter)getActivity()).switchDeckFragment();
+
             }
         });
 
@@ -84,13 +92,16 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
 
     @Override
     public void onHiddenChanged(boolean hidden){
+        if (this.possibleDestCards.size() == 0)
+            return;
         if (!hidden && getView() != null){
-            possibleDestCards = mGame.getPossibleDestCards();
+            this.possibleDestCards = mGame.getPossibleDestCards();
             destCard1.setBackgroundResource(R.drawable.customborder);
             destCard2.setBackgroundResource(R.drawable.customborder);
             destCard3.setBackgroundResource(R.drawable.customborder);
 
             //set up card 1
+
             TextView card1city1 = (TextView) getView().findViewById(R.id.dest_card_select_1_city1);
             TextView card1city2 = (TextView) getView().findViewById(R.id.dest_card_select_1_city2);
             TextView card1score = (TextView) getView().findViewById(R.id.dest_card_select_1_score);
