@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import model.Game;
+import model.TrainCard;
 import serverproxy.ServerProxy;
 
 /**
@@ -34,7 +36,13 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     @Override
     public void drawTrainCardFaceUp(String username, String gameName, int index) {
-        mServerProxy.drawTrainCardFromFaceUp(username, gameName, index);
+        if(TrainCard.getTrainCard(index)==TrainCard.WILD)
+        {
+            Game.getGameInstance().getServerError().setMessage("You can't choose a wild card!");
+        }
+        else {
+            mServerProxy.drawTrainCardFromFaceUp(username, gameName, index);
+        }
     }
 
     @Override

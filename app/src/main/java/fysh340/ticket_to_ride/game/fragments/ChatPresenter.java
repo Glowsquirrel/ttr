@@ -17,6 +17,7 @@ import java.util.List;
 
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
+import model.AbstractPlayer;
 import model.ChatHistoryModel;
 import model.ClientModel;
 import serverproxy.ServerProxy;
@@ -45,14 +46,12 @@ public class ChatPresenter extends Fragment implements Observer {
         mRV.setLayoutManager( new LinearLayoutManager( getActivity()));
         if(chatModel.isChat()) {
             mToDisplay.setText("History");
-            mAdapter = new adapter(chatModel.getChatStrings());
-            mRV.setAdapter(mAdapter);
+            mAdapter.swapData(chatModel.getChatStrings());
         }
         else
         {
             mToDisplay.setText("Chat");
-            mAdapter = new adapter(chatModel.getHistoryStrings());
-            mRV.setAdapter(mAdapter);
+            mAdapter.swapData(chatModel.getHistoryStrings());
         }
     }
 
@@ -72,7 +71,19 @@ public class ChatPresenter extends Fragment implements Observer {
         mSend=(Button) v.findViewById((R.id.send));
         mChatEdit=(EditText) v.findViewById((R.id.editor));
        setButton();
-        updateRV();
+        mRV.removeAllViewsInLayout();
+        mRV.setLayoutManager( new LinearLayoutManager( getActivity()));
+        if(chatModel.isChat()) {
+            mToDisplay.setText("History");
+            mAdapter = new adapter(chatModel.getChatStrings());
+            mRV.setAdapter(mAdapter);
+        }
+        else
+        {
+            mToDisplay.setText("Chat");
+            mAdapter = new adapter(chatModel.getHistoryStrings());
+            mRV.setAdapter(mAdapter);
+        }
         chatModel.register(this);
         return v;
     }
@@ -150,6 +161,11 @@ public class ChatPresenter extends Fragment implements Observer {
         }
         @Override public int getItemCount()
         { return itemlist.size(); }
+        void swapData(List <String> items){
+            items = itemlist;
+            notifyDataSetChanged();
+        }
+
 
     }
 
