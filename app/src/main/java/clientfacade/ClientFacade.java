@@ -228,7 +228,6 @@ public class ClientFacade implements IClient{
             game.setPossibleDestCards(destCards);
             game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
-            
             game.notifyObserver();
             String message = "Drew " + destCards.size() + " destination cards";
             chatModel.addHistory(username, message);
@@ -254,7 +253,7 @@ public class ClientFacade implements IClient{
         myself.addTrainCardByInt(trainCard);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
-        
+        game.iHaveDifferentTrainDeckSize(true);
         game.notifyObserver();
         String message = "Drew train card";
         chatModel.addHistory(username, message);
@@ -282,6 +281,7 @@ public class ClientFacade implements IClient{
         myself.addTrainCardByInt(trainCard);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
+        game.iHaveDifferentTrainDeckSize(true);
         game.notifyObserver();
         String message = "Drew train card face up";
         chatModel.addHistory(username, message);
@@ -311,6 +311,7 @@ public class ClientFacade implements IClient{
         game.aPlayerHasChanged(true);
         game.iHaveDifferentDestDeckSize(true);
         game.getMyself().iHaveDifferentDestCards(true);
+        game.iHaveDifferentDestDeckSize(true);
         game.iHaveReturnedDestCards(true);
         game.notifyObserver();
 
@@ -333,6 +334,7 @@ public class ClientFacade implements IClient{
         game.aPlayerHasChanged(true);
         game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
         game.getMyself().iHaveDifferentDestCards(true);
+        game.iHaveDifferentDestDeckSize(true);
         game.iHaveReturnedDestCards(true);
         game.notifyObserver();
     }
