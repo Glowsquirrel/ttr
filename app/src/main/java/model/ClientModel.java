@@ -159,8 +159,7 @@ public class ClientModel implements Observable{
     }
 
     public void setHasGame(String gameName) {
-        this.gameName = gameName;
-        this.hasGame = true;
+        setMyGame(gameName);
         this.hasJoinedGame = true;
         notifyObserver();
     }
