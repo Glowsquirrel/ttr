@@ -3,30 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".game.fragments.TrainCardPresenter">
-
+    case RED:
+    return 0;
+    case BLUE:
+    return 1;
+    case GREEN:
+    return 2;
+    case YELLOW:
+    return 3;
+    case BLACK:
+    return 4;
+    case PURPLE:
+    return 5;
+    case ORANGE:
+    return 6;
+    case WHITE:
+    return 7;
+    case WILD:
+    return 8;
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="100"
         android:id="@+id/train_card_linear_layout">
-
         <TextView
             android:layout_width="0dp"
             android:layout_weight="8"
             android:layout_height="match_parent"
-            android:background="@color/purple"
+            android:background="@color/red"
             android:text="0"
-            android:id="@+id/cards_purple"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:text="0"
-            android:id="@+id/cards_white"/>
-
+            android:id="@+id/cards_red"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="8"
@@ -34,7 +41,13 @@
             android:background="@color/blue"
             android:text="0"
             android:id="@+id/cards_blue"/>
-
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/green"
+            android:text="0"
+            android:id="@+id/cards_green"/>
         <TextView
             android:layout_width="0dp"
             android:layout_weight="8"
@@ -47,6 +60,23 @@
             android:layout_width="0dp"
             android:layout_weight="8"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:text="0"
+            android:id="@+id/cards_black"/>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
+            android:background="@color/purple"
+            android:text="0"
+            android:id="@+id/cards_purple"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
             android:background="@color/orange"
             android:text="0"
             android:id="@+id/cards_orange"/>
@@ -55,27 +85,13 @@
             android:layout_width="0dp"
             android:layout_weight="8"
             android:layout_height="match_parent"
-            android:textColor="@color/white"
-            android:background="@color/black"
+            android:background="@color/white"
             android:text="0"
-            android:id="@+id/cards_black"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="match_parent"
-            android:background="@color/red"
-            android:text="0"
-            android:id="@+id/cards_red"/>
+            android:id="@+id/cards_white"/>
 
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="match_parent"
-            android:background="@color/green"
-            android:text="0"
-            android:id="@+id/cards_green"/>
+
+
 
         <TextView
             android:layout_width="0dp"

@@ -61,7 +61,7 @@ public class AllPlayersPresenter extends Fragment implements Observer {
 
         RecyclerView mRV = (RecyclerView) v.findViewById(R.id.player_list);
         mRV.setLayoutManager(layoutManager);
-        Button routine = (Button) v.findViewById(R.id.routine);
+//        Button routine = (Button) v.findViewById(R.id.routine);
         mRV.setAdapter(mAdapter);
         return v;
     }
