@@ -275,9 +275,10 @@ public class DeckPresenter extends Fragment implements Observer {
     private void repopulateFaceUpCards() {
         //Get train cards that are up-for-grabs
         List<Integer> cardsByID = mGame.getFaceUpCards();
-    
+        int faceupl=mFaceUpCards.length;
+        int i = 0;
         //For each view, set the view text to the train card color/type
-        for(int i = 0; i < mFaceUpCards.length; ++i) {
+        for(i=0; i < cardsByID.size(); ++i) {
             TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(i));
             switch(nextCard) {
                 case RED:
@@ -321,6 +322,17 @@ public class DeckPresenter extends Fragment implements Observer {
             }
             String cardTitle = "Draw " + nextCard.getPrettyname() + " Card";
             mFaceUpCards[i].setText(cardTitle);
+            mFaceUpCards[i].setEnabled(true);
+
+        }
+        if(i<faceupl)
+        {
+            mFaceUpCards[i].setBackgroundColor(getResources().getColor(R.color.white));
+            mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+            String cardTitle = "Out of cards!";
+            mFaceUpCards[i].setText(cardTitle);
+            mFaceUpCards[i].setEnabled(false);
+            i++;
         }
     }
 }

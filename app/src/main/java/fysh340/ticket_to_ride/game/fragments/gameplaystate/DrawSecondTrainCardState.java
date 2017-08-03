@@ -36,7 +36,7 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     @Override
     public void drawTrainCardFaceUp(String username, String gameName, int index) {
-        if(TrainCard.getTrainCard(index)==TrainCard.WILD)
+        if(TrainCard.getTrainCard(Game.getGameInstance().getFaceUpCards().get(index))==TrainCard.WILD)
         {
             Game.getGameInstance().getServerError().setMessage("You can't choose a wild card!");
         }
