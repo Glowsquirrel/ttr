@@ -36,7 +36,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
     @Override
     public void update() {
         if (mGame.iHaveReturnedDestCards()){
-            requiredDestCards = 2;
+            requiredDestCards = 1;
             mGame.iHaveReturnedDestCards(false);
             mGame.iHavePossibleDestCards(false);
             for (DestCard destCard : selectedDestCards){
