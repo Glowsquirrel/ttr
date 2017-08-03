@@ -337,7 +337,7 @@ public class StartedGame {
         return returnTrainCards;
     }
 
-    /**********************************RESULT SETTERS**********************************************/
+    /**********************************RESULT SETTERS***********************************************/
 
     private void setEndGameResult() {
 
