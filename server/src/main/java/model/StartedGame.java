@@ -241,7 +241,7 @@ public class StartedGame {
         throwIfNotPlayersTurn(playerName);
         Player currentPlayer = allPlayers.get(playerName);
         TrainCard drawnCard;
-
+        int cardDrawnKey;
         if (currentPlayer != null) {
 
             final int LOCOMOTIVE_INDEX = 8;
@@ -250,8 +250,8 @@ public class StartedGame {
                 throw new GamePlayException("No train cards to draw.");
             }
 
-            int trainCardDrawn = board.getFaceUpCardCodes().get(index);
-            if (trainCardDrawn == LOCOMOTIVE_INDEX) {
+             cardDrawnKey = board.getFaceUpCardCodes().get(index);
+            if (cardDrawnKey == LOCOMOTIVE_INDEX) {
                 turnState.switchState(CommandType.FACEUP_LOCOMOTIVE);
             } else {
                 turnState.switchState(CommandType.FACEUP_NON_LOCOMOTIVE);
@@ -272,7 +272,7 @@ public class StartedGame {
         setGameHistoryResult(playerName, message, -1, index);
         setEndGameResult();
         List<Result> returnResults = new ArrayList<>();
-        returnResults.add(new DrawTrainCardFromFaceUpResult(playerName, index));
+        returnResults.add(new DrawTrainCardFromFaceUpResult(playerName, cardDrawnKey));
         returnResults.add(new ReplaceFaceUpCardsResult(board.getFaceUpCardCodes()));
         return returnResults;
     }
