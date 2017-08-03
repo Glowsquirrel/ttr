@@ -36,14 +36,14 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
     public void update() {
         if (mGame.iHaveReturnedDestCards()){
             mGame.iHaveReturnedDestCards(false);
+            mGame.iHavePossibleDestCards(false);
             for (DestCard destCard : selectedDestCards){
                 mGame.getMyself().addDestCard(destCard);
                 mGame.getMyself().incrementDestCards();
             }
-            mGame.iHavePossibleDestCards(false);
             possibleDestCards.clear();
             selectedDestCards.clear();
-            ((MasterGamePresenter)getActivity()).switchDeckFragment();
+            ((MasterGamePresenter)getActivity()).showDeckPresenter();
         }
     }
     @Override

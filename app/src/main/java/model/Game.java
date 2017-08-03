@@ -18,6 +18,10 @@ import interfaces.Observer;
  * that can only be constructed on the first call of getGameInstance()
  */
 public class Game implements Observable{
+    private static final int STARTING_HAND_SIZE = 4;
+    private static final int FACE_UP_SIZE = 5;
+    private static final int DEST_CARD_CHOICES = 3;
+    
     private static Game myGame;
     private Game(){}
     
@@ -102,6 +106,13 @@ public class Game implements Observable{
             i++;
             playerMap.put(name, myPlayer);
         }
+        
+        gameDecks.setTrainCardDeckSize(gameDecks.getTrainCardDeckSize()
+                                               - (playerNames.size() * STARTING_HAND_SIZE)
+                                               - FACE_UP_SIZE);
+        gameDecks.setDestinationCardDeckSize(gameDecks.getDestinationCardDeckSize()
+                                                - (playerNames.size() * DEST_CARD_CHOICES));
+        
     }
     
     /**
