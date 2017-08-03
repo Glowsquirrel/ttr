@@ -10,14 +10,14 @@ import android.graphics.Color;
  * @since 2017-07-22
  */
 public enum MapRouteColor {
-    RED("#F44336"),
-    ORANGE("#FF9800"),
-    YELLOW("#FFEB3B"),
-    GREEN("#4CAF50"),
-    BLUE("#2196F3"),
-    PURPLE("#9C27B0"),
-    WHITE("#FFFFFF"),
-    BLACK("#000000"),
+    RED("#d14622"),
+    ORANGE("#e28120"),
+    YELLOW("#e5c03e"),
+    GREEN("#92ae3d"),
+    BLUE("#57819b"),
+    PURPLE("#a9899e"),
+    WHITE("#ebe9e2"),
+    BLACK("#4e4b44"),
     GRAY("#9E9E9E");
 
     private String color;
