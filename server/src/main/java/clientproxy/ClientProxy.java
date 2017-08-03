@@ -229,7 +229,7 @@ public class ClientProxy implements IClient {
         myGameSession.put(username, mySession);
         
         try {
-            mySession.getRemote().sendString(resultJson);
+            mySession.getRemote().sendString(resultJson); // send rejoin result
             List<Result> masterResultList = serverModel.getGameResultList(gameName);
             for (Result myResult : masterResultList){
                 String resultType = myResult.getType();
@@ -241,9 +241,12 @@ public class ClientProxy implements IClient {
                         || resultType.equals(Utils.END_GAME_TYPE)
                         )
                 try {
+                    if(resultType.equals(Utils.START_TYPE)){
+                        Thread.sleep(3000);
+                    }
                     String myResultJson = getResultTypeAsJson(myResult);
                     mySession.getRemote().sendString(myResultJson);
-                    if(resultType.equals(Utils.START_TYPE) || resultType.equals(Utils.REJOIN_TYPE)){
+                    if(resultType.equals(Utils.START_TYPE)){
                         Thread.sleep(3000);
                     }
                 } catch (IOException | InterruptedException ex) {
