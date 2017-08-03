@@ -22,6 +22,7 @@ import serverproxy.ServerProxy;
 //fragment shown when the user needs to select a destination card
 public class DestCardSelectPresenter extends Fragment implements Observer{
     private Game mGame = Game.getGameInstance();
+    private int requiredDestCards = 2;
     private List<DestCard> possibleDestCards = new ArrayList<>();
     private List<DestCard> selectedDestCards = new ArrayList<>();
     private LinearLayout destCard1;
@@ -35,6 +36,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
     @Override
     public void update() {
         if (mGame.iHaveReturnedDestCards()){
+            requiredDestCards = 2;
             mGame.iHaveReturnedDestCards(false);
             mGame.iHavePossibleDestCards(false);
             for (DestCard destCard : selectedDestCards){
@@ -189,7 +191,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
 
     private void checkSelectedSize(View destCardsView){
         Button confirmButton = (Button) destCardsView.findViewById(R.id.confirmButton);
-        if (selectedDestCards.size() > 1){
+        if (selectedDestCards.size() >= requiredDestCards){
             confirmButton.setEnabled(true);
         } else {
             confirmButton.setEnabled(false);
