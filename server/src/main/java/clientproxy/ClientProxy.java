@@ -243,7 +243,10 @@ public class ClientProxy implements IClient {
                 try {
                     String myResultJson = getResultTypeAsJson(myResult);
                     mySession.getRemote().sendString(myResultJson);
-                } catch (IOException ex) {
+                    if(resultType.equals(Utils.START_TYPE) || resultType.equals(Utils.REJOIN_TYPE)){
+                        Thread.sleep(3000);
+                    }
+                } catch (IOException | InterruptedException ex) {
                     logger.severe("Client disconnecting while rejoining game!");
                     break;
                 }
