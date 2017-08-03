@@ -15,7 +15,6 @@ import results.game.ChatResult;
 import results.game.ClaimRouteResult;
 import results.game.DrawThreeDestCardsResult;
 import results.game.DrawTrainCardFromDeckResult;
-import results.game.DrawTrainCardFromFaceUpResult;
 import results.game.EndGameResult;
 import results.game.FinalRoundResult;
 import results.game.GameHistoryResult;
@@ -268,7 +267,7 @@ public class StartedGame {
         String message = playerName + " drew a " + drawnCard.getPrettyname() + " face-up train card.";
         setGameHistoryResult(playerName, message, -1, index);
         setEndGameResult();
-        return new DrawTrainCardFromFaceUpResult(playerName, TrainCard.getTrainCardKey(drawnCard));
+        return new ReplaceFaceUpCardsResult(board.getFaceUpCardCodes());
     }
 
 
@@ -513,7 +512,7 @@ public class StartedGame {
             numOfWhiteCards += player.getNumOfWhiteCards();
             System.out.println("    White: " + player.getNumOfWhiteCards());
 
-            numOfWhiteCards += player.getNumOfWhiteCards();
+            numOfWildCards += player.getNumOfWildCards();
             System.out.println("    Wild: " + player.getNumOfWildCards());
 
             System.out.println("  Size of dest card hand:  " + player.getSizeOfDestCardHand());

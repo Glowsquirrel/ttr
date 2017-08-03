@@ -179,7 +179,7 @@ class Player {
      * @return true if valid parameter; false otherwise.
      */
     boolean removeCars(int numOfCars) {
-        if (numOfCars < 2 || numOfCars > 6){
+        if (numOfCars < 1 || numOfCars > 6){
             return false;
         }
         this.numOfCars -= numOfCars;
