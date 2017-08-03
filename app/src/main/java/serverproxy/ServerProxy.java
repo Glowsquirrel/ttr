@@ -24,8 +24,8 @@ import mockserver.MockServer;
  * The ServerProxy is the proxy on the client side that lets the server do the actual execution.
  */
 public class ServerProxy implements IServer{
-    //private ClientCommunicator clientCommunicator = new ClientCommunicator();
-    private MockServer clientCommunicator = new MockServer();
+    private ClientCommunicator clientCommunicator = new ClientCommunicator();
+//    private MockServer clientCommunicator = new MockServer();
 
     @Override
     public void login(String username, String password, String sessionID){

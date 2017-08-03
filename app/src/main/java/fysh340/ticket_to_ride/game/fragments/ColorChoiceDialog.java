@@ -10,6 +10,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
 import model.Game;
 import model.Route;
 import model.TrainCard;
@@ -80,8 +81,10 @@ public class ColorChoiceDialog extends DialogFragment {
                                 cardsLeft--;
                             }
                             mGame.setCardsToDiscard(cards);
-                            mSP.claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
-                                    mGame.getCurrentlySelectedRouteID(), cards);
+//                            mSP.claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
+//                                    mGame.getCurrentlySelectedRouteID(), cards);
+                            ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(),
+                                    mGame.getMyGameName(), mGame.getCurrentlySelectedRouteID(), cards);
 //                            Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
 
                         }

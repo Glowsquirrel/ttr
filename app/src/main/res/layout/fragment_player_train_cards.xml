@@ -97,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_weight="8"
             android:layout_height="match_parent"
-            android:background="@drawable/grad"
+            android:background="@drawable/rainbow"
             android:text="0"
             android:id="@+id/cards_wild"/>
 

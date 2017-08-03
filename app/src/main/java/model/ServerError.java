@@ -35,6 +35,7 @@ public class ServerError implements Observable {
     public void setMessage(String message) {
         exists=true;
         mMessage = message;
+        notifyObserver();
     }
 
     @Override

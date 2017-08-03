@@ -125,6 +125,7 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
     @Override
     protected void onResume() {
         super.onResume();
+        Game.getGameInstance().getServerError().register(this);
     }
 
     @Override
