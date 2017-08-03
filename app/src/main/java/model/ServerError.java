@@ -17,12 +17,23 @@ public class ServerError implements Observable {
 
     private String mMessage;
     private Set<Observer> mObservers = new HashSet<>();
+    private boolean exists=false;
+
+    public boolean isExists() {
+        return exists;
+    }
+
+    public void setExists(boolean exists) {
+        this.exists = exists;
+    }
 
     public String getMessage() {
+        exists=false;
         return mMessage;
     }
 
     public void setMessage(String message) {
+        exists=true;
         mMessage = message;
     }
 
