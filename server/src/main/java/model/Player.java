@@ -372,7 +372,7 @@ class Player {
         if (startCityIndex > -1 && endCityIndex > -1) {
             ContinuousRoute startCityRoute = allContRoutes.get(startCityIndex);
             ContinuousRoute endCityRoute = allContRoutes.get(endCityIndex);
-            startCityRoute.uniteRoutes(endCityRoute);
+            startCityRoute.uniteRoutes(endCityRoute, size);
             allContRoutes.remove(endCityIndex);
         } else if (startCityIndex < 0 && endCityIndex < 0){
             allContRoutes.add(new ContinuousRoute(startCity, endCity, size));
@@ -485,9 +485,9 @@ class Player {
              size += sizeToAdd;
          }
 
-         void uniteRoutes(ContinuousRoute endCityRoute) {
+         void uniteRoutes(ContinuousRoute endCityRoute, int claimedSize) {
              this.cities.addAll(endCityRoute.cities);
-             this.size += endCityRoute.size;
+             this.size += endCityRoute.size - claimedSize;
          }
      }
 }
