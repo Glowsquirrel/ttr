@@ -234,8 +234,10 @@ public class DeckPresenter extends Fragment implements Observer {
                     if(colored+wild>=route.getLength()) {
                         for(int i=0;i<colored;i++)
                         {
-                            cardsLeft--;
-                            cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                            if(cardsLeft>0) {
+                                cardsLeft--;
+                                cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                            }
 
 
                         }
