@@ -207,6 +207,7 @@ public class StartedGame {
         Player currentPlayer = allPlayers.get(playerName);
         List<TrainCard> trainCard;
 
+
         if (currentPlayer != null) {
             if (board.emptyTrainCardDeck()) {
                 throw new GamePlayException("No train cards to draw.");
@@ -316,6 +317,8 @@ public class StartedGame {
             currentPlayer.removeTrainCards(returnedTrainCards);
             board.discardTrainCards(returnedTrainCards);
             currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
+            board.reshuffleIfEmpty(); //CASE: Empty deck and discard pile before claiming route.
+            board.refillFaceUpFromDiscard(); //CASE: If FaceUpCards < 5 WHEN empty deck and discard pile before claiming route.
 
             if(currentPlayer.finalTurn()){
                 afterFinalTurnPlayer = playerOrder.get(turnPointer);

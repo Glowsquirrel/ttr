@@ -35,7 +35,7 @@ class Player {
     private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
     private int points;
     private int numOfRoutes;
-    private int numOfCars = 45;
+    private int numOfCars = 20;
     private List<ContinuousRoute> allContRoutes = new ArrayList<>();
      Player(String userName) {
         this.userName = userName;

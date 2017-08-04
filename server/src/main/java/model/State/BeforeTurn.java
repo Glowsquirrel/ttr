@@ -25,8 +25,7 @@ public class BeforeTurn implements TurnState {
                 game.setTurnState(new DrewTwoDestCards(game));
                 break;
             case DRAW_ONE_DEST_CARD:
-                game.advancePlayerTurn();
-                game.setTurnState(new BeforeTurn(game));
+                game.setTurnState(new DrewOneDestCard(game));
             case DRAW_TRAIN_CARD_FROM_DECK:
                 game.setTurnState(new DrewOneTrainCard(game));
                 break;

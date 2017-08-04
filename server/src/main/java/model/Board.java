@@ -279,7 +279,19 @@ public class Board {
     }
 
     void refillFaceUpFromDiscard() {
+        final int MAX_FACE_UP_CARDS = 5;
 
+        if (faceUpTrainCards.size() < MAX_FACE_UP_CARDS) {
+            int numFaceCardsMissing = MAX_FACE_UP_CARDS - faceUpTrainCards.size();
+
+            if(numFaceCardsMissing > trainCardDeck.size()) { //If there aren't enough cards to fill the rest of the faceup cards.
+                numFaceCardsMissing = trainCardDeck.size();
+            }
+            for (int a = 0; a < numFaceCardsMissing; a++) {
+                faceUpTrainCards.add(trainCardDeck.get(0));
+                trainCardDeck.remove(0);
+            }
+        }
     }
     boolean incorrectCards(int routeId, List<TrainCard>returnedTrainCards) {
 
