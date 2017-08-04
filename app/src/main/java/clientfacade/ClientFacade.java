@@ -331,12 +331,14 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnFirstDestCards(String username, int cardReturned){
-        String message = "Returned destination card";
-        chatModel.addHistory(username, message);
-        game.aPlayerHasChanged(true);
-        game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
-        game.getMyself().iHaveDifferentDestCards(true);
-        game.iHaveDifferentDestDeckSize(true);
+        if (cardReturned != 30) {
+            String message = "Returned destination card";
+            chatModel.addHistory(username, message);
+            game.aPlayerHasChanged(true);
+            game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
+            game.getMyself().iHaveDifferentDestCards(true);
+            game.iHaveDifferentDestDeckSize(true);
+        }
         game.iHaveReturnedDestCards(true);
         game.notifyObserver();
     }
