@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -12,6 +15,36 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.8.0-alpha2'
     compile 'com.squareup.okio:okio:1.13.0'
 }
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
+
+mainClassName = 'servercommunicator.ServerCommunicator'
+
+jar {
+    manifest {
+        attributes 'Class-Path': '/libs/a.jar'
+    }
+}
+
+task testJar(type: Jar) {
+    manifest {
+        attributes 'Description': 'This is an application JAR'
+    }
+}
+
+shadowJar {
+    manifest {
+        inheritFrom project.tasks.testJar.manifest
+    }
+}
+
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"

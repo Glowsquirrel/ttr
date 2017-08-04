@@ -45,7 +45,7 @@ public class GameOverPresenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over_presenter);
         TextView winnerUsername = (TextView) findViewById(R.id.winner);
-        winnerUsername.setText(mGame.getWinnerUsername());
+        winnerUsername.setText((mGame.getWinnerUsername() + " WINS"));
         recyclerView = (RecyclerView) findViewById(R.id.final_score_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         logout=(Button) findViewById(R.id.logout);
@@ -65,7 +65,7 @@ public class GameOverPresenter extends AppCompatActivity {
                 Game.getGameInstance().reset();
                 ClientModel.getMyClientModel().reset();
                 WebSocket myWebSocket = ClientWebSocket.getClientWebSocket().getMyWebSocket();
-                myWebSocket.close(2000, "GAME OVER");
+                //myWebSocket.close(1995, "GAME OVER");
                 logout();
             }
         });
