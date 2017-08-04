@@ -10,7 +10,7 @@ public class EndGameResultX extends EndGameResult implements ICommand{
     @Override
     public void execute(){
         ClientFacade clientFacade = new ClientFacade();
-        clientFacade.endGame(pointsFromRoutes, destCardPtsAdded,
+        clientFacade.endGame(players, pointsFromRoutes, destCardPtsAdded,
                 destCardPtsSubtracted, totalPoints, ownsLongestRoute);
     }
 }

@@ -1,5 +1,6 @@
 package clientfacade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +22,7 @@ import model.Route;
 import model.RunningGame;
 import model.TrainCard;
 import model.UnstartedGame;
+import model.VisiblePlayer;
 
 /**
  * This class handles all communication from the server when something happens, whether in the menus
@@ -430,22 +432,33 @@ public class ClientFacade implements IClient{
         Game.getGameInstance().getServerError().setMessage(message);
     }
 
-    public void endGame(List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
+    public void endGame(List<String> players, List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
                         List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
                         String ownsLongestRoute) {
         game.setGameOver(true);
-        List<AbstractPlayer> players=game.getVisiblePlayerInformation();
+        List<AbstractPlayer> endGamePlayerList = new ArrayList<>();
+
+        String winnerName = ""; //blank initialization
+        int winnerScore = -1000; //arbitrary int that is always starts off impossibly low
         for(int i=0;i<players.size();i++)
         {
-            players.get(i).setDestinationPoints(destCardPtsAdded.get(i));
-            players.get(i).setClaimedRoutePoints(pointsFromRoutes.get(i));
-            players.get(i).setDestinationPointsLost(destCardPtsSubtracted.get(i));
-            players.get(i).setScore(totalPoints.get(i));
-            if(ownsLongestRoute==players.get(i).getMyUsername())
+            AbstractPlayer myPlayer = new VisiblePlayer(players.get(i), 0);
+            myPlayer.setDestinationPoints(destCardPtsAdded.get(i));
+            myPlayer.setClaimedRoutePoints(pointsFromRoutes.get(i));
+            myPlayer.setDestinationPointsLost(destCardPtsSubtracted.get(i));
+            myPlayer.setScore(totalPoints.get(i));
+            if(ownsLongestRoute.equals(myPlayer.getMyUsername()))
             {
-                players.get(i).setLongestRoutePoints(10);
+                myPlayer.setLongestRoutePoints(10);
             }
+            if (totalPoints.get(i) > winnerScore){
+                winnerName = myPlayer.getMyUsername();
+            }
+
+            endGamePlayerList.add(myPlayer);
         }
+        game.setPlayerMapForEndGame(endGamePlayerList);
+        game.setWinner(winnerName);
 
     }
 

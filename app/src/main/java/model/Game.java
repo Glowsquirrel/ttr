@@ -74,6 +74,13 @@ public class Game implements Observable{
         }
         return playerListToDisplay;
     }
+
+    public void setPlayerMapForEndGame(List<AbstractPlayer> endGamePlayers){
+        this.playerMap.clear();
+        for (AbstractPlayer myPlayer : endGamePlayers){
+            this.playerMap.put(myPlayer.getMyUsername(), myPlayer);
+        }
+    }
     
     /**
      * initializes the game instance
@@ -399,8 +406,16 @@ public class Game implements Observable{
     }
     
     public void setGameOver(boolean gameOver) {
-        notifyObserver();
         this.gameOver = gameOver;
+        notifyObserver();
+    }
+
+    private String winnerUsername;
+    public void setWinner(String winnerUsername){
+        this.winnerUsername = winnerUsername;
+    }
+    public String getWinnerUsername(){
+        return winnerUsername;
     }
     public void reset()
     {

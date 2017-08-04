@@ -38,7 +38,7 @@ public class ServerWebSocket
 
     public static boolean userAlreadyLoggedIn(String username){
         for (ServerWebSocket mySocket : myServerWebSockets.values()){
-            if (username.equals(mySocket.getUsername())){
+            if (username.equals(mySocket.getUsername()) && mySocket.gameName != null){
                 return true;
             }
         }
@@ -69,6 +69,7 @@ public class ServerWebSocket
     public static ServerWebSocket getMySocket(Session mySession) {
         return myServerWebSockets.get(mySession);
     }
+
 
     public void updateMenuSessions(String username) {
         this.username = username;

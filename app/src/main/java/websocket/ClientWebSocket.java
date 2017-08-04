@@ -38,6 +38,9 @@ public class ClientWebSocket extends WebSocketListener
     private boolean isDisconnected = false;
     private ServerProxy serverProxy = new ServerProxy();
 
+    public WebSocket getMyWebSocket(){
+        return this.ws;
+    }
     public void sendJson(String myString)
     {
         ws.send(myString);

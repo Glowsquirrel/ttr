@@ -471,6 +471,7 @@ public class StartedGame {
     public int getTurnPointer() {
         return turnPointer;
     }
+
     void printBoardState() {
          List<Boolean> destCardSeen = new ArrayList<>();
          for (int a = 0; a < 30; a++) {

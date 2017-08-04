@@ -275,6 +275,20 @@ public class ClientProxy implements IClient {
             }
         }
         logger.info("Sent a: " + result.getType() + " command to the: " + gameName + " game.");
+
+        //if the game has ended, log them out
+        if (result.getType().equals(Utils.END_GAME_TYPE)){
+            for (Map.Entry<String, Session> sessionEntry : myGameSession.entrySet()) {
+                ServerWebSocket myPlayerWebsocket = ServerWebSocket.getMySocket(sessionEntry.getValue());
+                try{
+                    logger.info("Logging out: " + myPlayerWebsocket.getUsername() + "...");
+                    myPlayerWebsocket.onClose(0, "GAME OVER");
+                    logger.info("Success");
+                } catch (WebSocketException ex){
+                    logger.info("Failed");
+                }
+            }
+        }
     }
 
     public void sendToUser(String username, String gameName, Result result){

@@ -12,7 +12,7 @@
     <color name="neon_orange">#FF9933</color>
     <color name="neon_green">#32cd32</color>
     <color name="neon_pink">#ff69b4</color>
-    <color name="neon_grey">#7F7F7F</color>
+    <color name="neon_grey">#c32aff</color>
 
     <color name="red">#ff0000</color>
     <color name="blue">#0000ff</color>
@@ -20,6 +20,7 @@
     <color name="yellow">#ffff00</color>
     <color name="purple">#800080</color>
     <color name="orange">#ffa500</color>
+    <color name="grey">#7F7F7F</color>
 
 
 </resources>

@@ -161,7 +161,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                             destCard1.setBackgroundResource(R.drawable.customborder);
                         } else {
                             selectedDestCards.add(possibleDestCards.get(0));
-                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
+                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
@@ -177,7 +177,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                             destCard2.setBackgroundResource(R.drawable.customborder);
                         } else {
                             selectedDestCards.add(possibleDestCards.get(1));
-                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
+                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
@@ -193,7 +193,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                             destCard3.setBackgroundResource(R.drawable.customborder);
                         } else {
                             selectedDestCards.add(possibleDestCards.get(2));
-                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
+                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
