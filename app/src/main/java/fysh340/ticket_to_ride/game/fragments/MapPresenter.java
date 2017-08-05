@@ -100,7 +100,7 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
     public void onPolylineClick(Polyline polyline) {
         MapRoute route = (MapRoute) polyline.getTag();
         int key = route.getKey();
-        Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
         // TODO: 7/25/17 get actual cards from somewhere
         mGame.setCurrentlySelectedRouteID(key);
     }
