@@ -56,7 +56,7 @@ public class ClientWebSocket extends WebSocketListener
             String serverEndpoint = "ws://" + ip + ":" + port + "/";
             Request request = new Request.Builder().url(serverEndpoint).build();
             client = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(3, TimeUnit.SECONDS)
                     .writeTimeout(100, TimeUnit.SECONDS)
                     .readTimeout(100, TimeUnit.SECONDS)
                     .build();
@@ -98,7 +98,7 @@ public class ClientWebSocket extends WebSocketListener
     public void onClosing(WebSocket webSocket, int code, String reason)
     {
         //output("Closing : " + code + " / " + reason);
-        //listening = false;
+        listening = false;
         isDisconnected = true;
         try {
             Thread.sleep(1000);

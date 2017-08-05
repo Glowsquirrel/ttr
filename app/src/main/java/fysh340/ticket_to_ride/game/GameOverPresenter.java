@@ -65,7 +65,7 @@ public class GameOverPresenter extends AppCompatActivity {
                 Game.getGameInstance().reset();
                 ClientModel.getMyClientModel().reset();
                 WebSocket myWebSocket = ClientWebSocket.getClientWebSocket().getMyWebSocket();
-                //myWebSocket.close(1995, "GAME OVER");
+                myWebSocket.close(1000, "LOGOUT");
                 logout();
             }
         });

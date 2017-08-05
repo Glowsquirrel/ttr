@@ -184,8 +184,12 @@ public class AllPlayersPresenter extends Fragment implements Observer {
             int myCards = myPlayer.getNumCards();
             int myRoutes = myPlayer.getNumRoutes();
             int myScore = myPlayer.getScore();
+            //int color = myPlayer.getColorInt();
+            //int playerColors[] = getContext().getResources().getIntArray(R.array.player_colors);
+            //int myColor = playerColors[color];
+
             int color = myPlayer.getColor();
-            int colors = ContextCompat.getColor(getContext(), color);
+            int myColor = ContextCompat.getColor(getContext(), color);
             int myDCards = myPlayer.getNumDestCard();
 
             holder.itemUsername.setText(playerName);
@@ -193,7 +197,7 @@ public class AllPlayersPresenter extends Fragment implements Observer {
             holder.itemCards.setText(String.valueOf(myCards));
             holder.itemRoutes.setText(String.valueOf(myRoutes));
             holder.itemScore.setText(String.valueOf(myScore));
-            holder.itemUsername.setBackgroundColor(colors);
+            holder.itemUsername.setBackgroundColor(myColor);
             holder.itemDCards.setText(String.valueOf(myDCards));
             if(myPlayer.isMyTurn())
             {

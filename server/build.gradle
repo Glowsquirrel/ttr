@@ -35,7 +35,7 @@ jar {
 
 task testJar(type: Jar) {
     manifest {
-        attributes 'Description': 'This is an application JAR'
+        attributes 'Description': 'Stand alone JAR for FYSH TTR server.'
     }
 }
 

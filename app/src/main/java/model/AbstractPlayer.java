@@ -55,7 +55,6 @@ public abstract class AbstractPlayer {
 
     private int color;
 
-
     public void setNumTrains(int numTrains) {
         this.numTrains = numTrains;
     }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ClientModel;
+import okhttp3.WebSocket;
 import serverproxy.ServerProxy;
 import websocket.ClientWebSocket;
 
@@ -134,6 +135,8 @@ public class MenuLogin extends AppCompatActivity implements Observer {
         } else if (clientModel.hasMessage()) {
             clientModel.receivedMessage();
             Toast.makeText(getApplicationContext(), clientModel.getMessageToToast(), Toast.LENGTH_SHORT).show();
+            WebSocket myWebSocket = ClientWebSocket.getClientWebSocket().getMyWebSocket();
+            myWebSocket.close(1000, "LOGOUT");
         }
     }
 

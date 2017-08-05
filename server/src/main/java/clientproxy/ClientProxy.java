@@ -74,6 +74,7 @@ public class ClientProxy implements IClient {
         String resultJson = gson.toJson(result);
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Sent game lists to: " + username);
         } catch (IOException | WebSocketException ex) {
             ex.printStackTrace();
         }
@@ -96,6 +97,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             mySocket.updateMenuSessions(username);
+            logger.info("Sent a login to: " + username);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -110,6 +112,7 @@ public class ClientProxy implements IClient {
 
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Sent register to: " + username);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -118,16 +121,18 @@ public class ClientProxy implements IClient {
     public void startGame(Result result, String username) {
         //String username, String gameName, List<String> playerNames, List<Integer> destCards,
                 //List<Integer> trainCards, List<Integer> faceUpCards
-        //Result result = new StartGameResult(username, gameName, playerNames, destCards, trainCards, faceUpCards);
+        StartGameResult startGameResult = (StartGameResult)result;
+
         String resultJson = gson.toJson(result);
 
         Session mySession = ServerWebSocket.getMySession(username);
         ServerWebSocket mySocket = ServerWebSocket.getMySocket(mySession);
+        mySocket.joinGameSession(username, startGameResult.getGameName());
         mySocket.removeFromMenus(username);
 
         try {
             mySession.getRemote().sendString(resultJson);
-            logger.info("Sent a: " + result.getType() + " command to :" + username + " game.");
+            logger.info("Sent start game to: " + username);
         } catch (IOException ex){
             ex.printStackTrace();
         }
@@ -152,6 +157,7 @@ public class ClientProxy implements IClient {
 
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Sent join game to: " + username);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -164,10 +170,11 @@ public class ClientProxy implements IClient {
         String resultJson = gson.toJson(result);
 
         ServerWebSocket mySocket = ServerWebSocket.getMySocket(mySession);
-        mySocket.leaveGameSession(username, gameName);
+        //mySocket.leaveGameSession(username, gameName);
 
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Sent leave game to: " + username);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -181,6 +188,7 @@ public class ClientProxy implements IClient {
 
         try {
             mySession.getRemote().sendString(resultJson);
+            logger.info("Sent create game to: " + username);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -270,6 +278,7 @@ public class ClientProxy implements IClient {
             Session myUserSession = sessionEntry.getValue();
             try {
                 myUserSession.getRemote().sendString(resultJson);
+                logger.info("Sending a " + result.getType() + " result to: " + gameName + " game");
             } catch (IOException | WebSocketException ex){
                 logger.warning("Failed to send a: " + result.getType() + " command to the player: " + sessionEntry.getKey() + "in the: " + gameName + " game.");
             }
@@ -281,7 +290,7 @@ public class ClientProxy implements IClient {
             for (Map.Entry<String, Session> sessionEntry : myGameSession.entrySet()) {
                 ServerWebSocket myPlayerWebsocket = ServerWebSocket.getMySocket(sessionEntry.getValue());
                 try{
-                    logger.info("Logging out: " + myPlayerWebsocket.getUsername() + "...");
+                    logger.info("Logging out: " + myPlayerWebsocket.getUsername() + "  ...");
                     myPlayerWebsocket.onClose(0, "GAME OVER");
                     logger.info("Success");
                 } catch (WebSocketException ex){

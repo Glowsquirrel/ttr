@@ -80,6 +80,10 @@ public class ServerWebSocket
         return username;
     }
 
+    public void logout(){
+        this.username = null;
+    }
+
     public void joinGameSession(String username, String gameName) {
         this.username = username;
         this.gameName = gameName;

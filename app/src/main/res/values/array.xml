@@ -3,10 +3,10 @@
 
     <array name="player_colors">
         <item>@color/neon_yellow</item>
-        <item>@color/neon_grey</item>
         <item>@color/neon_pink</item>
         <item>@color/neon_green</item>
         <item>@color/neon_orange</item>
+        <item>@color/neon_grey</item>
     </array>
 
     <string-array name="player_num_array">

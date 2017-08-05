@@ -31,7 +31,9 @@ import interfaces.Observer;
 import model.ClientModel;
 import model.RunningGame;
 import model.UnstartedGame;
+import okhttp3.WebSocket;
 import serverproxy.ServerProxy;
+import websocket.ClientWebSocket;
 
 public class MenuGameList extends AppCompatActivity implements Observer{
 
@@ -147,8 +149,13 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         super.onResume();
         mClientModel.register(this); //registers this controller as an observer to the ClientModel
     }
-
-
+    @Override
+    public void onBackPressed(){
+        WebSocket myWebSocket = ClientWebSocket.getClientWebSocket().getMyWebSocket();
+        myWebSocket.close(1000, "LOGOUT");
+        mClientModel.unregister(this);
+        super.onBackPressed();
+    }
 
     @Override
     public void update() {
@@ -194,8 +201,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         }
 
         void swapData(List<UnstartedGame> newGameList){
-            allGames = newGameList;
-            notifyDataSetChanged();
+            this.allGames = newGameList;
+            this.notifyDataSetChanged();
         }
 
         @Override
@@ -259,8 +266,8 @@ public class MenuGameList extends AppCompatActivity implements Observer{
         }
     
         void swapData(List<RunningGame> newGamesList){
-            mAllStartedGames = newGamesList;
-            notifyDataSetChanged();
+            this.mAllStartedGames = newGamesList;
+            this.notifyDataSetChanged();
         }
     
         class ViewHolder extends RecyclerView.ViewHolder {

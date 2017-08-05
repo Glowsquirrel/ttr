@@ -27,4 +27,5 @@ public class StartGameResult extends Result {
     public String getUsername() {
         return username;
     }
+    public String getGameName() { return gameName; }
 }

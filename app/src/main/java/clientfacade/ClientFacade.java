@@ -23,6 +23,8 @@ import model.RunningGame;
 import model.TrainCard;
 import model.UnstartedGame;
 import model.VisiblePlayer;
+import okhttp3.WebSocket;
+import websocket.ClientWebSocket;
 
 /**
  * This class handles all communication from the server when something happens, whether in the menus
@@ -447,12 +449,14 @@ public class ClientFacade implements IClient{
             myPlayer.setClaimedRoutePoints(pointsFromRoutes.get(i));
             myPlayer.setDestinationPointsLost(destCardPtsSubtracted.get(i));
             myPlayer.setScore(totalPoints.get(i));
+            myPlayer.setColor(i);
             if(ownsLongestRoute.equals(myPlayer.getMyUsername()))
             {
                 myPlayer.setLongestRoutePoints(10);
             }
-            if (totalPoints.get(i) > winnerScore){
+            if (myPlayer.getScore() > winnerScore){
                 winnerName = myPlayer.getMyUsername();
+                winnerScore = myPlayer.getScore();
             }
 
             endGamePlayerList.add(myPlayer);
