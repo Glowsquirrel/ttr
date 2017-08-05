@@ -434,7 +434,7 @@ public class ClientFacade implements IClient{
         Game.getGameInstance().getServerError().setMessage(message);
     }
 
-    public void endGame(List<String> players, List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
+    public void endGame(List<String> players, List<Integer> numRoutesClaimed,  List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
                         List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
                         String ownsLongestRoute) {
         game.setGameOver(true);
@@ -445,8 +445,9 @@ public class ClientFacade implements IClient{
         for(int i=0;i<players.size();i++)
         {
             AbstractPlayer myPlayer = new VisiblePlayer(players.get(i), 0);
-            myPlayer.setDestinationPoints(destCardPtsAdded.get(i));
+            myPlayer.setNumRoutes(numRoutesClaimed.get(i));
             myPlayer.setClaimedRoutePoints(pointsFromRoutes.get(i));
+            myPlayer.setDestinationPoints(destCardPtsAdded.get(i));
             myPlayer.setDestinationPointsLost(destCardPtsSubtracted.get(i));
             myPlayer.setScore(totalPoints.get(i));
             myPlayer.setColor(i);
