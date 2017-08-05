@@ -205,7 +205,7 @@ public class ClientFacade implements IClient{
         game.aPlayerHasChanged(true);
 
         //add history
-        String message = "Claimed route " + routeID;
+        String message = "claimed route " + routeID;
         chatModel.addHistory(username, message);
 
         //notify of changes
@@ -231,7 +231,7 @@ public class ClientFacade implements IClient{
             game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
             game.notifyObserver();
-            String message = "Drew " + destCards.size() + " destination cards";
+            String message = "drew " + destCards.size() + " destination cards";
             chatModel.addHistory(username, message);
             game.setDestCardDeckSize(game.getDestCardDeckSize() - 3);
             ClientState.INSTANCE.setState(new ReturnDestCardState());
@@ -258,7 +258,7 @@ public class ClientFacade implements IClient{
         game.iHaveDifferentTrainDeckSize(true);
         game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
         game.notifyObserver();
-        String message = "Drew train card";
+        String message = "drew train card";
         chatModel.addHistory(username, message);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState) {
@@ -287,7 +287,7 @@ public class ClientFacade implements IClient{
         game.iHaveDifferentTrainDeckSize(true);
         game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
         game.notifyObserver();
-        String message = "Drew train card face up";
+        String message = "drew train card face up";
         chatModel.addHistory(username, message);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState &&
@@ -310,7 +310,7 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnDestCards(String username, int destCard){
-        String message = "Returned destination card";
+        String message = "returned destination card";
         chatModel.addHistory(username, message);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentDestDeckSize(true);
@@ -334,7 +334,7 @@ public class ClientFacade implements IClient{
     @Override
     public void returnFirstDestCards(String username, int cardReturned){
         if (cardReturned != 30) {
-            String message = "Returned destination card";
+            String message = "returned destination card";
             chatModel.addHistory(username, message);
             game.aPlayerHasChanged(true);
             game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);

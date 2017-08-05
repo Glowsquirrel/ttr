@@ -1,5 +1,6 @@
 package fysh340.ticket_to_ride.game.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.menus.MenuLogin;
 import interfaces.Observer;
 import model.AbstractPlayer;
 import model.ChatHistoryModel;
@@ -45,12 +48,12 @@ public class ChatPresenter extends Fragment implements Observer {
         mRV.removeAllViewsInLayout();
         mRV.setLayoutManager( new LinearLayoutManager( getActivity()));
         if(chatModel.isChat()) {
-            mToDisplay.setText("History");
+            mToDisplay.setText("View History");
             mAdapter.swapData(chatModel.getChatStrings());
         }
         else
         {
-            mToDisplay.setText("Chat");
+            mToDisplay.setText("View Chat");
             mAdapter.swapData(chatModel.getHistoryStrings());
         }
     }
@@ -102,6 +105,8 @@ public class ChatPresenter extends Fragment implements Observer {
                 mServerProxy.sendChatMessage(mClientModel.getMyUsername(),mClientModel.getMyGameName(),mChatMessage);
                 mChatEdit.setText("");
                 mSend.setEnabled(false);
+                hideSoftKeyboard(getActivity());
+                mSend.clearFocus();
             }
         });
         mChatEdit.addTextChangedListener(new TextWatcher()
@@ -162,11 +167,18 @@ public class ChatPresenter extends Fragment implements Observer {
         @Override public int getItemCount()
         { return itemlist.size(); }
         void swapData(List <String> items){
-            items = itemlist;
+            itemlist=items;
             notifyDataSetChanged();
         }
 
 
+    }
+    public static void hideSoftKeyboard(Activity activity) { //Hides the keyboard.
+
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (activity.getCurrentFocus() != null)
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
 
