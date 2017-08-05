@@ -15,6 +15,7 @@ import commands.menu.CreateGameCommand;
 import commands.menu.JoinGameCommand;
 import commands.menu.LeaveGameCommand;
 import commands.menu.LoginCommand;
+import commands.menu.LogoutCommand;
 import commands.menu.PollGamesCommand;
 import commands.menu.RegisterCommand;
 import interfaces.IServer;
@@ -30,6 +31,11 @@ public class ServerProxy implements IServer{
     @Override
     public void login(String username, String password, String sessionID){
         LoginCommand command = new LoginCommand(username, password);
+        clientCommunicator.doCommand(command);
+    }
+
+    public void logout(String username){
+        LogoutCommand command = new LogoutCommand(username);
         clientCommunicator.doCommand(command);
     }
 

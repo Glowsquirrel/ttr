@@ -1,7 +1,10 @@
 package serverfacade;
 
+import org.eclipse.jetty.websocket.api.Session;
+
 import java.util.List;
 
+import handlers.ServerWebSocket;
 import interfaces.IServer;
 import model.ServerModel;
 import model.UnstartedGame;
@@ -33,6 +36,11 @@ public class ServerFacade implements IServer {
     @Override
     public void login(String username, String password, String sessionID) {
         mSingletonModel.validateUser(new User(username, password), sessionID);
+    }
+    public void logout(String username){ //click back in the menus to the login screen
+        Session myLogoutSession = ServerWebSocket.getMySession(username);
+        ServerWebSocket myLogoutSocket = ServerWebSocket.getMySocket(myLogoutSession);
+        myLogoutSocket.logout();
     }
 
     /**

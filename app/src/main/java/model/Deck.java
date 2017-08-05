@@ -103,6 +103,9 @@ public class Deck implements Observable{
     
     public void setTrainCardDeckSize(int newSize) {
         trainCardDeckSize = newSize;
+        if (trainCardDeckSize == 0){
+            trainCardDeckSize = 0;
+        }
     }
     public int getTrainCardDeckSize() {
         return trainCardDeckSize;
@@ -129,6 +132,9 @@ public class Deck implements Observable{
     
     public void setDestinationCardDeckSize(int newSize) {
         destinationCardDeckSize = newSize;
+        if (destinationCardDeckSize < 0){
+            destinationCardDeckSize = 0;
+        }
     }
     public int getDestinationCardDeckSize() {
         return destinationCardDeckSize;

@@ -311,8 +311,13 @@ public class ServerModel {
             if (endGameResult !=  null) {
                 toClient.sendToGame(game.getGameName(), endGameResult);
                 allCommandLists.get(game.getGameName()).add(endGameResult);
+                //remove the game from the list
+                allStartedGames.remove(game.getGameName());
             }
-            game.printBoardState();
+            //game.printBoardState();
+
+            //remove the game from the list
+
 
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
@@ -363,8 +368,10 @@ public class ServerModel {
         if (endGameResult !=  null) {
             toClient.sendToGame(game.getGameName(), endGameResult);
             allCommandLists.get(game.getGameName()).add(endGameResult);
+            //remove the game from the list
+            allStartedGames.remove(game.getGameName());
         }
-        game.printBoardState();
+        //game.printBoardState();
     }
 
 }

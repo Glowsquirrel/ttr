@@ -352,6 +352,7 @@ public class StartedGame {
             return;
         }
 
+        List<Integer> numRoutesClaimed = new ArrayList<>();
         List<Integer> pointsFromRoutes = new ArrayList<>();
         List<Integer> pointsAdded = new ArrayList<>();
         List<Integer> pointsSubtracted = new ArrayList<>();
@@ -362,6 +363,7 @@ public class StartedGame {
 
         for (int a = 0; a < playerOrder.size(); a++) {
             Player player = allPlayers.get(playerOrder.get(a));
+            numRoutesClaimed.add(player.getNumOfRoutesOwned());
             pointsFromRoutes.add(player.getPoints());
             pointsAdded.add(player.addDestCardPoints());
             pointsSubtracted.add(player.subtractDestCardPoints());
@@ -379,7 +381,7 @@ public class StartedGame {
             Player player = allPlayers.get(playerOrder.get(a));
             totalPoints.add(player.getPoints());
         }
-        endGameResult = new EndGameResult(playerOrder, pointsFromRoutes, pointsAdded,
+        endGameResult = new EndGameResult(playerOrder, numRoutesClaimed, pointsFromRoutes, pointsAdded,
                 pointsSubtracted, totalPoints, largestSizeOwner);
     }
 
@@ -471,6 +473,7 @@ public class StartedGame {
     public int getTurnPointer() {
         return turnPointer;
     }
+
     void printBoardState() {
          List<Boolean> destCardSeen = new ArrayList<>();
          for (int a = 0; a < 30; a++) {

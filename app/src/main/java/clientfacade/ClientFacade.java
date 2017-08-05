@@ -1,5 +1,6 @@
 package clientfacade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +22,9 @@ import model.Route;
 import model.RunningGame;
 import model.TrainCard;
 import model.UnstartedGame;
+import model.VisiblePlayer;
+import okhttp3.WebSocket;
+import websocket.ClientWebSocket;
 
 /**
  * This class handles all communication from the server when something happens, whether in the menus
@@ -203,7 +207,7 @@ public class ClientFacade implements IClient{
         game.aPlayerHasChanged(true);
 
         //add history
-        String message = "Claimed route " + routeID;
+        String message = "claimed route " + routeID;
         chatModel.addHistory(username, message);
 
         //notify of changes
@@ -229,7 +233,7 @@ public class ClientFacade implements IClient{
             game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
             game.notifyObserver();
-            String message = "Drew " + destCards.size() + " destination cards";
+            String message = "drew " + destCards.size() + " destination cards";
             chatModel.addHistory(username, message);
             game.setDestCardDeckSize(game.getDestCardDeckSize() - 3);
             ClientState.INSTANCE.setState(new ReturnDestCardState());
@@ -256,7 +260,7 @@ public class ClientFacade implements IClient{
         game.iHaveDifferentTrainDeckSize(true);
         game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
         game.notifyObserver();
-        String message = "Drew train card";
+        String message = "drew train card";
         chatModel.addHistory(username, message);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState) {
@@ -285,7 +289,7 @@ public class ClientFacade implements IClient{
         game.iHaveDifferentTrainDeckSize(true);
         game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
         game.notifyObserver();
-        String message = "Drew train card face up";
+        String message = "drew train card face up";
         chatModel.addHistory(username, message);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState &&
@@ -308,7 +312,7 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnDestCards(String username, int destCard){
-        String message = "Returned destination card";
+        String message = "returned destination card";
         chatModel.addHistory(username, message);
         game.aPlayerHasChanged(true);
         game.iHaveDifferentDestDeckSize(true);
@@ -331,12 +335,14 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnFirstDestCards(String username, int cardReturned){
-        String message = "Returned destination card";
-        chatModel.addHistory(username, message);
-        game.aPlayerHasChanged(true);
-        game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
-        game.getMyself().iHaveDifferentDestCards(true);
-        game.iHaveDifferentDestDeckSize(true);
+        if (cardReturned != 30) {
+            String message = "returned destination card";
+            chatModel.addHistory(username, message);
+            game.aPlayerHasChanged(true);
+            game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
+            game.getMyself().iHaveDifferentDestCards(true);
+            game.iHaveDifferentDestDeckSize(true);
+        }
         game.iHaveReturnedDestCards(true);
         game.notifyObserver();
     }
@@ -428,22 +434,36 @@ public class ClientFacade implements IClient{
         Game.getGameInstance().getServerError().setMessage(message);
     }
 
-    public void endGame(List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
+    public void endGame(List<String> players, List<Integer> numRoutesClaimed,  List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
                         List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
                         String ownsLongestRoute) {
         game.setGameOver(true);
-        List<AbstractPlayer> players=game.getVisiblePlayerInformation();
+        List<AbstractPlayer> endGamePlayerList = new ArrayList<>();
+
+        String winnerName = ""; //blank initialization
+        int winnerScore = -1000; //arbitrary int that is always starts off impossibly low
         for(int i=0;i<players.size();i++)
         {
-            players.get(i).setDestinationPoints(destCardPtsAdded.get(i));
-            players.get(i).setClaimedRoutePoints(pointsFromRoutes.get(i));
-            players.get(i).setDestinationPointsLost(destCardPtsSubtracted.get(i));
-            players.get(i).setScore(totalPoints.get(i));
-            if(ownsLongestRoute==players.get(i).getMyUsername())
+            AbstractPlayer myPlayer = new VisiblePlayer(players.get(i), 0);
+            myPlayer.setNumRoutes(numRoutesClaimed.get(i));
+            myPlayer.setClaimedRoutePoints(pointsFromRoutes.get(i));
+            myPlayer.setDestinationPoints(destCardPtsAdded.get(i));
+            myPlayer.setDestinationPointsLost(destCardPtsSubtracted.get(i));
+            myPlayer.setScore(totalPoints.get(i));
+            myPlayer.setColor(i);
+            if(ownsLongestRoute.equals(myPlayer.getMyUsername()))
             {
-                players.get(i).setLongestRoutePoints(10);
+                myPlayer.setLongestRoutePoints(10);
             }
+            if (myPlayer.getScore() > winnerScore){
+                winnerName = myPlayer.getMyUsername();
+                winnerScore = myPlayer.getScore();
+            }
+
+            endGamePlayerList.add(myPlayer);
         }
+        game.setPlayerMapForEndGame(endGamePlayerList);
+        game.setWinner(winnerName);
 
     }
 

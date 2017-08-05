@@ -99,38 +99,51 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
             mGame.setPossibleDestCards(new ArrayList<Integer>());
             if (this.possibleDestCards.size() == 0)
                 return;
-            //this.possibleDestCards = mGame.getPossibleDestCards();
-            destCard1.setBackgroundResource(R.drawable.customborder);
-            destCard2.setBackgroundResource(R.drawable.customborder);
-            destCard3.setBackgroundResource(R.drawable.customborder);
 
             //set up card 1
-
-            TextView card1city1 = (TextView) getView().findViewById(R.id.dest_card_select_1_city1);
-            TextView card1city2 = (TextView) getView().findViewById(R.id.dest_card_select_1_city2);
-            TextView card1score = (TextView) getView().findViewById(R.id.dest_card_select_1_score);
-            DestCard destCard1 = possibleDestCards.get(0);
-            card1city1.setText(destCard1.getStartCity().getPrettyName());
-            card1city2.setText(destCard1.getEndCity().getPrettyName());
-            card1score.setText(String.valueOf(destCard1.getPointValue()));
+            if (possibleDestCards.size() > 0) {
+                destCard1.setVisibility(View.VISIBLE);
+                destCard1.setBackgroundResource(R.drawable.customborder);
+                TextView card1city1 = (TextView) getView().findViewById(R.id.dest_card_select_1_city1);
+                TextView card1city2 = (TextView) getView().findViewById(R.id.dest_card_select_1_city2);
+                TextView card1score = (TextView) getView().findViewById(R.id.dest_card_select_1_score);
+                DestCard destCard1 = possibleDestCards.get(0);
+                card1city1.setText(destCard1.getStartCity().getPrettyName());
+                card1city2.setText(destCard1.getEndCity().getPrettyName());
+                card1score.setText(String.valueOf(destCard1.getPointValue()));
+            } else {
+                destCard1.setVisibility(View.INVISIBLE);
+            }
 
             //set up card 2
-            TextView card2city1 = (TextView) getView().findViewById(R.id.dest_card_select_2_city1);
-            TextView card2city2 = (TextView) getView().findViewById(R.id.dest_card_select_2_city2);
-            TextView card2score = (TextView) getView().findViewById(R.id.dest_card_select_2_score);
-            DestCard destCard2 = possibleDestCards.get(1);
-            card2city1.setText(destCard2.getStartCity().getPrettyName());
-            card2city2.setText(destCard2.getEndCity().getPrettyName());
-            card2score.setText(String.valueOf(destCard2.getPointValue()));
+            if (possibleDestCards.size() > 1) {
+                destCard2.setVisibility(View.VISIBLE);
+                destCard2.setBackgroundResource(R.drawable.customborder);
+                TextView card2city1 = (TextView) getView().findViewById(R.id.dest_card_select_2_city1);
+                TextView card2city2 = (TextView) getView().findViewById(R.id.dest_card_select_2_city2);
+                TextView card2score = (TextView) getView().findViewById(R.id.dest_card_select_2_score);
+                DestCard destCard2 = possibleDestCards.get(1);
+                card2city1.setText(destCard2.getStartCity().getPrettyName());
+                card2city2.setText(destCard2.getEndCity().getPrettyName());
+                card2score.setText(String.valueOf(destCard2.getPointValue()));
+            } else {
+                destCard2.setVisibility(View.INVISIBLE);
+            }
 
             //set up card 3
-            TextView card3city1 = (TextView) getView().findViewById(R.id.dest_card_select_3_city1);
-            TextView card3city2 = (TextView) getView().findViewById(R.id.dest_card_select_3_city2);
-            TextView card3score = (TextView) getView().findViewById(R.id.dest_card_select_3_score);
-            DestCard destCard3 = possibleDestCards.get(2);
-            card3city1.setText(destCard3.getStartCity().getPrettyName());
-            card3city2.setText(destCard3.getEndCity().getPrettyName());
-            card3score.setText(String.valueOf(destCard3.getPointValue()));
+            if (possibleDestCards.size() > 2) {
+                destCard3.setVisibility(View.VISIBLE);
+                destCard3.setBackgroundResource(R.drawable.customborder);
+                TextView card3city1 = (TextView) getView().findViewById(R.id.dest_card_select_3_city1);
+                TextView card3city2 = (TextView) getView().findViewById(R.id.dest_card_select_3_city2);
+                TextView card3score = (TextView) getView().findViewById(R.id.dest_card_select_3_score);
+                DestCard destCard3 = possibleDestCards.get(2);
+                card3city1.setText(destCard3.getStartCity().getPrettyName());
+                card3city2.setText(destCard3.getEndCity().getPrettyName());
+                card3score.setText(String.valueOf(destCard3.getPointValue()));
+            } else {
+                destCard3.setVisibility(View.INVISIBLE);
+            }
 
         }
         if (hidden && getView() != null){
@@ -148,7 +161,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                             destCard1.setBackgroundResource(R.drawable.customborder);
                         } else {
                             selectedDestCards.add(possibleDestCards.get(0));
-                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
+                            destCard1.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
@@ -164,7 +177,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                             destCard2.setBackgroundResource(R.drawable.customborder);
                         } else {
                             selectedDestCards.add(possibleDestCards.get(1));
-                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
+                            destCard2.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
                         }
                         checkSelectedSize(destCardsView);
                     }
@@ -180,7 +193,7 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
                             destCard3.setBackgroundResource(R.drawable.customborder);
                         } else {
                             selectedDestCards.add(possibleDestCards.get(2));
-                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.neon_grey));
+                            destCard3.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey));
                         }
                         checkSelectedSize(destCardsView);
                     }

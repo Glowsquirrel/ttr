@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
@@ -22,6 +24,9 @@ import model.AbstractPlayer;
 import model.ClientModel;
 import model.Game;
 import model.Player;
+import okhttp3.OkHttpClient;
+import okhttp3.WebSocket;
+import websocket.ClientWebSocket;
 
 public class GameOverPresenter extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -39,11 +44,18 @@ public class GameOverPresenter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over_presenter);
+        TextView winnerUsername = (TextView) findViewById(R.id.winner);
+        winnerUsername.setText((mGame.getWinnerUsername() + " WINS"));
         recyclerView = (RecyclerView) findViewById(R.id.final_score_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         logout=(Button) findViewById(R.id.logout);
         updateUI();
         setButton();
+    }
+
+    @Override
+    public void onBackPressed(){
+        //do nothing
     }
     private void setButton()
     {
@@ -52,15 +64,17 @@ public class GameOverPresenter extends AppCompatActivity {
             public void onClick(View v) {
                 Game.getGameInstance().reset();
                 ClientModel.getMyClientModel().reset();
-               logout();
+                WebSocket myWebSocket = ClientWebSocket.getClientWebSocket().getMyWebSocket();
+                myWebSocket.close(1000, "LOGOUT");
+                logout();
             }
         });
     }
     private void logout()
     {
         Intent intent = new Intent(this, MenuLogin.class);
-        startActivity(intent); //proceed to game list screen
-
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //reset the activity stack
+        startActivity(intent); //proceed to login screen
     }
     private void updateUI() {
         recyclerView.removeAllViewsInLayout();

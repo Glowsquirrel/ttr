@@ -38,6 +38,9 @@ public class ClientWebSocket extends WebSocketListener
     private boolean isDisconnected = false;
     private ServerProxy serverProxy = new ServerProxy();
 
+    public WebSocket getMyWebSocket(){
+        return this.ws;
+    }
     public void sendJson(String myString)
     {
         ws.send(myString);
@@ -53,7 +56,7 @@ public class ClientWebSocket extends WebSocketListener
             String serverEndpoint = "ws://" + ip + ":" + port + "/";
             Request request = new Request.Builder().url(serverEndpoint).build();
             client = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(3, TimeUnit.SECONDS)
                     .writeTimeout(100, TimeUnit.SECONDS)
                     .readTimeout(100, TimeUnit.SECONDS)
                     .build();
@@ -95,7 +98,7 @@ public class ClientWebSocket extends WebSocketListener
     public void onClosing(WebSocket webSocket, int code, String reason)
     {
         //output("Closing : " + code + " / " + reason);
-        //listening = false;
+        listening = false;
         isDisconnected = true;
         try {
             Thread.sleep(1000);

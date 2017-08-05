@@ -185,14 +185,16 @@ public class ClientModel implements Observable{
     public void setGameLists(List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList){
         if (unstartedGameList != null) {
             this.unstartedGameList = unstartedGameList;
-            this.hasNewGameLists = true;
+        } else {
+            this.unstartedGameList = new ArrayList<>();
         }
         if (runningGameList != null) {
             this.runningGameList = runningGameList;
-            this.hasNewGameLists = true;
+        } else {
+            this.runningGameList = new ArrayList<>();
         }
-        if (this.hasNewGameLists)
-            notifyObserver();
+        this.hasNewGameLists = true;
+        notifyObserver();
     }
 
 
