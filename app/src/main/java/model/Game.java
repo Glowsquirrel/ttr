@@ -164,6 +164,14 @@ public class Game implements Observable{
     public void setFaceUpCards(List<Integer> newFaceUpCards){
         gameDecks.setAvailableFaceUpCards(newFaceUpCards);
     }
+
+    public List<Boolean> getFaceUpDifferences() {
+        return gameDecks.getFaceUpDifferences();
+    }
+
+    public void setFaceUpDifferences(List<Boolean> faceUpDifferences){
+        gameDecks.setFaceUpDifferences(faceUpDifferences);
+    }
     
     
     //begin CurrentlySelectedRouteID flags
@@ -371,8 +379,6 @@ public class Game implements Observable{
     
     public void setDestCardDeckSize(int newSize) {
         gameDecks.setDestinationCardDeckSize(newSize);
-        iHaveDifferentDestDeckSize(true);
-        notifyObserver();
     }
     
     public int getDestCardDeckSize() {
@@ -381,8 +387,6 @@ public class Game implements Observable{
     
     public void setTrainCardDeckSize(int newSize) {
         gameDecks.setTrainCardDeckSize(newSize);
-        iHaveDifferentTrainDeckSize(true);
-        notifyObserver();
     }
     
     public int getTrainCardDeckSize() {

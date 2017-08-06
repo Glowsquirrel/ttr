@@ -244,6 +244,9 @@ public class StartedGame {
         Player currentPlayer = allPlayers.get(playerName);
         TrainCard drawnCard;
         int cardDrawnKey;
+
+        //save previous cards
+        List<Integer> previousFaceUpCards = board.getFaceUpCardCodes();
         if (currentPlayer != null) {
 
             final int LOCOMOTIVE_INDEX = 8;
@@ -252,7 +255,7 @@ public class StartedGame {
                 throw new GamePlayException("No train cards to draw.");
             }
 
-             cardDrawnKey = board.getFaceUpCardCodes().get(index);
+            cardDrawnKey = board.getFaceUpCardCodes().get(index);
             if (cardDrawnKey == LOCOMOTIVE_INDEX) {
                 turnState.switchState(CommandType.FACEUP_LOCOMOTIVE);
             } else {
@@ -270,12 +273,30 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
+        //check for card differences
+        List<Boolean> faceUpDifferences = new ArrayList<>();
+        List<Integer> newFaceUpCards = board.getFaceUpCardCodes();
+        for (int i = 0; (i < newFaceUpCards.size() && i < previousFaceUpCards.size()); i++){
+            if (previousFaceUpCards.get(i).equals(newFaceUpCards.get(i)))
+                faceUpDifferences.add(false);
+            else
+                faceUpDifferences.add(true);
+        }
+        while (faceUpDifferences.size() < 5){
+            if (newFaceUpCards.size() > previousFaceUpCards.size()) //if there are more cards than before, flip them
+                faceUpDifferences.add(true);
+            else
+                faceUpDifferences.add(false); //if there aren't new cards, don't flip them
+        }
+        //override the index that was drawn to true
+        faceUpDifferences.set(index, true);
+
         String message = playerName + " drew a " + drawnCard.getPrettyname() + " face-up train card.";
         setGameHistoryResult(playerName, message, -1, index);
         setEndGameResult();
         List<Result> returnResults = new ArrayList<>();
         returnResults.add(new DrawTrainCardFromFaceUpResult(playerName, cardDrawnKey));
-        returnResults.add(new ReplaceFaceUpCardsResult(board.getFaceUpCardCodes()));
+        returnResults.add(new ReplaceFaceUpCardsResult(board.getFaceUpCardCodes(), faceUpDifferences));
         return returnResults;
     }
 
@@ -284,7 +305,10 @@ public class StartedGame {
         List<Integer> newFaceUpCards = board.replaceFaceUpCards();
         replaceFaceUpFlag = board.getReplaceFaceUpFlag();
         setGameHistoryResult(playerName, "All faceup cards have been replaced", -1, -1);
-        return new ReplaceFaceUpCardsResult(newFaceUpCards);
+        List<Boolean> replaceAllTrue = new ArrayList<>();
+        for (int i = 0; i < 5; i++)
+            replaceAllTrue.add(true);
+        return new ReplaceFaceUpCardsResult(newFaceUpCards, replaceAllTrue);
     }
 
     /*****************************************ClaimRoute*******************************************/

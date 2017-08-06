@@ -27,6 +27,7 @@ public class Deck implements Observable{
     }
     
     private List<Integer> mFaceUpCards;
+    private List<Boolean> mFaceUpDifferences;
     private List<Integer> mDestinationCards;
     
     private List<Observer> mObservers;
@@ -39,6 +40,7 @@ public class Deck implements Observable{
     
     private Deck() {
         mFaceUpCards = new ArrayList<>();
+        mFaceUpDifferences = new ArrayList<>();
         mDestinationCards = new ArrayList<>();
         mObservers = new ArrayList<>();
         
@@ -59,6 +61,13 @@ public class Deck implements Observable{
     
     public List<Integer> getFaceUpCards() {
         return mFaceUpCards;
+    }
+
+    public void setFaceUpDifferences(List<Boolean> faceUpDifferences){
+        mFaceUpDifferences = faceUpDifferences;
+    }
+    public List<Boolean> getFaceUpDifferences() {
+        return mFaceUpDifferences;
     }
     
     public List<Integer> getDestinationCards() {
@@ -103,7 +112,7 @@ public class Deck implements Observable{
     
     public void setTrainCardDeckSize(int newSize) {
         trainCardDeckSize = newSize;
-        if (trainCardDeckSize == 0){
+        if (trainCardDeckSize < 0){
             trainCardDeckSize = 0;
         }
     }

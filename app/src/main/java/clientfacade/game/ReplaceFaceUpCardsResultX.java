@@ -9,6 +9,6 @@ public class ReplaceFaceUpCardsResultX extends ReplaceFaceUpCardsResult implemen
     @Override
     public void execute() {
         ClientFacade clientFacade = new ClientFacade();
-        clientFacade.replaceFaceUpCards(super.trainCards);
+        clientFacade.replaceFaceUpCards(super.trainCards, super.faceUpDifferences);
     }
 }

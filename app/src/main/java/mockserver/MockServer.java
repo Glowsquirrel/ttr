@@ -202,7 +202,10 @@ public class MockServer {
                 Random rand = new Random();
                 int card = rand.nextInt(9);
                 faceUpCards.set(mycommand.getIndex(), card);
-                clientFacade.replaceFaceUpCards(faceUpCards);
+                List<Boolean> faceUpDifferences = new ArrayList<>();
+                for (int i = 0; i < 5; i++)
+                    faceUpDifferences.add(true);
+                clientFacade.replaceFaceUpCards(faceUpCards, faceUpDifferences);
                 break;
             }
             case Utils.CLAIM_ROUTE_TYPE: {

@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/first"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="16"
-        android:background="@drawable/customborder"
+        android:src="@drawable/tickettoride"
+        android:scaleType="fitXY"
         android:textAlignment="center"
         android:textSize="12sp"/>
 
@@ -25,12 +26,13 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/second"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="16"
-        android:background="@drawable/customborder"
+        android:src="@drawable/tickettoride"
+        android:scaleType="fitXY"
         android:textAlignment="center"
         android:textSize="12sp"/>
 
@@ -38,12 +40,13 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/third"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="16"
-        android:background="@drawable/customborder"
+        android:src="@drawable/tickettoride"
+        android:scaleType="fitXY"
         android:textAlignment="center"
         android:textSize="12sp"/>
 
@@ -52,12 +55,13 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/fourth"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="16"
-        android:background="@drawable/customborder"
+        android:src="@drawable/tickettoride"
+        android:scaleType="fitXY"
         android:textAlignment="center"
         android:textSize="12sp"/>
 
@@ -65,12 +69,13 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/fifth"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="16"
-        android:background="@drawable/customborder"
+        android:src="@drawable/tickettoride"
+        android:scaleType="fitXY"
         android:textAlignment="center"
         android:textSize="12sp"/>
 
