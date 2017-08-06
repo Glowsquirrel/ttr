@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,8 +23,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,7 +67,7 @@ public class MapHelper {
     /**
      * The radius for the circles drawn at the city locations
      */
-    private static final int CITY_RADIUS = 40000;
+    private static final int CITY_RADIUS = 35000;
 
     /**
      * The color of the cities
@@ -82,6 +85,12 @@ public class MapHelper {
      * segments can be referenced together (for example, when changing the color)
      */
     private static Map<MapRoute, Set<Polyline>> routePolyLineMap = new HashMap<>();
+
+    private static Set<Polyline> myPolyLines = new HashSet<>();
+
+    public static Set<Polyline> getMyPolyLines(){
+        return myPolyLines;
+    }
 
     // initializes the the map
     static {
@@ -236,6 +245,7 @@ public class MapHelper {
             currPos = SphericalUtil.computeOffset(nextPos, ROUTE_GAP, heading);
             heading = SphericalUtil.computeHeading(currPos, destPos);
             routePolyLineMap.get(route).add(line);
+            myPolyLines.add(line);
         }
     }
 
@@ -294,6 +304,8 @@ public class MapHelper {
 
         // create a text view
         final TextView textView = new TextView(context);
+        textView.setClickable(false);
+        textView.setFocusable(false);
         textView.setText(text);
         textView.setTextSize(fontSize);
 
