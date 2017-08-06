@@ -1,5 +1,6 @@
 package fysh340.ticket_to_ride.game.fragments;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -12,8 +13,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +44,6 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
     }
 
     private GoogleMap mMap;
-    private List<Polyline> myPolylines = new ArrayList<>();
     private Marker savedMarker;
     private MapModel mMapModel = MapModel.getMapInstance();
     private IServer mServerProxy = new ServerProxy();
@@ -78,7 +83,12 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
         MapHelper.initMap(getActivity(), mMap);
 
         mMap.setOnPolylineClickListener(this);
-        mMap.setOnMarkerClickListener(this);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return true;
+            }
+        });
 
 
         if (savedMarker != null) {
@@ -86,7 +96,32 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
             mMap.moveCamera(CameraUpdateFactory.newLatLng(savedMarker.getPosition()));
         }
 
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng clickCoords) {
+                Float detectionRange = 300000f;
+                Polyline myClosePolyLine = null;
+                float myCloseResult = detectionRange;
+                for (Polyline polyline : MapHelper.getMyPolyLines()) {
+                    for (LatLng polyCoords : polyline.getPoints()) {
+                        float[] results = new float[1];
+                        Location.distanceBetween(clickCoords.latitude, clickCoords.longitude,
+                                polyCoords.latitude, polyCoords.longitude, results);
+
+                        if (results[0] < detectionRange && results[0] < myCloseResult) {
+                            myCloseResult = results[0];
+                            myClosePolyLine = polyline;
+                        }
+                    }
+                }
+                if (myClosePolyLine != null){
+                    onPolylineClick(myClosePolyLine);
+                }
+            }
+        });
+
     }
+
 
     public static MapPresenter newInstance() {
         MapPresenter fragment = new MapPresenter();
@@ -100,7 +135,7 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
     public void onPolylineClick(Polyline polyline) {
         MapRoute route = (MapRoute) polyline.getTag();
         int key = route.getKey();
-        //Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), String.valueOf(key), Toast.LENGTH_SHORT).show();
         // TODO: 7/25/17 get actual cards from somewhere
         mGame.setCurrentlySelectedRouteID(key);
     }

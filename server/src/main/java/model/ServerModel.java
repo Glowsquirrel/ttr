@@ -294,7 +294,10 @@ public class ServerModel {
 
             while (game.getReplaceFaceUpFlag()) {
                 Result nextResult = game.replaceFaceUpCards(playerName);
-                toClient.sendToGame(gameName, nextResult);
+                //replace the original ReplaceFaceUpResult with the new one
+                //previously was sending the new one first, then the old one.
+                results.set(1, nextResult);
+                //toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
             }
 

@@ -42,6 +42,7 @@
         </RelativeLayout>
 
     <FrameLayout android:id="@+id/left_drawer"
+        android:clickable="true"
         android:layout_width="400dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"

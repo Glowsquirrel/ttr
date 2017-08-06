@@ -15,17 +15,13 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.DrawSecondTrainCardState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.GamePlayState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
 import model.TrainCard;
-import serverproxy.ServerProxy;
 
 import static model.TrainCard.WILD;
+import static model.TrainCard.getTrainCard;
 
 /**
  *  <h1>Deck Presenter Fragment</h1>
@@ -39,11 +35,8 @@ public class DeckPresenter extends Fragment implements Observer {
     //Data Members
     
     //Constant labels for the mFaceDownCards and mDestinationDeck TestViews
-    private static final String TRAIN_DECK = "Train Card Deck\n";
-    private static final String DEST_DECK = "Dest. Cards\n";
-    
-    //Proxy updates the model
-    private ServerProxy mServerProxy = new ServerProxy();
+    //private static final String TRAIN_DECK = "Train Card Deck\n";
+    //private static final String DEST_DECK = "Dest. Cards\n";
     
     //Model object is referenced when it notifies this object of an update
     private Game mGame = Game.getGameInstance();
@@ -101,12 +94,14 @@ public class DeckPresenter extends Fragment implements Observer {
         String deckDescription;
         if(mGame.iHaveDifferentTrainDeckSize()) {
             mGame.iHaveDifferentTrainDeckSize(false);
-            deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+            //deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+            deckDescription = String.valueOf(mGame.getTrainCardDeckSize());
             mFaceDownCards.setText(deckDescription);
         }
         if(mGame.iHaveDifferentDestDeckSize()) {
             mGame.iHaveDifferentDestDeckSize(false);
-            deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+            //deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+            deckDescription = String.valueOf(mGame.getDestCardDeckSize());
             mDestinationDeck.setText(deckDescription);
         }
         
@@ -120,7 +115,7 @@ public class DeckPresenter extends Fragment implements Observer {
      *
      *  @pre    none
      *
-     *  @pose   The fragment will be created, ready for a view
+     *  @post   The fragment will be created, ready for a view
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,7 +180,8 @@ public class DeckPresenter extends Fragment implements Observer {
         
         //Set the face-down card deck and make it clickable
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
-        String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+        //String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+        String deckDescription = String.valueOf(mGame.getTrainCardDeckSize());
         mFaceDownCards.setText(deckDescription);
     
         mFaceDownCards.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +193,8 @@ public class DeckPresenter extends Fragment implements Observer {
     
         //Set the destination card deck and make it clickable
         mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
-        deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+        //deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+        deckDescription = String.valueOf(mGame.getDestCardDeckSize());
         mDestinationDeck.setText(deckDescription);
     
         mDestinationDeck.setOnClickListener(new View.OnClickListener() {
@@ -215,49 +212,63 @@ public class DeckPresenter extends Fragment implements Observer {
                 mSelectedRoute.setText("");
                 ArrayList<Integer> cards=new ArrayList<>();
                 Route route=Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
-                if(route.isClaimed()||(route.getLength()>mGame.getMyself().getNumTrains()))
+                Route sis= Route.getRouteByID(route.getSisterRouteKey());
+                if(route.isClaimed())
                 {
                     Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
                 }
-                else
+                else if((route.getLength()>mGame.getMyself().getNumTrains()))
                 {
-                if(route.getOriginalColor()==WILD)
-                {
-                    ColorChoiceDialog cd=new ColorChoiceDialog();
-                    cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+                    Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
                 }
+                else if(sis.isClaimed()&&Game.getGameInstance().getVisiblePlayerInformation().size()<4)
+                {
+                    Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
+                }
+                else if(Route.getRouteByID(route.getSisterRouteKey()).isClaimed()&&Route.getRouteByID(route.getSisterRouteKey()).getUser()==Game.getGameInstance().getMyself().getMyUsername())
+                {
+                    Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
+                }
+
                 else
                 {
-                    int colored=mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
-                    int wild=mGame.getMyself().getNumOfTypeCards(WILD);
-                    int cardsLeft=route.getLength();
-                    if(colored+wild>=route.getLength()) {
-                        for(int i=0;i<colored;i++)
-                        {
-                            if(cardsLeft>0) {
-                                cardsLeft--;
-                                cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
-                            }
-
-
-                        }
-                        while(cardsLeft>0)
-                        {
-                            cards.add(TrainCard.getTrainCardKey(WILD));
-                            cardsLeft--;
-                        }
-                        mGame.setCardsToDiscard(cards);
-                        ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
-                                mGame.getCurrentlySelectedRouteID(), cards);
-//                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+                    if(route.getOriginalColor()==WILD)
+                    {
+                        ColorChoiceDialog cd=new ColorChoiceDialog();
+                        cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
                     }
                     else
                     {
-                        Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
+                        int colored=mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
+                        int wild=mGame.getMyself().getNumOfTypeCards(WILD);
+                        int cardsLeft=route.getLength();
+                        if(colored+wild>=route.getLength()) {
+                            for(int i=0;i<colored;i++)
+                            {
+                                if(cardsLeft>0) {
+                                    cardsLeft--;
+                                    cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                                }
+
+
+                            }
+                            while(cardsLeft>0)
+                            {
+                                cards.add(TrainCard.getTrainCardKey(WILD));
+                                cardsLeft--;
+                            }
+                            mGame.setCardsToDiscard(cards);
+                            ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
+                                    mGame.getCurrentlySelectedRouteID(), cards);
+    //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
-
-
-                }
                 }
             }
         });
@@ -285,45 +296,45 @@ public class DeckPresenter extends Fragment implements Observer {
             switch(nextCard) {
                 case RED:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.red, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case BLUE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.blue, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case GREEN:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.green, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case YELLOW:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.yellow, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case BLACK:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.black, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case PURPLE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.purple, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                   //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case ORANGE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.orange, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WHITE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.white, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WILD:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.wild, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 default:
                     break;
             }
-            String cardTitle = "Draw " + nextCard.getPrettyname() + " Card";
-            mFaceUpCards[i].setText(cardTitle);
+            //String cardTitle = "Draw " + nextCard.getPrettyname() + " Card";
+            //mFaceUpCards[i].setText(cardTitle);
             mFaceUpCards[i].setEnabled(true);
 
         }

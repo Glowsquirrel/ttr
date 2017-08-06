@@ -10,7 +10,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="2dp"/>
 
     <TextView
         android:id="@+id/first"
@@ -23,7 +23,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="3dp"/>
 
     <TextView
         android:id="@+id/second"
@@ -36,7 +36,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="3dp"/>
 
     <TextView
         android:id="@+id/third"
@@ -50,7 +50,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="3dp"/>
 
     <TextView
         android:id="@+id/fourth"
@@ -63,7 +63,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="3dp"/>
 
     <TextView
         android:id="@+id/fifth"
@@ -76,13 +76,13 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="12dp"/>
+        android:layout_height="1dp"/>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="20">
+        android:layout_weight="26">
 
         <TableRow
             android:layout_width="wrap_content"
@@ -92,30 +92,34 @@
                 android:id="@+id/trainDeck"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/customborder"
-                android:textAlignment="center"
-                android:textSize="12sp"/>
+                android:background="@drawable/traincardback"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/destinationDeck"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/customborder"
+                android:background="@drawable/destcardback"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:textAlignment="center"
-                android:textSize="12sp"/>
+                android:textSize="20sp"/>
         </TableRow>
 
     </TableLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+        android:layout_height="1dp"/>
 
     <TextView
         android:id="@+id/selectedRoute"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="16"
+        android:layout_weight="14"
+        android:gravity="center"
         android:background="@drawable/customborder"
         android:textAlignment="center"
         android:textSize="12sp"/>

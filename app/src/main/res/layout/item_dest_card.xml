@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dest_card_cities"
-        android:text="@string/dest_card_sample_score"
+        android:text="@string/sample_number"
         android:textSize="16sp"
         android:gravity="center"/>
 
