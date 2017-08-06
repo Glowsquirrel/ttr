@@ -17,12 +17,12 @@ public class EndGameResult extends Result {
     protected List<Integer> destCardPtsAdded;
     protected List<Integer> destCardPtsSubtracted;
     protected List<Integer> totalPoints;
-    protected String ownsLongestRoute;
+    protected List<String> ownsLongestRoute;
 
     protected EndGameResult(){}
     public EndGameResult(List<String> players, List<Integer> numRoutesClaimed, List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
                          List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
-                         String ownsLongestRoute){
+                         List<String> ownsLongestRoute){
         super.type = Utils.END_GAME_TYPE;
         this.players = players;
         this.numRoutesClaimed = numRoutesClaimed;
@@ -31,5 +31,25 @@ public class EndGameResult extends Result {
         this.destCardPtsSubtracted = destCardPtsSubtracted;
         this.totalPoints = totalPoints;
         this.ownsLongestRoute = ownsLongestRoute;
+    }
+
+    public List<Integer> getPointsFromRoutes() {
+        return pointsFromRoutes;
+    }
+
+    public List<Integer> getDestCardPtsAdded() {
+        return destCardPtsAdded;
+    }
+
+    public List<Integer> getDestCardPtsSubtracted() {
+        return destCardPtsSubtracted;
+    }
+
+    public List<Integer> getTotalPoints() {
+        return totalPoints;
+    }
+
+    public List<String> getOwnsLongestRoute() {
+        return ownsLongestRoute;
     }
 }

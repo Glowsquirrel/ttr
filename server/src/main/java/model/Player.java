@@ -35,7 +35,7 @@ class Player {
     private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
     private int points;
     private int numOfRoutes;
-    private int numOfCars = 20;
+    private int numOfCars = 45;
     private List<ContinuousRoute> allContRoutes = new ArrayList<>();
      Player(String userName) {
         this.userName = userName;
@@ -465,8 +465,10 @@ class Player {
         return newlyDrawnDestCards;
     }
 
-
-    private class ContinuousRoute {
+    public List<ContinuousRoute> getAllContRoutes() {
+        return allContRoutes;
+    }
+    class ContinuousRoute {
          Set<City> cities = Collections.synchronizedSet(new HashSet<City>());
          int size = 0;
 
