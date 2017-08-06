@@ -381,9 +381,9 @@ public class StartedGame {
         List<Integer> pointsAdded = new ArrayList<>();
         List<Integer> pointsSubtracted = new ArrayList<>();
         List<Integer> totalPoints = new ArrayList<>();
-
+        List<String> largestSizeOwners = new ArrayList<>();
         int largestSize = 0;
-        String largestSizeOwner = null;
+
 
         for (int a = 0; a < playerOrder.size(); a++) {
             Player player = allPlayers.get(playerOrder.get(a));
@@ -394,19 +394,23 @@ public class StartedGame {
 
             if (player.getLargestContRouteSize() > largestSize) {
                 largestSize = player.getLargestContRouteSize();
-                largestSizeOwner = player.getUsername();
+                largestSizeOwners.clear();
+                largestSizeOwners.add((player.getUsername()));
+            } else if (player.getLargestContRouteSize() == largestSize) {
+                largestSizeOwners.add(player.getUsername());
             }
         }
 
-        Player largestContRouteOwner = allPlayers.get(largestSizeOwner);
-        largestContRouteOwner.addScore(10);
+        for (int a = 0; a < largestSizeOwners.size(); a++) {
+            allPlayers.get(largestSizeOwners.get(a)).addScore(10);
+        }
 
         for (int a = 0 ; a < playerOrder.size(); a++) {
             Player player = allPlayers.get(playerOrder.get(a));
             totalPoints.add(player.getPoints());
         }
         endGameResult = new EndGameResult(playerOrder, numRoutesClaimed, pointsFromRoutes, pointsAdded,
-                pointsSubtracted, totalPoints, largestSizeOwner);
+                pointsSubtracted, totalPoints, largestSizeOwners);
     }
 
     private void setFinalRoundResult() {

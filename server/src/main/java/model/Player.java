@@ -35,7 +35,7 @@ class Player {
     private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
     private int points;
     private int numOfRoutes;
-    private int numOfCars = 20;
+    private int numOfCars = 45;
     private List<ContinuousRoute> allContRoutes = new ArrayList<>();
      Player(String userName) {
         this.userName = userName;
@@ -372,7 +372,7 @@ class Player {
         if (startCityIndex > -1 && endCityIndex > -1) {
             ContinuousRoute startCityRoute = allContRoutes.get(startCityIndex);
             ContinuousRoute endCityRoute = allContRoutes.get(endCityIndex);
-            startCityRoute.uniteRoutes(endCityRoute);
+            startCityRoute.uniteRoutes(endCityRoute, size);
             allContRoutes.remove(endCityIndex);
         } else if (startCityIndex < 0 && endCityIndex < 0){
             allContRoutes.add(new ContinuousRoute(startCity, endCity, size));
@@ -465,8 +465,10 @@ class Player {
         return newlyDrawnDestCards;
     }
 
-
-    private class ContinuousRoute {
+    public List<ContinuousRoute> getAllContRoutes() {
+        return allContRoutes;
+    }
+    class ContinuousRoute {
          Set<City> cities = Collections.synchronizedSet(new HashSet<City>());
          int size = 0;
 
@@ -485,9 +487,9 @@ class Player {
              size += sizeToAdd;
          }
 
-         void uniteRoutes(ContinuousRoute endCityRoute) {
+         void uniteRoutes(ContinuousRoute endCityRoute, int claimedSize) {
              this.cities.addAll(endCityRoute.cities);
-             this.size += endCityRoute.size;
+             this.size += endCityRoute.size - claimedSize;
          }
      }
 }
