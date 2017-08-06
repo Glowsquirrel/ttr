@@ -20,20 +20,28 @@
     <string name="select_your_dest_cards">Select Destination Cards to keep:</string>
     <string name="dest_card_sample_city1">Sault St Marie</string>
     <string name="dest_card_sample_city2">Oklahoma City</string>
-    <string name="dest_card_sample_score">15</string>
-    <string name="spaced_hyphen">\ -\ </string>
+    <string name="sample_number">88</string>
+    <string name="sample_name">Username</string>
+    <string name="spaced_hyphen">\u0020-\u0020</string>
     <string name="confirm">Confirm</string>
-        <string-array name="mcolors">
-            <item>red</item>
-            <item>blue</item>
-            <item>green</item>
-            <item>yellow</item>
-            <item>black</item>
-            <item>purple</item>
-            <item>orange</item>
-            <item>white</item>
-            <item>wild</item>
-        </string-array>
+    <string name="score">Score:\u0020</string>
+
+    <string name="train_image_description">Image for a train</string>
+    <string name="route_image_description">Image for a route</string>
+    <string name="train_card_image_description">Image for a train card</string>
+    <string name="dest_card_image_description">Image for a dest card</string>
+
+    <string-array name="mcolors">
+        <item>red</item>
+        <item>blue</item>
+        <item>green</item>
+        <item>yellow</item>
+        <item>black</item>
+        <item>purple</item>
+        <item>orange</item>
+        <item>white</item>
+        <item>wild</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
