@@ -212,7 +212,13 @@ public class DeckPresenter extends Fragment implements Observer {
                 mSelectedRoute.setText("");
                 ArrayList<Integer> cards=new ArrayList<>();
                 Route route=Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
-                Route sis= Route.getRouteByID(route.getSisterRouteKey());
+                Route sis;
+                if(route.getSisterRouteKey()!=-1)
+                {sis=Route.getRouteByID(route.getSisterRouteKey());}
+                else
+                {
+                    sis=null;
+                }
                 if(route.isClaimed())
                 {
                     Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
@@ -221,11 +227,11 @@ public class DeckPresenter extends Fragment implements Observer {
                 {
                     Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
                 }
-                else if(sis.isClaimed()&&Game.getGameInstance().getVisiblePlayerInformation().size()<4)
+                else if(sis!=null&&sis.isClaimed()&&Game.getGameInstance().getVisiblePlayerInformation().size()<4)
                 {
                     Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
                 }
-                else if(Route.getRouteByID(route.getSisterRouteKey()).isClaimed()&&Route.getRouteByID(route.getSisterRouteKey()).getUser()==Game.getGameInstance().getMyself().getMyUsername())
+                else if(sis!=null&&Route.getRouteByID(route.getSisterRouteKey()).isClaimed()&&Route.getRouteByID(route.getSisterRouteKey()).getUser()==Game.getGameInstance().getMyself().getMyUsername())
                 {
                     Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
                 }
