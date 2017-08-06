@@ -212,6 +212,7 @@ public class DeckPresenter extends Fragment implements Observer {
                 mSelectedRoute.setText("");
                 ArrayList<Integer> cards=new ArrayList<>();
                 Route route=Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
+                Route sis= Route.getRouteByID(route.getSisterRouteKey());
                 if(route.isClaimed())
                 {
                     Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
@@ -220,7 +221,7 @@ public class DeckPresenter extends Fragment implements Observer {
                 {
                     Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
                 }
-                else if(Route.getRouteByID(route.getSisterRouteKey()).isClaimed()&&Game.getGameInstance().getVisiblePlayerInformation().size()<4)
+                else if(sis.isClaimed()&&Game.getGameInstance().getVisiblePlayerInformation().size()<4)
                 {
                     Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
                 }

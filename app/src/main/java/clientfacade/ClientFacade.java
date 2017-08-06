@@ -210,6 +210,7 @@ public class ClientFacade implements IClient{
         String message = "claimed route " + routeID;
         chatModel.addHistory(username, message);
     myRoute.setUser(username);
+        myRoute.setClaimed(true);
         //notify of changes
         game.notifyObserver();
 
@@ -400,6 +401,7 @@ public class ClientFacade implements IClient{
         if(player.getNumRoutes() < numRoutesOwned) {
             map.claimRoute(game.getPlayerByName(username).getColor(), claimedRouteNumber);
             Route.getRouteByID(claimedRouteNumber).setUser(username);
+            Route.getRouteByID(claimedRouteNumber).setClaimed(true);
             player.setNumRoutes(numRoutesOwned);
             player.setScore(score);
         }

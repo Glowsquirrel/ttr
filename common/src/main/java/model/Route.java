@@ -24,6 +24,7 @@ public class Route {
     private TrainCard originalColor;
     private PlayerColor claimedColor;
     private int sisterRouteKey;
+    private static Map<Integer, Route> routeMap;
 
     public String getUser() {
         return user;
@@ -79,7 +80,11 @@ public class Route {
     }
 
     public static Route getRouteByID(int routeID){
-        return createRouteMap().get(routeID);
+        if(routeMap==null)
+        {
+            routeMap=createRouteMap();
+        }
+        return routeMap.get(routeID);
     }
 
     void claim() {
@@ -90,7 +95,7 @@ public class Route {
     //so it cannot return a static member.
     //If there is no "sister" or double route, the sisterRoute key passed is -1.
     //This is used to initialize doubleRoute boolean to false.
-    static Map<Integer, Route> createRouteMap() {
+    public static HashMap<Integer, Route> createRouteMap() {
         HashMap<Integer, Route> routeMap = new HashMap<>();
 
         routeMap.put(0, new Route(ATLANTA, CHARLESTON, 2, WILD, -1));
@@ -219,8 +224,7 @@ public class Route {
 
         routeMap.put(98, new Route(SEATTLE, VANCOUVER, 1, WILD, 99));
         routeMap.put(99, new Route(SEATTLE, VANCOUVER, 1, WILD, 98));
-
-        return routeMap;
+return routeMap;
     }
 
     private void setPointValue() {
