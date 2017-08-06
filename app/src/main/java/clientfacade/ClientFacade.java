@@ -181,32 +181,22 @@ public class ClientFacade implements IClient{
     @Override
     public void claimRoute(String username, int routeID){
         Route myRoute = Route.getRouteByID(routeID);
-        TrainCard myTrainCardType = myRoute.getOriginalColor();
         int routeSize = myRoute.getLength();
 
         //change GUI elements
         map.claimRoute(game.getPlayerByName(username).getColor(), routeID);
         game.getMyself().incrementNumRoutesClaimed();
         List<Integer> toRemove=game.getCardsToDiscard();
+
         for(int i=0;i<toRemove.size();i++)
-        {
-            game.getMyself().removeTrainCardByInt(toRemove.get(i));
-        }
-//        game.getMyself().removeMultipleCardsOfType(myTrainCardType, routeSize);
-        game.getMyself().addToScore(myRoute.getPointValue());
-        game.getMyself().removeTrains(routeSize);
-        game.getMyself().removeMultipleTrainCards(routeSize);
+            game.removeTrainCardByInt(toRemove.get(i));
+
+        game.addToScore(myRoute.getPointValue());
+        game.removeTrains(routeSize);
 
         //raise GUI change flags
         game.iHaveDifferentTrainCards(true);
         game.aPlayerHasChanged(true);
-
-        //add history
-        //String message = "claimed route " + routeID;
-        //chatModel.addHistory(username, message);
-        //myRoute.setUser(username);
-        //myRoute.setClaimed(true);
-        //notify of changes
         game.notifyObserver();
 
         ClientState.INSTANCE.setState(new NotMyTurnState());

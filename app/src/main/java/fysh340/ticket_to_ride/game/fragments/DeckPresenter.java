@@ -100,7 +100,7 @@ public class DeckPresenter extends Fragment implements Observer {
             mGame.iHaveDifferentTrainDeckSize(false);
             deckDescription = String.valueOf(mGame.getTrainCardDeckSize());
             //if (!mFaceDownCards.getText().equals("0")) //as long as there are cards in the deck, keep flipping
-            flipView(mFaceDownCards.getBackground(), mFaceDownCards, 50, deckDescription);
+            flipView(mFaceDownCards.getBackground(), mFaceDownCards, 100, deckDescription);
         }
         if (mGame.iHaveDifferentDestDeckSize()) {
             mGame.iHaveDifferentDestDeckSize(false);
@@ -214,39 +214,31 @@ public class DeckPresenter extends Fragment implements Observer {
                 mSelectedRoute.setText("");
                 ArrayList<Integer> cards=new ArrayList<>();
                 Route route=Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
-                Route sis;
-                if(route.getSisterRouteKey()!=-1)
-                {sis=Route.getRouteByID(route.getSisterRouteKey());}
-                else
-                {
-                    sis=null;
-                }
-                if(route.isClaimed())
-                {
-                    Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
-                }
-                else if((route.getLength()>mGame.getMyself().getNumTrains()))
-                {
-                    Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
-                }
-                else if(sis!=null&&sis.isClaimed()&&Game.getGameInstance().getVisiblePlayerInformation().size()<4)
-                {
-                    Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
-                }
-                else if(sis!=null&&Route.getRouteByID(route.getSisterRouteKey()).isClaimed()&&Route.getRouteByID(route.getSisterRouteKey()).getUser()==Game.getGameInstance().getMyself().getMyUsername())
-                {
-                    Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
+                Route sisterRoute;
+
+                if(route.getSisterRouteKey() != -1) {
+                    sisterRoute = Route.getRouteByID(route.getSisterRouteKey());
+                } else {
+                    sisterRoute = null;
                 }
 
-                else
-                {
-                    if(route.getOriginalColor()==WILD)
-                    {
-                        ColorChoiceDialog cd=new ColorChoiceDialog();
+                if(route.isClaimed())
+                    Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
+                else if((route.getLength() > mGame.getMyNumTrains()))
+                    Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
+                else if(sisterRoute != null && sisterRoute.isClaimed() && mGame.getVisiblePlayerInformation().size() < 4)
+                    Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
+                else if(sisterRoute != null && sisterRoute.isClaimed() && sisterRoute.getUser().equals(mGame.getMyUsername()))
+                    Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
+
+
+                else {
+                    if (route.getOriginalColor() == WILD) {
+                        ColorChoiceDialog cd = new ColorChoiceDialog();
+                        cd.setCancelable(true);
                         cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
                     }
-                    else
-                    {
+                    else {
                         int colored=mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
                         int wild=mGame.getMyself().getNumOfTypeCards(WILD);
                         int cardsLeft=route.getLength();
@@ -293,24 +285,25 @@ public class DeckPresenter extends Fragment implements Observer {
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void repopulateFaceUpCards() {
-        //Get train cards that are up-for-grabs
+        //Get the new face up train cards
         List<Integer> cardsByID = mGame.getFaceUpCards();
         List<Boolean> faceUpDifferences = mGame.getFaceUpDifferences();
         int faceupl = mFaceUpCards.length;
-        //For each view, set the view text to the train card color/type
-        int cardFlipDelay = 0;
-        int NEXT_FLIP_DELAY = 50;
-        int numCardsFlipped = 0;
+        int cardFlipDelay = 0;  //delay to flip a face up card. this is only relevant when > 1 face up cards are changing.
+        int deckFlipDelay = 100; //delay to flip the train card deck. this is only relevant when > 1 face up cards are changing.
+        int NEXT_FLIP_DELAY = 100; //delay between each face up card flip. setting this to 0 will make all face up card flipping immediate
+        int numCardsFlipped = 0; //number of times to flip the train card deck.
         int cardIndex;
         for (cardIndex = 0; cardIndex < cardsByID.size(); cardIndex++) {
             boolean cardIsDifferent = faceUpDifferences.get(cardIndex);
             if (!cardIsDifferent)
                 continue;
+
             TrainCard nextCard = TrainCard.getTrainCard(cardsByID.get(cardIndex));
-
             final Drawable drawable;
-            final ImageView imageView = mFaceUpCards[cardIndex];
+            final ImageView imageView = mFaceUpCards[cardIndex]; //get the original card image ready to flip
 
+            //get the drawable depending on the type of train card it is
             switch (nextCard) {
                 case RED:
                     drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.red, null);
@@ -344,13 +337,14 @@ public class DeckPresenter extends Fragment implements Observer {
                     break;
             }
 
-            flipView(drawable, imageView, cardFlipDelay, null);
-            cardFlipDelay += NEXT_FLIP_DELAY;
-            numCardsFlipped++;
+            flipView(drawable, imageView, cardFlipDelay, null); //flip the changed face up card
+            cardFlipDelay += NEXT_FLIP_DELAY; //delay the next face up card flip
+            numCardsFlipped++;  //a face up card has flipped, so flip the deck one more time
 
             mFaceUpCards[cardIndex].setEnabled(true);
         }
 
+        //if the number of the face up cards has been reduced (we have < 5 train cards face up), set it to default image and remove clicks on it
         if (cardIndex < faceupl) {
             final Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.tickettoride, null);
             final ImageView imageView = mFaceUpCards[cardIndex];
@@ -359,18 +353,21 @@ public class DeckPresenter extends Fragment implements Observer {
             mFaceUpCards[cardIndex].setEnabled(false);
         }
 
-
+        //for each face up card that was flipped, flip the deck once and decrement the number on it
         while (numCardsFlipped-- > 0 && mFaceDownCards != null){
             if (mGame.getTrainCardDeckSize() == 0)
                 break;
             String flipCounter = String.valueOf(mGame.getTrainCardDeckSize() + numCardsFlipped);
-            flipView(mFaceDownCards.getBackground(), mFaceDownCards, cardFlipDelay, flipCounter);
-            cardFlipDelay += FLIP_DURATION;
+            flipView(mFaceDownCards.getBackground(), mFaceDownCards, deckFlipDelay, flipCounter);
+            deckFlipDelay += FLIP_DURATION;
         }
     }
 
+    //flip a TextView or ImageView 180 degrees on the y axis while changing it's text or image respectively
     private void flipView(final Drawable drawable, final View view, int flipDelay, final String newText){
-        ObjectAnimator animStage1 = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity(), R.animator.flip_stage_1);
+        //flip from 0 to 90 first
+        final ObjectAnimator animStage1 = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity(), R.animator.flip_stage_1);
+        //then flip from -90 to 0
         final ObjectAnimator animStage2 = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity(), R.animator.flip_stage_2);
         animStage1.setTarget(view);
         animStage2.setTarget(view);
@@ -382,6 +379,10 @@ public class DeckPresenter extends Fragment implements Observer {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                /*
+                After completing part one of the animation (it is now at 90 degrees and is completely invisible),
+                change the image or the text and then rotate back into visibility.
+                 */
                 if (view instanceof ImageView)
                     ((ImageView) view).setImageDrawable(drawable);
                 if (view instanceof TextView && newText != null)
@@ -394,21 +395,8 @@ public class DeckPresenter extends Fragment implements Observer {
             @Override
             public void onAnimationRepeat(Animator animation) {}
         });
-        animStage2.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {}
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {}
-        });
-
-        if (drawable != null) {
+        if (drawable != null) { //if the new drawable is null, do not perform this animation (used when first starting the activity)
             animStage1.setStartDelay(flipDelay);
             animStage1.start();
         }

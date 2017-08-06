@@ -2,18 +2,7 @@ package model;
 
 import fysh340.ticket_to_ride.R;
 
-import static fysh340.ticket_to_ride.R.color.neon_green;
-import static fysh340.ticket_to_ride.R.color.neon_grey;
-import static fysh340.ticket_to_ride.R.color.neon_orange;
-import static fysh340.ticket_to_ride.R.color.neon_pink;
-import static fysh340.ticket_to_ride.R.color.neon_yellow;
 
-/**
- * Contains all the information that a player would know about any other player in the game. Both Player
- * and VisiblePlayer extend this class.
- *
- * @author Kalan
- */
 public abstract class AbstractPlayer {
     private final int STARTING_NUMBER_OF_TRAINS = 45;
     protected String username;
@@ -106,14 +95,11 @@ public abstract class AbstractPlayer {
     //end train updates
 
     //begin train card updates
-    public void addTrainCard(){
+    protected void addTrainCard(){
         this.numCards++;
     }
-    public void removeTrainCard() { //may not be used
+    protected void removeTrainCard(){
         this.numCards--;
-    }
-    public void addMultipleTrainCards(int numCardsToAdd){
-        this.numCards += numCardsToAdd;
     }
     public void removeMultipleTrainCards(int numCardsToRemove){
         this.numCards -= numCardsToRemove;

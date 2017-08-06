@@ -38,7 +38,6 @@ public class Game implements Observable{
     
     private String gameName;
     private Player myself;
-    private List<String> playerUserNames = new ArrayList<>();
     private Map<String, AbstractPlayer> playerMap = new HashMap<>();
     private List<Integer> trainCards = new ArrayList<>();
     private ArrayList<Observer> observers = new ArrayList<>();
@@ -98,20 +97,18 @@ public class Game implements Observable{
         this.myself = myself;
         this.gameName = gameName;
         gameDecks.setAvailableFaceUpCards(faceUpCards);
-        this.playerUserNames = playerNames;
-        int i=0;
+        int colorIndex = 0; //assign each player a different color based on their order in the playerNames list
         for(String name : playerNames) {
             if (name.equals(myself.getMyUsername())){
                 playerMap.put(myself.getMyUsername(), this.myself);
-                myself.setColor(i);
-                i++;
-                continue;
+                myself.setColor(colorIndex);
+                colorIndex++;
+            } else {
+                VisiblePlayer myPlayer = new VisiblePlayer(name, myself.getNumOfCards());
+                myPlayer.setColor(colorIndex);
+                colorIndex++;
+                playerMap.put(name, myPlayer);
             }
-            VisiblePlayer myPlayer = new VisiblePlayer(name, myself.getNumOfCards());
-            
-            myPlayer.setColor(i);
-            i++;
-            playerMap.put(name, myPlayer);
         }
         
         gameDecks.setTrainCardDeckSize(gameDecks.getTrainCardDeckSize()
@@ -138,6 +135,29 @@ public class Game implements Observable{
      */
     public Player getMyself() {
         return myself;
+    }
+
+    public void addToScore(int scoreToAdd){
+        myself.addToScore(scoreToAdd);
+    }
+
+    public void removeTrains(int numTrainsToRemove){
+        myself.removeTrains(numTrainsToRemove);
+    }
+
+    public void removeMultipleTrainCards(int numCardsToRemove){
+        myself.removeMultipleTrainCards(numCardsToRemove);
+    }
+
+    public void removeTrainCardByInt(int myTrainCardInt){
+        myself.removeTrainCardByInt(myTrainCardInt);
+    }
+
+    public int getMyNumTrains(){
+        return this.myself.getNumTrains();
+    }
+    public String getMyUsername(){
+        return this.myself.getMyUsername();
     }
     /**
      * @pre game must be initialized with a nonnull faceup cards list
