@@ -97,7 +97,14 @@ public class Board {
             shuffledDeck.set(positionOne, shuffledDeck.get(positionTwo));
             shuffledDeck.set(positionTwo, savedCard);
         }
-        trainCardDeck = shuffledDeck;
+        
+        if(!setUp) {
+            for(TrainCard shuffled : shuffledDeck) {
+                TrainCard copy = TrainCard.getTrainCard(TrainCard.getTrainCardKey(shuffled));
+                trainCardDeck.add(copy);
+            }
+        }
+        
         discardedTrainCards.clear();
     }
 
