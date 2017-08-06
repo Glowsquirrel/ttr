@@ -45,6 +45,8 @@ public class StartedGame {
     private Result endGameResult = null;
     private Result finalRoundResult = null;
     private String afterFinalTurnPlayer = null;
+    private boolean secondPass = false;
+
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
     }
@@ -375,7 +377,10 @@ public class StartedGame {
         if (!playerOrder.get(turnPointer).equals(afterFinalTurnPlayer)) {
             return;
         }
-
+        if (!secondPass){
+            secondPass = true;
+            return;
+        }
         List<Integer> numRoutesClaimed = new ArrayList<>();
         List<Integer> pointsFromRoutes = new ArrayList<>();
         List<Integer> pointsAdded = new ArrayList<>();

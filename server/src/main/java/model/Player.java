@@ -461,6 +461,11 @@ class Player {
         playerColor = PlayerColor.getPlayerColor(position);
     }
 
+    void customNumOfCars(int numOfCars) {
+        this.numOfCars = numOfCars;
+    }
+
+
     List<DestCard> getNewlyDrawnDestCards() {
         return newlyDrawnDestCards;
     }
