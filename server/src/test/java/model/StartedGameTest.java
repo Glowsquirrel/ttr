@@ -4,6 +4,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class StartedGameTest {
     private int playerThreePoints = 0;
     private int playerFourPoints = 0;
 
-
+    private int numOfPassesTest1 = 0;
     private static StartedGame startedGame;
     @BeforeClass
     public static void setUpGame() {
@@ -128,7 +129,10 @@ public class StartedGameTest {
     //route 99, which has a size of 1.
     private void roundOfRoutes() {
         try {
-
+            //Test is calculated for 11 passes; no one claims routes the final round.
+            if(numOfPassesTest1 == 11) {
+                return;
+            }
             startedGame.claimRoute("Player1", playerOneRoute, new ArrayList<>(trainCards(playerOneRoute)));
             playerOnePoints += Route.getRouteByID(playerOneRoute).getPointValue();
 
@@ -138,21 +142,14 @@ public class StartedGameTest {
             startedGame.claimRoute("Player3", playerThreeRoute, new ArrayList<>(trainCards(playerThreeRoute)));
             playerThreePoints += Route.getRouteByID(playerThreeRoute).getPointValue();
 
-            if (hasEnoughCards("Player4", playerFourRoute)){
-
-                ArrayList<Integer> pass = new ArrayList<>(trainCards(playerFourRoute));
-                startedGame.claimRoute("Player4", playerFourRoute, pass);
-                playerFourPoints += Route.getRouteByID(playerFourRoute).getPointValue();
-
-            } else {
-                startedGame.claimRoute("Player4", 99, new ArrayList<>(trainCards(playerFourRoute)));
-                playerFourPoints++;
-            }
+            startedGame.claimRoute("Player4", playerFourRoute, new ArrayList<>(trainCards(playerFourRoute)));
+            playerFourPoints += Route.getRouteByID(playerFourRoute).getPointValue();
 
             playerOneRoute += 4;
             playerTwoRoute += 4;
             playerThreeRoute += 4;
             playerFourRoute += 4;
+            numOfPassesTest1++;
         } catch(GamePlayException ge) {
             System.out.println(ge.getMessage());
         }
@@ -273,10 +270,6 @@ public class StartedGameTest {
         System.out.println("Total Points: " + totalPoints.get(3));
     }
 
-    private boolean hasEnoughCards(String player, int routeId){
-       return startedGame.getAllPlayers().get(player).getNumOfCars() > Route.getRouteByID(routeId).getLength();
-    }
-
     private List<Integer> trainCards(int routeId) {
         int routeSize = Route.getRouteByID(routeId).getLength();
         List<Integer> allCards = new ArrayList<>();
@@ -285,4 +278,126 @@ public class StartedGameTest {
         }
         return allCards;
     }
+
+
+    //Test is set for TWENTY-FOUR TRAIN CARS PER PERSON.
+    @Test
+    public void destinationCardTest() {
+
+        StartedGame startedGame = destCardTestSetup();
+        startedGame.getAllPlayers().get("Player1").customNumOfCars(24);
+        startedGame.getAllPlayers().get("Player2").customNumOfCars(24);
+
+        try{
+            startedGame.returnDestCard("Player1", 30);
+            startedGame.returnDestCard("Player2", 30);
+
+            for (int a = 0; a < 4; a++) {
+                startedGame.drawThreeDestCards("Player1");
+                startedGame.returnDestCard("Player1", 30);
+                startedGame.drawThreeDestCards("Player2");
+                startedGame.returnDestCard("Player2", 30);
+            }
+
+            startedGame.claimRoute("Player1", 79, new ArrayList<>(Arrays.asList(8, 8)));
+            startedGame.claimRoute("Player2", 11, new ArrayList<Integer>(Arrays.asList(8,8,8,8)));
+
+            startedGame.claimRoute("Player1", 92, new ArrayList<>(Arrays.asList(8, 8)));
+            startedGame.claimRoute("Player2", 51, new ArrayList<Integer>(Arrays.asList(8,8,8)));
+
+            startedGame.claimRoute("Player1", 5, new ArrayList<>(Arrays.asList(8, 8)));
+            startedGame.claimRoute("Player2", 36, new ArrayList<Integer>(Arrays.asList(8,8,8)));
+
+            startedGame.claimRoute("Player1", 9, new ArrayList<>(Arrays.asList(8, 8)));
+            startedGame.claimRoute("Player2", 35, new ArrayList<Integer>(Arrays.asList(8,8,8,8,8)));
+
+            startedGame.claimRoute("Player1", 7, new ArrayList<>(Arrays.asList(8, 8)));
+            startedGame.claimRoute("Player2", 12, new ArrayList<Integer>(Arrays.asList(8,8,8,8)));
+
+            startedGame.claimRoute("Player1", 33, new ArrayList<>(Arrays.asList(8, 8, 8, 8)));
+            startedGame.claimRoute("Player2", 13, new ArrayList<Integer>(Arrays.asList(8,8,8)));
+
+            startedGame.claimRoute("Player1", 47, new ArrayList<>(Arrays.asList(8, 8,8,8,8)));
+            startedGame.claimRoute("Player2", 99, new ArrayList<Integer>(Arrays.asList(8)));
+
+            EndGameResult result = (EndGameResult)startedGame.getEndGameResult();
+            assertEquals(27, (int)result.getPointsFromRoutes().get(0));
+            assertEquals(37, (int)result.getPointsFromRoutes().get(1));
+            printSecondResults(result, startedGame);
+        } catch (GamePlayException ge) {
+            System.out.println(ge.getMessage());
+        }
+    }
+
+    private void printSecondResults(EndGameResult result, StartedGame startedGame) {
+
+        List<DestCard> destCards1 = startedGame.getAllPlayers().get("Player1").getDestCards();
+        List<DestCard> destCards2 = startedGame.getAllPlayers().get("Player2").getDestCards();
+        List<Player.ContinuousRoute> playerOneRoutes = startedGame.getAllPlayers().get("Player1").getAllContRoutes();
+        List<Player.ContinuousRoute> playerTwoRoutes = startedGame.getAllPlayers().get("Player2").getAllContRoutes();
+
+        List<Integer> pointsFromRoutes = result.getPointsFromRoutes();
+        List<Integer> pointsFromDestCards = result.getDestCardPtsAdded();
+        List<Integer> pointsSubtFromDestCards = result.getDestCardPtsSubtracted();
+        List<String>  longestRouteHolder = result.getOwnsLongestRoute();
+        List<Integer> totalPoints = result.getTotalPoints();
+
+        System.out.println("\nPlayer 1 has: ");
+        for (int a  = 0; a < destCards1.size(); a++) {
+            DestCard destCard = destCards1.get(a);
+            System.out.println("  " + destCard.toString() + ", points: " + destCard.getPointValue());
+        }
+        for (int a = 0; a < playerOneRoutes.size(); a++) {
+            for (City city : playerOneRoutes.get(a).cities) {
+                System.out.print(city.getPrettyName() + ", ");
+            }
+            System.out.println("Size is: "  + playerOneRoutes.get(a).size);
+        }
+        System.out.println("Points from routes: "  + pointsFromRoutes.get(0));
+        System.out.println("Points added: "  + pointsFromDestCards.get(0));
+        System.out.println("Points subtracted: "  + pointsSubtFromDestCards.get(0));
+        if(longestRouteHolder.contains("Player1")){
+            System.out.println("Largest cont route? "
+                    + startedGame.getAllPlayers().get("Player1").getLargestContRouteSize() + ", Yes.");
+        }else {
+            System.out.println("Largest cont route? " +
+                    + startedGame.getAllPlayers().get("Player1").getLargestContRouteSize() + ", No.");
+        }
+        System.out.println("Total Points: " + totalPoints.get(0));
+
+        System.out.println("\nPlayer 2 has: ");
+        for (int a  = 0; a < destCards2.size(); a++) {
+            DestCard destCard = destCards2.get(a);
+            System.out.println("  " + destCard.toString() + ", points: " + destCard.getPointValue());
+        }
+        for (int a = 0; a < playerTwoRoutes.size(); a++) {
+            for (City city : playerTwoRoutes.get(a).cities) {
+                System.out.print(city.getPrettyName() + ", ");
+            }
+            System.out.println("Size is: "  + playerTwoRoutes.get(a).size);
+        }
+        System.out.println("Points from routes: "  + pointsFromRoutes.get(1));
+        System.out.println("Points added: "  + pointsFromDestCards.get(1));
+        System.out.println("Points subtracted: "  + pointsSubtFromDestCards.get(1));
+        if(longestRouteHolder.contains("Player2")){
+            System.out.println("Largest cont route? "
+                    + startedGame.getAllPlayers().get("Player2").getLargestContRouteSize() + ", Yes.");
+        }else {
+            System.out.println("Largest cont route? " +
+                    + startedGame.getAllPlayers().get("Player2").getLargestContRouteSize() + ", No.");
+        }
+        System.out.println("Total Points: " + totalPoints.get(1));
+    }
+
+    private StartedGame destCardTestSetup() {
+        UnstartedGame unstartedGame = new UnstartedGame("gameName", 2);
+        unstartedGame.addPlayer("Player1");
+        unstartedGame.addPlayer("Player2");
+        StartedGame startedGame = new StartedGame(unstartedGame);
+        startedGame.preGameSetup(unstartedGame.getUsernamesInGame());
+        return startedGame;
+    }
+
+
+
 }
