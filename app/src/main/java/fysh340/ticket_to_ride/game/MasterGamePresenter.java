@@ -45,6 +45,7 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
 
         ChatPresenter chatPresenter = new ChatPresenter();
         mapPresenter = MapPresenter.newInstance();
+
         trainCardPresenter = new TrainCardPresenter();
         destCardPresenter = new DestCardPresenter();
         allPlayersPresenter = new AllPlayersPresenter();
