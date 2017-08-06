@@ -15,15 +15,10 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.DrawSecondTrainCardState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.GamePlayState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
-import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
 import model.TrainCard;
-import serverproxy.ServerProxy;
 
 import static model.TrainCard.WILD;
 
@@ -39,11 +34,8 @@ public class DeckPresenter extends Fragment implements Observer {
     //Data Members
     
     //Constant labels for the mFaceDownCards and mDestinationDeck TestViews
-    private static final String TRAIN_DECK = "Train Card Deck\n";
-    private static final String DEST_DECK = "Dest. Cards\n";
-    
-    //Proxy updates the model
-    private ServerProxy mServerProxy = new ServerProxy();
+    //private static final String TRAIN_DECK = "Train Card Deck\n";
+    //private static final String DEST_DECK = "Dest. Cards\n";
     
     //Model object is referenced when it notifies this object of an update
     private Game mGame = Game.getGameInstance();
@@ -101,12 +93,14 @@ public class DeckPresenter extends Fragment implements Observer {
         String deckDescription;
         if(mGame.iHaveDifferentTrainDeckSize()) {
             mGame.iHaveDifferentTrainDeckSize(false);
-            deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+            //deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+            deckDescription = String.valueOf(mGame.getTrainCardDeckSize());
             mFaceDownCards.setText(deckDescription);
         }
         if(mGame.iHaveDifferentDestDeckSize()) {
             mGame.iHaveDifferentDestDeckSize(false);
-            deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+            //deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+            deckDescription = String.valueOf(mGame.getDestCardDeckSize());
             mDestinationDeck.setText(deckDescription);
         }
         
@@ -120,7 +114,7 @@ public class DeckPresenter extends Fragment implements Observer {
      *
      *  @pre    none
      *
-     *  @pose   The fragment will be created, ready for a view
+     *  @post   The fragment will be created, ready for a view
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,7 +179,8 @@ public class DeckPresenter extends Fragment implements Observer {
         
         //Set the face-down card deck and make it clickable
         mFaceDownCards = (TextView) deckView.findViewById(R.id.trainDeck);
-        String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+        //String deckDescription = TRAIN_DECK + mGame.getTrainCardDeckSize();
+        String deckDescription = String.valueOf(mGame.getTrainCardDeckSize());
         mFaceDownCards.setText(deckDescription);
     
         mFaceDownCards.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +192,8 @@ public class DeckPresenter extends Fragment implements Observer {
     
         //Set the destination card deck and make it clickable
         mDestinationDeck = (TextView) deckView.findViewById(R.id.destinationDeck);
-        deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+        //deckDescription = DEST_DECK + mGame.getDestCardDeckSize();
+        deckDescription = String.valueOf(mGame.getDestCardDeckSize());
         mDestinationDeck.setText(deckDescription);
     
         mDestinationDeck.setOnClickListener(new View.OnClickListener() {
@@ -285,45 +281,45 @@ public class DeckPresenter extends Fragment implements Observer {
             switch(nextCard) {
                 case RED:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.red, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case BLUE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.blue, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case GREEN:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.green, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case YELLOW:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.yellow, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case BLACK:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.black, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case PURPLE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.purple, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
+                   //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.white));
                     break;
                 case ORANGE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.orange, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WHITE:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.white, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 case WILD:
                     mFaceUpCards[i].setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.wild, null));
-                    mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
+                    //mFaceUpCards[i].setTextColor(getResources().getColor(R.color.black));
                     break;
                 default:
                     break;
             }
-            String cardTitle = "Draw " + nextCard.getPrettyname() + " Card";
-            mFaceUpCards[i].setText(cardTitle);
+            //String cardTitle = "Draw " + nextCard.getPrettyname() + " Card";
+            //mFaceUpCards[i].setText(cardTitle);
             mFaceUpCards[i].setEnabled(true);
 
         }
