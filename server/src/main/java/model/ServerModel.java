@@ -303,7 +303,7 @@ public class ServerModel {
 
             toClient.sendToUser(playerName, gameName, results.get(0));
             toClient.sendToGame(gameName, results.get(1));
-            toClient.sendToOthersInGame(playerName,gameName, game.getGameHistory());
+            toClient.sendToGame(gameName, game.getGameHistory());
 
             Result turnResult = game.getThenNullifyTurnResult();
             if (turnResult != null) {
@@ -359,7 +359,7 @@ public class ServerModel {
     private void sendToClients(String playerName, StartedGame game , Result result) {
         toClient.sendToUser(playerName, game.getGameName(), result);
         allCommandLists.get(game.getGameName()).add(result);
-        toClient.sendToOthersInGame(playerName, game.getGameName(), game.getGameHistory());
+        toClient.sendToGame(game.getGameName(), game.getGameHistory());
         allCommandLists.get(game.getGameName()).add(game.getGameHistory());
 
         Result turnResult = game.getThenNullifyTurnResult();

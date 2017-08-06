@@ -2,9 +2,7 @@ package clientfacade;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.DrawSecondTrainCardState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.MyTurnState;
@@ -14,7 +12,6 @@ import interfaces.IClient;
 import model.AbstractPlayer;
 import model.ChatHistoryModel;
 import model.ClientModel;
-import model.Deck;
 import model.Game;
 import model.MapModel;
 import model.Player;
@@ -23,8 +20,6 @@ import model.RunningGame;
 import model.TrainCard;
 import model.UnstartedGame;
 import model.VisiblePlayer;
-import okhttp3.WebSocket;
-import websocket.ClientWebSocket;
 
 /**
  * This class handles all communication from the server when something happens, whether in the menus
@@ -437,9 +432,10 @@ public class ClientFacade implements IClient{
         Game.getGameInstance().getServerError().setMessage(message);
     }
 
+    //NOTE: Adjusted to make compatible with List of Strings for longest route.
     public void endGame(List<String> players, List<Integer> numRoutesClaimed,  List<Integer> pointsFromRoutes, List<Integer> destCardPtsAdded,
                         List<Integer> destCardPtsSubtracted, List<Integer> totalPoints,
-                        String ownsLongestRoute) {
+                        List<String> ownsLongestRoute) {
         game.setGameOver(true);
         List<AbstractPlayer> endGamePlayerList = new ArrayList<>();
 
@@ -454,7 +450,7 @@ public class ClientFacade implements IClient{
             myPlayer.setDestinationPointsLost(destCardPtsSubtracted.get(i));
             myPlayer.setScore(totalPoints.get(i));
             myPlayer.setColor(i);
-            if(ownsLongestRoute.equals(myPlayer.getMyUsername()))
+            if(ownsLongestRoute.contains(myPlayer.getMyUsername()))
             {
                 myPlayer.setLongestRoutePoints(10);
             }
