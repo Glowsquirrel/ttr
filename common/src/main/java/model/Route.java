@@ -25,6 +25,16 @@ public class Route {
     private PlayerColor claimedColor;
     private int sisterRouteKey;
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    private String user;
+
     public void setClaimed(boolean claimed) {
         this.claimed = claimed;
     }
@@ -239,12 +249,16 @@ public class Route {
         return pointValue;
     }
 
-    int getSisterRouteKey() {
+    public int getSisterRouteKey() {
         return sisterRouteKey;
     }
 
     public boolean isClaimed(){
         return claimed;
+    }
+
+    public void setSisterRouteKey(int sisterRouteKey) {
+        this.sisterRouteKey = sisterRouteKey;
     }
 
     boolean sisterRouteIsClaimed(){
