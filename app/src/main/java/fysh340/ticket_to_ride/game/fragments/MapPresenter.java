@@ -119,7 +119,7 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
                 }
             }
         });
-        
+
     }
 
 
