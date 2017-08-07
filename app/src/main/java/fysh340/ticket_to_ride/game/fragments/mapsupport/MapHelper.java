@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
@@ -57,17 +59,22 @@ public class MapHelper {
     /**
      * The maximum zoom level for the map
      */
-    private static final float MAX_ZOOM = 6.0f;
+    private static final float MAX_ZOOM = 6.5f;
 
     /**
      * The minimum zoom level for the map
      */
-    private static final float MIN_ZOOM = 4.0f;
+    private static final float MIN_ZOOM = 5.0f;
 
     /**
      * The radius for the circles drawn at the city locations
      */
-    private static final int CITY_RADIUS = 35000;
+    private static final int CITY_RADIUS = 75000;
+
+    /**
+     * The gap between double routes
+     */
+    private static final int DOUBLE_ROUTE_GAP = 35000;
 
     /**
      * The color of the cities
@@ -201,8 +208,8 @@ public class MapHelper {
         // if the route is a double route (there are two routes between the cities), adjust the
         // starting and ending positions
         if (route.getDir() != 0) {
-            currPos = SphericalUtil.computeOffset(currPos, CITY_RADIUS, heading + 90.0 * route.getDir());
-            destPos = SphericalUtil.computeOffset(destPos, CITY_RADIUS, heading + 90.0 * route.getDir());
+            currPos = SphericalUtil.computeOffset(currPos, DOUBLE_ROUTE_GAP, heading + 90.0 * route.getDir());
+            destPos = SphericalUtil.computeOffset(destPos, DOUBLE_ROUTE_GAP, heading + 90.0 * route.getDir());
         }
 
         // adjust the starting and ending positions so that we aren't starting right at the center
@@ -331,7 +338,7 @@ public class MapHelper {
                 .position(location)
                 .icon(BitmapDescriptorFactory.fromBitmap(bmpText))
                 .zIndex(2)
-                .anchor(0f, 0.75f);
+                .anchor(0.5f, 0.5f);
 
         // add the marker to the map
         marker = map.addMarker(markerOptions);
