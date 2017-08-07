@@ -32,10 +32,12 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     @Override
     public void drawThreeDestCards(String username, String gameName) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
     }
 
     @Override
     public void returnDestCards(String username, String gameName, int destCards) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
     }
 
     @Override
@@ -56,5 +58,6 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
     }
 }
