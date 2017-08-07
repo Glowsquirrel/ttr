@@ -295,10 +295,6 @@ public class ServerModel {
             StartedGame game = this.getGame(gameName);
             List<Result> results = game.drawTrainCardFromFaceUp(playerName, index);
 
-
-
-
-
             toClient.sendToUser(playerName, gameName, results.get(0));
             toClient.sendToGame(gameName, game.getGameHistory());
             toClient.sendToGame(gameName, results.get(1));

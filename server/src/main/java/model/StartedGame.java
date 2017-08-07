@@ -254,6 +254,7 @@ public class StartedGame {
 
         //save previous cards
         List<Integer> previousFaceUpCards = board.getFaceUpCardCodes();
+        boolean flipAll = false;
         if (currentPlayer != null) {
 
             final int LOCOMOTIVE_INDEX = 8;
@@ -267,8 +268,20 @@ public class StartedGame {
 
             int counter = 0;
 
-            while (getReplaceFaceUpFlag()) {
+            drawnCard = board.drawFaceUpCard(index);
+
+            List<TrainCard> passToPlayer = new ArrayList<>();
+            passToPlayer.add(drawnCard);
+            currentPlayer.addTrainCards(passToPlayer);
+
+            board.reshuffleIfEmpty();
+            //replaceFaceUpFlag = board.getReplaceFaceUpFlag();
+
+
+
+            while (board.getReplaceFaceUpFlag()) {
                 replaceFaceUpCards(playerName, counter);
+                flipAll = true;
                 counter++;
             }
 
@@ -278,34 +291,31 @@ public class StartedGame {
                 turnState.switchState(CommandType.FACEUP_NON_LOCOMOTIVE);
             }
 
-            drawnCard = board.drawFaceUpCard(index);
-            List<TrainCard> passToPlayer = new ArrayList<>();
-            passToPlayer.add(drawnCard);
-            currentPlayer.addTrainCards(passToPlayer);
-            board.reshuffleIfEmpty();
-            replaceFaceUpFlag = board.getReplaceFaceUpFlag();
-
         } else {
             throw new GamePlayException("Invalid player name");
         }
 
         //check for card differences
         List<Boolean> faceUpDifferences = new ArrayList<>();
-        List<Integer> newFaceUpCards = board.getFaceUpCardCodes();
-        for (int i = 0; (i < newFaceUpCards.size() && i < previousFaceUpCards.size()); i++){
-            if (previousFaceUpCards.get(i).equals(newFaceUpCards.get(i)))
-                faceUpDifferences.add(false);
-            else
+        if (!flipAll) {
+            List<Integer> newFaceUpCards = board.getFaceUpCardCodes();
+            for (int i = 0; (i < newFaceUpCards.size() && i < previousFaceUpCards.size()); i++) {
+                if (previousFaceUpCards.get(i).equals(newFaceUpCards.get(i)))
+                    faceUpDifferences.add(false);
+                else
+                    faceUpDifferences.add(true);
+            }
+            while (faceUpDifferences.size() < 5) {
+                if (newFaceUpCards.size() > previousFaceUpCards.size()) //if there are more cards than before, flip them
+                    faceUpDifferences.add(true);
+                else
+                    faceUpDifferences.add(false); //if there aren't new cards, don't flip them
+            }
+            //override the index that was drawn to true
+            faceUpDifferences.set(index, true);
+        } else
+            for (int i = 0; i < board.getFaceUpTrainCards().size(); i++)
                 faceUpDifferences.add(true);
-        }
-        while (faceUpDifferences.size() < 5){
-            if (newFaceUpCards.size() > previousFaceUpCards.size()) //if there are more cards than before, flip them
-                faceUpDifferences.add(true);
-            else
-                faceUpDifferences.add(false); //if there aren't new cards, don't flip them
-        }
-        //override the index that was drawn to true
-        faceUpDifferences.set(index, true);
 
         String message = playerName + " drew a " + drawnCard.getPrettyname() + " face-up train card.";
         setGameHistoryResult(playerName, message, -1, index);
@@ -320,6 +330,7 @@ public class StartedGame {
     Result replaceFaceUpCards(String playerName, int counter) {
         if (counter > 3) {
             board.setReplaceUpFlagToFalse();
+            board.replaceFaceUpCards();
             return null;
         }
         List<Integer> newFaceUpCards = board.replaceFaceUpCards();
@@ -498,7 +509,7 @@ public class StartedGame {
 
     Result getThenNullifyTurnResult() {
         Result turn = turnResult;
-        turnResult = null;
+        //turnResult = null;
         return turn;
     }
 

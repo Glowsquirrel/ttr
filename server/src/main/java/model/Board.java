@@ -107,6 +107,8 @@ public class Board {
                 trainCardDeck.add(copy);
             }
         }
+
+        countLocomotives();
         
         discardedTrainCards.clear();
     }
