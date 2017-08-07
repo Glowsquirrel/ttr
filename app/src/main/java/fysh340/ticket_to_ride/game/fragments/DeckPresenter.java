@@ -16,11 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
+import fysh340.ticket_to_ride.game.fragments.mapsupport.MapRoute;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
@@ -29,12 +32,12 @@ import model.TrainCard;
 import static model.TrainCard.WILD;
 
 /**
- *  <h1>Deck Presenter Fragment</h1>
- *  Creates a deckView, which shows face-up and face-down deck cards, as well as the destination
- *  card deck and selected route information.
+ * <h1>Deck Presenter Fragment</h1>
+ * Creates a deckView, which shows face-up and face-down deck cards, as well as the destination
+ * card deck and selected route information.
  *
- *  @author         Nathan Finch
- *  @since          7-22-17
+ * @author Nathan Finch
+ * @since 7-22-17
  */
 public class DeckPresenter extends Fragment implements Observer {
     //Data Members
@@ -206,9 +209,9 @@ public class DeckPresenter extends Fragment implements Observer {
                 ClientState.INSTANCE.getState().drawThreeDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
             }
         });
-    
+
         //Set the selected route are and make it clickable
-        mSelectedRoute = (TextView)deckView.findViewById(R.id.selectedRoute);
+        mSelectedRoute = (TextView) deckView.findViewById(R.id.selectedRoute);
         mSelectedRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,22 +256,17 @@ public class DeckPresenter extends Fragment implements Observer {
 
 
                             }
-                            while(cardsLeft>0)
-                            {
+                            while (cardsLeft > 0) {
                                 cards.add(TrainCard.getTrainCardKey(WILD));
                                 cardsLeft--;
                             }
                             mGame.setCardsToDiscard(cards);
                             ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
                                     mGame.getCurrentlySelectedRouteID(), cards);
-    //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                            //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
                             Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
                 }
             }
@@ -404,11 +402,12 @@ public class DeckPresenter extends Fragment implements Observer {
         final ObjectAnimator animStage2 = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity(), R.animator.flip_stage_2);
         animStage1.setTarget(view);
         animStage2.setTarget(view);
-        animStage1.setDuration(FLIP_DURATION/2);
-        animStage2.setDuration(FLIP_DURATION/2);
+        animStage1.setDuration(FLIP_DURATION / 2);
+        animStage2.setDuration(FLIP_DURATION / 2);
         animStage1.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -424,9 +423,12 @@ public class DeckPresenter extends Fragment implements Observer {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
+
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
         if (drawable != null) { //if the new drawable is null, do not perform this animation (used when first starting the activity)
