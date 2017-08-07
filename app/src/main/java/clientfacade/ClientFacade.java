@@ -329,6 +329,7 @@ public class ClientFacade implements IClient{
         //updates the players score
         if(player.getScore() < score) { //server says a player has a higher score
             player.setScore(score);
+            
         }
         //updates the players number of train cars
         if(player.getNumTrains() > numTrainCars) { //server says a player has fewer trains
