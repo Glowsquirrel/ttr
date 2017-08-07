@@ -80,16 +80,9 @@ public class ChatHistoryModel implements Observable{
 //add a history message to the history list
     public void addHistory(String username, String message)
     {
-        String user=Game.getGameInstance().getMyself().getMyUsername();
-        if(username.equals(user)) {
-            historyList.add(username + " " + message);
-            notifyObserver();
-        }
-        else
-        {
+
             historyList.add(message);
             notifyObserver();
-        }
     }
     //returns all chat messages
     public List<String> getChatStrings()
