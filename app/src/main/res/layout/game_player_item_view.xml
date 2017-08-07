@@ -39,6 +39,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:textSize="12sp"
+            android:textColor="@color/gold"
             android:gravity="center"
             android:textAlignment="center"
             android:layout_toRightOf="@id/trainsTag"
@@ -63,6 +64,7 @@
             android:gravity="start"
             android:layout_height="match_parent"
             android:textSize="12sp"
+            android:textColor="@color/gold"
             android:src="@drawable/traincardbacksmall"/>
 
         <TextView
@@ -72,6 +74,7 @@
             android:textAlignment="center"
             android:layout_height="match_parent"
             android:textSize="12sp"
+            android:textColor="@color/gold"
             android:text="@string/sample_number"
             android:layout_toRightOf="@id/cardsTag"
             android:layout_toEndOf="@id/cardsTag"/>
@@ -99,6 +102,7 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:textSize="12sp"
+            android:textColor="@color/gold"
             android:text="@string/sample_number"
             android:gravity="center"
             android:textAlignment="center"
@@ -131,6 +135,7 @@
             android:textAlignment="center"
             android:layout_height="match_parent"
             android:textSize="12sp"
+            android:textColor="@color/gold"
             android:text="@string/sample_number"
             android:layout_toRightOf="@id/dcardsTag"
             android:layout_toEndOf="@id/dcardsTag"/>
@@ -151,7 +156,8 @@
             android:text="@string/score"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textColor="@color/gold"/>
 
         <TextView
             android:id="@+id/scoreNum"
@@ -160,6 +166,7 @@
             android:gravity="center"
             android:textAlignment="center"
             android:textSize="12sp"
+            android:textColor="@color/gold"
             android:text="@string/sample_number"
             android:layout_toRightOf="@id/scoreTag"
             android:layout_toEndOf="@id/scoreTag"/>

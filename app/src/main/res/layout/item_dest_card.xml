@@ -18,12 +18,14 @@
             android:layout_height="match_parent"
             android:text="@string/dest_card_sample_city1"
             android:textSize="14sp"
+            android:textColor="@color/gold"
             android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/spaced_hyphen"/>
+            android:text="@string/spaced_hyphen"
+            android:textColor="@color/gold"/>
 
         <TextView
             android:id="@+id/dest_card_city_name_2"
@@ -31,6 +33,7 @@
             android:layout_height="match_parent"
             android:text="@string/dest_card_sample_city2"
             android:textSize="14sp"
+            android:textColor="@color/gold"
             android:gravity="center" />
 
     </LinearLayout>
@@ -42,6 +45,7 @@
         android:layout_below="@id/dest_card_cities"
         android:text="@string/sample_number"
         android:textSize="16sp"
+        android:textColor="@color/gold"
         android:gravity="center"/>
 
 </RelativeLayout>

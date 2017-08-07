@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride.game.fragments.gameplaystate;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import java.util.List;
@@ -39,5 +40,10 @@ public class ReturnDestCardState implements GamePlayState {
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+    }
+
+    @Override
+    public void claimRoute(String username, String gameName, int routeID, AppCompatActivity context) {
+
     }
 }

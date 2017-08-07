@@ -1,6 +1,7 @@
 package fysh340.ticket_to_ride.game.fragments.gameplaystate;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import java.util.List;
@@ -32,10 +33,12 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     @Override
     public void drawThreeDestCards(String username, String gameName) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
     }
 
     @Override
     public void returnDestCards(String username, String gameName, int destCards) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
     }
 
     @Override
@@ -56,5 +59,11 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
+    }
+
+    @Override
+    public void claimRoute(String username, String gameName, int routeID, AppCompatActivity context) {
+        Game.getGameInstance().getServerError().setMessage("You can only draw your second train card");
     }
 }

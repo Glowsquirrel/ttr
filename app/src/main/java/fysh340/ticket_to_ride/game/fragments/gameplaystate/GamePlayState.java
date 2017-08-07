@@ -1,5 +1,9 @@
 package fysh340.ticket_to_ride.game.fragments.gameplaystate;
 
+import android.app.Activity;
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+
 import java.util.List;
 import java.util.Observer;
 
@@ -21,5 +25,7 @@ public interface GamePlayState {
     void drawTrainCardFaceUp(String username, String gameName, int index);
 
     void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards);
+
+    void claimRoute(String username, String gameName, int routeID, AppCompatActivity context);
 
 }

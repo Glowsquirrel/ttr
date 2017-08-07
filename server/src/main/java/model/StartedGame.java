@@ -147,7 +147,7 @@ public class StartedGame {
         }
 
         String message = playerName + " drew destination cards.";
-        setGameHistoryResult(playerName, message, -1, -1);
+        //setGameHistoryResult(playerName, message, -1, -1);
          setEndGameResult();
         return drawDestCardResults(playerName, drawnDestCards);
     }
@@ -199,8 +199,8 @@ public class StartedGame {
             throw new GamePlayException("Invalid player name");
         }
 
-        String message = playerName + " returned a destination card.";
-        setGameHistoryResult(playerName, message, -1, -1);
+     //   String message = playerName + " returned a destination card.";
+      //  setGameHistoryResult(playerName, message, -1, -1);
         setEndGameResult();
         return new ReturnFirstDestCardResult(playerName, returnedCardKey);
     }
@@ -230,7 +230,7 @@ public class StartedGame {
         board.reshuffleIfEmpty();
 
         String message = playerName + " drew a train card from the deck.";
-        setGameHistoryResult(playerName, message, -1, -1);
+        //setGameHistoryResult(playerName, message, -1, -1);
         setEndGameResult();
         return new DrawTrainCardFromDeckResult(playerName, TrainCard.getTrainCardKey(trainCard.get(0)));
     }
@@ -318,7 +318,7 @@ public class StartedGame {
                 faceUpDifferences.add(true);
 
         String message = playerName + " drew a " + drawnCard.getPrettyname() + " face-up train card.";
-        setGameHistoryResult(playerName, message, -1, index);
+        //setGameHistoryResult(playerName, message, -1, index);
         setEndGameResult();
         List<Result> returnResults = new ArrayList<>();
         returnResults.add(new DrawTrainCardFromFaceUpResult(playerName, cardDrawnKey));
@@ -335,7 +335,7 @@ public class StartedGame {
         }
         List<Integer> newFaceUpCards = board.replaceFaceUpCards();
         replaceFaceUpFlag = board.getReplaceFaceUpFlag();
-        setGameHistoryResult(playerName, "All faceup cards have been replaced", -1, -1);
+        //setGameHistoryResult(playerName, "All faceup cards have been replaced", -1, -1);
         List<Boolean> replaceAllTrue = new ArrayList<>();
         for (int i = 0; i < 5; i++)
             replaceAllTrue.add(true);
@@ -391,7 +391,7 @@ public class StartedGame {
         }
 
         String message = playerName + " claimed route " + Integer.toString(routeId);
-        setGameHistoryResult(playerName, message, routeId, -1);
+        //setGameHistoryResult(playerName, message, routeId, -1);
         setEndGameResult();
         return new ClaimRouteResult(playerName, routeId);
     }
