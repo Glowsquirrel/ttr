@@ -257,12 +257,12 @@ public class Board {
     List<Integer> replaceFaceUpCards() {
         discardedTrainCards.addAll(faceUpTrainCards);
         faceUpTrainCards.clear();
-        final int FIFTH_INDEX = 5;
+        int index = 5;
 
-        if (trainCardDeck.size() < FIFTH_INDEX) {
-
+        if (trainCardDeck.size() < index) {
+            index = trainCardDeck.size();
         }
-        for (int a = 0; a < FIFTH_INDEX; a++) {
+        for (int a = 0; a < index; a++) {
             faceUpTrainCards.add(trainCardDeck.get(0));
             trainCardDeck.remove(0);
         }
