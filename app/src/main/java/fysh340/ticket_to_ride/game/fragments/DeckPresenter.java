@@ -21,6 +21,7 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.MyTurnState;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
@@ -87,6 +88,7 @@ public class DeckPresenter extends Fragment implements Observer {
             String routeText = "Claim " + currentlySelected.getStartCity().getPrettyName() + " to "
                     + currentlySelected.getEndCity().getPrettyName() + " Route";
             mSelectedRoute.setText(routeText);
+            mSelectedRoute.setEnabled(true);
         }
 
         //Check if destination cards are being drawn
@@ -213,63 +215,65 @@ public class DeckPresenter extends Fragment implements Observer {
             @Override
             public void onClick(View v) {
                 mSelectedRoute.setText("");
-                ArrayList<Integer> cards=new ArrayList<>();
-                Route route=Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
-                Route sisterRoute;
+                mSelectedRoute.setEnabled(false);
+                if (ClientState.INSTANCE.getState() instanceof MyTurnState) {
+                    ArrayList<Integer> cards = new ArrayList<>();
+                    Route route = Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
+                    Route sisterRoute;
 
-                if(route.getSisterRouteKey() != -1) {
-                    sisterRoute = Route.getRouteByID(route.getSisterRouteKey());
-                } else {
-                    sisterRoute = null;
-                }
-
-                if(route.isClaimed())
-                    Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
-                else if((route.getLength() > mGame.getMyNumTrains()))
-                    Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
-                else if(sisterRoute != null && sisterRoute.isClaimed() && mGame.getVisiblePlayerInformation().size() < 4)
-                    Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
-                else if(sisterRoute != null && sisterRoute.isClaimed() && sisterRoute.getUser().equals(mGame.getMyUsername()))
-                    Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
-
-
-                else {
-                    if (route.getOriginalColor() == WILD) {
-                        ColorChoiceDialog cd = new ColorChoiceDialog();
-                        cd.setCancelable(true);
-                        cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+                    if (route.getSisterRouteKey() != -1) {
+                        sisterRoute = Route.getRouteByID(route.getSisterRouteKey());
+                    } else {
+                        sisterRoute = null;
                     }
+
+                    if (route.isClaimed())
+                        Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
+                    else if ((route.getLength() > mGame.getMyNumTrains()))
+                        Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
+                    else if (sisterRoute != null && sisterRoute.isClaimed() && mGame.getVisiblePlayerInformation().size() < 4)
+                        Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
+                    else if (sisterRoute != null && sisterRoute.isClaimed() && sisterRoute.getUser().equals(mGame.getMyUsername()))
+                        Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
+
+
                     else {
-                        int colored=mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
-                        int wild=mGame.getMyself().getNumOfTypeCards(WILD);
-                        int cardsLeft=route.getLength();
-                        if(colored+wild>=route.getLength()) {
-                            for(int i=0;i<colored;i++)
-                            {
-                                if(cardsLeft>0) {
-                                    cardsLeft--;
-                                    cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                        if (route.getOriginalColor() == WILD) {
+                            ColorChoiceDialog cd = new ColorChoiceDialog();
+                            cd.setCancelable(true);
+                            cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+                        } else {
+                            int colored = mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
+                            int wild = mGame.getMyself().getNumOfTypeCards(WILD);
+                            int cardsLeft = route.getLength();
+                            if (colored + wild >= route.getLength()) {
+                                for (int i = 0; i < colored; i++) {
+                                    if (cardsLeft > 0) {
+                                        cardsLeft--;
+                                        cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                                    }
+
+
                                 }
-
-
+                                while (cardsLeft > 0) {
+                                    cards.add(TrainCard.getTrainCardKey(WILD));
+                                    cardsLeft--;
+                                }
+                                mGame.setCardsToDiscard(cards);
+                                ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
+                                        mGame.getCurrentlySelectedRouteID(), cards);
+                                //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
                             }
-                            while(cardsLeft>0)
-                            {
-                                cards.add(TrainCard.getTrainCardKey(WILD));
-                                cardsLeft--;
-                            }
-                            mGame.setCardsToDiscard(cards);
-                            ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
-                                    mGame.getCurrentlySelectedRouteID(), cards);
-    //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
-                        }
 
 
+                        }
                     }
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), "Not Your Turn!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
