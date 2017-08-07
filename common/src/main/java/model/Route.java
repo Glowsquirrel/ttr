@@ -180,8 +180,8 @@ public class Route {
         routeMap.put(66, new Route(LITTLE_ROCK, ST_LOUIS, 2, WILD, -1));
 
         routeMap.put(67, new Route(LOS_ANGELES, PHOENIX, 3, WILD, -1));
-        routeMap.put(68, new Route(LOS_ANGELES, SAN_FRANCISCO, 3, YELLOW, 69));
-        routeMap.put(69, new Route(LOS_ANGELES, SAN_FRANCISCO, 3, PURPLE, 68));
+        routeMap.put(68, new Route(LOS_ANGELES, SAN_FRANCISCO, 3, PURPLE, 69));
+        routeMap.put(69, new Route(LOS_ANGELES, SAN_FRANCISCO, 3, YELLOW, 68));
 
         routeMap.put(70, new Route(MIAMI, NEW_ORLEANS, 6, RED, -1));
 

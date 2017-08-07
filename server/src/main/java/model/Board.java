@@ -386,6 +386,10 @@ public class Board {
         this.faceUpTrainCards = faceUpTrainCards;
     }
 
+    public void setReplaceUpFlagToFalse(){
+        replaceFaceUpFlag  = false;
+    }
+
     boolean getReplaceFaceUpFlag() {
         return replaceFaceUpFlag;
     }

@@ -16,11 +16,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
+import fysh340.ticket_to_ride.game.fragments.gameplaystate.MyTurnState;
+import fysh340.ticket_to_ride.game.fragments.mapsupport.MapRoute;
 import interfaces.Observer;
 import model.Game;
 import model.Route;
@@ -29,12 +33,12 @@ import model.TrainCard;
 import static model.TrainCard.WILD;
 
 /**
- *  <h1>Deck Presenter Fragment</h1>
- *  Creates a deckView, which shows face-up and face-down deck cards, as well as the destination
- *  card deck and selected route information.
+ * <h1>Deck Presenter Fragment</h1>
+ * Creates a deckView, which shows face-up and face-down deck cards, as well as the destination
+ * card deck and selected route information.
  *
- *  @author         Nathan Finch
- *  @since          7-22-17
+ * @author Nathan Finch
+ * @since 7-22-17
  */
 public class DeckPresenter extends Fragment implements Observer {
     //Data Members
@@ -87,6 +91,7 @@ public class DeckPresenter extends Fragment implements Observer {
             String routeText = "Claim " + currentlySelected.getStartCity().getPrettyName() + " to "
                     + currentlySelected.getEndCity().getPrettyName() + " Route";
             mSelectedRoute.setText(routeText);
+            mSelectedRoute.setEnabled(true);
         }
 
         //Check if destination cards are being drawn
@@ -206,70 +211,80 @@ public class DeckPresenter extends Fragment implements Observer {
                 ClientState.INSTANCE.getState().drawThreeDestCards(mGame.getMyself().getMyUsername(), mGame.getMyGameName());
             }
         });
-    
+
         //Set the selected route are and make it clickable
-        mSelectedRoute = (TextView)deckView.findViewById(R.id.selectedRoute);
+        mSelectedRoute = (TextView) deckView.findViewById(R.id.selectedRoute);
         mSelectedRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSelectedRoute.setText("");
-                ArrayList<Integer> cards=new ArrayList<>();
-                Route route=Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
-                Route sisterRoute;
+                mSelectedRoute.setEnabled(false);
+                if (ClientState.INSTANCE.getState() instanceof MyTurnState) {
+                    ArrayList<Integer> cards = new ArrayList<>();
+                    Route route = Route.getRouteByID(mGame.getCurrentlySelectedRouteID());
+                    Route sisterRoute;
 
-                if(route.getSisterRouteKey() != -1) {
-                    sisterRoute = Route.getRouteByID(route.getSisterRouteKey());
-                } else {
-                    sisterRoute = null;
-                }
-
-                if(route.isClaimed())
-                    Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
-                else if((route.getLength() > mGame.getMyNumTrains()))
-                    Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
-                else if(sisterRoute != null && sisterRoute.isClaimed() && mGame.getVisiblePlayerInformation().size() < 4)
-                    Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
-                else if(sisterRoute != null && sisterRoute.isClaimed() && sisterRoute.getUser().equals(mGame.getMyUsername()))
-                    Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
-
-
-                else {
-                    if (route.getOriginalColor() == WILD) {
-                        ColorChoiceDialog cd = new ColorChoiceDialog();
-                        cd.setCancelable(true);
-                        cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+                    if (route.getSisterRouteKey() != -1) {
+                        sisterRoute = Route.getRouteByID(route.getSisterRouteKey());
+                    } else {
+                        sisterRoute = null;
                     }
+
+                    if (route.isClaimed())
+                        Toast.makeText(getActivity(), "Route Already Claimed", Toast.LENGTH_SHORT).show();
+                    else if ((route.getLength() > mGame.getMyNumTrains()))
+                        Toast.makeText(getActivity(), "You don't have enough cars!", Toast.LENGTH_SHORT).show();
+                    else if (sisterRoute != null && sisterRoute.isClaimed() && mGame.getVisiblePlayerInformation().size() < 4)
+                        Toast.makeText(getActivity(), "Double Route already claimed!", Toast.LENGTH_SHORT).show();
+                    else if (sisterRoute != null && sisterRoute.isClaimed() && sisterRoute.getUser().equals(mGame.getMyUsername()))
+                        Toast.makeText(getActivity(), "You can't claim double routes!", Toast.LENGTH_SHORT).show();
+
+
                     else {
-                        int colored=mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
-                        int wild=mGame.getMyself().getNumOfTypeCards(WILD);
-                        int cardsLeft=route.getLength();
-                        if(colored+wild>=route.getLength()) {
-                            for(int i=0;i<colored;i++)
-                            {
-                                if(cardsLeft>0) {
-                                    cardsLeft--;
-                                    cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                        if (route.getOriginalColor() == WILD) {
+                            ColorChoiceDialog cd = new ColorChoiceDialog();
+                            cd.setCancelable(true);
+                            cd.show(getActivity().getSupportFragmentManager(), "NoticeDialogFragment");
+                        } else {
+                            int colored = mGame.getMyself().getNumOfTypeCards(route.getOriginalColor());
+                            int wild = mGame.getMyself().getNumOfTypeCards(WILD);
+                            int cardsLeft = route.getLength();
+                            if (colored + wild >= route.getLength()) {
+                                for (int i = 0; i < colored; i++) {
+                                    if (cardsLeft > 0) {
+                                        cardsLeft--;
+                                        cards.add(TrainCard.getTrainCardKey(route.getOriginalColor()));
+                                    }
+
+
                                 }
-
-
+                                while (cardsLeft > 0) {
+                                    cards.add(TrainCard.getTrainCardKey(WILD));
+                                    cardsLeft--;
+                                }
+                                mGame.setCardsToDiscard(cards);
+                                ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
+                                        mGame.getCurrentlySelectedRouteID(), cards);
+                                //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
                             }
-                            while(cardsLeft>0)
-                            {
+
+
+                            while (cardsLeft > 0) {
                                 cards.add(TrainCard.getTrainCardKey(WILD));
                                 cardsLeft--;
                             }
                             mGame.setCardsToDiscard(cards);
                             ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
                                     mGame.getCurrentlySelectedRouteID(), cards);
-    //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+                            //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
                         }
-                        else
-                        {
-                            Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
-                        }
-
-
                     }
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), "Not Your Turn!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -404,11 +419,12 @@ public class DeckPresenter extends Fragment implements Observer {
         final ObjectAnimator animStage2 = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity(), R.animator.flip_stage_2);
         animStage1.setTarget(view);
         animStage2.setTarget(view);
-        animStage1.setDuration(FLIP_DURATION/2);
-        animStage2.setDuration(FLIP_DURATION/2);
+        animStage1.setDuration(FLIP_DURATION / 2);
+        animStage2.setDuration(FLIP_DURATION / 2);
         animStage1.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -424,9 +440,12 @@ public class DeckPresenter extends Fragment implements Observer {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
+
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
 
         if (drawable != null) { //if the new drawable is null, do not perform this animation (used when first starting the activity)

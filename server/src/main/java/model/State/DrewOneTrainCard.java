@@ -2,6 +2,9 @@ package model.State;
 
 import model.GamePlayException;
 import model.StartedGame;
+import model.TrainCard;
+
+import static model.TrainCard.WILD;
 
 /**
  * Created by sjrme on 7/29/17.
@@ -13,6 +16,17 @@ public class DrewOneTrainCard implements TurnState{
 
     public DrewOneTrainCard(StartedGame game) {
         this.game = game;
+        if (game.getFaceUpCards().size() == 0) {
+            game.advancePlayerTurn();
+            game.setTurnState(new BeforeTurn(game));
+        }
+        for(int i = 0; i < game.getFaceUpCards().size(); i++) {
+            if (game.getFaceUpCards().get(i) != TrainCard.getTrainCardKey(WILD)) {
+                return;
+            }
+        }
+        game.advancePlayerTurn();
+        game.setTurnState(new BeforeTurn(game));
     }
 
     @Override
