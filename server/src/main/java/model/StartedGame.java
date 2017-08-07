@@ -264,6 +264,14 @@ public class StartedGame {
 
             System.out.println("draw @" +index + " w/ " + board.getFaceUpCardCodes().size());
             cardDrawnKey = board.getFaceUpCardCodes().get(index);
+
+            int counter = 0;
+
+            while (getReplaceFaceUpFlag()) {
+                replaceFaceUpCards(playerName, counter);
+                counter++;
+            }
+
             if (cardDrawnKey == LOCOMOTIVE_INDEX) {
                 turnState.switchState(CommandType.FACEUP_LOCOMOTIVE);
             } else {
@@ -309,7 +317,11 @@ public class StartedGame {
     }
 
 
-    Result replaceFaceUpCards(String playerName) {
+    Result replaceFaceUpCards(String playerName, int counter) {
+        if (counter > 3) {
+            board.setReplaceUpFlagToFalse();
+            return null;
+        }
         List<Integer> newFaceUpCards = board.replaceFaceUpCards();
         replaceFaceUpFlag = board.getReplaceFaceUpFlag();
         setGameHistoryResult(playerName, "All faceup cards have been replaced", -1, -1);

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import clientproxy.ClientProxy;
 import results.Result;
-import results.game.GameHistoryResult;
 import results.game.ReplaceFaceUpCardsResult;
 
 /**
@@ -223,10 +222,12 @@ public class ServerModel {
                 toClient.startGame(result, result.getUsername());
                 allCommandLists.get(gameName).add(result);
             }
+            int counter = 0;
             while (newlyStartedGame.getReplaceFaceUpFlag()) { //If three face-up locomotives
-                Result nextResult = newlyStartedGame.replaceFaceUpCards(username);
+                Result nextResult = newlyStartedGame.replaceFaceUpCards(username, counter);
                 toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
+                counter++;
             }
 
             Result turnResult = newlyStartedGame.getThenNullifyTurnResult();
@@ -294,17 +295,9 @@ public class ServerModel {
             StartedGame game = this.getGame(gameName);
             List<Result> results = game.drawTrainCardFromFaceUp(playerName, index);
 
-            while (game.getReplaceFaceUpFlag()) {
-                Result nextResult = game.replaceFaceUpCards(playerName);
-                //replace the original ReplaceFaceUpResult with the new one
-                //previously was sending the new one first, then the old one.
-                results.set(1, nextResult);
-                //toClient.sendToGame(gameName, nextResult);
-                allCommandLists.get(gameName).add(nextResult);
 
-                //modify the game history to account for shuffling
-                //game.setGameHistoryResult(playerName, gameName, -1, index);
-            }
+
+
 
             toClient.sendToUser(playerName, gameName, results.get(0));
             toClient.sendToGame(gameName, game.getGameHistory());

@@ -19,26 +19,26 @@ public class NotMyTurnState implements GamePlayState {
 
     @Override
     public void drawThreeDestCards(String username, String gameName) {
-        Game.getGameInstance().getServerError().setMessage("NOT YOUR TURN DUDE");
+        Game.getGameInstance().getServerError().setMessage("It's not your turn");
     }
 
     @Override
     public void returnDestCards(String username, String gameName, int destCards) {
-        Game.getGameInstance().getServerError().setMessage("NOT YOUR TURN IDIOT");
+        Game.getGameInstance().getServerError().setMessage("It's not your turn");
     }
 
     @Override
     public void drawTrainCardFromDeck(String username, String gameName) {
-        Game.getGameInstance().getServerError().setMessage("WAIT FOR YOUR TURN");
+        Game.getGameInstance().getServerError().setMessage("It's not your turn");
     }
 
     @Override
     public void drawTrainCardFaceUp(String username, String gameName, int index) {
-        Game.getGameInstance().getServerError().setMessage("NO");
+        Game.getGameInstance().getServerError().setMessage("It's not your turn");
     }
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
-        Game.getGameInstance().getServerError().setMessage("TRY AGAIN LATER");
+        Game.getGameInstance().getServerError().setMessage("It's not your turn");
     }
 }
