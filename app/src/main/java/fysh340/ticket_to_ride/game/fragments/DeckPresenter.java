@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ClientState;
@@ -277,8 +279,6 @@ public class DeckPresenter extends Fragment implements Observer {
                             ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
                                     mGame.getCurrentlySelectedRouteID(), cards);
                             //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), "You don't have enough cards!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
