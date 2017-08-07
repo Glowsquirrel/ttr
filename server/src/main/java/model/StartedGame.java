@@ -278,7 +278,6 @@ public class StartedGame {
             //replaceFaceUpFlag = board.getReplaceFaceUpFlag();
 
 
-
             while (board.getReplaceFaceUpFlag()) {
                 replaceFaceUpCards(playerName, counter);
                 flipAll = true;
