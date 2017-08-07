@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
@@ -286,14 +287,16 @@ public class DeckPresenter extends Fragment implements Observer {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void repopulateFaceUpCards() {
         //Get the new face up train cards
+        mGame.iHaveDifferentTrainDeckSize(false);
         List<Integer> cardsByID = mGame.getFaceUpCards();
         List<Boolean> faceUpDifferences = mGame.getFaceUpDifferences();
-        int faceupl = mFaceUpCards.length;
+        int numClickableCards = mFaceUpCards.length;
         int cardFlipDelay = 0;  //delay to flip a face up card. this is only relevant when > 1 face up cards are changing.
         int deckFlipDelay = 100; //delay to flip the train card deck. this is only relevant when > 1 face up cards are changing.
         int NEXT_FLIP_DELAY = 100; //delay between each face up card flip. setting this to 0 will make all face up card flipping immediate
         int numCardsFlipped = 0; //number of times to flip the train card deck.
         int cardIndex;
+
         for (cardIndex = 0; cardIndex < cardsByID.size(); cardIndex++) {
             boolean cardIsDifferent = faceUpDifferences.get(cardIndex);
             if (!cardIsDifferent)
@@ -345,21 +348,51 @@ public class DeckPresenter extends Fragment implements Observer {
         }
 
         //if the number of the face up cards has been reduced (we have < 5 train cards face up), set it to default image and remove clicks on it
-        if (cardIndex < faceupl) {
+        int cardTemp = cardIndex;
+        while (cardTemp < numClickableCards) {
             final Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.tickettoride, null);
-            final ImageView imageView = mFaceUpCards[cardIndex];
+            final ImageView imageView = mFaceUpCards[cardTemp];
 
             flipView(drawable, imageView, cardFlipDelay, null);
-            mFaceUpCards[cardIndex].setEnabled(false);
+            mFaceUpCards[cardTemp].setEnabled(false);
+            cardTemp++;
+        }
+
+        boolean temporarilyStopFaceUpClicks = false;
+        if (numCardsFlipped > 1) {
+            temporarilyStopFaceUpClicks = true;
         }
 
         //for each face up card that was flipped, flip the deck once and decrement the number on it
         while (numCardsFlipped-- > 0 && mFaceDownCards != null){
             if (mGame.getTrainCardDeckSize() == 0)
                 break;
+
+            mFaceUpCards[cardIndex - numCardsFlipped - 1].setEnabled(true);
             String flipCounter = String.valueOf(mGame.getTrainCardDeckSize() + numCardsFlipped);
+
             flipView(mFaceDownCards.getBackground(), mFaceDownCards, deckFlipDelay, flipCounter);
             deckFlipDelay += FLIP_DURATION;
+        }
+
+        /*
+        If flipping more than one card, temporarily disable clicks on face up cards. Re enable after the
+        last deck flip animation to preserve the deck size correctly.
+         */
+        if (temporarilyStopFaceUpClicks){
+            for (ImageView imageView : mFaceUpCards){
+                imageView.setEnabled(false);
+            }
+            Handler waitForAnimationEnd = new Handler();
+            final int cardsToEnable = cardIndex;
+            final Runnable enableTrainCardClicks = new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < cardsToEnable; i++)
+                        mFaceUpCards[i].setEnabled(true);
+                }
+            };
+            waitForAnimationEnd.postDelayed(enableTrainCardClicks, deckFlipDelay - FLIP_DURATION);
         }
     }
 
@@ -401,7 +434,4 @@ public class DeckPresenter extends Fragment implements Observer {
             animStage1.start();
         }
     }
-
-
-
 }

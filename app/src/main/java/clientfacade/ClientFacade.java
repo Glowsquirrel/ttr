@@ -216,15 +216,9 @@ public class ClientFacade implements IClient{
     public void drawDestCards(String username, List<Integer> destCards){
         if (destCards.size() != 0) { //if there are no destCards returned, don't cause the fragment to switch
             game.setPossibleDestCards(destCards);
-            //game.iHaveDifferentFaceUpCards();
             game.iHavePossibleDestCards(true);
-            //game.notifyObserver();
-            //String message = "drew " + destCards.size() + " destination cards";
-            //chatModel.addHistory(username, message);
-            //game.setDestCardDeckSize(game.getDestCardDeckSize() - 3);
             ClientState.INSTANCE.setState(new ReturnDestCardState());
         }
-
     }
 
     /**
@@ -241,13 +235,7 @@ public class ClientFacade implements IClient{
     public void drawTrainCardDeck(String username, int trainCard){
         Player myself = game.getMyself();
         myself.addTrainCardByInt(trainCard);
-        //game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
-        //game.iHaveDifferentTrainDeckSize(true);
-        //game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
-        //game.notifyObserver();
-        //String message = "drew train card";
-        //chatModel.addHistory(username, message);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState) {
             ClientState.INSTANCE.setState(new DrawSecondTrainCardState());
@@ -270,13 +258,7 @@ public class ClientFacade implements IClient{
     public void drawTrainCardFaceUp(String username, int trainCard){
         Player myself = game.getMyself();
         myself.addTrainCardByInt(trainCard);
-        //game.aPlayerHasChanged(true);
         game.iHaveDifferentTrainCards(true);
-        //game.iHaveDifferentTrainDeckSize(true);
-        //game.setTrainCardDeckSize(game.getTrainCardDeckSize() - 1);
-        //game.notifyObserver();
-        //String message = "drew train card face up";
-        //chatModel.addHistory(username, message);
 
         if (ClientState.INSTANCE.getState() instanceof MyTurnState &&
                 TrainCard.getTrainCard(trainCard) != TrainCard.WILD) {
@@ -298,13 +280,8 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnDestCards(String username, int destCard){
-        //String message = "returned destination card";
-        //chatModel.addHistory(username, message);
-        //game.aPlayerHasChanged(true);
-        //game.iHaveDifferentDestDeckSize(true);
         game.getMyself().iHaveDifferentDestCards(true);
         game.iHaveReturnedDestCards(true);
-        //game.notifyObserver();
 
         ClientState.INSTANCE.setState(new NotMyTurnState());
     }
@@ -320,19 +297,9 @@ public class ClientFacade implements IClient{
      */
     @Override
     public void returnFirstDestCards(String username, int cardReturned){
-        if (cardReturned != 30) {
-            //String message = "returned destination card";
-            //chatModel.addHistory(username, message);
-            //game.aPlayerHasChanged(true);
-            //game.setDestCardDeckSize(game.getDestCardDeckSize() + 1);
-            game.getMyself().iHaveDifferentDestCards(true);
-            //game.iHaveDifferentDestDeckSize(true);
-        }
+        game.getMyself().iHaveDifferentDestCards(true);
         game.iHaveReturnedDestCards(true);
-        //game.notifyObserver();
     }
-
-    //TODO: remove the final parameter for this method when real server is working; add deck size parameters
 
     /**
      * Called by the server anytime a client other than this client has made an action that this client
@@ -376,7 +343,8 @@ public class ClientFacade implements IClient{
         }
 
         //if the number of dest cards held by this player has changed, update that player
-        if(player.getNumDestCard() != numDestCardsHeld) {
+        //leave the client to update it's own dest cards
+        if(player.getNumDestCard() != numDestCardsHeld && !username.equals(game.getMyUsername())) {
             int destCardNumDifference = player.getNumDestCard() - numDestCardsHeld;
             player.setDestCardNum(numDestCardsHeld);
         }
@@ -395,17 +363,19 @@ public class ClientFacade implements IClient{
             game.iHaveDifferentDestDeckSize(true);
         }
         if ((game.getTrainCardDeckSize() - trainCardDeckSize) > 1){
-            int dif = game.getTrainCardDeckSize() - trainCardDeckSize;
-            String stop = new String("adfsa");
             /*
             If the new train deck size has decremented more than 1, then we must have dealt an entire new
             hand of face up cards, so we'll let that result take care of it and not raise the new train card
             deck size flag here.
              */
             game.setTrainCardDeckSize(trainCardDeckSize);
-        } else if (game.getTrainCardDeckSize() != trainCardDeckSize) {
+        } else if (game.getTrainCardDeckSize() < trainCardDeckSize){ //the deck size has increased
+            game.setTrainCardDeckSize(trainCardDeckSize);
+        } else if (game.getTrainCardDeckSize() - 1 == trainCardDeckSize && faceUpIndex == -1) { //if decrementing by one and was by deck
             game.setTrainCardDeckSize(trainCardDeckSize);
             game.iHaveDifferentTrainDeckSize(true);
+        } else if (game.getTrainCardDeckSize() != trainCardDeckSize) {
+            game.setTrainCardDeckSize(trainCardDeckSize);
         }
 
         game.aPlayerHasChanged(true);
@@ -423,6 +393,8 @@ public class ClientFacade implements IClient{
         game.setFaceUpCards(trainCards);
         game.setFaceUpDifferences(faceUpDifferences);
         game.iHaveDifferentFaceUpCards(true);
+        if (ClientState.INSTANCE.getState().getClass() == DrawSecondTrainCardState.class)
+            ClientState.INSTANCE.setState(new DrawSecondTrainCardState());
         //game.notifyObserver();
     }
 

@@ -51,6 +51,11 @@ public class StartedGame {
         this.gameName = unstartedGame.getGameName();
     }
 
+    //sorry stephen
+    public List<Integer> getFaceUpCards(){
+        return board.getFaceUpCardCodes();
+    }
+
 /*****************************************START GAME***********************************************/
     /**
      * Must deal cards before setting up deck for correct error handling.
@@ -91,7 +96,7 @@ public class StartedGame {
         for (Player player : playerSet) {
 
             List<Integer> destCardKeys = new ArrayList<>();
-            for (DestCard destCard : player.getNewlyDrawnDestCards()) {
+            for (DestCard destCard : player.getDestCards()) {
                 destCardKeys.add(DestCard.getDestCardKey(destCard));
             }
 
@@ -187,7 +192,7 @@ public class StartedGame {
             }
 
             DestCard returnedCard = board.getDestCardMap().get(returnedCardKey);
-            currentPlayer.removeDestCards(returnedCard, null);
+            currentPlayer.removeDestCards(returnedCard);
             board.pushBackDestCards(returnedCard);
 
         } else {
@@ -257,6 +262,7 @@ public class StartedGame {
                 throw new GamePlayException("No train cards to draw.");
             }
 
+            System.out.println("draw @" +index + " w/ " + board.getFaceUpCardCodes().size());
             cardDrawnKey = board.getFaceUpCardCodes().get(index);
             if (cardDrawnKey == LOCOMOTIVE_INDEX) {
                 turnState.switchState(CommandType.FACEUP_LOCOMOTIVE);
@@ -343,8 +349,13 @@ public class StartedGame {
             currentPlayer.removeTrainCards(returnedTrainCards);
             board.discardTrainCards(returnedTrainCards);
             currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
+
+
+
             board.reshuffleIfEmpty(); //CASE: Empty deck and discard pile before claiming route.
             board.refillFaceUpFromDiscard(); //CASE: If FaceUpCards < 5 WHEN empty deck and discard pile before claiming route.
+
+
 
             if(currentPlayer.finalTurn()){
                 afterFinalTurnPlayer = playerOrder.get(turnPointer);
@@ -426,7 +437,7 @@ public class StartedGame {
         turnResult = new TurnResult(playerOrder.get(turnPointer));
     }
 
-    private void setGameHistoryResult(String playerName, String message, int routeNumber, int faceUpIndex){
+    public void setGameHistoryResult(String playerName, String message, int routeNumber, int faceUpIndex){
         Player player = allPlayers.get(playerName);
         gameHistory = new GameHistoryResult(playerName, message,
                 player.getNumOfCars(), player.getSizeOfTrainCardHand(),
@@ -574,7 +585,7 @@ public class StartedGame {
 
                 System.out.println("  " + destCardKey);
             }
-            System.out.println("  Size of newlydrawndest:  " + player.getNewlyDrawnDestCards().size());
+            System.out.println("  Size of drawndest:  " + player.getDestCards().size());
         }
         numOfRedCards += board.getNumOfRedCards();
         numOfGreenCards += board.getNumOfGreenCards();

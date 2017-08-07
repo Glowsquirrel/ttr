@@ -152,6 +152,10 @@ public class Game implements Observable{
     public void removeTrainCardByInt(int myTrainCardInt){
         myself.removeTrainCardByInt(myTrainCardInt);
     }
+    public void addDestCard(DestCard newDestCard){
+        myself.addDestCard(newDestCard);
+        myself.setDestCardNum(myself.getNumDestCard() + 1);
+    }
 
     public int getMyNumTrains(){
         return this.myself.getNumTrains();
@@ -282,6 +286,7 @@ public class Game implements Observable{
         notifyObserver();
     }
     //end trainCard flags
+
     
     //begin Observable
     /**

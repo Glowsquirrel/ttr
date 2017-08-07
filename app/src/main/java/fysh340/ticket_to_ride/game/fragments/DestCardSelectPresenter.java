@@ -40,8 +40,8 @@ public class DestCardSelectPresenter extends Fragment implements Observer{
             mGame.iHaveReturnedDestCards(false);
             mGame.iHavePossibleDestCards(false);
             for (DestCard destCard : selectedDestCards){
-                mGame.getMyself().addDestCard(destCard);
-                mGame.getMyself().incrementDestCards();
+                mGame.addDestCard(destCard);
+                //mGame.getMyself().incrementDestCards();
             }
             possibleDestCards.clear();
             selectedDestCards.clear();

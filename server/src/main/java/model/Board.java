@@ -101,6 +101,9 @@ public class Board {
         if(!setUp) {
             for(TrainCard shuffled : shuffledDeck) {
                 TrainCard copy = TrainCard.getTrainCard(TrainCard.getTrainCardKey(shuffled));
+                if (faceUpTrainCards.size() < 5){ //if needed, add any new cards to the face up first
+                    faceUpTrainCards.add(copy);
+                }
                 trainCardDeck.add(copy);
             }
         }

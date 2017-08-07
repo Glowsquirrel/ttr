@@ -20,6 +20,15 @@ public class DrawSecondTrainCardState implements GamePlayState {
 
     private ServerProxy mServerProxy = new ServerProxy();
 
+    public DrawSecondTrainCardState(){
+        for (int trainCardType : Game.getGameInstance().getFaceUpCards()){
+            if (TrainCard.getTrainCard(trainCardType) != TrainCard.WILD){
+                return;
+            }
+        }
+        Game.getGameInstance().getServerError().setMessage("There are no other cards to draw. Turn ended.");
+        ClientState.INSTANCE.setState(new NotMyTurnState());
+    }
 
     @Override
     public void drawThreeDestCards(String username, String gameName) {

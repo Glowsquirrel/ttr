@@ -165,6 +165,7 @@ public class ServerWebSocket
     @OnWebSocketError
     public void onError(Throwable t) {
         logger.warning("Error: " + t.getMessage());
+        t.printStackTrace();
     }
 
     /**

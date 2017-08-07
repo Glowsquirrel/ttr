@@ -32,7 +32,7 @@ class Player {
 
     private PlayerColor playerColor;
     private ArrayList<DestCard> destCardHand = new ArrayList<>();
-    private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
+    //private List<DestCard> newlyDrawnDestCards = new ArrayList<>();
     private int points;
     private int numOfRoutes;
     private int numOfCars = 45;
@@ -92,7 +92,7 @@ class Player {
      */
      void addDestCards(List<DestCard> drawnCards) {
         for (DestCard currentCard : drawnCards) {
-            newlyDrawnDestCards.add(currentCard);
+            destCardHand.add(currentCard);
         }
      }
 
@@ -105,18 +105,17 @@ class Player {
      *        method, are added to the destCardHand, in whatever order.
      *        NewlyDrawnDestCards list is cleared. Returns true if this process completes.
      * @param cardOne First card returned by player
-     * @param cardTwo Second card returned by player
      * @return True if cards removed
      * @throws GamePlayException Thrown if player has not drawn cards they are trying to remove.
      */
-     boolean removeDestCards(DestCard cardOne, DestCard cardTwo) throws GamePlayException {
+     boolean removeDestCards(DestCard cardOne) throws GamePlayException {
         boolean success = false;
 
         if (cardOne != null) {
-            for (int a = 0; a < newlyDrawnDestCards.size(); a++) {
-                if (cardOne.equals(newlyDrawnDestCards.get(a))) {
+            for (int a = 0; a < destCardHand.size(); a++) {
+                if (cardOne.equals(destCardHand.get(a))) {
                     success = true;
-                    newlyDrawnDestCards.remove(cardOne);
+                    destCardHand.remove(cardOne);
                 }
             }
             if (!success) {
@@ -124,17 +123,6 @@ class Player {
             }
         }
 
-        if (cardOne == null || newlyDrawnDestCards.size() == 1) {
-            for (DestCard currentCard : newlyDrawnDestCards) {
-                destCardHand.add(currentCard);
-            }
-            newlyDrawnDestCards.clear();
-        }
-
-
-        ArrayList<DestCard> returnList = new ArrayList<>();
-        returnList.add(cardOne);
-        returnList.add(cardTwo);
         return true;
     }
 
@@ -150,7 +138,7 @@ class Player {
         if (destCard == null) {
             return false;
         }
-        for (DestCard drawnDestCard : newlyDrawnDestCards) {
+        for (DestCard drawnDestCard : destCardHand) {
             if (destCard.equals(drawnDestCard)){
                 return false;
             }
@@ -466,9 +454,6 @@ class Player {
     }
 
 
-    List<DestCard> getNewlyDrawnDestCards() {
-        return newlyDrawnDestCards;
-    }
 
     public List<ContinuousRoute> getAllContRoutes() {
         return allContRoutes;

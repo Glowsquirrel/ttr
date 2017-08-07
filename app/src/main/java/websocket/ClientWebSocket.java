@@ -114,6 +114,12 @@ public class ClientWebSocket extends WebSocketListener
     {
         if (t.getClass() == JsonSyntaxException.class){
             onClosing(webSocket, RECONNECT_CODE, t.getMessage());
+            try {
+                Thread.sleep(1000);
+                //initialize(this.ip, this.port, this.username, this.password);
+            } catch (InterruptedException ex){
+                //
+            }
         }
         else
             listening = false;

@@ -9,6 +9,8 @@ import java.util.Set;
 
 import clientproxy.ClientProxy;
 import results.Result;
+import results.game.GameHistoryResult;
+import results.game.ReplaceFaceUpCardsResult;
 
 /**
  * ServerModel is the server model root class.
@@ -299,6 +301,9 @@ public class ServerModel {
                 results.set(1, nextResult);
                 //toClient.sendToGame(gameName, nextResult);
                 allCommandLists.get(gameName).add(nextResult);
+
+                //modify the game history to account for shuffling
+                //game.setGameHistoryResult(playerName, gameName, -1, index);
             }
 
             toClient.sendToUser(playerName, gameName, results.get(0));
@@ -331,8 +336,34 @@ public class ServerModel {
     public void claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
         try {
             StartedGame game = this.getGame(gameName);
-            Result result = game.claimRoute(playerName, routeId, trainCards);
-            sendToClients(playerName, game, result);
+
+            //save previous cards
+
+            List<Integer> previousFaceUpCards = game.getFaceUpCards();
+
+            Result claimRouteResult = game.claimRoute(playerName, routeId, trainCards);
+
+            //check new cards
+            List<Boolean> faceUpDifferences = new ArrayList<>();
+            List<Integer> newFaceUpCards = game.getFaceUpCards();
+            for (int i = 0; (i < newFaceUpCards.size() && i < previousFaceUpCards.size()); i++){
+                if (previousFaceUpCards.get(i).equals(newFaceUpCards.get(i)))
+                    faceUpDifferences.add(false);
+                else
+                    faceUpDifferences.add(true);
+            }
+            while (faceUpDifferences.size() < 5){
+                if (newFaceUpCards.size() > previousFaceUpCards.size()) //if there are more cards than before, flip them
+                    faceUpDifferences.add(true);
+                else
+                    faceUpDifferences.add(false); //if there aren't new cards, don't flip them
+            }
+
+            Result replaceFaceUpResult = new ReplaceFaceUpCardsResult(newFaceUpCards, faceUpDifferences);
+
+            sendToClients(playerName, game, claimRouteResult);
+            sendToClients(playerName, game, replaceFaceUpResult);
+
             String finalTurnFlag = game.getAfterFinalTurnPlayer();
 
             if (finalTurnFlag != null) {
