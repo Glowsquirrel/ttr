@@ -127,7 +127,8 @@
         android:gravity="center"
         android:background="@drawable/customborder"
         android:textAlignment="center"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:textColor="@color/gold"/>
 
 </LinearLayout>
 
