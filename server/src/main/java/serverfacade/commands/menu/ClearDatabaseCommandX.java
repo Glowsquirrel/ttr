@@ -1,11 +1,11 @@
 package serverfacade.commands.menu;
 
 import commands.Command;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 import utils.Utils;
 
-public class ClearDatabaseCommandX extends Command implements ICommand {
+public class ClearDatabaseCommandX extends Command implements ICommandX {
 
     public ClearDatabaseCommandX(String username) {
         super.username = username;
@@ -13,8 +13,12 @@ public class ClearDatabaseCommandX extends Command implements ICommand {
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.clearDatabase(username);
+        return serverFacade.clearDatabase(username);
     }
+
+    //DO NOT STORE DESTRUCTIVE COMMANDS IN THE DATABASE
+    @Override
+    public void addToDatabase() {}
 }

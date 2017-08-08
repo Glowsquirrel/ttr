@@ -2,9 +2,9 @@ package clientfacade.game;
 
 import clientfacade.ClientFacade;
 import results.game.DrawTrainCardFromFaceUpResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class DrawTrainCardFromFaceUpResultX extends DrawTrainCardFromFaceUpResult implements ICommand{
+public class DrawTrainCardFromFaceUpResultX extends DrawTrainCardFromFaceUpResult implements IResultX {
 
     @Override
     public void execute() {

@@ -1,11 +1,11 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
+import interfaces.IResultX;
 import results.game.EndGameResult;
 
 
-public class EndGameResultX extends EndGameResult implements ICommand{
+public class EndGameResultX extends EndGameResult implements IResultX {
 
     @Override
     public void execute(){

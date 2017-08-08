@@ -1,10 +1,10 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
+import interfaces.IResultX;
 import results.game.GameHistoryResult;
 
-public class GameHistoryX extends GameHistoryResult implements ICommand {
+public class GameHistoryX extends GameHistoryResult implements IResultX {
 
     @Override
     public void execute() {

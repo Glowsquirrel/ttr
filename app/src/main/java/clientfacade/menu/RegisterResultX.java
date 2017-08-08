@@ -1,10 +1,10 @@
 package clientfacade.menu;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
+import interfaces.IResultX;
 import results.menu.RegisterResult;
 
-public class RegisterResultX extends RegisterResult implements ICommand{
+public class RegisterResultX extends RegisterResult implements IResultX {
 
     @Override
     public void execute() {

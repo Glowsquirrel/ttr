@@ -1,17 +1,22 @@
 package serverfacade.commands.menu;
 
 import commands.menu.PollGamesCommand;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class PollGamesCommandX extends PollGamesCommand implements ICommand {
+public class PollGamesCommandX extends PollGamesCommand implements ICommandX {
+
     public PollGamesCommandX(String username) {
         super(username);
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.pollGameList(username);
+        return serverFacade.pollGameList(username);
     }
+
+    //This does not need to be saved
+    @Override
+    public void addToDatabase() {}
 }

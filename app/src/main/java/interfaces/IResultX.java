@@ -1,5 +1,6 @@
 package interfaces;
 
-public interface ICommand {
+
+public interface IResultX {
     void execute();
 }

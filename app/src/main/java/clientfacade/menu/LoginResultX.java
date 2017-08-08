@@ -2,9 +2,9 @@ package clientfacade.menu;
 
 import clientfacade.ClientFacade;
 import results.menu.LoginResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class LoginResultX extends LoginResult implements ICommand{
+public class LoginResultX extends LoginResult implements IResultX {
 
     @Override
     public void execute() {

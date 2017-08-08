@@ -2,9 +2,9 @@ package clientfacade.menu;
 
 import clientfacade.ClientFacade;
 import results.menu.PollGamesResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class PollGamesResultX extends PollGamesResult implements ICommand{
+public class PollGamesResultX extends PollGamesResult implements IResultX {
 
     @Override
     public void execute() {

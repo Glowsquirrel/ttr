@@ -7,7 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import java.util.concurrent.TimeUnit;
 
 import clientcommunicator.CommandResultXSerializer;
-import interfaces.ICommand;
+import interfaces.IResultX;
 import model.ClientModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -83,7 +83,7 @@ public class ClientWebSocket extends WebSocketListener
 
         Result result = customGson.fromJson(serverMessage, Result.class);
         synchronized (ClientModel.class) {
-            ((ICommand) result).execute();
+            ((IResultX) result).execute();
         }
     }
 

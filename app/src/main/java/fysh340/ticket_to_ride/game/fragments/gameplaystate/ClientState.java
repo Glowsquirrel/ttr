@@ -3,7 +3,6 @@ package fysh340.ticket_to_ride.game.fragments.gameplaystate;
 import clientfacade.ClientFacade;
 
 /**
- * TODO: description
  *
  * @author Shun Sambongi
  * @version 1.0

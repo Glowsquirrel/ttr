@@ -1,14 +1,18 @@
 package serverfacade.commands.game;
 
 import commands.game.RejoinCommand;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class RejoinCommandX extends RejoinCommand implements ICommand {
+public class RejoinCommandX extends RejoinCommand implements ICommandX {
 
     @Override
-    public void execute() {
+    public boolean execute() {
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.reJoinGame(super.username, super.gameName);
+        return serverFacade.reJoinGame(super.username, super.gameName);
     }
+
+    //We do not need to store this because the ServerModel does not care if they rejoin.
+    @Override
+    public void addToDatabase() {}
 }

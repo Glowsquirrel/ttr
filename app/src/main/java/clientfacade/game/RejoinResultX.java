@@ -1,11 +1,10 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
-import results.Result;
+import interfaces.IResultX;
 import results.game.RejoinResult;
 
-public class RejoinResultX extends RejoinResult implements ICommand {
+public class RejoinResultX extends RejoinResult implements IResultX {
 
     @Override
     public void execute() {

@@ -2,18 +2,23 @@ package serverfacade.commands.menu;
 
 
 import commands.menu.LogoutCommand;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class LogoutCommandX extends LogoutCommand implements ICommand {
+//experimental class
+public class LogoutCommandX extends LogoutCommand implements ICommandX {
 
     public LogoutCommandX(String username){
         super(username);
     }
 
     @Override
-    public void execute() {
+    public boolean execute() {
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.logout(username);
+        return serverFacade.logout(username);
     }
+
+    //This does not need to be saved.
+    @Override
+    public void addToDatabase() {}
 }

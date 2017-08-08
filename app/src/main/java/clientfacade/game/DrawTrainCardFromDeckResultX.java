@@ -3,9 +3,9 @@ package clientfacade.game;
 
 import clientfacade.ClientFacade;
 import results.game.DrawTrainCardFromDeckResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class DrawTrainCardFromDeckResultX extends DrawTrainCardFromDeckResult implements ICommand{
+public class DrawTrainCardFromDeckResultX extends DrawTrainCardFromDeckResult implements IResultX {
 
     @Override
     public void execute() {

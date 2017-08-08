@@ -12,23 +12,23 @@ import java.util.List;
 public interface IServer {
 
     //MENU LOGIN
-    void login(String username, String password, String sessionID);
-    void register(String username, String password, String sessionID);
+    boolean login(String username, String password, String sessionID);
+    boolean register(String username, String password, String sessionID);
 
     //MENU GAMELIST && MENU LOBBY
-    void pollGameList(String username);
-    void createGame(String username, String gameName, int playerNum);
-    void joinGame(String username, String gameName);
-    void leaveGame(String username, String gameName);
-    void startGame(String gameName, String username);
-    void reJoinGame(String username, String gameName);
-    
-    void drawThreeDestCards(String username, String gameName);
-    void returnDestCards(String username, String gameName, int destCard);
-    void drawTrainCardFromDeck(String username, String gameName);
-    void drawTrainCardFromFaceUp(String username, String gameName, int index);
-    void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards);
-    void sendChatMessage(String username, String gameName, String message);
+    boolean pollGameList(String username);
+    boolean createGame(String username, String gameName, int playerNum);
+    boolean joinGame(String username, String gameName);
+    boolean leaveGame(String username, String gameName);
+    boolean startGame(String gameName, String username);
+    boolean reJoinGame(String username, String gameName);
+
+    boolean drawThreeDestCards(String username, String gameName);
+    boolean returnDestCards(String username, String gameName, int destCard);
+    boolean drawTrainCardFromDeck(String username, String gameName);
+    boolean drawTrainCardFromFaceUp(String username, String gameName, int index);
+    boolean claimRoute(String username, String gameName, int routeID, List<Integer> trainCards);
+    boolean sendChatMessage(String username, String gameName, String message);
 
 }
 

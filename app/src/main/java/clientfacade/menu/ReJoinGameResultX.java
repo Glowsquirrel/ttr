@@ -2,7 +2,7 @@ package clientfacade.menu;
 
 import clientfacade.ClientFacade;
 import results.game.RejoinResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
 /**
  *  <h1>ReJoinGameResultX</h1>
@@ -12,7 +12,8 @@ import interfaces.ICommand;
  *  @since      08.01.2017
  */
 
-public class ReJoinGameResultX extends RejoinResult implements ICommand {
+public class ReJoinGameResultX extends RejoinResult implements IResultX {
+
     @Override
     public void execute() {
         ClientFacade clientFacade = new ClientFacade();

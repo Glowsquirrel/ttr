@@ -2,9 +2,9 @@ package clientfacade.game;
 
 import clientfacade.ClientFacade;
 import results.game.ReturnDestCardsResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class ReturnDestCardsResultX extends ReturnDestCardsResult implements ICommand{
+public class ReturnDestCardsResultX extends ReturnDestCardsResult implements IResultX {
 
     @Override
     public void execute() {

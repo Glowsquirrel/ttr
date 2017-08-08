@@ -2,9 +2,9 @@ package clientfacade.game;
 
 import clientfacade.ClientFacade;
 import results.game.DrawThreeDestCardsResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class DrawThreeDestCardsResultX extends DrawThreeDestCardsResult implements ICommand{
+public class DrawThreeDestCardsResultX extends DrawThreeDestCardsResult implements IResultX {
 
     @Override
     public void execute() {

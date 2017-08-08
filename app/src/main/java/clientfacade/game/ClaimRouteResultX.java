@@ -2,9 +2,9 @@ package clientfacade.game;
 
 import clientfacade.ClientFacade;
 import results.game.ClaimRouteResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class ClaimRouteResultX extends ClaimRouteResult implements ICommand{
+public class ClaimRouteResultX extends ClaimRouteResult implements IResultX {
 
     @Override
     public void execute() {

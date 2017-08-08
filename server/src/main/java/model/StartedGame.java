@@ -29,7 +29,6 @@ import results.game.TurnResult;
  * @author Stephen Richins
  */
 
-// TODO: continuous routes; check for low card amount; end game; check for low car amount;
 public class StartedGame {
 
     private String gameName;

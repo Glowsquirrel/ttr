@@ -1,17 +1,22 @@
 package serverfacade.commands.menu;
 
 import commands.menu.LoginCommand;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class LoginCommandX extends LoginCommand implements ICommand {
+public class LoginCommandX extends LoginCommand implements ICommandX {
 
     public LoginCommandX(String username, String password) {
         super(username, password);
     }
 
-    public void execute(){
+    @Override
+    public boolean execute(){
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.login(username, password, sessionID);
+        return serverFacade.login(username, password, sessionID);
     }
+
+    //This does not need to be saved
+    @Override
+    public void addToDatabase() {}
 }

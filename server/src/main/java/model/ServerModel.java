@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import clientproxy.ClientProxy;
+import commands.Command;
+import database.IDatabase;
+import interfaces.ICommandX;
 import results.Result;
 import results.game.ReplaceFaceUpCardsResult;
 
@@ -50,6 +53,35 @@ public class ServerModel {
         return allCommandLists.get(gameName);
     }
 
+    //This is the only time the ServerModel knows about a database. This could be improved by
+    //letting only the facade ever touch the database, but this is minor.
+    public void loadFromDatabase(IDatabase myDatabase){
+        this.allUsers = myDatabase.loadUsersFromDatabase();
+        this.allStartedGames = myDatabase.loadStartedGamesFromDatabase();
+
+        Map<String, List<Command>> outstandingCommands = myDatabase.loadOutstandingCommandsFromDatabase();
+
+        for (List<Command> gameCommandList : outstandingCommands.values()){
+            for (Command outstandingCommand : gameCommandList){
+                ((ICommandX) outstandingCommand).execute();
+            }
+        }
+    }
+
+    public User getUser(String username){
+        for (User myUser : allUsers)
+            if (myUser.getUsername().equals(username))
+                return myUser;
+        return null;
+    }
+
+    public StartedGame getStartedGame(String gameName){
+        if (allStartedGames.containsKey(gameName))
+            return allStartedGames.get(gameName);
+        return null;
+    }
+
+
    /***********************************BEFORE GAME*******************************************/
     /**
      *  <h1>Add Unstarted Game</h1>
@@ -58,16 +90,18 @@ public class ServerModel {
      *
      *  @param          newGame         The new game being proposed by the client
      */
-   public void addUnstartedGame(String username, UnstartedGame newGame){
+   public boolean addUnstartedGame(String username, UnstartedGame newGame){
 
         if (allUnstartedGames.containsKey(newGame.getGameName()) || allStartedGames.containsKey(newGame.getGameName())){
             String message = "Game already exists.";
             toClient.rejectCommand(username, newGame.getGameName(), message);
+            return false;
         } else {
             //newGame.addPlayer(username);
             allUnstartedGames.put(newGame.getGameName(), newGame);
             toClient.createGame(username, newGame.getGameName());
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+            return true;
         }
     }
 
@@ -79,18 +113,20 @@ public class ServerModel {
         allStartedGames = startedGames;
     }
 
-    public void addUser(User user, String sessionID) {
+    public boolean addUser(User user, String sessionID) {
         toClient = new ClientProxy();
         String message = "Registered as " + user.getUsername() + ".";
         if(allUsers.add(user)) {
             toClient.registerUser(user.getUsername(), user.getPassword(), message, sessionID);
+            return true;
         } else {
             message = user.getUsername() + " is already registered.";
             toClient.rejectCommand(sessionID, null, message);
+            return false;
         }
     }
 
-    public void validateUser(User user, String sessionID) {
+    public boolean validateUser(User user, String sessionID) {
         toClient = new ClientProxy();
 
         if (allUsers.contains(user)){
@@ -98,7 +134,7 @@ public class ServerModel {
                 if (currentUser.getUsername().equals(user.getUsername())){
                     if (currentUser.getPassword().equals(user.getPassword())){
                         toClient.loginUser(user.getUsername(), user.getPassword(), sessionID);
-                        return;
+                        return true;
                     }
                 }
             }
@@ -106,6 +142,7 @@ public class ServerModel {
             String message = "Invalid login information.";
             toClient.rejectCommand(sessionID, null, message);
         }
+        return false;
     }
 
     private List<UnstartedGame> getUnstartedGamesList(){
@@ -136,11 +173,12 @@ public class ServerModel {
      *
      *  @param          username            The user that's requesting the game list
      */
-    public void pollGameList(String username){
+    public boolean pollGameList(String username){
         toClient.updateSingleUserGameList(username, getUnstartedGamesList(), getStartedGamesList());
+        return true;
     }
 
-    public void addPlayerToGame(String username, String gameName) {
+    public boolean addPlayerToGame(String username, String gameName) {
         boolean success = false;
         if (allUnstartedGames.containsKey(gameName)){
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
@@ -153,13 +191,15 @@ public class ServerModel {
         if (success) {
             toClient.joinGame(username, gameName);
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
+            return true;
         } else {
             String message = "Could not join game.";
             toClient.rejectCommand(username, gameName, message);
+            return false;
         }
     }
 
-    public void removePlayerFromGame(String username, String gameName) {
+    public boolean removePlayerFromGame(String username, String gameName) {
         boolean success = false;
         if (allUnstartedGames.containsKey(gameName)){
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
@@ -175,9 +215,11 @@ public class ServerModel {
         if (success) {
             toClient.updateAllUsersInMenus(getUnstartedGamesList(), getStartedGamesList());
             toClient.leaveGame(username, gameName);
+            return true;
         } else {
             String message = "Player not in game.";
             toClient.rejectCommand(username, gameName, message);
+            return false;
         }
     }
     
@@ -189,22 +231,24 @@ public class ServerModel {
      *  @param          username            The player trying to re-join.
      *  @param          gameName            The game the player is trying to re-join
      */
-    public void reJoinGame(String username, String gameName) {
+    public boolean reJoinGame(String username, String gameName) {
         String message = "You were not in that game.";
         if(allStartedGames.containsKey(gameName)) {
             StartedGame gameToReJoin = allStartedGames.get(gameName);
             if(gameToReJoin.getAllPlayers().containsKey(username)) {
                 toClient.reJoinGame(username, gameName);
+                return true;
             } else {
                 toClient.rejectCommand(username, gameName, message);
             }
         } else {
             toClient.rejectCommand(username, gameName,message);
         }
+        return false;
     }
     
    /*************************************STARTING GAME*********************************************/
-    public void startGame(String gameName, String username) {
+    public boolean startGame(String gameName, String username) {
         if (allUnstartedGames.containsKey(gameName)){
 
             UnstartedGame myUnstartedGame = allUnstartedGames.get(gameName);
@@ -235,21 +279,25 @@ public class ServerModel {
                 toClient.sendToGame(gameName, turnResult);
                 allCommandLists.get(gameName).add(turnResult);
             }
+            return true;
         } else {
             String message = "Game " + gameName +  " does not exist, or has started.";
             toClient.rejectCommand(username, gameName, message);
         }
+        return false;
     }
 
    /****************************************ROUND ONE*********************************************/
-    public void returnDestCard(String gameName, String playerName, int destCard) {
+    public boolean returnDestCard(String gameName, String playerName, int destCard) {
         try {
             StartedGame game = this.getGame(gameName);
             Result result = game.returnDestCard(playerName, destCard);
             sendToClients(playerName, game, result);
+            return true;
         }
         catch (GamePlayException ex){
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
+            return true;
         }
     }
 
@@ -266,31 +314,35 @@ public class ServerModel {
 
     /**************************************DrawDestCard*******************************************/
 
-    public void drawThreeDestCards(String gameName, String playerName) {
+    public boolean drawThreeDestCards(String gameName, String playerName) {
         try {
             StartedGame game = this.getGame(gameName);
             Result result = game.drawThreeDestCards(playerName);
             sendToClients(playerName, game, result);
+            return true;
         }
         catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
+            return false;
         }
     }
 
     /*************************************DrawTrainCard********************************************/
 
-    public void drawTrainCardFromDeck(String gameName, String playerName) {
+    public boolean drawTrainCardFromDeck(String gameName, String playerName) {
 
         try {
             StartedGame game = this.getGame(gameName);
             Result result = game.drawTrainCardFromDeck(playerName);
             sendToClients(playerName, game, result);
+            return true;
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
+            return false;
         }
     }
 
-    public void drawTrainCardFromFaceUp(String gameName, String playerName, int index) {
+    public boolean drawTrainCardFromFaceUp(String gameName, String playerName, int index) {
         try {
             StartedGame game = this.getGame(gameName);
             List<Result> results = game.drawTrainCardFromFaceUp(playerName, index);
@@ -315,14 +367,15 @@ public class ServerModel {
 
             //remove the game from the list
 
-
+        return true;
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
+            return false;
         }
     }
 
     /************************************Claim Route***********************************************/
-    public void claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
+    public boolean claimRoute(String gameName, String playerName, int routeId, List<Integer> trainCards) {
         try {
             StartedGame game = this.getGame(gameName);
 
@@ -360,19 +413,23 @@ public class ServerModel {
                 toClient.sendToGame(gameName, finalRoundResult);
                 allCommandLists.get(game.getGameName()).add(finalRoundResult);
             }
+            return true;
         } catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
+            return false;
         }
     }
 
-    public void chat(String gameName, String playerName, String message) {
+    public boolean chat(String gameName, String playerName, String message) {
         try {
             Result result =
                     this.getGame(gameName).addChat(playerName, message);
             toClient.sendToGame(gameName, result);
+            return true;
         }
         catch (GamePlayException ex) {
             toClient.rejectCommand(playerName, gameName, ex.getMessage());
+            return false;
         }
     }
 

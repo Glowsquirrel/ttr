@@ -1,10 +1,10 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
+import interfaces.IResultX;
 import results.game.ReplaceFaceUpCardsResult;
 
-public class ReplaceFaceUpCardsResultX extends ReplaceFaceUpCardsResult implements ICommand {
+public class ReplaceFaceUpCardsResultX extends ReplaceFaceUpCardsResult implements IResultX {
 
     @Override
     public void execute() {

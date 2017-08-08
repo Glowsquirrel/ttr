@@ -7,7 +7,6 @@ import interfaces.Observable;
 import interfaces.Observer;
 
 /**
- * TODO: description
  *
  * @author Shun Sambongi
  * @version 1.0

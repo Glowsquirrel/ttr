@@ -2,9 +2,9 @@ package clientfacade.menu;
 
 import clientfacade.ClientFacade;
 import results.menu.CreateGameResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class CreateGameResultX extends CreateGameResult implements ICommand {
+public class CreateGameResultX extends CreateGameResult implements IResultX {
 
     @Override
     public void execute() {

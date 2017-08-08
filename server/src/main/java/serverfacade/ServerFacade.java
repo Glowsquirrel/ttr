@@ -4,6 +4,8 @@ import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.List;
 
+import commands.Command;
+import database.IDatabase;
 import handlers.ServerWebSocket;
 import interfaces.IServer;
 import model.ServerModel;
@@ -12,14 +14,17 @@ import model.User;
 
 public class ServerFacade implements IServer {
 
-    private static ServerModel mSingletonModel;
+    private static ServerModel mSingletonModel = ServerModel.getInstance();
+    private static IDatabase myDatabase;
 
-    public ServerFacade() {
-        mSingletonModel = ServerModel.getInstance();
+    public static void setDatabase(IDatabase myDatabase){
+        ServerFacade.myDatabase = myDatabase;
     }
 
     //Will be needed later; does nothing now
-    public void clearDatabase(String username) {}
+    public boolean clearDatabase(String username) {
+        return true;
+    }
 
     /**
      * The register method attempts to register a new user with the ServerModel with the given
@@ -29,18 +34,19 @@ public class ServerFacade implements IServer {
      * @param password Password to verify identity.
      */
     @Override
-    public void register(String username, String password, String sessionID) {
-        mSingletonModel.addUser(new User(username, password), sessionID);
+    public boolean register(String username, String password, String sessionID) {
+        return mSingletonModel.addUser(new User(username, password), sessionID);
     }
 
     @Override
-    public void login(String username, String password, String sessionID) {
-        mSingletonModel.validateUser(new User(username, password), sessionID);
+    public boolean login(String username, String password, String sessionID) {
+        return mSingletonModel.validateUser(new User(username, password), sessionID);
     }
-    public void logout(String username){ //click back in the menus to the login screen
+    public boolean logout(String username){ //click back in the menus to the login screen
         Session myLogoutSession = ServerWebSocket.getMySession(username);
         ServerWebSocket myLogoutSocket = ServerWebSocket.getMySocket(myLogoutSession);
         myLogoutSocket.logout();
+        return true;
     }
 
     /**
@@ -49,8 +55,8 @@ public class ServerFacade implements IServer {
      * @param username The identifier of the single client who should receive the data.
      */
     @Override
-    public void pollGameList(String username) {
-        mSingletonModel.pollGameList(username);
+    public boolean pollGameList(String username) {
+        return mSingletonModel.pollGameList(username);
     }
 
     /**
@@ -63,10 +69,10 @@ public class ServerFacade implements IServer {
      * @param playerNum Number of players required for the game to start.
      */
     @Override
-    public void createGame(String username, String gameName, int playerNum) {
+    public boolean createGame(String username, String gameName, int playerNum) {
         UnstartedGame newGame = new UnstartedGame(gameName, playerNum);
         //newGame.addPlayer(username);
-        mSingletonModel.addUnstartedGame(username, newGame);
+        return mSingletonModel.addUnstartedGame(username, newGame);
     }
 
     /**
@@ -77,8 +83,8 @@ public class ServerFacade implements IServer {
      * @param gameName The name of the game to be joined.
      */
     @Override
-    public void joinGame(String username, String gameName) {
-        mSingletonModel.addPlayerToGame(username, gameName);
+    public boolean joinGame(String username, String gameName) {
+        return mSingletonModel.addPlayerToGame(username, gameName);
     }
 
     /**
@@ -89,8 +95,8 @@ public class ServerFacade implements IServer {
      * @param gameName Unique identifier of which game the client wants to leave.
      */
     @Override
-    public void leaveGame(String username, String gameName) {
-        mSingletonModel.removePlayerFromGame(username, gameName);
+    public boolean leaveGame(String username, String gameName) {
+        return mSingletonModel.removePlayerFromGame(username, gameName);
     }
 
     /**
@@ -102,44 +108,61 @@ public class ServerFacade implements IServer {
      * @param username Unique identifier of the client which wants to start the game.
      */
     @Override
-    public void startGame(String gameName, String username) {
+    public boolean startGame(String gameName, String username) {
         //username might be useless?
         //Answering question above--no, its useful to send fail messages.
-        mSingletonModel.startGame(gameName, username);
+        return mSingletonModel.startGame(gameName, username);
     }
 
     @Override
-    public void reJoinGame(String username, String gameName) {
-        mSingletonModel.reJoinGame(username, gameName);
+    public boolean reJoinGame(String username, String gameName) {
+        return mSingletonModel.reJoinGame(username, gameName);
     }
 
     @Override
-    public void drawThreeDestCards(String username, String gameName) {
-        mSingletonModel.drawThreeDestCards(gameName, username);
+    public boolean drawThreeDestCards(String username, String gameName) {
+        return mSingletonModel.drawThreeDestCards(gameName, username);
     }
 
     @Override
-    public void returnDestCards(String username, String gameName, int destCard) {
-        mSingletonModel.returnDestCard(gameName, username, destCard); //TODO:  Need a way to account for only one card
+    public boolean returnDestCards(String username, String gameName, int destCard) {
+        return mSingletonModel.returnDestCard(gameName, username, destCard);
     }
 
     @Override
-    public void drawTrainCardFromDeck(String username, String gameName) {
-        mSingletonModel.drawTrainCardFromDeck(gameName, username);
+    public boolean drawTrainCardFromDeck(String username, String gameName) {
+        return mSingletonModel.drawTrainCardFromDeck(gameName, username);
     }
 
     @Override
-    public void drawTrainCardFromFaceUp(String username, String gameName, int index) {
-        mSingletonModel.drawTrainCardFromFaceUp(gameName, username, index);
+    public boolean drawTrainCardFromFaceUp(String username, String gameName, int index) {
+        return mSingletonModel.drawTrainCardFromFaceUp(gameName, username, index);
     }
 
     @Override
-    public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
-        mSingletonModel.claimRoute(gameName, username, routeID, trainCards);
+    public boolean claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+        return mSingletonModel.claimRoute(gameName, username, routeID, trainCards);
     }
 
     @Override
-    public void sendChatMessage(String username, String gameName, String message) {
-        mSingletonModel.chat(gameName, username, message);
+    public boolean sendChatMessage(String username, String gameName, String message) {
+        return mSingletonModel.chat(gameName, username, message);
     }
+
+
+
+    public void addUserToDatabase(String username){
+        myDatabase.saveNewUserToDatabase(mSingletonModel.getUser(username));
+    }
+
+    public void addNewStartedGameToDatabase(String gameName){
+        myDatabase.saveNewStartedGameToDatabase(mSingletonModel.getStartedGame(gameName));
+    }
+
+    public void addCommandToDatabase(String gameName, Command myCommand){
+        if (myDatabase.saveCommandToDatabase(gameName, myCommand))
+            myDatabase.updateStartedGameInDatabase(mSingletonModel.getStartedGame(gameName));
+    }
+
+
 }

@@ -4,7 +4,6 @@ import results.Result;
 import utils.Utils;
 
 /**
- * TODO: description
  *
  * @author Shun Sambongi
  * @version 1.0

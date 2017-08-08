@@ -19,7 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import database.IDatabase;
+import database.DatabaseFactory;
 import handlers.ServerWebSocket;
+import model.ServerModel;
+import serverfacade.ServerFacade;
 import utils.Utils;
 
 public class ServerCommunicator{
@@ -53,8 +57,25 @@ public class ServerCommunicator{
     }
 
     public static void main(String[] args) throws Exception{
-        String portNumber = "8080";
         int port = 8080;
+
+        try {
+            String myDatabaseType = args[0];
+            int commandsUntilSave = Integer.parseInt(args[1]);
+
+            IDatabase myDatabase = DatabaseFactory.createDatabase(myDatabaseType, commandsUntilSave);
+
+            ServerFacade.setDatabase(myDatabase);
+            ServerModel.getInstance().loadFromDatabase(myDatabase);
+
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
+            logger.log(Level.SEVERE, "Invalid command line arguments!", ex);
+            logger.warning("Continuing without a real database attached");
+            //System.exit(-1);
+            IDatabase myDatabase = DatabaseFactory.createDatabase("database", 20);
+
+            ServerFacade.setDatabase(myDatabase);
+        }
 
         WebSocketHandler wsHandler = new WebSocketHandler()
         {

@@ -2,9 +2,9 @@ package clientfacade.game;
 
 import clientfacade.ClientFacade;
 import results.game.ChatResult;
-import interfaces.ICommand;
+import interfaces.IResultX;
 
-public class ChatResultX extends ChatResult implements ICommand{
+public class ChatResultX extends ChatResult implements IResultX {
 
     @Override
     public void execute() {

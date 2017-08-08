@@ -1,14 +1,20 @@
 package serverfacade.commands.game;
 
 import commands.game.ClaimRouteCommand;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class ClaimRouteCommandX extends ClaimRouteCommand implements ICommand {
+public class ClaimRouteCommandX extends ClaimRouteCommand implements ICommandX {
+    private ServerFacade serverFacade;
 
     @Override
-    public void execute() {
-        ServerFacade serverFacade = new ServerFacade();
-        serverFacade.claimRoute(username, gameName, routeID, trainCards);
+    public boolean execute() {
+        serverFacade = new ServerFacade();
+        return serverFacade.claimRoute(username, gameName, routeID, trainCards);
+    }
+
+    @Override
+    public void addToDatabase() {
+        serverFacade.addCommandToDatabase(super.gameName, this);
     }
 }

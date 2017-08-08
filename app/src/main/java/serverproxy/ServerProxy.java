@@ -29,9 +29,10 @@ public class ServerProxy implements IServer{
     //private MockServer clientCommunicator = new MockServer();
 
     @Override
-    public void login(String username, String password, String sessionID){
+    public boolean login(String username, String password, String sessionID){
         LoginCommand command = new LoginCommand(username, password);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     public void logout(String username){
@@ -40,80 +41,93 @@ public class ServerProxy implements IServer{
     }
 
     @Override
-    public void register(String username, String password, String sessionID) {
+    public boolean register(String username, String password, String sessionID) {
         RegisterCommand command = new RegisterCommand(username, password);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void pollGameList(String username) {
+    public boolean pollGameList(String username) {
         PollGamesCommand command = new PollGamesCommand(username);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void createGame(String username, String gameName, int playerNum) {
+    public boolean createGame(String username, String gameName, int playerNum) {
         CreateGameCommand command = new CreateGameCommand(username, gameName, playerNum);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void joinGame(String username, String gameName) {
+    public boolean joinGame(String username, String gameName) {
         JoinGameCommand command = new JoinGameCommand(username, gameName);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void leaveGame(String username, String gameName) {
+    public boolean leaveGame(String username, String gameName) {
         LeaveGameCommand command = new LeaveGameCommand(username, gameName);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void startGame(String username, String gameName) {
+    public boolean startGame(String username, String gameName) {
         StartGameCommand command = new StartGameCommand(username, gameName);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void reJoinGame(String username, String gameName) {
+    public boolean reJoinGame(String username, String gameName) {
         RejoinCommand command = new RejoinCommand(username, gameName);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void drawThreeDestCards(String username, String gameName) {
+    public boolean drawThreeDestCards(String username, String gameName) {
         DrawThreeDestCardsCommand command = new DrawThreeDestCardsCommand(username, gameName);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void returnDestCards(String username, String gameName, int destCards) {
+    public boolean returnDestCards(String username, String gameName, int destCards) {
         ReturnDestCardsCommand command = new ReturnDestCardsCommand(username, gameName, destCards);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void drawTrainCardFromDeck(String username, String gameName) {
+    public boolean drawTrainCardFromDeck(String username, String gameName) {
         DrawTrainCardFromDeckCommand command = new DrawTrainCardFromDeckCommand(username, gameName);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void drawTrainCardFromFaceUp(String username, String gameName, int index) {
+    public boolean drawTrainCardFromFaceUp(String username, String gameName, int index) {
         DrawTrainCardFromFaceUpCommand command = new DrawTrainCardFromFaceUpCommand(username, gameName, index);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+    public boolean claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
         ClaimRouteCommand command = new ClaimRouteCommand(username, gameName, routeID, trainCards);
         clientCommunicator.doCommand(command);
+        return true;
     }
 
     @Override
-    public void sendChatMessage(String username, String gameName, String message) {
+    public boolean sendChatMessage(String username, String gameName, String message) {
         ChatCommand command = new ChatCommand(username, gameName, message);
         clientCommunicator.doCommand(command);
+        return true;
     }
 }

@@ -1,22 +1,22 @@
 package serverfacade.commands.menu;
 
 import commands.menu.JoinGameCommand;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class JoinGameCommandX extends JoinGameCommand implements ICommand {
+public class JoinGameCommandX extends JoinGameCommand implements ICommandX {
 
     public JoinGameCommandX(String username, String gameName){
         super(username, gameName);
     }
+
     @Override
-    public void execute() {
+    public boolean execute() {
         ServerFacade serverFacade = new ServerFacade();
-        serverFacade.joinGame(username, gameName);
+        return serverFacade.joinGame(username, gameName);
     }
 
-    public String getGameName(){
-        return super.getGameName();
-    }
-
+    //This does not need to be saved.
+    @Override
+    public void addToDatabase() {}
 }

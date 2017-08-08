@@ -1,18 +1,16 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
-import results.Result;
+import interfaces.IResultX;
 import results.game.RejectResult;
 
 /**
- * TODO: description
  *
  * @author Shun Sambongi
  * @version 1.0
  * @since 7/25/17
  */
-public class RejectResultX extends RejectResult implements ICommand {
+public class RejectResultX extends RejectResult implements IResultX {
     public RejectResultX(String message) {
         super(message);
     }

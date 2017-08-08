@@ -15,14 +15,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import commands.Command;
-import interfaces.ICommand;
+import interfaces.ICommandX;
 import serverfacade.ServerFacade;
-import serverfacade.commands.menu.LeaveGameCommandX;
 import utils.Utils;
 
 @WebSocket
-public class ServerWebSocket
-{
+public class ServerWebSocket {
+
+    //TODO: Kalan: Refactor this mess into a new class whose sole purpose is to publish to users/games.
+
     private static Logger logger = Logger.getLogger(Utils.SERVER_LOG);
     //for keeping track of all connections
     private static ConcurrentHashMap<String, Session> allSessions = new ConcurrentHashMap<>();
@@ -206,21 +207,12 @@ public class ServerWebSocket
         synchronized (ServerFacade.class) {
             Command command = gson.fromJson(message, Command.class);
             command.setSessionID(this.sessionID);
-            ((ICommand) command).execute();
-            /*
-            try {
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                try {
-                    session.getRemote().sendString("Illegal request! The server has kicked you.");
-                    logger.severe("A client has sent a bad request! Was this client in the right HashMap? Check the ServerWebSocket!");
-                    logger.severe("Exceptions are currently getting sinked into the ServerWebSocket. If you threw an exception in your code, fix it there. If it wasn't yours, but someone else's, let them know (also how to duplicate it if possible).");
-                    session.disconnect();
-                } catch (IOException ioex) {
-                    ioex.printStackTrace();
-                }
-            }
-            */
+            ICommandX myCommand = (ICommandX) command;
+
+            if (myCommand.execute())    //if the server accepted the command, add it to the database
+                myCommand.addToDatabase();
         }
+
     }
+
 }

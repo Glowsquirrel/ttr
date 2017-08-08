@@ -1,14 +1,10 @@
 package clientfacade.game;
 
 import clientfacade.ClientFacade;
-import interfaces.ICommand;
+import interfaces.IResultX;
 import results.game.TurnResult;
 
-/**
- * Created by sjrme on 7/29/17.
- */
-
-public class TurnResultX extends TurnResult implements ICommand {
+public class TurnResultX extends TurnResult implements IResultX {
 
     @Override
     public void execute(){
