@@ -25,7 +25,6 @@ import serverfacade.commands.menu.CreateGameCommandX;
 import serverfacade.commands.menu.JoinGameCommandX;
 import serverfacade.commands.menu.LeaveGameCommandX;
 import serverfacade.commands.menu.LoginCommandX;
-import serverfacade.commands.menu.LogoutCommandX;
 import serverfacade.commands.menu.PollGamesCommandX;
 import serverfacade.commands.menu.RegisterCommandX;
 import utils.Utils;
@@ -54,9 +53,6 @@ class CommandXSerializer implements JsonDeserializer<Command> {
                 break;
             case Utils.LOGIN_TYPE:
                 typeModel = gson.fromJson(jsonObject, LoginCommandX.class);
-                break;
-            case Utils.LOGOUT_TYPE:
-                typeModel = gson.fromJson(jsonObject, LogoutCommandX.class);
                 break;
             case Utils.REGISTER_TYPE:
                 typeModel = gson.fromJson(jsonObject, RegisterCommandX.class);

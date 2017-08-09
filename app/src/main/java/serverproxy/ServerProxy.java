@@ -15,11 +15,9 @@ import commands.menu.CreateGameCommand;
 import commands.menu.JoinGameCommand;
 import commands.menu.LeaveGameCommand;
 import commands.menu.LoginCommand;
-import commands.menu.LogoutCommand;
 import commands.menu.PollGamesCommand;
 import commands.menu.RegisterCommand;
 import interfaces.IServer;
-import mockserver.MockServer;
 
 /**
  * The ServerProxy is the proxy on the client side that lets the server do the actual execution.
@@ -33,11 +31,6 @@ public class ServerProxy implements IServer{
         LoginCommand command = new LoginCommand(username, password);
         clientCommunicator.doCommand(command);
         return true;
-    }
-
-    public void logout(String username){
-        LogoutCommand command = new LogoutCommand(username);
-        clientCommunicator.doCommand(command);
     }
 
     @Override

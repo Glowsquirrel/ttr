@@ -11,6 +11,7 @@ public class RegisterCommandX extends RegisterCommand implements ICommandX {
         super(username, password);
     }
 
+    @Override
     public boolean execute(){
         serverFacade = new ServerFacade();
         return serverFacade.register(username, password, sessionID);

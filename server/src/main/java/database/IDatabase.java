@@ -11,6 +11,12 @@ import model.User;
 public interface IDatabase {
 
     /**
+     * Clears all persistent data in the database.
+     * @return True if cleared, false if failed.
+     */
+    boolean clearDatabase();
+
+    /**
      * Called every a game mutating command is accepted by the server.
      * @param gameName The name of the game to add the command to.
      * @param nextCommand The Command object to be saved.

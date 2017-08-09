@@ -16,7 +16,6 @@ import commands.menu.CreateGameCommand;
 import commands.menu.JoinGameCommand;
 import commands.menu.LeaveGameCommand;
 import commands.menu.LoginCommand;
-import commands.menu.LogoutCommand;
 import commands.menu.PollGamesCommand;
 import commands.menu.RegisterCommand;
 import utils.Utils;
@@ -35,9 +34,6 @@ public class ClientCommunicator {
         switch (command.getType()) {
             case Utils.LOGIN_TYPE:
                 myJsonString = gson.toJson(command, LoginCommand.class);
-                break;
-            case Utils.LOGOUT_TYPE:
-                myJsonString = gson.toJson(command, LogoutCommand.class);
                 break;
             case Utils.REGISTER_TYPE:
                 myJsonString = gson.toJson(command, RegisterCommand.class);
