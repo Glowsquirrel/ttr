@@ -450,7 +450,7 @@ public class ClientFacade implements IClient{
     }
 
     public void turn(String username) {
-        if (username.equals(Game.getGameInstance().getMyself().getMyUsername())) {
+        if (username.equals(game.getMyUsername())) {
             ClientState.INSTANCE.setState(new MyTurnState());
         } else {
             ClientState.INSTANCE.setState(new NotMyTurnState());

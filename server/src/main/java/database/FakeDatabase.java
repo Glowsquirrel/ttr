@@ -12,6 +12,11 @@ import model.User;
 public class FakeDatabase implements IDatabase{
     private int commandsUntilSave;
 
+    @Override
+    public boolean clearDatabase() {
+        return false;
+    }
+
     FakeDatabase(int commandsUntilSave){
         this.commandsUntilSave = commandsUntilSave;
     }
@@ -22,19 +27,13 @@ public class FakeDatabase implements IDatabase{
     }
 
     @Override
-    public void saveNewStartedGameToDatabase(StartedGame myGame) {
-
-    }
+    public void saveNewStartedGameToDatabase(StartedGame myGame) {}
 
     @Override
-    public void updateStartedGameInDatabase(StartedGame myGame) {
-
-    }
+    public void updateStartedGameInDatabase(StartedGame myGame) {}
 
     @Override
-    public void saveNewUserToDatabase(User myNewUser) {
-
-    }
+    public void saveNewUserToDatabase(User myNewUser) {}
 
     @Override
     public Set<User> loadUsersFromDatabase() {

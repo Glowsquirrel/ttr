@@ -1,29 +1,27 @@
 package serverfacade;
 
-import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.List;
+import java.util.logging.Logger;
 
-import commands.Command;
-import database.IDatabase;
-import handlers.ServerWebSocket;
 import interfaces.IServer;
+import commands.Command;
 import model.ServerModel;
-import model.UnstartedGame;
-import model.User;
+import database.IDatabase;
+import utils.Utils;
 
 public class ServerFacade implements IServer {
 
+    private static Logger logger = Logger.getLogger(Utils.SERVER_LOG);
     private static ServerModel mSingletonModel = ServerModel.getInstance();
     private static IDatabase myDatabase;
 
-    public static void setDatabase(IDatabase myDatabase){
+    public static void setAndLoadDatabase(IDatabase myDatabase){
         ServerFacade.myDatabase = myDatabase;
-    }
 
-    //Will be needed later; does nothing now
-    public boolean clearDatabase(String username) {
-        return true;
+        //call the methods instead of setting variables here to reduce coupling
+        mSingletonModel.initializeServerModel(myDatabase.loadUsersFromDatabase(),
+                myDatabase.loadStartedGamesFromDatabase(), myDatabase.loadOutstandingCommandsFromDatabase());
     }
 
     /**
@@ -35,18 +33,12 @@ public class ServerFacade implements IServer {
      */
     @Override
     public boolean register(String username, String password, String sessionID) {
-        return mSingletonModel.addUser(new User(username, password), sessionID);
+        return mSingletonModel.register(username, password, sessionID);
     }
 
     @Override
     public boolean login(String username, String password, String sessionID) {
-        return mSingletonModel.validateUser(new User(username, password), sessionID);
-    }
-    public boolean logout(String username){ //click back in the menus to the login screen
-        Session myLogoutSession = ServerWebSocket.getMySession(username);
-        ServerWebSocket myLogoutSocket = ServerWebSocket.getMySocket(myLogoutSession);
-        myLogoutSocket.logout();
-        return true;
+        return mSingletonModel.login(username, password, sessionID);
     }
 
     /**
@@ -70,9 +62,7 @@ public class ServerFacade implements IServer {
      */
     @Override
     public boolean createGame(String username, String gameName, int playerNum) {
-        UnstartedGame newGame = new UnstartedGame(gameName, playerNum);
-        //newGame.addPlayer(username);
-        return mSingletonModel.addUnstartedGame(username, newGame);
+        return mSingletonModel.addNewUnstartedGame(username, gameName, playerNum);
     }
 
     /**
@@ -109,8 +99,6 @@ public class ServerFacade implements IServer {
      */
     @Override
     public boolean startGame(String gameName, String username) {
-        //username might be useless?
-        //Answering question above--no, its useful to send fail messages.
         return mSingletonModel.startGame(gameName, username);
     }
 
@@ -150,7 +138,7 @@ public class ServerFacade implements IServer {
     }
 
 
-
+    //facade to database
     public void addUserToDatabase(String username){
         myDatabase.saveNewUserToDatabase(mSingletonModel.getUser(username));
     }
@@ -162,6 +150,16 @@ public class ServerFacade implements IServer {
     public void addCommandToDatabase(String gameName, Command myCommand){
         if (myDatabase.saveCommandToDatabase(gameName, myCommand))
             myDatabase.updateStartedGameInDatabase(mSingletonModel.getStartedGame(gameName));
+    }
+
+    public boolean clearDatabase() {
+        if (myDatabase.clearDatabase()) {
+            logger.info("Clear database successful");
+            return true;
+        } else {
+            logger.warning("Failed to clear database");
+            return false;
+        }
     }
 
 

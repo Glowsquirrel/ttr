@@ -9,7 +9,6 @@ import java.util.Set;
 
 import clientproxy.ClientProxy;
 import commands.Command;
-import database.IDatabase;
 import interfaces.ICommandX;
 import results.Result;
 import results.game.ReplaceFaceUpCardsResult;
@@ -53,19 +52,20 @@ public class ServerModel {
         return allCommandLists.get(gameName);
     }
 
-    //This is the only time the ServerModel knows about a database. This could be improved by
-    //letting only the facade ever touch the database, but this is minor.
-    public void loadFromDatabase(IDatabase myDatabase){
-        this.allUsers = myDatabase.loadUsersFromDatabase();
-        this.allStartedGames = myDatabase.loadStartedGamesFromDatabase();
 
-        Map<String, List<Command>> outstandingCommands = myDatabase.loadOutstandingCommandsFromDatabase();
+    public void initializeServerModel(Set<User> loadedUsers, Map<String, StartedGame> loadedGames, Map<String, List<Command>> loadedCommands){
+        //save loaded users
+        if (loadedUsers != null)
+            this.allUsers = loadedUsers;
+        //save loaded games
+        if (loadedGames != null)
+            this.allStartedGames = loadedGames;
 
-        for (List<Command> gameCommandList : outstandingCommands.values()){
-            for (Command outstandingCommand : gameCommandList){
-                ((ICommandX) outstandingCommand).execute();
-            }
-        }
+        //run all outstanding commands
+        if (loadedCommands != null)
+            for (List<Command> gameCommandList : loadedCommands.values())
+                for (Command outstandingCommand : gameCommandList)
+                    ((ICommandX) outstandingCommand).execute();
     }
 
     public User getUser(String username){
@@ -88,10 +88,9 @@ public class ServerModel {
      *  Checks to see if a game exists, rejecting the creation command if so, and adds the game
      *  to the list of unstarted games if not; reports success to the proxy.
      *
-     *  @param          newGame         The new game being proposed by the client
      */
-   public boolean addUnstartedGame(String username, UnstartedGame newGame){
-
+   public boolean addNewUnstartedGame(String username, String gameName, int numPlayers){
+        UnstartedGame newGame = new UnstartedGame(gameName, numPlayers);
         if (allUnstartedGames.containsKey(newGame.getGameName()) || allStartedGames.containsKey(newGame.getGameName())){
             String message = "Game already exists.";
             toClient.rejectCommand(username, newGame.getGameName(), message);
@@ -113,7 +112,8 @@ public class ServerModel {
         allStartedGames = startedGames;
     }
 
-    public boolean addUser(User user, String sessionID) {
+    public boolean register(String username, String password, String sessionID) {
+        User user = new User(username, password);
         toClient = new ClientProxy();
         String message = "Registered as " + user.getUsername() + ".";
         if(allUsers.add(user)) {
@@ -126,7 +126,8 @@ public class ServerModel {
         }
     }
 
-    public boolean validateUser(User user, String sessionID) {
+    public boolean login(String username, String password, String sessionID) {
+        User user = new User(username, password);
         toClient = new ClientProxy();
 
         if (allUsers.contains(user)){
