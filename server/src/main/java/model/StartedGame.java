@@ -29,7 +29,7 @@ import results.game.TurnResult;
  * @author Stephen Richins
  */
 
-public class StartedGame {
+public class StartedGame implements java.io.Serializable{
 
     private String gameName;
     private Map<String, Player> allPlayers = new HashMap<>();

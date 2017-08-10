@@ -7,7 +7,7 @@ package model;
  *  @author     Nathan Finch
  *  @since      7/10/2017
  */
-public class User
+public class User implements java.io.Serializable
 {
     //Data Members
 

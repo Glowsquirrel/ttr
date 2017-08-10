@@ -23,7 +23,7 @@ public interface IDatabase {
      * Called when the server accepts a StartGameCommand.
      * @param myGame The new StartedGame to insert into the database.
      */
-    void saveNewStartedGameToDatabase(StartedGame myGame);
+    public void saveNewStartedGameToDatabase(StartedGame myGame);
 
     /**
      * Called when the saveCommandToDatabase method returns true, meaning that the database wants to
@@ -33,19 +33,19 @@ public interface IDatabase {
      * @post 1) Saved the entire state of the StartedGame.
      *       2) Cleared the database's list of commands for that game.
      */
-    void updateStartedGameInDatabase(StartedGame myGame);
+   public void updateStartedGameInDatabase(StartedGame myGame);
 
     /**
      * Called when the server accepts a RegisterCommand.
      * @param myNewUser The new User to insert into the database.
      */
-    void saveNewUserToDatabase(User myNewUser);
+    public void saveNewUserToDatabase(User myNewUser);
 
     /**
      * Called on server startup.
      * @return A set of all users saved in the database.
      */
-    Set<User> loadUsersFromDatabase();
+    public Set<User> loadUsersFromDatabase();
 
     /**
      * Called on server startup.
@@ -53,7 +53,7 @@ public interface IDatabase {
      *         Key: gameName
      *         Value: StartedGame
      */
-    Map<String, StartedGame> loadStartedGamesFromDatabase();
+    public Map<String, StartedGame> loadStartedGamesFromDatabase();
 
     /**
      * Called on server startup.
@@ -61,7 +61,7 @@ public interface IDatabase {
      *         Key: gameName
      *         Value: List&ltCommand&gt
      */
-    Map<String, List<Command>> loadOutstandingCommandsFromDatabase();
+    public Map<String, List<Command>> loadOutstandingCommandsFromDatabase();
 
     /*
     Kalan thinks that saving UnstartedGames into the database is not reasonable. If they are saved

@@ -15,7 +15,7 @@ import java.util.Set;
  *
  */
 
-class Player {
+class Player implements java.io.Serializable{
 
     private String userName;
     private List<TrainCard> trainCardHand = new ArrayList<>();

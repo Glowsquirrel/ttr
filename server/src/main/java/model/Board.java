@@ -17,7 +17,7 @@ import static model.TrainCard.WILD;
 import static model.TrainCard.YELLOW;
 
 
-public class Board {
+public class Board implements java.io.Serializable {
 
     private List<TrainCard> trainCardDeck = new ArrayList<>();
     private List<TrainCard> faceUpTrainCards = new ArrayList<>();
