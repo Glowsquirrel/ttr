@@ -67,11 +67,40 @@ public class RDBDAO implements IDatabase {
         databaseToDo.executeUpdate();
     }
     
+    private void updateDB(PreparedStatement databaseToDo, String sql, String gameName, int index,
+                          Object toBlob) throws SQLException {
+        final int NAME_COLUMN = 0;
+        final int INDEX_COLUMN = 1;
+        final int CMD_COLUMN = 2;
+        
+        databaseToDo = mToDatabase.prepareStatement(sql);
+        databaseToDo.setString(NAME_COLUMN, gameName);
+        databaseToDo.setInt(INDEX_COLUMN, index);
+        databaseToDo.setObject(CMD_COLUMN, toBlob);
+        databaseToDo.executeUpdate();
+    }
+    
     private ResultSet queryDB(PreparedStatement databaseToDo, String sql) throws SQLException {
         List<Object> foundEntries = new ArrayList<>();
         
         databaseToDo = mToDatabase.prepareStatement(sql);
         return databaseToDo.executeQuery();
+    }
+    
+    private boolean cleanUp(PreparedStatement databaseToDo) {
+        try {
+            if(databaseToDo != null) {
+                databaseToDo.close();
+            }
+            if(!mToDatabase.isClosed()) {
+                closeConnection(true);
+            }
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
     }
     
     /**
@@ -89,6 +118,7 @@ public class RDBDAO implements IDatabase {
         PreparedStatement databaseToDo = null;
         
         try {
+            openConnection();
             String sql = "DELETE FROM user";
             updateDB(databaseToDo, sql);
             
@@ -98,40 +128,43 @@ public class RDBDAO implements IDatabase {
             sql = "DELETE FROM command";
             updateDB(databaseToDo, sql);
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return false;
         }
         finally {
-            if(databaseToDo != null) {
-                try {
-                    databaseToDo.close();
-                }
-                catch (SQLException ex) {
-                    return false;
-                }
-            }
+                return cleanUp(databaseToDo);
         }
-        return true;
     }
     
     @Override
     public boolean saveCommandToDatabase(String gameName, Command nextCommand) {
         final int INDEX_COLUMN = 1;
-        String sql = "SELECT * FROM command WHERE game= \'" + gameName + "\';";
+        
+        String sql = "SELECT * FROM command WHERE game= \'" + gameName + "\' ORDER BY cmd_index;";
         PreparedStatement databaseToDo = null;
         ResultSet foundInDB = null;
     
         try {
+            openConnection();
             foundInDB = queryDB(databaseToDo, sql);
+            
+            //Move to the last result and check its index
             foundInDB.last();
             int index = foundInDB.getInt(INDEX_COLUMN);
-            if(index == mCommandsToKeep) {
+            if(index + 1 == mCommandsToKeep) {
+                //Flush the commands for this game and tell the server to send the game state
                 sql = "DELETE * FROM command WHERE game= \'" + gameName + "\';";
                 updateDB(databaseToDo, sql);
-                
+                return true;
+            } else {
+                sql = "INSERT INTO command(game, cmd_index, command) VALUES(?, ?, ?);";
+                updateDB(databaseToDo, sql, gameName, index + 1, nextCommand);
             }
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            cleanUp(databaseToDo);
         }
     
     return false;
