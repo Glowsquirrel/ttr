@@ -1,10 +1,12 @@
 package serverfacade.commands.game;
 
+import java.io.Serializable;
+
 import commands.game.ChatCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class ChatCommandX extends ChatCommand implements ICommandX {
+public class ChatCommandX extends ChatCommand implements ICommandX, Serializable {
     private ServerFacade serverFacade;
 
     @Override

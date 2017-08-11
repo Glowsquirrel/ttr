@@ -1,10 +1,13 @@
 package serverfacade.commands.game;
 
+import java.io.Serializable;
+
 import commands.game.DrawTrainCardFromDeckCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class DrawTrainCardFromDeckCommandX extends DrawTrainCardFromDeckCommand implements ICommandX {
+public class DrawTrainCardFromDeckCommandX extends DrawTrainCardFromDeckCommand
+                                            implements ICommandX, Serializable {
     private ServerFacade serverFacade;
 
     @Override
