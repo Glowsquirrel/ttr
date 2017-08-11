@@ -12,17 +12,11 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Formatter;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 import database.IDatabase;
 import database.DatabaseFactory;
 import handlers.ServerWebSocket;
-import model.ServerModel;
 import serverfacade.ServerFacade;
 import utils.Utils;
 
@@ -59,22 +53,22 @@ public class ServerCommunicator{
     public static void main(String[] args) throws Exception{
         int port = 8080;
 
+
         try {
             String myDatabaseType = args[0];
             int commandsUntilSave = Integer.parseInt(args[1]);
+            if (commandsUntilSave < 1)
+                throw new NumberFormatException("Commands until save cannot be less than 1");
 
             IDatabase myDatabase = DatabaseFactory.createDatabase(myDatabaseType, commandsUntilSave);
-
-            ServerFacade.setDatabase(myDatabase);
-            ServerModel.getInstance().loadFromDatabase(myDatabase);
-
+            ServerFacade.setAndLoadDatabase(myDatabase);
+            logger.info("Loaded the: " + myDatabaseType + " database");
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
             logger.log(Level.SEVERE, "Invalid command line arguments!", ex);
             logger.warning("Continuing without a real database attached");
-            //System.exit(-1);
-            IDatabase myDatabase = DatabaseFactory.createDatabase("database", 20);
 
-            ServerFacade.setDatabase(myDatabase);
+            IDatabase myDatabase = DatabaseFactory.createDatabase("database", 20);
+            ServerFacade.setAndLoadDatabase(myDatabase);
         }
 
         WebSocketHandler wsHandler = new WebSocketHandler()

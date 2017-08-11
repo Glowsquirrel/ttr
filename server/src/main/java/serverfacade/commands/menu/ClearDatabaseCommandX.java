@@ -15,7 +15,7 @@ public class ClearDatabaseCommandX extends Command implements ICommandX {
     @Override
     public boolean execute() {
         ServerFacade serverFacade = new ServerFacade();
-        return serverFacade.clearDatabase(username);
+        return serverFacade.clearDatabase();
     }
 
     //DO NOT STORE DESTRUCTIVE COMMANDS IN THE DATABASE
