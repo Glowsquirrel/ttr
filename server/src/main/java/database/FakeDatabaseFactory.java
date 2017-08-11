@@ -1,8 +1,10 @@
 package database;
 
-public class DatabaseFactory {
+public class FakeDatabaseFactory implements AbstractFactory{
 
-    public static IDatabase createDatabase(String databaseType, int commandsUntilSave){
+    public FakeDatabase getDatabase(){
+        return new FakeDatabase();
+        /*
         switch (databaseType){
             case "database":
                 return new FakeDatabase(commandsUntilSave);
@@ -17,6 +19,7 @@ public class DatabaseFactory {
             default:
                 return null;
         }
+        */
     }
 
 }

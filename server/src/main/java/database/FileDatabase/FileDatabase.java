@@ -52,4 +52,10 @@ public class FileDatabase implements IDatabase {
         Map<String, List<Command>> commands=null;
         return commands;
     }
+
+    @Override
+    public boolean clearDatabase(){
+        return false;
+    }
+
 }
