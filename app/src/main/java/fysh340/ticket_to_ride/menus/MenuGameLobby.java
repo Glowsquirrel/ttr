@@ -1,7 +1,9 @@
 package fysh340.ticket_to_ride.menus;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,7 @@ import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import interfaces.Observer;
 import model.ClientModel;
+import model.Game;
 import serverproxy.ServerProxy;
 
 public class MenuGameLobby extends AppCompatActivity implements Observer {
@@ -100,6 +103,23 @@ public class MenuGameLobby extends AppCompatActivity implements Observer {
         else if (clientModel.hasNewGameLists()){
             clientModel.receivedNewGameLists();
             updateUI();
+        }
+        if(clientModel.disconnected()){ // show dialog and force user to exit to login screen
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setMessage("Disconnected from server");
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Game.getGameInstance().reset();
+                            ClientModel.getMyClientModel().reset();
+                            Intent intent = new Intent(getApplicationContext(), MenuLogin.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //reset the activity stack
+                            startActivity(intent); //proceed to login screen
+                        }
+                    });
+            alertDialog.show();
         }
 
     }

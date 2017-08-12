@@ -219,6 +219,13 @@ public class ClientModel implements Observable{
         return toreturn;
     }
 
+    private boolean disconnectFlag = false;
+    public void setDisconnectFlag(boolean setFlag){
+        disconnectFlag = setFlag;
+    }
+    public boolean disconnected(){
+        return disconnectFlag;
+    }
 
     @Override
     public void register(Observer o) {

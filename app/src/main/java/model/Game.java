@@ -287,6 +287,14 @@ public class Game implements Observable{
     }
     //end trainCard flags
 
+
+    private boolean disconnectFlag = false;
+    public void setDisconnectFlag(boolean setFlag){
+        disconnectFlag = setFlag;
+    }
+    public boolean disconnected(){
+        return disconnectFlag;
+    }
     
     //begin Observable
     /**

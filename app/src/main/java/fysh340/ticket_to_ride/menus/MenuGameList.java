@@ -1,9 +1,11 @@
 package fysh340.ticket_to_ride.menus;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +31,7 @@ import java.util.List;
 import fysh340.ticket_to_ride.R;
 import interfaces.Observer;
 import model.ClientModel;
+import model.Game;
 import model.RunningGame;
 import model.UnstartedGame;
 import okhttp3.WebSocket;
@@ -175,6 +178,23 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             mClientModel.receivedNewGameLists();
             mUnstartedGamesAdapter.swapData(mClientModel.getUnstartedGameList());
             mRunningGamesAdapter.swapData(mClientModel.getRunningGameList());
+        }
+        if(mClientModel.disconnected()){ // show dialog and force user to exit to login screen
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setMessage("Disconnected from server");
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Game.getGameInstance().reset();
+                            ClientModel.getMyClientModel().reset();
+                            Intent intent = new Intent(getApplicationContext(), MenuLogin.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //reset the activity stack
+                            startActivity(intent); //proceed to login screen
+                        }
+                    });
+            alertDialog.show();
         }
     }
 
