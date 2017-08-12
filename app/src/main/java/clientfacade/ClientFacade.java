@@ -12,9 +12,12 @@ import interfaces.IClient;
 import model.AbstractPlayer;
 import model.ChatHistoryModel;
 import model.ClientModel;
+import model.DestCard;
 import model.Game;
+import model.GameData;
 import model.MapModel;
 import model.Player;
+import model.PlayerData;
 import model.Route;
 import model.RunningGame;
 import model.TrainCard;
@@ -153,6 +156,38 @@ public class ClientFacade implements IClient{
     @Override
     public void reJoinGame(String username, String gameName) {
         clientModel.setHasGame(gameName);
+    }
+
+    public void reJoinGame(GameData gameData) {
+        for (Integer cardID : gameData.getPrivatePlayerData().getDestCards()) {
+            // TODO: 8/11/17 which one to use?
+//            game.addDestCard(DestCard.getDestCardByID(cardID));
+            game.getMyself().addDestCard(DestCard.getDestCardByID(cardID));
+        }
+        for (Integer trainCardInt : gameData.getPrivatePlayerData().getTrainCards()) {
+            game.getMyself().addTrainCardByInt(trainCardInt);
+        }
+
+        for (PlayerData playerData : gameData.getPlayerData()) {
+
+            AbstractPlayer player = game.getPlayerByName(playerData.getPlayerName());
+            player.setScore(playerData.getScore());
+            player.setNumRoutes(playerData.getRoutes().size());
+            player.setNumCards(playerData.getNumTrainCards());
+            player.setDestCardNum(playerData.getNumDestCards());
+            player.setNumTrains(playerData.getNumTrains());
+        }
+        game.setFaceUpCards(gameData.getFaceUpCards());
+        game.setTrainCardDeckSize(gameData.getTrainDeckSize());
+        game.setDestCardDeckSize(gameData.getDestDeckSize());
+
+        game.aPlayerHasChanged();
+        game.iHaveDifferentDestDeckSize();
+        game.iHaveDifferentFaceUpCards();
+        game.iHaveDifferentTrainCards();
+        game.iHaveDifferentTrainDeckSize();
+        
+        game.notifyObserver();
     }
     
     /**
