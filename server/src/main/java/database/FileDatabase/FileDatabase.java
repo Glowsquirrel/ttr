@@ -53,6 +53,7 @@ public class FileDatabase implements IDatabase {
         return commandDao.loadOutstandingCommandsFromDatabase();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Override
     public boolean clearDatabase()
     {
@@ -61,10 +62,15 @@ public class FileDatabase implements IDatabase {
         userDao.clearDatabase();
         return true;
 =======
+=======
+>>>>>>> dc93b48788e5d95ab9b3bfb13bf604592e5d5727
 
     @Override
     public boolean clearDatabase(){
         return false;
+<<<<<<< HEAD
+>>>>>>> dc93b48788e5d95ab9b3bfb13bf604592e5d5727
+=======
 >>>>>>> dc93b48788e5d95ab9b3bfb13bf604592e5d5727
     }
 

@@ -55,7 +55,11 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK" />
+=======
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="Android API 25 Platform" project-jdk-type="Android SDK" />
+>>>>>>> dc93b48788e5d95ab9b3bfb13bf604592e5d5727
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
