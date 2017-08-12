@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import handlers.ServerWebSocket;
 import interfaces.IClient;
+import model.GameData;
 import model.RunningGame;
 import model.ServerModel;
 import model.UnstartedGame;
@@ -229,12 +230,13 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void reJoinGame(String username, Result rejoinResult){
+    public void reJoinGame(String username, GameData gameData) {
+        RejoinResult rejoinResult = new RejoinResult(username, gameData);
         String resultJson = getResultTypeAsJson(rejoinResult);
         Session mySession = ServerWebSocket.getMySession(username);
         ServerModel serverModel = ServerModel.getInstance();
-        ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
-        myGameSession.put(username, mySession);
+        //ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
+        //myGameSession.put(username, mySession);
         
         try {
             mySession.getRemote().sendString(resultJson); // send rejoin result

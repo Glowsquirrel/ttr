@@ -523,6 +523,29 @@ public class StartedGame implements java.io.Serializable{
         return allPlayers;
     }
 
+    List<String> getAllPlayerNames(){
+        List<String> playerNames = new ArrayList<>();
+        for (String name : allPlayers.keySet()){
+            playerNames.add(name);
+        }
+        return playerNames;
+    }
+
+    List<PlayerData> getPlayerData(){
+        List<PlayerData> playerData = new ArrayList<>();
+        for (Player player : allPlayers.values()){
+            String name = player.getUsername();
+            int numTrainCards = player.getSizeOfTrainCardHand();
+            int numDestCards = player.getSizeOfDestCardHand();
+            int numTrains = player.getNumOfCars();
+            int score = player.getPoints();
+            List<Integer> routes = player.getClaimedRoutes();
+            PlayerData myData = new PlayerData(name, numTrainCards, numDestCards, numTrains, score, routes);
+            playerData.add(myData);
+        }
+        return playerData;
+    }
+
     boolean getReplaceFaceUpFlag() {
         return replaceFaceUpFlag;
     }

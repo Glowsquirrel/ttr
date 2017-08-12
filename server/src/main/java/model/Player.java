@@ -37,8 +37,14 @@ class Player implements java.io.Serializable{
     private int numOfRoutes;
     private int numOfCars = 45;
     private List<ContinuousRoute> allContRoutes = new ArrayList<>();
-     Player(String userName) {
+    private List<Integer> claimedRoutes = new ArrayList<>();
+    Player(String userName) {
         this.userName = userName;
+    }
+
+
+    public List<Integer> getClaimedRoutes(){
+        return claimedRoutes;
     }
 
     /**
