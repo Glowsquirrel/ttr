@@ -1,5 +1,8 @@
 package websocket;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -9,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import clientcommunicator.CommandResultXSerializer;
 import interfaces.IResultX;
 import model.ClientModel;
+import model.Game;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -49,6 +53,8 @@ public class ClientWebSocket extends WebSocketListener
         this.username = username;
         this.password = password;
         if (!listening) {
+            ClientModel.getMyClientModel().setDisconnectFlag(false);
+            Game.getGameInstance().setDisconnectFlag(false);
             if (ip.trim().equals(""))
                 return false;
             this.ip = ip;
@@ -100,6 +106,7 @@ public class ClientWebSocket extends WebSocketListener
         //output("Closing : " + code + " / " + reason);
         listening = false;
         isDisconnected = true;
+
         try {
             Thread.sleep(1000);
             //initialize(this.ip, this.port, this.username, this.password);
@@ -121,8 +128,14 @@ public class ClientWebSocket extends WebSocketListener
                 //
             }
         }
-        else
+        else {
             listening = false;
+            isDisconnected = true;
+            ClientModel.getMyClientModel().setDisconnectFlag(true);
+            Game.getGameInstance().setDisconnectFlag(true);
+            ClientModel.getMyClientModel().notifyObserver();
+            Game.getGameInstance().notifyObserver();
+        }
         //unknown reason for disconnect
     }
 

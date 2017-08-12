@@ -1,10 +1,13 @@
 package fysh340.ticket_to_ride.game;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 import fysh340.ticket_to_ride.R;
 import fysh340.ticket_to_ride.game.fragments.*;
 import fysh340.ticket_to_ride.menus.MenuGameList;
+import fysh340.ticket_to_ride.menus.MenuLogin;
 import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
@@ -131,6 +135,23 @@ public class MasterGamePresenter extends AppCompatActivity implements Observer {
         {
             Intent intent = new Intent(this, GameOverPresenter.class);
             startActivity(intent); //proceed to game list screen
+        }
+        if(Game.getGameInstance().disconnected()){ // show dialog and force user to exit to login screen
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setMessage("Disconnected from server");
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Game.getGameInstance().reset();
+                            ClientModel.getMyClientModel().reset();
+                            Intent intent = new Intent(getApplicationContext(), MenuLogin.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //reset the activity stack
+                            startActivity(intent); //proceed to login screen
+                        }
+                    });
+            alertDialog.show();
         }
     }
 
