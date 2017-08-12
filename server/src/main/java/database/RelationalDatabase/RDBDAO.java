@@ -83,12 +83,12 @@ public class RDBDAO implements IDatabase {
         mDatabaseToDo.executeUpdate();
     }
     
-    private String objectToString(Object toConvert) throws IOException {
+    private byte[] objectToBytes(Object toConvert) throws IOException {
         ByteArrayOutputStream objectToBytes = new ByteArrayOutputStream();
         ObjectOutputStream objectToStream = new ObjectOutputStream(objectToBytes);
         objectToStream.writeObject(toConvert);
         objectToStream.close();
-        return objectToBytes.toString();
+        return objectToBytes.toByteArray();
     }
     
     private void updateDB(String sql, String gameName, int index, Object toBlob)
@@ -100,7 +100,7 @@ public class RDBDAO implements IDatabase {
         mDatabaseToDo = mToDatabase.prepareStatement(sql);
         mDatabaseToDo.setString(NAME_COLUMN, gameName);
         mDatabaseToDo.setInt(INDEX_COLUMN, index);
-        mDatabaseToDo.setString(CMD_COLUMN, objectToString(toBlob));
+        mDatabaseToDo.setBytes(CMD_COLUMN, objectToBytes(toBlob));
         mDatabaseToDo.executeUpdate();
     }
     
@@ -112,7 +112,7 @@ public class RDBDAO implements IDatabase {
     
         mDatabaseToDo = mToDatabase.prepareStatement(sql);
         mDatabaseToDo.setString(NAME_COLUMN, gameName);
-        mDatabaseToDo.setString(GAME_COLUMN, objectToString(toBlob));
+        mDatabaseToDo.setBytes(GAME_COLUMN, objectToBytes(toBlob));
         mDatabaseToDo.executeUpdate();
     }
     
