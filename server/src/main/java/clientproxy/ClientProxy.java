@@ -234,7 +234,6 @@ public class ClientProxy implements IClient {
         RejoinResult rejoinResult = new RejoinResult(username, gameData);
         String resultJson = getResultTypeAsJson(rejoinResult);
         Session mySession = ServerWebSocket.getMySession(username);
-        ServerModel serverModel = ServerModel.getInstance();
         ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameData.getGameName());
         myGameSession.put(username, mySession);
         

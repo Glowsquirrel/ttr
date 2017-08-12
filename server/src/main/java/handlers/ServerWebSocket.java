@@ -55,7 +55,12 @@ public class ServerWebSocket {
     }
 
     public static ConcurrentHashMap<String, Session> getGameSession(String gameName) {
-        return gameSessions.get(gameName);
+        ConcurrentHashMap<String, Session> myGame = gameSessions.get(gameName);
+        if (myGame == null){
+            myGame = new ConcurrentHashMap<>();
+            gameSessions.put(gameName, myGame);
+        }
+        return myGame;
     }
 
     public static Session getMySession(String username) {
