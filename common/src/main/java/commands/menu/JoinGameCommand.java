@@ -1,9 +1,11 @@
 package commands.menu;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class JoinGameCommand extends Command {
+public class JoinGameCommand extends Command implements Serializable {
     protected String gameName;
 
     public JoinGameCommand(String username, String gameName){

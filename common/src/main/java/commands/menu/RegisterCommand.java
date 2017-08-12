@@ -1,9 +1,11 @@
 package commands.menu;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class RegisterCommand extends Command {
+public class RegisterCommand extends Command implements Serializable {
     protected String password;
 
     public RegisterCommand(String username, String password) {
