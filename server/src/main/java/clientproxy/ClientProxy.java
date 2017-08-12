@@ -282,7 +282,7 @@ public class ClientProxy implements IClient {
         try {
             myUserSession.getRemote().sendString(resultJson);
             logger.fine("Sent a: " + result.getType() + " command to " + username + ".");
-        } catch (IOException | WebSocketException ex){
+        } catch (IOException | WebSocketException | NullPointerException ex){
             logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
         }
 
