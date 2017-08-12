@@ -40,7 +40,8 @@ public class RDBDAO implements IDatabase {
     public RDBDAO() {
         mToDatabase = null;
         final String driver = "org.sqlite.JDBC";
-        mURLPostfix = "/server/database/ttr-rdb.sqlite";
+        //mURLPostfix = "/server/database/RelationalDatabase/ttr-rdb.sqlite";
+        mURLPostfix = "\\server\\src\\main\\java\\database\\RelationalDatabase\\ttr-rdb.sqlite";
         
         try {
             Class.forName(driver);
@@ -309,7 +310,9 @@ public class RDBDAO implements IDatabase {
             ex.printStackTrace();
         } finally {
             try {
-                foundInDB.close();
+                if(foundInDB != null) {
+                    foundInDB.close();
+                }
             }
             catch (SQLException ex) {
                 ex.printStackTrace();
