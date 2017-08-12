@@ -40,8 +40,8 @@ public class RDBDAO implements IDatabase {
     public RDBDAO() {
         mToDatabase = null;
         final String driver = "org.sqlite.JDBC";
-        mURLPostfix = "/server/database/ttr-rdb.sqlite";
-        //mURLPostfix = "\\server\\src\\main\\java\\database\\RelationalDatabase\\ttr-rdb.sqlite";
+        //mURLPostfix = "/server/database/RelationalDatabase/ttr-rdb.sqlite";
+        mURLPostfix = "\\server\\src\\main\\java\\database\\RelationalDatabase\\ttr-rdb.sqlite";
         
         try {
             Class.forName(driver);
@@ -80,8 +80,7 @@ public class RDBDAO implements IDatabase {
     }
     
     private void updateDB(String sql) throws SQLException {
-        mDatabaseToDo = mToDatabase.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                        ResultSet.CONCUR_UPDATABLE);
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
         mDatabaseToDo.executeUpdate();
     }
     
@@ -95,28 +94,26 @@ public class RDBDAO implements IDatabase {
     
     private void updateDB(String sql, String gameName, int index, Object toBlob)
                             throws SQLException, IOException {
-        final int NAME_COLUMN = 0;
-        final int INDEX_COLUMN = 1;
-        final int CMD_COLUMN = 2;
+        final int NAME_FIELD = 1;
+        final int INDEX_FIELD = 2;
+        final int CMD_FIELD = 3;
     
-        mDatabaseToDo = mToDatabase.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                        ResultSet.CONCUR_UPDATABLE);
-        mDatabaseToDo.setString(NAME_COLUMN, gameName);
-        mDatabaseToDo.setInt(INDEX_COLUMN, index);
-        mDatabaseToDo.setBytes(CMD_COLUMN, objectToBytes(toBlob));
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo.setString(NAME_FIELD, gameName);
+        mDatabaseToDo.setInt(INDEX_FIELD, index);
+        mDatabaseToDo.setBytes(CMD_FIELD, objectToBytes(toBlob));
         mDatabaseToDo.executeUpdate();
     }
     
     private void updateDB(String sql, String gameName, Object toBlob) throws SQLException,
                                                                         IOException {
         // the first column is the rowID
-        final int NAME_COLUMN = 1;
-        final int GAME_COLUMN = 2;
+        final int NAME_FIELD = 1;
+        final int GAME_FIELD = 2;
     
-        mDatabaseToDo = mToDatabase.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-                                                        ResultSet.CONCUR_UPDATABLE);
-        mDatabaseToDo.setString(NAME_COLUMN, gameName);
-        mDatabaseToDo.setBytes(GAME_COLUMN, objectToBytes(toBlob));
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo.setString(NAME_FIELD, gameName);
+        mDatabaseToDo.setBytes(GAME_FIELD, objectToBytes(toBlob));
         mDatabaseToDo.executeUpdate();
     }
     
@@ -183,9 +180,12 @@ public class RDBDAO implements IDatabase {
             openConnection();
             foundInDB = queryDB(sql);
             
-            //Move to the last result and check its index
-            foundInDB.last();
-            int index = foundInDB.getInt(INDEX_COLUMN);
+            //Move to the last result and check its index (SQLite only supports forwarde cursor
+            
+            int index = 0;
+            while(foundInDB.next()) {
+                index = foundInDB.getInt(INDEX_COLUMN);
+            }
             if(index + 1 == mCommandsToKeep) {
                 //Flush the commands for this game and tell the server to send the game state
                 sql = "DELETE * FROM command WHERE game= \'" + gameName + "\';";
@@ -285,7 +285,7 @@ public class RDBDAO implements IDatabase {
     
     @Override
     public Map<String, StartedGame> loadStartedGamesFromDatabase() {
-        // column 0 is rowid, 1 is id, 2 is game state
+        // column 1 is id, 2 is game state
         final int STATE_COLUMN = 2;
         Map<String, StartedGame> allGames = new HashMap<>();
         ResultSet foundInDB = null;
@@ -328,8 +328,8 @@ public class RDBDAO implements IDatabase {
     
     @Override
     public Map<String, List<Command>> loadOutstandingCommandsFromDatabase() {
-        final int GAME_COLUMN = 0;
-        final int CMD_COLUMN = 2;
+        final int GAME_COLUMN = 1;
+        final int CMD_COLUMN = 3;
         Map<String, List<Command>> allCommands = new HashMap<>();
         ResultSet foundInDB = null;
     
