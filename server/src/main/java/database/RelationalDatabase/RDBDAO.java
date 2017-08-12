@@ -1,11 +1,16 @@
 package database.RelationalDatabase;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +32,7 @@ public class RDBDAO implements IDatabase {
     private String mURLPostfix;
     private int mCommandsToKeep;
     private Connection mToDatabase;
+    private PreparedStatement mDatabaseToDo;
     
     public RDBDAO() {
         mToDatabase = null;
@@ -38,6 +44,9 @@ public class RDBDAO implements IDatabase {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
+        
+        mCommandsToKeep = 0;
+        mDatabaseToDo = null;
     }
     public RDBDAO(int commandLimit) {
         this();
@@ -62,35 +71,45 @@ public class RDBDAO implements IDatabase {
         mToDatabase = null;
     }
     
-    private void updateDB(PreparedStatement databaseToDo, String sql) throws SQLException {
-        databaseToDo = mToDatabase.prepareStatement(sql);
-        databaseToDo.executeUpdate();
+    private void updateDB(String sql) throws SQLException {
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo.executeUpdate();
     }
     
-    private void updateDB(PreparedStatement databaseToDo, String sql, String gameName, int index,
-                          Object toBlob) throws SQLException {
+    private void updateDB(String sql, String gameName, int index, Object toBlob)
+                            throws SQLException {
         final int NAME_COLUMN = 0;
         final int INDEX_COLUMN = 1;
         final int CMD_COLUMN = 2;
-        
-        databaseToDo = mToDatabase.prepareStatement(sql);
-        databaseToDo.setString(NAME_COLUMN, gameName);
-        databaseToDo.setInt(INDEX_COLUMN, index);
-        databaseToDo.setObject(CMD_COLUMN, toBlob);
-        databaseToDo.executeUpdate();
+    
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo.setString(NAME_COLUMN, gameName);
+        mDatabaseToDo.setInt(INDEX_COLUMN, index);
+        mDatabaseToDo.setObject(CMD_COLUMN, toBlob);
+        mDatabaseToDo.executeUpdate();
     }
     
-    private ResultSet queryDB(PreparedStatement databaseToDo, String sql) throws SQLException {
+    private void updateDB(String sql, String gameName, Object toBlob) throws SQLException {
+        final int NAME_COLUMN = 0;
+        final int GAME_COLUMN = 1;
+    
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo.setString(NAME_COLUMN, gameName);
+        mDatabaseToDo.setObject(GAME_COLUMN, toBlob);
+        mDatabaseToDo.executeUpdate();
+    }
+    
+    private ResultSet queryDB(String sql) throws SQLException {
         List<Object> foundEntries = new ArrayList<>();
-        
-        databaseToDo = mToDatabase.prepareStatement(sql);
-        return databaseToDo.executeQuery();
+    
+        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        return mDatabaseToDo.executeQuery();
     }
     
-    private boolean cleanUp(PreparedStatement databaseToDo) {
+    private boolean cleanUp() {
         try {
-            if(databaseToDo != null) {
-                databaseToDo.close();
+            if(mDatabaseToDo != null) {
+                mDatabaseToDo.close();
             }
             if(!mToDatabase.isClosed()) {
                 closeConnection(true);
@@ -115,24 +134,22 @@ public class RDBDAO implements IDatabase {
      */
     @Override
     public boolean clearDatabase() {
-        PreparedStatement databaseToDo = null;
-        
         try {
             openConnection();
             String sql = "DELETE FROM user";
-            updateDB(databaseToDo, sql);
+            updateDB(sql);
             
             sql = "DELETE FROM game";
-            updateDB(databaseToDo, sql);
+            updateDB(sql);
             
             sql = "DELETE FROM command";
-            updateDB(databaseToDo, sql);
+            updateDB(sql);
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
         }
         finally {
-                return cleanUp(databaseToDo);
+                return cleanUp();
         }
     }
     
@@ -141,12 +158,11 @@ public class RDBDAO implements IDatabase {
         final int INDEX_COLUMN = 1;
         
         String sql = "SELECT * FROM command WHERE game= \'" + gameName + "\' ORDER BY cmd_index;";
-        PreparedStatement databaseToDo = null;
         ResultSet foundInDB = null;
     
         try {
             openConnection();
-            foundInDB = queryDB(databaseToDo, sql);
+            foundInDB = queryDB(sql);
             
             //Move to the last result and check its index
             foundInDB.last();
@@ -154,17 +170,17 @@ public class RDBDAO implements IDatabase {
             if(index + 1 == mCommandsToKeep) {
                 //Flush the commands for this game and tell the server to send the game state
                 sql = "DELETE * FROM command WHERE game= \'" + gameName + "\';";
-                updateDB(databaseToDo, sql);
+                updateDB(sql);
                 return true;
             } else {
                 sql = "INSERT INTO command(game, cmd_index, command) VALUES(?, ?, ?);";
-                updateDB(databaseToDo, sql, gameName, index + 1, nextCommand);
+                updateDB(sql, gameName, index + 1, nextCommand);
             }
         }
         catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            cleanUp(databaseToDo);
+            cleanUp();
         }
     
     return false;
@@ -172,31 +188,162 @@ public class RDBDAO implements IDatabase {
     
     @Override
     public void saveNewStartedGameToDatabase(StartedGame myGame) {
-        
+        try {
+            openConnection();
+    
+            String sql = "INSERT INTO game(ID, state) VALUES(?, ?);";
+            updateDB(sql, myGame.getGameName(), myGame);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            cleanUp();
+        }
     }
     
     @Override
     public void updateStartedGameInDatabase(StartedGame myGame) {
-        
+        try {
+            openConnection();
+            
+            String sql = "UPDATE game SET state= ? WHERE game= ?;";
+            updateDB(sql, myGame.getGameName(), myGame);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            cleanUp();
+        }
     }
     
     @Override
     public void saveNewUserToDatabase(User myNewUser) {
+        try {
+            openConnection();
         
+            String sql = "INSERT INTO user VALUES(" + myNewUser.getUsername() + ", "
+                            + myNewUser.getPassword() + ");";
+            updateDB(sql);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            cleanUp();
+        }
     }
     
     @Override
     public Set<User> loadUsersFromDatabase() {
-        return null;
+        final int USERNAME_COLUMN = 0;
+        final int PASSWORD_COLUMN = 1;
+        Set<User> allUsers = new HashSet<>();
+        ResultSet foundInDB = null;
+        
+        try {
+            openConnection();
+            
+            String sql = "SELECT * FROM user;";
+            foundInDB = queryDB(sql);
+            while(foundInDB.next()) {
+                String username = foundInDB.getString(USERNAME_COLUMN);
+                String password = foundInDB.getString(PASSWORD_COLUMN);
+                
+                allUsers.add(new User(username, password));
+            }
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                foundInDB.close();
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            cleanUp();
+        }
+        
+        return allUsers;
     }
     
     @Override
     public Map<String, StartedGame> loadStartedGamesFromDatabase() {
-        return null;
+        final int STATE_COLUMN = 1;
+        Map<String, StartedGame> allGames = new HashMap<>();
+        ResultSet foundInDB = null;
+    
+        try {
+            openConnection();
+        
+            String sql = "SELECT * FROM game;";
+            foundInDB = queryDB(sql);
+            while(foundInDB.next()) {
+                byte[] buffer = foundInDB.getBytes(STATE_COLUMN);
+                ObjectInputStream foundObject = null;
+            
+                if(buffer != null) {
+                    foundObject = new ObjectInputStream(new ByteArrayInputStream(buffer));
+                }
+            
+                Object deserializedObject = foundObject.readObject();
+                if(deserializedObject instanceof StartedGame) {
+                    StartedGame deserializedGame = (StartedGame)deserializedObject;
+                    allGames.put(deserializedGame.getGameName(), deserializedGame);
+                }
+            }
+        } catch(SQLException | IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                foundInDB.close();
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            cleanUp();
+        }
+        
+        return allGames;
     }
     
     @Override
     public Map<String, List<Command>> loadOutstandingCommandsFromDatabase() {
-        return null;
+        final int GAME_COLUMN = 0;
+        final int CMD_COLUMN = 2;
+        Map<String, List<Command>> allCommands = new HashMap<>();
+        ResultSet foundInDB = null;
+    
+        try {
+            openConnection();
+        
+            String sql = "SELECT * FROM command;";
+            foundInDB = queryDB(sql);
+            while(foundInDB.next()) {
+                String gameName = foundInDB.getString(GAME_COLUMN);
+                byte[] buffer = foundInDB.getBytes(CMD_COLUMN);
+                ObjectInputStream foundObject = null;
+            
+                if(buffer != null) {
+                    foundObject = new ObjectInputStream(new ByteArrayInputStream(buffer));
+                }
+            
+                Object deserializedObject = foundObject.readObject();
+                if(deserializedObject instanceof Command) {
+                    Command deserializedCmd = (Command)deserializedObject;
+                    if(!allCommands.containsKey(gameName)) {
+                        allCommands.put(gameName, new ArrayList<Command>());
+                    }
+                    allCommands.get(gameName).add(deserializedCmd);
+                }
+            }
+        } catch(SQLException | IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                foundInDB.close();
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            cleanUp();
+        }
+    
+        return allCommands;
     }
 }
