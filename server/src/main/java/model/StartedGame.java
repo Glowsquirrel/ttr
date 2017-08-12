@@ -570,7 +570,7 @@ public class StartedGame implements java.io.Serializable{
             destCardInts.add(DestCard.getDestCardKey(card));
         }
         List<Integer> trainCards = player.getTrainCardCodes();
-        return new PrivatePlayerData(destCardInts, trainCards);
+        return new PrivatePlayerData(destCardInts, trainCards, new ArrayList<Integer>(), false);
     }
 
     boolean getReplaceFaceUpFlag() {

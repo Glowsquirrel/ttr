@@ -467,4 +467,14 @@ public class Game implements Observable{
     public void setCardsToDiscard(List<Integer> cardsToDiscard) {
         this.cardsToDiscard = cardsToDiscard;
     }
+
+    private List<Integer> claimedRoutes = new ArrayList<>();
+
+    public List<Integer> getClaimedRoutes() {
+        return claimedRoutes;
+    }
+
+    public void setClaimedRoutes(List<Integer> claimedRoutes) {
+        this.claimedRoutes = claimedRoutes;
+    }
 }

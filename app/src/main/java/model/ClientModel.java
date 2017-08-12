@@ -85,6 +85,16 @@ public class ClientModel implements Observable{
         this.hasJoinedGame = false;
     }
 
+    private boolean hasRejoinedGame = false;
+    public boolean hasRejoinedGame() {
+        return hasRejoinedGame;
+    }
+    public void hasRejoinedGame(boolean rejoined) {
+        hasRejoinedGame = rejoined;
+    }
+    public void receivedHasRejoinedGame() {
+        this.hasRejoinedGame = false;
+    }
 
     //end Observer
 
@@ -242,7 +252,6 @@ public class ClientModel implements Observable{
 
     @Override
     public void notifyObserver() {
-
         Handler uiHandler = new Handler(Looper.getMainLooper()); //gets the UI thread
         Runnable runnable = new Runnable() { //
             @Override

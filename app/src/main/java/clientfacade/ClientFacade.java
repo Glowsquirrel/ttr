@@ -20,6 +20,7 @@ import model.Player;
 import model.PlayerData;
 import model.Route;
 import model.RunningGame;
+import model.ServerError;
 import model.TrainCard;
 import model.UnstartedGame;
 import model.VisiblePlayer;
@@ -156,26 +157,33 @@ public class ClientFacade implements IClient{
     @Override
     public void reJoinGame(String username, GameData gameData) {
 
-    }
+        Player myself = new Player(username, gameData.getPrivatePlayerData().getTrainCards());
+        List<String> playerNames = new ArrayList<>();
+        for (PlayerData data : gameData.getPlayerData()) {
+            playerNames.add(data.getPlayerName());
+        }
+        game.initializeMyGame(myself, gameData.getGameName(), playerNames, gameData.getFaceUpCards());
 
-    public void reJoinGame(GameData gameData) {
+//        game.setPossibleDestCards(destCards);
+//        game.setFaceUpCards(faceUpCards);
+
         for (Integer cardID : gameData.getPrivatePlayerData().getDestCards()) {
             // TODO: 8/11/17 which one to use?
 //            game.addDestCard(DestCard.getDestCardByID(cardID));
             game.getMyself().addDestCard(DestCard.getDestCardByID(cardID));
         }
-        for (Integer trainCardInt : gameData.getPrivatePlayerData().getTrainCards()) {
-            game.getMyself().addTrainCardByInt(trainCardInt);
-        }
 
         for (PlayerData playerData : gameData.getPlayerData()) {
-
             AbstractPlayer player = game.getPlayerByName(playerData.getPlayerName());
             player.setScore(playerData.getScore());
             player.setNumRoutes(playerData.getRoutes().size());
             player.setNumCards(playerData.getNumTrainCards());
             player.setDestCardNum(playerData.getNumDestCards());
             player.setNumTrains(playerData.getNumTrains());
+            if (gameData.getActivePlayer().equals(playerData.getPlayerName())) {
+                player.setMyTurn(true);
+            }
+            game.getClaimedRoutes().addAll(playerData.getRoutes());
         }
         game.setFaceUpCards(gameData.getFaceUpCards());
         game.setTrainCardDeckSize(gameData.getTrainDeckSize());
@@ -186,8 +194,32 @@ public class ClientFacade implements IClient{
         game.iHaveDifferentFaceUpCards();
         game.iHaveDifferentTrainCards();
         game.iHaveDifferentTrainDeckSize();
-        
+
+        if (game.getMyself().getMyUsername().equals(gameData.getActivePlayer())) {
+            if (gameData.getPrivatePlayerData().getPossibleDestCards().size() > 0) {
+                mClientState.setState(new ReturnDestCardState());
+            } else if (gameData.getPrivatePlayerData().isDrewATrainCard()) {
+                mClientState.setState(new DrawSecondTrainCardState());
+            } else {
+                mClientState.setState(new MyTurnState());
+            }
+        } else {
+            mClientState.setState(new NotMyTurnState());
+        }
+
         game.notifyObserver();
+
+        clientModel.hasRejoinedGame(true);
+        clientModel.notifyObserver();
+//        clientModel.notifyObserver();
+
+
+
+//
+//        game.notifyObserver();
+//
+//        clientModel.startGame();
+//        clientModel.notifyObserver();
     }
     
     /**

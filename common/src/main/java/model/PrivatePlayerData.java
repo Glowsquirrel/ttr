@@ -14,10 +14,14 @@ public class PrivatePlayerData implements Serializable{
 
     private List<Integer> destCards;
     private List<Integer> trainCards;
+    private List<Integer> possibleDestCards;
+    private boolean drewATrainCard;
 
-    public PrivatePlayerData(List<Integer> destCards, List<Integer> trainCards) {
+    public PrivatePlayerData(List<Integer> destCards, List<Integer> trainCards, List<Integer> possibleDestCards, boolean drewATrainCard) {
         this.destCards = destCards;
         this.trainCards = trainCards;
+        this.possibleDestCards = possibleDestCards;
+        this.drewATrainCard = drewATrainCard;
     }
 
     public List<Integer> getDestCards() {
@@ -34,5 +38,21 @@ public class PrivatePlayerData implements Serializable{
 
     public void setTrainCards(List<Integer> trainCards) {
         this.trainCards = trainCards;
+    }
+
+    public List<Integer> getPossibleDestCards() {
+        return possibleDestCards;
+    }
+
+    public void setPossibleDestCards(List<Integer> possibleDestCards) {
+        this.possibleDestCards = possibleDestCards;
+    }
+
+    public boolean isDrewATrainCard() {
+        return drewATrainCard;
+    }
+
+    public void setDrewATrainCard(boolean drewATrainCard) {
+        this.drewATrainCard = drewATrainCard;
     }
 }
