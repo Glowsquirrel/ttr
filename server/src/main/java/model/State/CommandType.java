@@ -1,10 +1,12 @@
 package model.State;
 
+import java.io.Serializable;
+
 /**
  * Created by sjrme on 7/29/17.
  */
 
-public enum CommandType {
+public enum CommandType implements Serializable {
     DRAW_THREE_DEST_CARDS,
     DRAW_TWO_DEST_CARDS,
     DRAW_ONE_DEST_CARD,

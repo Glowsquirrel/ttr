@@ -1,9 +1,11 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class DrawTrainCardFromFaceUpResult extends Result {
+public class DrawTrainCardFromFaceUpResult extends Result  implements Serializable {
     protected int trainCard;
 
     protected DrawTrainCardFromFaceUpResult(){}

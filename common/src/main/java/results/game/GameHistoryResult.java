@@ -1,9 +1,11 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class GameHistoryResult extends Result{
+public class GameHistoryResult extends Result  implements Serializable {
     protected String message;
     protected int numTrainCars;
     protected int numTrainCardsHeld;

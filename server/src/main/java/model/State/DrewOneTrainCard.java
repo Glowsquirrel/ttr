@@ -1,5 +1,7 @@
 package model.State;
 
+import java.io.Serializable;
+
 import model.GamePlayException;
 import model.StartedGame;
 import model.TrainCard;
@@ -10,7 +12,7 @@ import static model.TrainCard.WILD;
  * Created by sjrme on 7/29/17.
  */
 
-public class DrewOneTrainCard implements TurnState{
+public class DrewOneTrainCard implements TurnState,Serializable{
 
     private StartedGame game;
 

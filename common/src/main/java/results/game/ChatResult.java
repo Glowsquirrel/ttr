@@ -1,9 +1,11 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class ChatResult extends Result {
+public class ChatResult extends Result  implements Serializable {
     protected String message;
 
     protected ChatResult(){}

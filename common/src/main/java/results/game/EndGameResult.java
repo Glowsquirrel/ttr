@@ -1,5 +1,6 @@
 package results.game;
 
+import java.io.Serializable;
 import java.util.List;
 
 import results.Result;
@@ -9,7 +10,7 @@ import utils.Utils;
  * Created by sjrme on 7/29/17.
  */
 
-public class EndGameResult extends Result {
+public class EndGameResult extends Result  implements Serializable {
 
     protected List<String> players;
     protected List<Integer> numRoutesClaimed;

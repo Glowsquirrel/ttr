@@ -1,6 +1,8 @@
 package utils;
 
-public class Utils {
+import java.io.Serializable;
+
+public class Utils implements Serializable{
     public static final String CLEAR_TYPE = "cleardb";
     public static final String LOGIN_TYPE = "login";
     public static final String LOGOUT_TYPE = "logout";

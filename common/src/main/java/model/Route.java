@@ -1,6 +1,7 @@
 package model;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import static model.TrainCard.WILD;
 import static model.TrainCard.YELLOW;
 
 
-public class Route {
+public class Route implements Serializable {
 
     private City startCity;
     private City endCity;

@@ -1,6 +1,7 @@
 package model;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,7 +38,7 @@ import static model.City.TORONTO;
 import static model.City.VANCOUVER;
 import static model.City.WINNIPEG;
 
-public class DestCard {
+public class DestCard implements Serializable{
 
     private City startCity;
     private City endCity;

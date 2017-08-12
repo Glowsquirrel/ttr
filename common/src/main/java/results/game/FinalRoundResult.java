@@ -1,5 +1,7 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
@@ -7,7 +9,7 @@ import utils.Utils;
  * Created by sjrme on 7/29/17.
  */
 
-public class FinalRoundResult extends Result {
+public class FinalRoundResult extends Result  implements Serializable {
     protected String playerToEndOn;
 
     protected FinalRoundResult(){}

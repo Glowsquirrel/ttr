@@ -1,6 +1,8 @@
 package results;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable{
     protected String type;
     protected String username;
 

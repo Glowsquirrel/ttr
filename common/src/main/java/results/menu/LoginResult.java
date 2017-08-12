@@ -1,9 +1,11 @@
 package results.menu;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class LoginResult extends Result {
+public class LoginResult extends Result  implements Serializable {
 
     protected LoginResult(){}
     public LoginResult(String username){

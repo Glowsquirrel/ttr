@@ -1,9 +1,11 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class ReturnDestCardsResult extends Result {
+public class ReturnDestCardsResult extends Result  implements Serializable {
     protected int destCards;
 
     protected ReturnDestCardsResult(){}

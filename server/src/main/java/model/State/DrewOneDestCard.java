@@ -1,5 +1,7 @@
 package model.State;
 
+import java.io.Serializable;
+
 import model.GamePlayException;
 import model.StartedGame;
 
@@ -7,7 +9,7 @@ import model.StartedGame;
  * Created by sjrme on 8/3/17.
  */
 
-public class DrewOneDestCard implements TurnState {
+public class DrewOneDestCard implements TurnState,Serializable {
 
     private StartedGame game;
     public DrewOneDestCard(StartedGame game){

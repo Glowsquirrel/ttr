@@ -1,5 +1,6 @@
 package results.game;
 
+import java.io.Serializable;
 import java.util.List;
 
 import results.Result;
@@ -10,7 +11,7 @@ import utils.Utils;
  * Created by sjrme on 7/21/17.
  */
 
-public class ReplaceFaceUpCardsResult extends Result {
+public class ReplaceFaceUpCardsResult extends Result  implements Serializable {
 
     protected List<Integer> trainCards;
     protected List<Boolean> faceUpDifferences;

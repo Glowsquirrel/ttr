@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Created by sjrme on 7/21/17.
  */
 
-public class Chat {
+public class Chat implements Serializable{
     private String playerName;
     private String message;
 

@@ -1,11 +1,12 @@
 package results.game;
 
+import java.io.Serializable;
 import java.util.List;
 
 import results.Result;
 import utils.Utils;
 
-public class StartGameResult extends Result {
+public class StartGameResult extends Result  implements Serializable {
     protected String gameName;
     protected List<String> playerNames;
     protected List<Integer> destCards;
