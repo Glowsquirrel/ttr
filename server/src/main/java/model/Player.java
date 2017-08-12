@@ -66,6 +66,9 @@ class Player implements java.io.Serializable{
     }
 
 
+    public void addClaimedRoute(int routeID){
+        claimedRoutes.add(routeID);
+    }
     public List<Integer> getClaimedRoutes(){
         return claimedRoutes;
     }

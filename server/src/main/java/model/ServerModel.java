@@ -424,6 +424,7 @@ public class ServerModel implements Serializable {
 
             Result replaceFaceUpResult = new ReplaceFaceUpCardsResult(newFaceUpCards, faceUpDifferences);
 
+
             sendToClients(playerName, game, claimRouteResult);
             sendToClients(playerName, game, replaceFaceUpResult);
 
