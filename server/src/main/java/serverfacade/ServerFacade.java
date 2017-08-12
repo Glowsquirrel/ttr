@@ -1,6 +1,7 @@
 package serverfacade;
 
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,11 +11,11 @@ import model.ServerModel;
 import database.IDatabase;
 import utils.Utils;
 
-public class ServerFacade implements IServer {
+public class ServerFacade implements IServer,Serializable {
 
     private static Logger logger = Logger.getLogger(Utils.SERVER_LOG);
     private static ServerModel mSingletonModel = ServerModel.getInstance();
-    private static IDatabase myDatabase;
+    private static transient IDatabase myDatabase;
 
     public static void setAndLoadDatabase(IDatabase myDatabase){
         ServerFacade.myDatabase = myDatabase;

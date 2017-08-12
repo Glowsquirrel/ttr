@@ -7,7 +7,7 @@ import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
 public class StartGameCommandX extends StartGameCommand implements ICommandX, Serializable {
-    private transient ServerFacade serverFacade;
+    private ServerFacade serverFacade;
 
     @Override
     public boolean execute() {

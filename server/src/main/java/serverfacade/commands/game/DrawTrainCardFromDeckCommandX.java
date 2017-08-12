@@ -8,7 +8,7 @@ import serverfacade.ServerFacade;
 
 public class DrawTrainCardFromDeckCommandX extends DrawTrainCardFromDeckCommand
                                             implements ICommandX, Serializable {
-    private transient ServerFacade serverFacade;
+    private ServerFacade serverFacade;
 
     @Override
     public boolean execute() {

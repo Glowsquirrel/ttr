@@ -7,7 +7,7 @@ import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
 public class CreateGameCommandX extends CreateGameCommand implements ICommandX,Serializable {
-    private transient ServerFacade serverFacade;
+    private ServerFacade serverFacade;
 
     public CreateGameCommandX(String username, String gameName, int numPlayers){
         super(username, gameName, numPlayers);
