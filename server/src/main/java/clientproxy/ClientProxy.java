@@ -229,41 +229,15 @@ public class ClientProxy implements IClient {
     }
 
     @Override
-    public void reJoinGame(String username, String gameName){
-        RejoinResult result = new RejoinResult(username, gameName);
+    public void reJoinGame(String username, Result rejoinResult){
+        String resultJson = getResultTypeAsJson(rejoinResult);
         Session mySession = ServerWebSocket.getMySession(username);
-        String resultJson = gson.toJson(result);
         ServerModel serverModel = ServerModel.getInstance();
         ConcurrentHashMap<String, Session> myGameSession = ServerWebSocket.getGameSession(gameName);
         myGameSession.put(username, mySession);
         
         try {
             mySession.getRemote().sendString(resultJson); // send rejoin result
-            List<Result> masterResultList = serverModel.getGameResultList(gameName);
-            for (Result myResult : masterResultList){
-                String resultType = myResult.getType();
-                String resultUsername = myResult.getUsername();
-                if ((resultType.equals(Utils.GAME_HISTORY_TYPE) && !resultUsername.equals(username)) //game history that isn't mine
-                        || (!resultType.equals(Utils.GAME_HISTORY_TYPE) && resultUsername.equals(username)) //non history result that is mine
-                        || resultType.equals(Utils.TURN_TYPE) || resultType.equals(Utils.CHAT_TYPE)
-                        || resultType.equals(Utils.REPLACE_ALL_FACEUP_TYPE) || resultType.equals(Utils.FINAL_ROUND_TYPE)
-                        || resultType.equals(Utils.END_GAME_TYPE)
-                        )
-                try {
-                    if(resultType.equals(Utils.START_TYPE)){
-                        Thread.sleep(3000);
-                    }
-                    String myResultJson = getResultTypeAsJson(myResult);
-                    mySession.getRemote().sendString(myResultJson);
-                    if(resultType.equals(Utils.START_TYPE)){
-                        Thread.sleep(3000);
-                    }
-                    Thread.sleep(500);
-                } catch (IOException | InterruptedException ex) {
-                    logger.severe("Client disconnecting while rejoining game!");
-                    break;
-                }
-            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.RunningGame;
 import model.UnstartedGame;
+import results.Result;
 
 public interface IClient {
     //login screen
@@ -16,7 +17,7 @@ public interface IClient {
     void updateSingleUserGameList(String username, List<UnstartedGame> unstartedGameList, List<RunningGame> runningGameList);
     void joinGame(String username, String gameName);
     void leaveGame(String username, String gameName);
-    void reJoinGame(String username, String gameName);
+    void reJoinGame(String username, Result rejoin);
     void createGame(String username, String gameName);
 
     //in-game

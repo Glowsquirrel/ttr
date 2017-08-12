@@ -11,6 +11,7 @@ import clientproxy.ClientProxy;
 import commands.Command;
 import interfaces.ICommandX;
 import results.Result;
+import results.game.RejoinResult;
 import results.game.ReplaceFaceUpCardsResult;
 
 /**
@@ -237,7 +238,8 @@ public class ServerModel {
         if(allStartedGames.containsKey(gameName)) {
             StartedGame gameToReJoin = allStartedGames.get(gameName);
             if(gameToReJoin.getAllPlayers().containsKey(username)) {
-                toClient.reJoinGame(username, gameName);
+                RejoinResult rejoin;
+                toClient.reJoinGame(username, rejoin);
                 return true;
             } else {
                 toClient.rejectCommand(username, gameName, message);
