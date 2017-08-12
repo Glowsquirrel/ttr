@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ import results.game.ReplaceFaceUpCardsResult;
  * @version 1.0
  */
 
-public class ServerModel {
+public class ServerModel implements Serializable {
 
     private Map<String, UnstartedGame> allUnstartedGames;
     private Map<String, StartedGame> allStartedGames;
