@@ -1,9 +1,11 @@
 package commands.menu;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class LeaveGameCommand extends Command {
+public class LeaveGameCommand extends Command implements Serializable {
     protected String gameName;
 
     public LeaveGameCommand(String username, String gameName){

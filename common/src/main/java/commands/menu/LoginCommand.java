@@ -1,9 +1,11 @@
 package commands.menu;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class LoginCommand extends Command {
+public class LoginCommand extends Command implements Serializable {
     protected String password;
 
     public LoginCommand(String username, String password) {

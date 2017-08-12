@@ -1,9 +1,11 @@
 package commands.menu;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class CreateGameCommand extends Command
+public class CreateGameCommand extends Command implements Serializable
 {
     protected String gameName;
     protected int numPlayers;
