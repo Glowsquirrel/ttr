@@ -1,8 +1,10 @@
 package database.RelationalDatabase;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,7 +60,11 @@ public class RDBDAO implements IDatabase {
     }
     
     private void openConnection() throws SQLException {
-        mToDatabase = DriverManager.getConnection(URL_PREFIX + mURLPostfix);
+        // a single string concatenation is more efficient than using StringBuilder/easier to read
+        String pathToDB = Paths.get(".").toAbsolutePath().normalize().toString(); // get working directory
+        pathToDB += ("/server/database/ttr-rdb.sqlite"); //append location of database folder
+
+        mToDatabase = DriverManager.getConnection(URL_PREFIX + pathToDB);
         mToDatabase.setAutoCommit(false);
     }
     
@@ -90,12 +96,13 @@ public class RDBDAO implements IDatabase {
     }
     
     private void updateDB(String sql, String gameName, Object toBlob) throws SQLException {
-        final int NAME_COLUMN = 0;
-        final int GAME_COLUMN = 1;
+        // the first column is the rowID!
+        final int NAME_COLUMN = 1;
+        final int GAME_COLUMN = 2;
     
         mDatabaseToDo = mToDatabase.prepareStatement(sql);
         mDatabaseToDo.setString(NAME_COLUMN, gameName);
-        mDatabaseToDo.setObject(GAME_COLUMN, toBlob);
+        mDatabaseToDo.setObject(GAME_COLUMN, toBlob); // cannot just pass in an object and expect it to serialize itself! p2
         mDatabaseToDo.executeUpdate();
     }
     
@@ -192,6 +199,7 @@ public class RDBDAO implements IDatabase {
             openConnection();
     
             String sql = "INSERT INTO game(ID, state) VALUES(?, ?);";
+            // cannot just pass in an object and expect it to serialize itself! p1
             updateDB(sql, myGame.getGameName(), myGame);
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -218,9 +226,10 @@ public class RDBDAO implements IDatabase {
     public void saveNewUserToDatabase(User myNewUser) {
         try {
             openConnection();
-        
-            String sql = "INSERT INTO user VALUES(" + myNewUser.getUsername() + ", "
-                            + myNewUser.getPassword() + ");";
+
+            // statements require quotes around values
+            String sql = "INSERT INTO user VALUES(\"" + myNewUser.getUsername() + "\", \""
+                            + myNewUser.getPassword() + "\");";
             updateDB(sql);
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -231,8 +240,9 @@ public class RDBDAO implements IDatabase {
     
     @Override
     public Set<User> loadUsersFromDatabase() {
-        final int USERNAME_COLUMN = 0;
-        final int PASSWORD_COLUMN = 1;
+        // the first column is the rowID!
+        final int USERNAME_COLUMN = 1;
+        final int PASSWORD_COLUMN = 2;
         Set<User> allUsers = new HashSet<>();
         ResultSet foundInDB = null;
         
@@ -251,7 +261,8 @@ public class RDBDAO implements IDatabase {
             ex.printStackTrace();
         } finally {
             try {
-                foundInDB.close();
+                if (foundInDB != null) // if you're going to set values to null, don't let it kill everyone!
+                    foundInDB.close();
             }
             catch (SQLException ex) {
                 ex.printStackTrace();
@@ -264,7 +275,8 @@ public class RDBDAO implements IDatabase {
     
     @Override
     public Map<String, StartedGame> loadStartedGamesFromDatabase() {
-        final int STATE_COLUMN = 1;
+        // column 0 is rowid, 1 is id, 2 is game state
+        final int STATE_COLUMN = 2;
         Map<String, StartedGame> allGames = new HashMap<>();
         ResultSet foundInDB = null;
     
