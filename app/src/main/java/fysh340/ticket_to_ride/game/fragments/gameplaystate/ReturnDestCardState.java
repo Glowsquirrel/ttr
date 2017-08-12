@@ -7,6 +7,7 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Observable;
 
+import model.Game;
 import serverproxy.ServerProxy;
 
 /**
@@ -20,9 +21,13 @@ public class ReturnDestCardState implements GamePlayState {
 
     private ServerProxy mServerProxy = new ServerProxy();
 
+    private void showErrorToast() {
+        Game.getGameInstance().getServerError().setMessage("You need to return destination cards");
+    }
 
     @Override
     public void drawThreeDestCards(String username, String gameName) {
+        showErrorToast();
     }
 
     @Override
@@ -32,18 +37,21 @@ public class ReturnDestCardState implements GamePlayState {
 
     @Override
     public void drawTrainCardFromDeck(String username, String gameName) {
+        showErrorToast();
     }
 
     @Override
     public void drawTrainCardFaceUp(String username, String gameName, int index) {
+        showErrorToast();
     }
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, List<Integer> trainCards) {
+        showErrorToast();
     }
 
     @Override
     public void claimRoute(String username, String gameName, int routeID, AppCompatActivity context) {
-
+        showErrorToast();
     }
 }

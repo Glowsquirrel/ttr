@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import fysh340.ticket_to_ride.R;
+import fysh340.ticket_to_ride.game.MasterGamePresenter;
 import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
@@ -178,6 +179,11 @@ public class MenuGameList extends AppCompatActivity implements Observer{
             mClientModel.receivedNewGameLists();
             mUnstartedGamesAdapter.swapData(mClientModel.getUnstartedGameList());
             mRunningGamesAdapter.swapData(mClientModel.getRunningGameList());
+        } else if (mClientModel.hasRejoinedGame()) {
+            mClientModel.receivedHasRejoinedGame();
+            mClientModel.unregister(this);
+            Intent intent = new Intent(getApplicationContext(), MasterGamePresenter.class);
+            startActivity(intent);
         }
         if(mClientModel.disconnected()){ // show dialog and force user to exit to login screen
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();

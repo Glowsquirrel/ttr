@@ -32,6 +32,7 @@ import interfaces.Observer;
 import model.ClientModel;
 import model.Game;
 import model.MapModel;
+import model.Route;
 import serverproxy.ServerProxy;
 
 
@@ -73,7 +74,6 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
         mMapModel.register(this);
 
         return view;
-
     }
 
     @Override
@@ -120,6 +120,12 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
             }
         });
 
+
+        for (Integer route : mGame.getClaimedRoutes()) {
+            String username = Route.getRouteByID(route).getUser();
+            int color = mGame.getPlayerByName(username).getColor();
+            MapHelper.changeColor(MapRoute.getRoute(route), color);
+        }
     }
 
 
