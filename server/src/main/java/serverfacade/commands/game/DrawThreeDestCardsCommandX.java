@@ -1,10 +1,13 @@
 package serverfacade.commands.game;
 
+import java.io.Serializable;
+
 import commands.game.DrawThreeDestCardsCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class DrawThreeDestCardsCommandX extends DrawThreeDestCardsCommand implements ICommandX {
+public class DrawThreeDestCardsCommandX extends DrawThreeDestCardsCommand
+                                        implements ICommandX, Serializable {
     private ServerFacade serverFacade;
 
     @Override

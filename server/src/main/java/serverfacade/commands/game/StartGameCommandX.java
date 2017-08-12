@@ -1,10 +1,12 @@
 package serverfacade.commands.game;
 
+import java.io.Serializable;
+
 import commands.game.StartGameCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class StartGameCommandX extends StartGameCommand implements ICommandX {
+public class StartGameCommandX extends StartGameCommand implements ICommandX, Serializable {
     private ServerFacade serverFacade;
 
     @Override

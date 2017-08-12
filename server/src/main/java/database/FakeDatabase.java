@@ -20,6 +20,8 @@ public class FakeDatabase implements IDatabase{
     FakeDatabase(int commandsUntilSave){
         this.commandsUntilSave = commandsUntilSave;
     }
+    FakeDatabase(){
+    }
 
     @Override
     public boolean saveCommandToDatabase(String gameName, Command nextCommand) {

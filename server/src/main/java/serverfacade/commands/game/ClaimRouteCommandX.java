@@ -1,10 +1,12 @@
 package serverfacade.commands.game;
 
+import java.io.Serializable;
+
 import commands.game.ClaimRouteCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class ClaimRouteCommandX extends ClaimRouteCommand implements ICommandX {
+public class ClaimRouteCommandX extends ClaimRouteCommand implements ICommandX, Serializable {
     private ServerFacade serverFacade;
 
     @Override

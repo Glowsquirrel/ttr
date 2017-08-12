@@ -1,9 +1,11 @@
 package commands.game;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class ReturnDestCardsCommand extends Command {
+public class ReturnDestCardsCommand extends Command implements Serializable {
     protected String gameName;
     protected int destCard;
 

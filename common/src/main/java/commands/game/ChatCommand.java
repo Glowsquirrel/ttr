@@ -1,9 +1,11 @@
 package commands.game;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class ChatCommand extends Command {
+public class ChatCommand extends Command implements Serializable {
     protected String gameName;
     protected String message;
 

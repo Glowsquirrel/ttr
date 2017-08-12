@@ -1,10 +1,13 @@
 package serverfacade.commands.game;
 
+import java.io.Serializable;
+
 import commands.game.ReturnDestCardsCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class ReturnDestCardsCommandX extends ReturnDestCardsCommand implements ICommandX {
+public class ReturnDestCardsCommandX extends ReturnDestCardsCommand
+                                        implements ICommandX, Serializable {
     private ServerFacade serverFacade;
 
     @Override

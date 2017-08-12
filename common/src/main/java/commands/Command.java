@@ -1,6 +1,8 @@
 package commands;
 
-public class Command
+import java.io.Serializable;
+
+public class Command implements Serializable
 {
     protected String type;
     protected String username;

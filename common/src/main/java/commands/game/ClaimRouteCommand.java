@@ -1,11 +1,12 @@
 package commands.game;
 
+import java.io.Serializable;
 import java.util.List;
 
 import commands.Command;
 import utils.Utils;
 
-public class ClaimRouteCommand extends Command {
+public class ClaimRouteCommand extends Command implements Serializable {
     protected String gameName;
     protected int routeID;
     protected List<Integer> trainCards;

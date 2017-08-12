@@ -1,9 +1,11 @@
 package commands.game;
 
+import java.io.Serializable;
+
 import commands.Command;
 import utils.Utils;
 
-public class DrawTrainCardFromFaceUpCommand extends Command {
+public class DrawTrainCardFromFaceUpCommand extends Command implements Serializable {
     protected String gameName;
     protected int index;
 
