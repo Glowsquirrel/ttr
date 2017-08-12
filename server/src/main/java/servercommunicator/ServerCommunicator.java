@@ -60,14 +60,15 @@ public class ServerCommunicator{
             if (commandsUntilSave < 1)
                 throw new NumberFormatException("Commands until save cannot be less than 1");
 
-            IDatabase myDatabase = DatabaseFactory.createDatabase(myDatabaseType, commandsUntilSave);
+            //IDatabase myDatabase = DatabaseFactory.getDatabase(myDatabaseType, commandsUntilSave);
+            IDatabase myDatabase = DatabaseFactory.getDatabase(myDatabaseType, 20);
             ServerFacade.setAndLoadDatabase(myDatabase);
             logger.info("Loaded the: " + myDatabaseType + " database");
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
             logger.log(Level.SEVERE, "Invalid command line arguments!", ex);
             logger.warning("Continuing without a real database attached");
 
-            IDatabase myDatabase = DatabaseFactory.createDatabase("database", 20);
+            IDatabase myDatabase = DatabaseFactory.getDatabase("database", 20);
             ServerFacade.setAndLoadDatabase(myDatabase);
         }
 
