@@ -1,9 +1,11 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class RejoinResult extends Result {
+public class RejoinResult extends Result  implements Serializable {
     protected String gameName;
 
     protected RejoinResult(){}

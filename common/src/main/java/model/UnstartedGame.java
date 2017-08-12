@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnstartedGame {
+public class UnstartedGame implements Serializable{
 
     private String gameName;
     private List<String> usernames = new ArrayList<>();

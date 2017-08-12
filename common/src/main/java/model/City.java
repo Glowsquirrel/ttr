@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Created by sjrme on 7/13/17.
  */
 
-public enum City {
+public enum City implements Serializable{
 
     ATLANTA ("Atlanta"),
     BOSTON ("Boston"),

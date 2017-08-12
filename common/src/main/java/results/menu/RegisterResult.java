@@ -1,9 +1,11 @@
 package results.menu;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class RegisterResult extends Result {
+public class RegisterResult extends Result  implements Serializable {
     protected String message;
 
     protected RegisterResult(){}

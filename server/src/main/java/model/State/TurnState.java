@@ -1,5 +1,7 @@
 package model.State;
 
+import java.io.Serializable;
+
 import model.GamePlayException;
 
 /**

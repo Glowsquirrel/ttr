@@ -9,7 +9,7 @@ import model.StartedGame;
  * Created by sjrme on 7/29/17.
  */
 
-public class FirstRound implements TurnState, Serializable {
+public class FirstRound implements TurnState,Serializable {
 
     private StartedGame game;
 

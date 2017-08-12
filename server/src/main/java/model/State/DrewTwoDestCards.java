@@ -9,7 +9,7 @@ import model.StartedGame;
  * Created by sjrme on 8/1/17.
  */
 
-public class DrewTwoDestCards implements TurnState, Serializable {
+public class DrewTwoDestCards implements TurnState,Serializable {
 
 
     private StartedGame game;

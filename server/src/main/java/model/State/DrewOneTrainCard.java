@@ -12,7 +12,7 @@ import static model.TrainCard.WILD;
  * Created by sjrme on 7/29/17.
  */
 
-public class DrewOneTrainCard implements TurnState, Serializable{
+public class DrewOneTrainCard implements TurnState,Serializable{
 
     private StartedGame game;
 

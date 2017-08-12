@@ -1,7 +1,9 @@
 package model;
 
 
-public enum TrainCard {
+import java.io.Serializable;
+
+public enum TrainCard implements Serializable {
     RED ("Red"),
     BLUE ("Blue"),
     GREEN ("Green"),

@@ -1,5 +1,7 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
@@ -9,7 +11,7 @@ import utils.Utils;
  * @version 1.0
  * @since 7/25/17
  */
-public class RejectResult extends Result {
+public class RejectResult extends Result  implements Serializable {
 
     private String message;
 

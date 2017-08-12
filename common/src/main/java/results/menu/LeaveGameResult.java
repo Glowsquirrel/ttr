@@ -1,9 +1,11 @@
 package results.menu;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class LeaveGameResult extends Result {
+public class LeaveGameResult extends Result  implements Serializable {
     protected String gameName;
 
     protected LeaveGameResult(){}

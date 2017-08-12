@@ -1,9 +1,11 @@
 package results.game;
 
+import java.io.Serializable;
+
 import results.Result;
 import utils.Utils;
 
-public class ClaimRouteResult extends Result {
+public class ClaimRouteResult extends Result  implements Serializable {
     protected int routeID;
 
     protected ClaimRouteResult(){}
