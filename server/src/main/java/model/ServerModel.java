@@ -60,9 +60,13 @@ public class ServerModel implements Serializable {
         if (loadedUsers != null)
             this.allUsers = loadedUsers;
         //save loaded games
-        if (loadedGames != null)
+        if (loadedGames != null) {
             this.allStartedGames = loadedGames;
-
+            for(StartedGame loadedGame : allStartedGames.values()) {
+                allCommandLists.put(loadedGame.getGameName(), new ArrayList<Result>());
+            }
+        }
+        
         //run all outstanding commands
         if (loadedCommands != null)
             for (List<Command> gameCommandList : loadedCommands.values())
