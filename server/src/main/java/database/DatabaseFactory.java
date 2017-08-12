@@ -1,5 +1,7 @@
 package database;
 
+import database.FileDatabase.FileDatabase;
+
 public class DatabaseFactory {
 
     public static IDatabase createDatabase(String databaseType, int commandsUntilSave){
@@ -12,8 +14,7 @@ public class DatabaseFactory {
                 return null;
             case "rachaeldatabase":
                 //return new RachaelDatabase(commandsUntilSave);
-                //TODO: Rachael: Put your database here.
-                return null;
+                return new FileDatabase();
             default:
                 return null;
         }

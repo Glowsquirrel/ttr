@@ -14,42 +14,51 @@ import model.User;
  */
 
 public class FileDatabase implements IDatabase {
+    CommandDao commandDao=new CommandDao();
+    GameDao gameDao=new GameDao();
+    UserDao userDao=new UserDao();
     @Override
     public boolean saveCommandToDatabase(String gameName, Command nextCommand)
     {
-        return true;
+        return commandDao.saveCommandToDatabase(gameName,nextCommand);
     }
     @Override
     public void saveNewStartedGameToDatabase(StartedGame myGame)
     {
-
+        gameDao.saveNewStartedGameToDatabase(myGame);
     }
     @Override
     public void updateStartedGameInDatabase(StartedGame myGame)
     {
-
+        gameDao.updateStartedGameInDatabase(myGame);
     }
     @Override
     public void saveNewUserToDatabase(User myNewUser)
     {
-
+        userDao.saveNewUserToDatabase(myNewUser);
     }
     @Override
     public Set<User> loadUsersFromDatabase()
     {
-        Set<User> users=null;
-        return users;
+       return userDao.loadUsersFromDatabase();
     }
     @Override
     public Map<String, StartedGame> loadStartedGamesFromDatabase()
     {
-        Map<String, StartedGame> games=null;
-        return games;
+        return gameDao.loadStartedGamesFromDatabase();
     }
     @Override
     public Map<String, List<Command>> loadOutstandingCommandsFromDatabase()
     {
-        Map<String, List<Command>> commands=null;
-        return commands;
+        return commandDao.loadOutstandingCommandsFromDatabase();
     }
+    @Override
+    public boolean clearDatabase()
+    {
+        gameDao.clearDatabase();
+        commandDao.clearDatabase();
+        userDao.clearDatabase();
+        return true;
+    }
+
 }
