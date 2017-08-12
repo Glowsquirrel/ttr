@@ -1,11 +1,13 @@
 package serverfacade.commands.menu;
 
+import java.io.Serializable;
+
 import commands.menu.CreateGameCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class CreateGameCommandX extends CreateGameCommand implements ICommandX {
-    private ServerFacade serverFacade;
+public class CreateGameCommandX extends CreateGameCommand implements ICommandX,Serializable {
+    private transient ServerFacade serverFacade;
 
     public CreateGameCommandX(String username, String gameName, int numPlayers){
         super(username, gameName, numPlayers);

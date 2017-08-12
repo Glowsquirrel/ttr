@@ -1,10 +1,12 @@
 package serverfacade.commands.menu;
 
+import java.io.Serializable;
+
 import commands.menu.JoinGameCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class JoinGameCommandX extends JoinGameCommand implements ICommandX {
+public class JoinGameCommandX extends JoinGameCommand implements ICommandX,Serializable {
 
     public JoinGameCommandX(String username, String gameName){
         super(username, gameName);

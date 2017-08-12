@@ -66,6 +66,11 @@ public class CommandDao {
             System.out.printf("Serialized data is saved in /commands.ser");
         } catch (IOException i) {
             i.printStackTrace();
+            for(int k=0;k<commandList.size();k++)
+            {
+                Command j=commandList.get(k);
+                System.out.print(j.toString());
+            }
         }
         if(commandList.size()>commandNum)
         {
@@ -105,5 +110,38 @@ public class CommandDao {
             i.printStackTrace();
         }
         return true;
+    }
+    public void clearGameCommands(String gameName)
+    {
+        Map<String, List<Command>> commands=null;
+        try {
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            commands = (Map<String, List<Command>>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("User class not found");
+            c.printStackTrace();
+        }
+        if(commands==null)commands=new HashMap<>();
+        List<Command> commandList=commands.get(gameName);
+            commandList=new ArrayList<Command>();
+        commands.put(gameName,commandList);
+        try {
+            FileOutputStream fileOut =
+                    new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(commands);
+            out.close();
+            fileOut.close();
+            System.out.printf("Serialized data is saved in /commands.ser");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+
+        return;
     }
 }

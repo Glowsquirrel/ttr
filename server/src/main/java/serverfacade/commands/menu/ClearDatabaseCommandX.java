@@ -1,11 +1,13 @@
 package serverfacade.commands.menu;
 
+import java.io.Serializable;
+
 import commands.Command;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 import utils.Utils;
 
-public class ClearDatabaseCommandX extends Command implements ICommandX {
+public class ClearDatabaseCommandX extends Command implements ICommandX,Serializable {
 
     public ClearDatabaseCommandX(String username) {
         super.username = username;
