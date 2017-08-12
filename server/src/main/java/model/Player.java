@@ -38,6 +38,29 @@ class Player implements java.io.Serializable{
     private int numOfCars = 45;
     private List<ContinuousRoute> allContRoutes = new ArrayList<>();
     private List<Integer> claimedRoutes = new ArrayList<>();
+
+    // for handling client state on rejoin result
+    private List<Integer> possibleDestCards = new ArrayList<>();
+    private boolean drewATrainCard = false;
+
+    public List<Integer> getPossibleDestCards(){
+        return possibleDestCards;
+    }
+    public void addPossibleDestCards(List<DestCard> possibleDestCards){
+        for (DestCard card : possibleDestCards){
+            this.possibleDestCards.add(DestCard.getDestCardKey(card));
+        }
+    }
+
+    public void clearPossibleDestCards(){
+        possibleDestCards.clear();
+    }
+
+    public void setDrewATrainCard(boolean drewCard){
+        this.drewATrainCard = drewCard;
+    }
+
+
     Player(String userName) {
         this.userName = userName;
     }

@@ -156,6 +156,7 @@ public class StartedGame implements java.io.Serializable{
             }
 
             drawnDestCards = board.drawDestCards();
+            currentPlayer.addPossibleDestCards(drawnDestCards);
             currentPlayer.addDestCards(drawnDestCards);
         } else {
             throw new GamePlayException("Invalid player name");
@@ -208,6 +209,7 @@ public class StartedGame implements java.io.Serializable{
 
             DestCard returnedCard = board.getDestCardMap().get(returnedCardKey);
             currentPlayer.removeDestCards(returnedCard);
+            currentPlayer.clearPossibleDestCards();
             board.pushBackDestCards(returnedCard);
 
         } else {
@@ -562,7 +564,7 @@ public class StartedGame implements java.io.Serializable{
         return playerData;
     }
 
-    PrivatePlayerData getPrivateData(String username){
+    PrivatePlayerData getPrivateData(String username) {
         Player player = allPlayers.get(username);
         List<DestCard> destCards = player.getDestCards();
         List<Integer> destCardInts = new ArrayList<>();
@@ -570,7 +572,8 @@ public class StartedGame implements java.io.Serializable{
             destCardInts.add(DestCard.getDestCardKey(card));
         }
         List<Integer> trainCards = player.getTrainCardCodes();
-        return new PrivatePlayerData(destCardInts, trainCards, new ArrayList<Integer>(), false);
+        List<Integer> possibleDestCards = player.getPossibleDestCards();
+        return new PrivatePlayerData(destCardInts, trainCards, possibleDestCards, false);
     }
 
     boolean getReplaceFaceUpFlag() {

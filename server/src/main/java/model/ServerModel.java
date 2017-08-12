@@ -253,8 +253,8 @@ public class ServerModel implements Serializable {
                 int discardPileSize = 0; // not implemented
                 List<String> gameHistory = gameToReJoin.getAllGameHistory();
                 List<String> chatHistory = gameToReJoin.getAllChatHistory();
-
-                GameData gameData = new GameData(gameName, numPlayers, playerData, privateData, username,
+                String activePlayer = playerNames.get(gameToReJoin.getTurnPointer());
+                GameData gameData = new GameData(gameName, numPlayers, playerData, privateData, activePlayer,
                         trainDeckSize, destDeckSize, faceUpCards, discardPileSize, gameHistory, chatHistory);
 
                 toClient.reJoinGame(username, gameData);
