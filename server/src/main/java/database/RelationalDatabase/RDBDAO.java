@@ -40,8 +40,8 @@ public class RDBDAO implements IDatabase {
     public RDBDAO() {
         mToDatabase = null;
         final String driver = "org.sqlite.JDBC";
-        //mURLPostfix = "/server/database/RelationalDatabase/ttr-rdb.sqlite";
-        mURLPostfix = "\\server\\src\\main\\java\\database\\RelationalDatabase\\ttr-rdb.sqlite";
+        mURLPostfix = "/server/database/ttr-rdb.sqlite";
+        //mURLPostfix = "\\server\\src\\main\\java\\database\\RelationalDatabase\\ttr-rdb.sqlite";
         
         try {
             Class.forName(driver);
