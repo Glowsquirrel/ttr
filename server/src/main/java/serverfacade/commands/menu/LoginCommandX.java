@@ -1,10 +1,12 @@
 package serverfacade.commands.menu;
 
+import java.io.Serializable;
+
 import commands.menu.LoginCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class LoginCommandX extends LoginCommand implements ICommandX {
+public class LoginCommandX extends LoginCommand implements ICommandX,Serializable {
 
     public LoginCommandX(String username, String password) {
         super(username, password);

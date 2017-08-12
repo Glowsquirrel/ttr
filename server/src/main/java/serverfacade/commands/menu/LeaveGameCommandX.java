@@ -1,10 +1,12 @@
 package serverfacade.commands.menu;
 
+import java.io.Serializable;
+
 import commands.menu.LeaveGameCommand;
 import interfaces.ICommandX;
 import serverfacade.ServerFacade;
 
-public class LeaveGameCommandX extends LeaveGameCommand implements ICommandX {
+public class LeaveGameCommandX extends LeaveGameCommand implements ICommandX,Serializable {
 
     public LeaveGameCommandX(String username, String gameName){
         super(username, gameName);
