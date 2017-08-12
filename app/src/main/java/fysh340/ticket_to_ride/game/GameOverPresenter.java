@@ -8,23 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import fysh340.ticket_to_ride.R;
-import fysh340.ticket_to_ride.menus.MenuGameLobby;
 import fysh340.ticket_to_ride.menus.MenuLogin;
 import model.AbstractPlayer;
 import model.ClientModel;
 import model.Game;
-import model.Player;
-import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 import websocket.ClientWebSocket;
 
