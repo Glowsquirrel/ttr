@@ -11,7 +11,9 @@ public class DatabaseFactory {
             case "nate":
                 return new RDBDAO(commandsUntilSave);
             case "rachael":
-                return new FileDatabase();
+                FileDatabase fb=new FileDatabase();
+                fb.setCommandNum(commandsUntilSave);
+                return fb;
             default:
                 return new FakeDatabase(commandsUntilSave);
         }

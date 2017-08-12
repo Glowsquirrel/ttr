@@ -17,6 +17,17 @@ public class FileDatabase implements IDatabase {
     CommandDao commandDao=new CommandDao();
     GameDao gameDao=new GameDao();
     UserDao userDao=new UserDao();
+    int commandNum=0;
+
+    public int getCommandNum() {
+        return commandNum;
+    }
+
+    public void setCommandNum(int commandNum) {
+        commandDao.setCommandNum(commandNum);
+        this.commandNum = commandNum;
+    }
+
     @Override
     public boolean saveCommandToDatabase(String gameName, Command nextCommand)
     {

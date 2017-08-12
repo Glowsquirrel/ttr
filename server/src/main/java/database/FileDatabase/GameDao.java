@@ -29,13 +29,17 @@ public class GameDao {
             fileIn.close();
         } catch (IOException i) {
             i.printStackTrace();
-            return;
         } catch (ClassNotFoundException c) {
             System.out.println("User class not found");
             c.printStackTrace();
-            return;
         }
-        games.put(myGame.getGameName(),myGame);
+        if(games!=null) {
+            games.put(myGame.getGameName(), myGame);
+        }
+        else
+        {
+            games=new HashMap<>();
+        }
         try {
             FileOutputStream fileOut =
                     new FileOutputStream(fileName);
@@ -60,11 +64,9 @@ public class GameDao {
             fileIn.close();
         } catch (IOException i) {
             i.printStackTrace();
-            return;
         } catch (ClassNotFoundException c) {
             System.out.println("User class not found");
             c.printStackTrace();
-            return;
         }
         if(games==null)games=new HashMap<>();
         games.put(myGame.getGameName(),myGame);

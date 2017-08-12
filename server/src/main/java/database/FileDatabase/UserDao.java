@@ -48,11 +48,9 @@ public class UserDao {
             fileIn.close();
         } catch (IOException i) {
             i.printStackTrace();
-            return;
         } catch (ClassNotFoundException c) {
             System.out.println("User class not found");
             c.printStackTrace();
-            return;
         }
         if(users==null)users=new HashSet<>();
         users.add(myNewUser);
