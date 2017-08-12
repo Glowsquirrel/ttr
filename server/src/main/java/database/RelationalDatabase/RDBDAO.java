@@ -80,7 +80,8 @@ public class RDBDAO implements IDatabase {
     }
     
     private void updateDB(String sql) throws SQLException {
-        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo = mToDatabase.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                        ResultSet.CONCUR_UPDATABLE);
         mDatabaseToDo.executeUpdate();
     }
     
@@ -98,7 +99,8 @@ public class RDBDAO implements IDatabase {
         final int INDEX_COLUMN = 1;
         final int CMD_COLUMN = 2;
     
-        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo = mToDatabase.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                        ResultSet.CONCUR_UPDATABLE);
         mDatabaseToDo.setString(NAME_COLUMN, gameName);
         mDatabaseToDo.setInt(INDEX_COLUMN, index);
         mDatabaseToDo.setBytes(CMD_COLUMN, objectToBytes(toBlob));
@@ -111,7 +113,8 @@ public class RDBDAO implements IDatabase {
         final int NAME_COLUMN = 1;
         final int GAME_COLUMN = 2;
     
-        mDatabaseToDo = mToDatabase.prepareStatement(sql);
+        mDatabaseToDo = mToDatabase.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+                                                        ResultSet.CONCUR_UPDATABLE);
         mDatabaseToDo.setString(NAME_COLUMN, gameName);
         mDatabaseToDo.setBytes(GAME_COLUMN, objectToBytes(toBlob));
         mDatabaseToDo.executeUpdate();
