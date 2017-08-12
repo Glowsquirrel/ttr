@@ -336,7 +336,7 @@ public class RDBDAO implements IDatabase {
         try {
             openConnection();
         
-            String sql = "SELECT * FROM command;";
+            String sql = "SELECT * FROM command ORDER BY cmd_index;";
             foundInDB = queryDB(sql);
             while(foundInDB.next()) {
                 String gameName = foundInDB.getString(GAME_COLUMN);
