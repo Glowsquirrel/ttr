@@ -111,6 +111,22 @@ public class StartedGame implements java.io.Serializable{
         return allResults;
     }
 
+    public int getDestCardDeckSize(){
+        return board.getDestCardDeckSize();
+    }
+
+    public int getTrainCardDeckSize(){
+        return board.getTrainCardDeckSize();
+    }
+
+    public List<String> getAllGameHistory(){
+        return new ArrayList<>();
+    }
+
+    public List<String> getAllChatHistory(){
+        return new ArrayList<>();
+    }
+
 /******************************************DrawDestCards*******************************************/
 
     /**
@@ -544,6 +560,17 @@ public class StartedGame implements java.io.Serializable{
             playerData.add(myData);
         }
         return playerData;
+    }
+
+    PrivatePlayerData getPrivateData(String username){
+        Player player = allPlayers.get(username);
+        List<DestCard> destCards = player.getDestCards();
+        List<Integer> destCardInts = new ArrayList<>();
+        for (DestCard card : destCards){
+            destCardInts.add(DestCard.getDestCardKey(card));
+        }
+        List<Integer> trainCards = player.getTrainCardCodes();
+        return new PrivatePlayerData(destCardInts, trainCards);
     }
 
     boolean getReplaceFaceUpFlag() {

@@ -8,8 +8,7 @@ import utils.Utils;
 
 public class RejoinResult extends Result  implements Serializable {
     protected String gameName;
-
-    private GameData gameData;
+    protected GameData gameData;
 
     protected RejoinResult(){}
     public RejoinResult(String username, GameData gameData){
@@ -18,7 +17,4 @@ public class RejoinResult extends Result  implements Serializable {
         this.gameData = gameData;
     }
 
-    public GameData getGameData() {
-        return gameData;
-    }
 }

@@ -10,8 +10,6 @@ public class RejoinResultX extends RejoinResult implements IResultX {
     @Override
     public void execute() {
         ClientFacade clientFacade = new ClientFacade();
-//        clientFacade.reJoinGame(super.username, super.gameName);
-        GameData data = getGameData();
-        clientFacade.reJoinGame(data);
+        clientFacade.reJoinGame(super.username, super.gameData);
     }
 }

@@ -404,6 +404,10 @@ public class Board implements java.io.Serializable {
         return routeMap;
     }
 
+    int getDestCardDeckSize(){
+        return destCardDeck.size();
+    }
+
     int getTrainCardDeckSize() {
         return trainCardDeck.size();
     }

@@ -241,12 +241,18 @@ public class ServerModel {
                 List<String> playerNames = gameToReJoin.getAllPlayerNames(); // get player names
                 int numPlayers = playerNames.size(); // number of players
                 List<PlayerData> playerData = gameToReJoin.getPlayerData();
-                //Private
+                PrivatePlayerData privateData = gameToReJoin.getPrivateData(username);
+                int destDeckSize = gameToReJoin.getDestCardDeckSize();
+                int trainDeckSize = gameToReJoin.getTrainCardDeckSize();
+                List<Integer> faceUpCards = gameToReJoin.getFaceUpCards();
+                int discardPileSize = 0; // not implemented
+                List<String> gameHistory = gameToReJoin.getAllGameHistory();
+                List<String> chatHistory = gameToReJoin.getAllChatHistory();
 
+                GameData gameData = new GameData(gameName, numPlayers, playerData, privateData, username,
+                        trainDeckSize, destDeckSize, faceUpCards, discardPileSize, gameHistory, chatHistory);
 
-                //GameData rejoin = new GameData(gameName);
-
-                //toClient.reJoinGame(username, rejoin);
+                toClient.reJoinGame(username, gameData);
                 return true;
             } else {
                 toClient.rejectCommand(username, gameName, message);
