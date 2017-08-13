@@ -19,8 +19,12 @@ import model.User;
  */
 
 public class CommandDao {
-    String fileName="C:\\Users\\Rachael\\Documents\\ttr340\\340\\ttr\\commands.ser.txt";
+    String fileName;
     private int commandNum;
+
+    public CommandDao(String fileName) {
+        this.fileName = fileName;
+    }
 
     public void setCommandNum(int commandNum) {
         this.commandNum = commandNum;

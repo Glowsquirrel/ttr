@@ -1,5 +1,6 @@
 package database.FileDatabase;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,18 +15,31 @@ import model.User;
  */
 
 public class FileDatabase implements IDatabase {
-    CommandDao commandDao=new CommandDao();
-    GameDao gameDao=new GameDao();
-    UserDao userDao=new UserDao();
+    CommandDao commandDao;
+    GameDao gameDao;
+    UserDao userDao;
     int commandNum=0;
+    String mURLPostfix;
+
 
     public int getCommandNum() {
         return commandNum;
     }
 
+    public FileDatabase(int commandNum) {
+        String pathToDB = Paths.get(".").toAbsolutePath().normalize().toString(); // get working directory
+        this.commandNum=commandNum;
+        this.commandNum = commandNum;
+        //mURLPostfix = "/server/database/RelationalDatabase/ttr-rdb.sqlite";
+        mURLPostfix = "\\server\\src\\main\\java\\database\\FileDatabase\\";
+        commandDao=new CommandDao(pathToDB+mURLPostfix+"commands.ser.txt");
+        gameDao=new GameDao(pathToDB+mURLPostfix+"games.ser.txt");
+        userDao=new UserDao(pathToDB+mURLPostfix+"users.ser.txt");
+    }
+
     public void setCommandNum(int commandNum) {
         commandDao.setCommandNum(commandNum);
-        this.commandNum = commandNum;
+
     }
 
     @Override
