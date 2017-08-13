@@ -388,7 +388,7 @@ public class StartedGame implements java.io.Serializable{
             currentPlayer.removeTrainCards(returnedTrainCards);
             board.discardTrainCards(returnedTrainCards);
             currentPlayer.calculateContRoute(route.getStartCity(), route.getEndCity(), route.getLength());
-
+            currentPlayer.addClaimedRoute(routeId);
 
 
             board.reshuffleIfEmpty(); //CASE: Empty deck and discard pile before claiming route.
