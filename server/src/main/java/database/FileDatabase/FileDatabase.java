@@ -56,6 +56,7 @@ public class FileDatabase implements IDatabase {
     @Override
     public void updateStartedGameInDatabase(StartedGame myGame)
     {
+        commandDao.clearGameCommands(myGame.getGameName());
         gameDao.updateStartedGameInDatabase(myGame);
     }
     @Override
@@ -76,7 +77,9 @@ public class FileDatabase implements IDatabase {
     @Override
     public Map<String, List<Command>> loadOutstandingCommandsFromDatabase()
     {
-        return commandDao.loadOutstandingCommandsFromDatabase();
+        Map<String, List<Command>> commands=commandDao.loadOutstandingCommandsFromDatabase();
+        commandDao.clearDatabase();
+        return commands;
     }
 
     @Override
