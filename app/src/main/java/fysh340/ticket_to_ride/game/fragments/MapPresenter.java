@@ -29,6 +29,7 @@ import fysh340.ticket_to_ride.game.fragments.mapsupport.MapHelper;
 import fysh340.ticket_to_ride.game.fragments.mapsupport.MapRoute;
 import interfaces.IServer;
 import interfaces.Observer;
+import model.AbstractPlayer;
 import model.ClientModel;
 import model.Game;
 import model.MapModel;
@@ -120,11 +121,11 @@ public class MapPresenter extends Fragment implements OnMapReadyCallback,
             }
         });
 
-
-        for (Integer route : mGame.getClaimedRoutes()) {
-            String username = Route.getRouteByID(route).getUser();
-            int color = mGame.getPlayerByName(username).getColor();
-            MapHelper.changeColor(MapRoute.getRoute(route), color);
+        for (AbstractPlayer player : mGame.getVisiblePlayerInformation()) {
+            for (Integer routeID : player.getClaimedRoutes()) {
+                int color = ContextCompat.getColor(getContext(), player.getColor());
+                MapHelper.changeColor(MapRoute.getRoute(routeID), color);
+            }
         }
     }
 

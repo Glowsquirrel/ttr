@@ -1,10 +1,10 @@
 package database;
 
-import database.FileDatabase.FileDatabase;
+/*import database.FileDatabase.FileDatabase;
 
 /**
  * Created by sjrme on 8/11/2017.
- */
+
 
 public class FileFactory implements AbstractFactory {
 
@@ -13,4 +13,4 @@ public class FileFactory implements AbstractFactory {
         return new FileDatabase();
     }
 
-}
+}*/

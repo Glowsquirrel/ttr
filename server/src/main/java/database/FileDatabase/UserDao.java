@@ -16,8 +16,12 @@ import model.User;
  */
 
 public class UserDao {
-    String fileName="C:\\Users\\Rachael\\Documents\\ttr340\\340\\ttr\\users.ser.txt";
-    File file=new File(fileName);
+    String fileName;
+
+    public UserDao(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Set<User> loadUsersFromDatabase() {
         Set<User> users = null;
         try {

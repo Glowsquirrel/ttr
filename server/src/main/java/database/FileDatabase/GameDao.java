@@ -17,7 +17,12 @@ import model.StartedGame;
  */
 
 public class GameDao {
-    String fileName="C:\\Users\\Rachael\\Documents\\ttr340\\340\\ttr\\games.ser.txt";
+    String fileName;
+
+    public GameDao(String fileName) {
+        this.fileName = fileName;
+    }
+
     public void saveNewStartedGameToDatabase(StartedGame myGame)
     {
         Map<String,StartedGame> games=null;

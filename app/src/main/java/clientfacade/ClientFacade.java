@@ -164,12 +164,7 @@ public class ClientFacade implements IClient{
         }
         game.initializeMyGame(myself, gameData.getGameName(), playerNames, gameData.getFaceUpCards());
 
-//        game.setPossibleDestCards(destCards);
-//        game.setFaceUpCards(faceUpCards);
-
         for (Integer cardID : gameData.getPrivatePlayerData().getDestCards()) {
-            // TODO: 8/11/17 which one to use?
-//            game.addDestCard(DestCard.getDestCardByID(cardID));
             game.getMyself().addDestCard(DestCard.getDestCardByID(cardID));
         }
 
@@ -182,8 +177,10 @@ public class ClientFacade implements IClient{
             player.setNumTrains(playerData.getNumTrains());
             if (gameData.getActivePlayer().equals(playerData.getPlayerName())) {
                 player.setMyTurn(true);
+            } else {
+                player.setMyTurn(false);
             }
-            game.getClaimedRoutes().addAll(playerData.getRoutes());
+            player.getClaimedRoutes().addAll(playerData.getRoutes());
         }
         game.setFaceUpCards(gameData.getFaceUpCards());
         game.setTrainCardDeckSize(gameData.getTrainDeckSize());
@@ -198,6 +195,8 @@ public class ClientFacade implements IClient{
         if (game.getMyself().getMyUsername().equals(gameData.getActivePlayer())) {
             if (gameData.getPrivatePlayerData().getPossibleDestCards().size() > 0) {
                 mClientState.setState(new ReturnDestCardState());
+                game.setPossibleDestCards(gameData.getPrivatePlayerData().getPossibleDestCards());
+                game.iHavePossibleDestCards(true);
             } else if (gameData.getPrivatePlayerData().isDrewATrainCard()) {
                 mClientState.setState(new DrawSecondTrainCardState());
             } else {
@@ -211,15 +210,6 @@ public class ClientFacade implements IClient{
 
         clientModel.hasRejoinedGame(true);
         clientModel.notifyObserver();
-//        clientModel.notifyObserver();
-
-
-
-//
-//        game.notifyObserver();
-//
-//        clientModel.startGame();
-//        clientModel.notifyObserver();
     }
     
     /**
