@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * TODO: description
  *
@@ -7,7 +9,7 @@ package model;
  * @version 1.0
  * @since 2017-08-14
  */
-public class ChatHistoryData {
+public class ChatHistoryData implements Serializable {
 
     private String username;
     private String message;
