@@ -76,7 +76,7 @@ public class CommandDao {
                 System.out.print(j.toString());
             }
         }
-        if(commandList.size()>commandNum)
+        if(commandList.size()>=commandNum)
         {
             return true;
         }
