@@ -1,5 +1,6 @@
 package database.FileDatabase;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class FileDatabase implements IDatabase {
         this.commandNum=commandNum;
         this.commandNum = commandNum;
         //mURLPostfix = "/server/database/RelationalDatabase/ttr-rdb.sqlite";
-        mURLPostfix = "\\server\\src\\main\\java\\database\\FileDatabase\\";
+        mURLPostfix = File.separator +"server"+ File.separator +"src"+ File.separator+"main/java"+ File.separator+"database"+ File.separator+"FileDatabase"+File.separator;
         commandDao=new CommandDao(pathToDB+mURLPostfix+"commands.ser.txt");
         gameDao=new GameDao(pathToDB+mURLPostfix+"games.ser.txt");
         userDao=new UserDao(pathToDB+mURLPostfix+"users.ser.txt");
