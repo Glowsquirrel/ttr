@@ -107,14 +107,7 @@ public class MyTurnState implements GamePlayState {
                     }
 
 
-                    while (cardsLeft > 0) {
-                        cards.add(TrainCard.getTrainCardKey(WILD));
-                        cardsLeft--;
-                    }
-                    mGame.setCardsToDiscard(cards);
-                    ClientState.INSTANCE.getState().claimRoute(mGame.getMyself().getMyUsername(), mGame.getMyGameName(),
-                            mGame.getCurrentlySelectedRouteID(), cards);
-                    //                        Toast.makeText(getActivity(), "Route Claimed Successfully", Toast.LENGTH_SHORT).show();
+
                 }
             }
         } else {
