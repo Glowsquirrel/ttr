@@ -78,7 +78,7 @@ public class FileDatabase implements IDatabase {
     public Map<String, List<Command>> loadOutstandingCommandsFromDatabase()
     {
         Map<String, List<Command>> commands=commandDao.loadOutstandingCommandsFromDatabase();
-        commandDao.clearDatabase();
+       // commandDao.clearDatabase();
         return commands;
     }
 
