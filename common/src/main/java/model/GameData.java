@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @version 1.0
  * @since 2017-08-11
  */
-public class GameData {
+public class GameData implements Serializable {
 
     private String gameName;
     private int numPlayers;
