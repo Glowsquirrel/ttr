@@ -2,6 +2,7 @@ package database.RelationalDatabase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -40,8 +41,10 @@ public class RDBDAO implements IDatabase {
     public RDBDAO() {
         mToDatabase = null;
         final String driver = "org.sqlite.JDBC";
-        //mURLPostfix = "/server/database/RelationalDatabase/ttr-rdb.sqlite";
-        mURLPostfix = "\\server\\src\\main\\java\\database\\RelationalDatabase\\ttr-rdb.sqlite";
+        mURLPostfix = File.separator + "server" + File.separator + "src" + File.separator + "main" +
+                              File.separator + "java" + File.separator+ "database" +
+                              File.separator + "RelationalDatabase" + File.separator +
+                              "ttr-rdb.sqlite";
         
         try {
             Class.forName(driver);
