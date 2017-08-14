@@ -10,6 +10,7 @@ import fysh340.ticket_to_ride.game.fragments.gameplaystate.NotMyTurnState;
 import fysh340.ticket_to_ride.game.fragments.gameplaystate.ReturnDestCardState;
 import interfaces.IClient;
 import model.AbstractPlayer;
+import model.ChatHistoryData;
 import model.ChatHistoryModel;
 import model.ClientModel;
 import model.DestCard;
@@ -185,6 +186,14 @@ public class ClientFacade implements IClient{
         game.setFaceUpCards(gameData.getFaceUpCards());
         game.setTrainCardDeckSize(gameData.getTrainDeckSize());
         game.setDestCardDeckSize(gameData.getDestDeckSize());
+
+        for (ChatHistoryData chatHistory : gameData.getChatHistory()) {
+            chatModel.addChat(chatHistory.getUsername(), chatHistory.getMessage());
+        }
+
+        for (ChatHistoryData gameHistory : gameData.getGameHistory()) {
+            chatModel.addHistory(gameHistory.getUsername(), gameHistory.getMessage());
+        }
 
         game.aPlayerHasChanged();
         game.iHaveDifferentDestDeckSize();

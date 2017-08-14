@@ -119,11 +119,11 @@ public class StartedGame implements java.io.Serializable{
         return board.getTrainCardDeckSize();
     }
 
-    public List<String> getAllGameHistory(){
+    public List<ChatHistoryData> getAllGameHistory(){
         return new ArrayList<>();
     }
 
-    public List<String> getAllChatHistory(){
+    public List<ChatHistoryData> getAllChatHistory(){
         return new ArrayList<>();
     }
 
