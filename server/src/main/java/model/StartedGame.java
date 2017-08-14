@@ -218,7 +218,7 @@ public class StartedGame implements java.io.Serializable{
         }
 
        String message = playerName + " returned a destination card.";
-      setGameHistoryResult(playerName, message, -1, -1);
+       setGameHistoryResult(playerName, message, -1, -1);
         setEndGameResult();
         return new ReturnFirstDestCardResult(playerName, returnedCardKey);
     }

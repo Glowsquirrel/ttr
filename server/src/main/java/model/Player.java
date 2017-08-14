@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -490,7 +491,7 @@ class Player implements java.io.Serializable{
     public List<ContinuousRoute> getAllContRoutes() {
         return allContRoutes;
     }
-    class ContinuousRoute {
+    class ContinuousRoute implements Serializable {
          Set<City> cities = Collections.synchronizedSet(new HashSet<City>());
          int size = 0;
 
