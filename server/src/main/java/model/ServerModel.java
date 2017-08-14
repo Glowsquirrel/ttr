@@ -12,7 +12,6 @@ import clientproxy.ClientProxy;
 import commands.Command;
 import interfaces.ICommandX;
 import results.Result;
-import results.game.RejoinResult;
 import results.game.ReplaceFaceUpCardsResult;
 
 /**
@@ -476,4 +475,11 @@ public class ServerModel implements Serializable {
         //game.printBoardState();
     }
 
+    public List<ChatHistoryData> getChatHistoryData(String gameName){
+        return allStartedGames.get(gameName).getChatResultList();
+    }
+
+    public List<ChatHistoryData> getGameHistories(String gameName) {
+        return allStartedGames.get(gameName).getAllChatHistory();
+    }
 }

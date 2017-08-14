@@ -45,7 +45,8 @@ public class StartedGame implements java.io.Serializable{
     private Result finalRoundResult = null;
     private String afterFinalTurnPlayer = null;
     private boolean secondPass = false;
-
+    private List<ChatHistoryData> chatResultList = new ArrayList<>();
+    private List<ChatHistoryData> gameHistories = new ArrayList<>();
     StartedGame(UnstartedGame unstartedGame) {
         this.gameName = unstartedGame.getGameName();
     }
@@ -120,11 +121,11 @@ public class StartedGame implements java.io.Serializable{
     }
 
     public List<ChatHistoryData> getAllGameHistory(){
-        return new ArrayList<>();
+        return gameHistories;
     }
 
     public List<ChatHistoryData> getAllChatHistory(){
-        return new ArrayList<>();
+        return chatResultList;
     }
 
 /******************************************DrawDestCards*******************************************/
@@ -478,6 +479,7 @@ public class StartedGame implements java.io.Serializable{
 
     public void setGameHistoryResult(String playerName, String message, int routeNumber, int faceUpIndex){
         Player player = allPlayers.get(playerName);
+        gameHistories.add(new ChatHistoryData(playerName, message));
         gameHistory = new GameHistoryResult(playerName, message,
                 player.getNumOfCars(), player.getSizeOfTrainCardHand(),
                 player.getSizeOfDestCardHand(), player.getNumOfRoutesOwned(),
@@ -488,8 +490,14 @@ public class StartedGame implements java.io.Serializable{
 
     Result addChat(String playerName, String message) {
         allChats.add(new Chat(playerName, message));
+        chatResultList.add(new ChatHistoryData(playerName, message));
         return new ChatResult(playerName, message);
     }
+
+    List<ChatHistoryData> getChatResultList(){
+        return chatResultList;
+    }
+
 
     /****************************************TURN STATE********************************************/
     private boolean throwIfNotPlayersTurn(String playerName) throws GamePlayException {
