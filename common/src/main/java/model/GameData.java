@@ -20,12 +20,12 @@ public class GameData {
     private int destDeckSize;
     private List<Integer> faceUpCards;
     private int discardPileSize;
-    private List<String> gameHistory;
-    private List<String> chatHistory;
+    private List<ChatHistoryData> gameHistory;
+    private List<ChatHistoryData> chatHistory;
 
     public GameData() {}
 
-    public GameData(String gameName, int numPlayers, List<PlayerData> playerData, PrivatePlayerData privatePlayerData, String activePlayer, int trainDeckSize, int destDeckSize, List<Integer> faceUpCards, int discardPileSize, List<String> gameHistory, List<String> chatHistory) {
+    public GameData(String gameName, int numPlayers, List<PlayerData> playerData, PrivatePlayerData privatePlayerData, String activePlayer, int trainDeckSize, int destDeckSize, List<Integer> faceUpCards, int discardPileSize, List<ChatHistoryData> gameHistory, List<ChatHistoryData> chatHistory) {
         this.gameName = gameName;
         this.numPlayers = numPlayers;
         this.playerData = playerData;
@@ -111,19 +111,19 @@ public class GameData {
         this.discardPileSize = discardPileSize;
     }
 
-    public List<String> getGameHistory() {
+    public List<ChatHistoryData> getGameHistory() {
         return gameHistory;
     }
 
-    public void setGameHistory(List<String> gameHistory) {
+    public void setGameHistory(List<ChatHistoryData> gameHistory) {
         this.gameHistory = gameHistory;
     }
 
-    public List<String> getChatHistory() {
+    public List<ChatHistoryData> getChatHistory() {
         return chatHistory;
     }
 
-    public void setChatHistory(List<String> chatHistory) {
+    public void setChatHistory(List<ChatHistoryData> chatHistory) {
         this.chatHistory = chatHistory;
     }
 }
