@@ -99,7 +99,7 @@ public class ClientProxy implements IClient {
             mySession.getRemote().sendString(resultJson);
             mySocket.updateMenuSessions(username);
             logger.info("Sent a login to: " + username);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -114,7 +114,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             logger.info("Sent register to: " + username);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -134,7 +134,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             logger.info("Sent start game to: " + username);
-        } catch (IOException ex){
+        } catch (IOException | NullPointerException ex){
             ex.printStackTrace();
         }
     }
@@ -159,7 +159,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             logger.info("Sent join game to: " + username);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -176,7 +176,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             logger.info("Sent leave game to: " + username);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -190,7 +190,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             logger.info("Sent create game to: " + username);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -203,7 +203,7 @@ public class ClientProxy implements IClient {
 
         try {
             mySession.getRemote().sendString(resultJson);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             //
         }
     }
@@ -224,7 +224,7 @@ public class ClientProxy implements IClient {
         try {
             mySession.getRemote().sendString(resultJson);
             logger.info("Rejected a command from: " + identifier);
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             logger.warning("Client: " + identifier + " has already disconnected");
         }
     }
@@ -239,7 +239,7 @@ public class ClientProxy implements IClient {
         
         try {
             mySession.getRemote().sendString(resultJson); // send rejoin result
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
         }
 
@@ -254,7 +254,7 @@ public class ClientProxy implements IClient {
             try {
                 myUserSession.getRemote().sendString(resultJson);
                 logger.info("Sending a " + result.getType() + " result to: " + gameName + " game");
-            } catch (IOException | WebSocketException ex){
+            } catch (IOException | WebSocketException | NullPointerException ex){
                 logger.warning("Failed to send a: " + result.getType() + " command to the player: " + sessionEntry.getKey() + "in the: " + gameName + " game.");
             }
         }
@@ -268,7 +268,7 @@ public class ClientProxy implements IClient {
                     logger.info("Logging out: " + myPlayerWebsocket.getUsername() + "  ...");
                     myPlayerWebsocket.onClose(0, "GAME OVER");
                     logger.info("Success");
-                } catch (WebSocketException ex){
+                } catch (WebSocketException | NullPointerException ex){
                     logger.info("Failed");
                 }
             }
@@ -301,7 +301,7 @@ public class ClientProxy implements IClient {
 
             try {
                 myUserSession.getRemote().sendString(resultJson);
-            } catch (IOException | WebSocketException ex) {
+            } catch (IOException | WebSocketException | NullPointerException ex) {
                 logger.warning("Failed to send a: " + result.getType() + " command to " + username + ".");
             }
         }
