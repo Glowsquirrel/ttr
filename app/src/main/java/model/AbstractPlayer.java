@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fysh340.ticket_to_ride.R;
 
 
@@ -170,4 +173,10 @@ public abstract class AbstractPlayer {
     }
 
     private int longestRoutePoints;
+
+    private List<Integer> claimedRoutes = new ArrayList<Integer>();
+
+    public List<Integer> getClaimedRoutes() {
+        return claimedRoutes;
+    }
 }
